@@ -67,3 +67,8 @@
 # props の型定義
 
 - https://qiita.com/ungi_podo/items/e4349ae4dd694917b503
+
+# git
+
+コンテナ内で apk add git して.gitconfig を作成すればコンテナ内で git を動かす事ができた。
+やるべき事はコンテナを作成する時に git を install している事と ubuntu 内にある.gitconfig をマウントできるようにする事。
