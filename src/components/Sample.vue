@@ -16,7 +16,8 @@ export default defineComponent({
       required: true
     }
   },
-  setup({ user }) {
+  setup(props) {
+    const user = props.user
     const fullName = computed(() => `${user.firstName} ${user.lastName}`)
     const message = ref('This is a message')
     return { fullName, message }
