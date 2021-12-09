@@ -63,3 +63,7 @@
   alias dcu='docker-compose up -d'
   alias dcc='docker exec -it app sh'
   alias dcd='docker-compose down'
+
+# props の型定義
+
+- https://qiita.com/ungi_podo/items/e4349ae4dd694917b503
