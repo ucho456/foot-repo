@@ -52,3 +52,14 @@
 - docker-compose up -d
 - docker exec -it app sh
 - docker-compose down
+
+# alias の設定
+
+- vim ~/.bashrc
+  some more ls aliases <= コメントされてる目印
+  alias ll='ls -alF'
+  alias la='ls -A'
+  alias l='ls -CF'
+  alias dcu='docker-compose up -d'
+  alias dcc='docker exec -it app sh'
+  alias dcd='docker-compose down'
