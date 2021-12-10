@@ -30,7 +30,7 @@
       </v-list>
       <template #append>
         <div class="px-5">
-          <SelectLanguage />
+          <div>底</div>
         </div>
       </template>
     </v-navigation-drawer>
@@ -53,9 +53,12 @@ export default defineComponent({
     SideContainer
   },
 
-  setup(_props) {
+  setup() {
     const items = computed(() => {
-      const items = [{ icon: 'mdi-home', title: 'HOME', to: '/' }]
+      const items = [
+        { icon: 'mdi-home', title: 'HOME', to: '/' },
+        { icon: 'mdi-login', title: 'Login', to: '/login' }
+      ]
       return items
     })
     const showFlg = ref(false)
