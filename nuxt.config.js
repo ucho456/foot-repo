@@ -46,7 +46,18 @@ export default {
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
+  axios: {
+    proxy: true
+  },
+
+  publicRuntimeConfig: {
+    footballUrl: process.env.FOOTBALL_URL,
+    footballToken: process.env.NODE_ENV !== 'production' ? process.env.FOOTBALL_TOKEN : undefined
+  },
+
+  privateRuntimeConfig: {
+    footballToken: process.env.FOOTBALL_TOKEN
+  },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
