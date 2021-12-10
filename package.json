@@ -18,6 +18,7 @@
     "@nuxtjs/composition-api": "^0.31.0",
     "core-js": "^3.15.1",
     "nuxt": "^2.15.7",
+    "vee-validate": "^3.4.14",
     "vuetify": "^2.5.5"
   },
   "devDependencies": {
