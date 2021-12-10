@@ -16,5 +16,6 @@
     "esbenp.prettier-vscode",
     "octref.vetur",
     "stylelint.vscode-stylelint"
-  ]
+  ],
+  "postCreateCommand": "apk update && apk add git"
 }
