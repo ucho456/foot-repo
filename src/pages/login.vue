@@ -1,7 +1,7 @@
 <template>
   <v-card outlined max-width="400" class="mx-auto">
     <v-card-title>
-      <v-row justify="center">Foot-Repo(ロゴ予定) </v-row>
+      <v-row justify="center">Foot-Repo(ロゴ予定)</v-row>
     </v-card-title>
     <ValidationObserver v-slot="{ invalid }">
       <v-container>
