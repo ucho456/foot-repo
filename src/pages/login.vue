@@ -55,8 +55,8 @@ export default defineComponent({
     const data = reactive({ email: '', password: '' })
     const isLoading = ref(false)
     const router = useRouter()
-    const login = (): void => router.push('/')
-    const back = (): void => router.back()
+    const login = () => router.push('/')
+    const back = () => router.back()
     return { data, isLoading, login, back }
   }
 })
