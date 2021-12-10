@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, PropType } from '@nuxtjs/composition-api'
+import { defineComponent, computed, ref } from '@nuxtjs/composition-api'
 interface User {
   firstName: string
   lastName: string
@@ -12,7 +12,7 @@ export default defineComponent({
   name: 'Sample',
   props: {
     user: {
-      type: Object as () => PropType<User>,
+      type: Object as () => User,
       required: true
     }
   },
