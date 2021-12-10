@@ -1,0 +1,26 @@
+{
+  "template": {
+    "scope": "vue",
+    "prefix": "template",
+    "body": [
+      "<template>",
+      "\t${0}",
+      "</template>",
+      "${0}",
+      "<script lang=\"ts\">",
+      "import { defineComponent } from '@nuxtjs/composition-api'",
+      "${0}",
+      "export default defineComponent({",
+      "  name: '',",
+      "  components: {},",
+      "  props: {},",
+      "  setup() {",
+      "    return {}",
+      "  }",
+      "})",
+      "</script>",
+      "${0}"
+    ],
+    "description": "<template>"
+  }
+}
