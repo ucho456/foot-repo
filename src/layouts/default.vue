@@ -57,6 +57,7 @@ export default defineComponent({
     const items = computed(() => {
       const items = [
         { icon: 'mdi-home', title: 'HOME', to: '/' },
+        { icon: 'mdi-pencil-plus', title: 'Report', to: '/reports/search' },
         { icon: 'mdi-login', title: 'Login', to: '/login' }
       ]
       return items
