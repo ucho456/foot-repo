@@ -56,9 +56,9 @@ export default defineComponent({
   setup() {
     const items = computed(() => {
       const items = [
-        { key: 1, icon: 'mdi-home', title: 'HOME', to: '/' },
-        { key: 2, icon: 'mdi-pencil-plus', title: 'Report', to: '/reports/search' },
-        { key: 3, icon: 'mdi-login', title: 'Login', to: '/login' }
+        { key: 1, icon: 'mdi-home', title: 'ホーム', to: '/' },
+        { key: 2, icon: 'mdi-pencil-plus', title: 'レポート作成', to: '/reports/search' },
+        { key: 3, icon: 'mdi-login', title: 'ログイン', to: '/login' }
       ]
       return items
     })
