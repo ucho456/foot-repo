@@ -1,10 +1,10 @@
 <template>
   <v-app class="light-gray">
-    <v-app-bar class="white--text" fixed app color="darkBlue">
+    <v-app-bar class="white--text" app fixed color="darkBlue">
       <v-container class="d-flex align-center">
         <v-toolbar-title v-text="'Foot-Repo'" />
         <v-spacer />
-        <v-btn icon class="white--text" @click.stop="toggleDrawer">
+        <v-btn class="white--text" icon @click.stop="toggleDrawer">
           <v-icon>mdi-menu</v-icon>
         </v-btn>
       </v-container>
@@ -17,9 +17,9 @@
         </v-row>
       </v-container>
     </v-main>
-    <v-navigation-drawer v-model="showFlg" right temporary fixed>
+    <v-navigation-drawer v-model="showFlg" fixed right temporary>
       <v-list>
-        <v-list-item v-for="(item, i) in items" :key="i" :to="item.to" router exact>
+        <v-list-item v-for="item in items" :key="item.key" :to="item.to" exact router>
           <v-list-item-action>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-action>
@@ -56,9 +56,9 @@ export default defineComponent({
   setup() {
     const items = computed(() => {
       const items = [
-        { icon: 'mdi-home', title: 'HOME', to: '/' },
-        { icon: 'mdi-pencil-plus', title: 'Report', to: '/reports/search' },
-        { icon: 'mdi-login', title: 'Login', to: '/login' }
+        { key: 1, icon: 'mdi-home', title: 'HOME', to: '/' },
+        { key: 2, icon: 'mdi-pencil-plus', title: 'Report', to: '/reports/search' },
+        { key: 3, icon: 'mdi-login', title: 'Login', to: '/login' }
       ]
       return items
     })
