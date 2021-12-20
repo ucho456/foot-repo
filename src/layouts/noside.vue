@@ -18,7 +18,7 @@
     </v-main>
     <v-navigation-drawer v-model="showFlg" right temporary fixed>
       <v-list>
-        <v-list-item v-for="(item, i) in items" :key="i" :to="item.to" router exact>
+        <v-list-item v-for="(item, i) in navigationDrawerItems" :key="i" :to="item.to" router exact>
           <v-list-item-action>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-action>
@@ -42,23 +42,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from '@nuxtjs/composition-api'
+import { defineComponent, ref } from '@nuxtjs/composition-api'
+import { navigationDrawerItems } from '@/utils/navigationDrawerItems'
 
 export default defineComponent({
   name: 'Noside',
 
   setup() {
-    const items = computed(() => {
-      const items = [
-        { icon: 'mdi-home', title: 'Home', to: '/' },
-        { icon: 'mdi-pencil-plus', title: 'Report', to: '/reports/search' },
-        { icon: 'mdi-login', title: 'Login', to: '/login' }
-      ]
-      return items
-    })
     const showFlg = ref(false)
     const toggleDrawer = () => (showFlg.value = !showFlg.value)
-    return { items, showFlg, toggleDrawer }
+    return { navigationDrawerItems, showFlg, toggleDrawer }
   }
 })
 </script>

@@ -19,7 +19,13 @@
     </v-main>
     <v-navigation-drawer v-model="showFlg" fixed right temporary>
       <v-list>
-        <v-list-item v-for="item in items" :key="item.key" :to="item.to" exact router>
+        <v-list-item
+          v-for="item in navigationDrawerItems"
+          :key="item.key"
+          :to="item.to"
+          exact
+          router
+        >
           <v-list-item-action>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-action>
@@ -43,8 +49,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from '@nuxtjs/composition-api'
+import { defineComponent, ref } from '@nuxtjs/composition-api'
 import SideContainer from '@/components/organisms/SideContainer.vue'
+import { navigationDrawerItems } from '@/utils/navigationDrawerItems'
 
 export default defineComponent({
   name: 'Default',
@@ -54,17 +61,9 @@ export default defineComponent({
   },
 
   setup() {
-    const items = computed(() => {
-      const items = [
-        { key: 1, icon: 'mdi-home', title: 'ホーム', to: '/' },
-        { key: 2, icon: 'mdi-pencil-plus', title: 'レポート作成', to: '/reports/search' },
-        { key: 3, icon: 'mdi-login', title: 'ログイン', to: '/login' }
-      ]
-      return items
-    })
     const showFlg = ref(false)
     const toggleDrawer = (): boolean => (showFlg.value = !showFlg.value)
-    return { items, showFlg, toggleDrawer }
+    return { navigationDrawerItems, showFlg, toggleDrawer }
   }
 })
 </script>
