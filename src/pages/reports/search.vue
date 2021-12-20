@@ -1,22 +1,21 @@
 <template>
   <v-container>
-    <ButtonBlockBlue
-      :loading="isLoading"
-      :text="'検索'"
-      @click="getTrigger('/competitions/2014/matches?matchday=1')"
-    />
-    <ReportsSearchMatchList
-      :competition="res.competition"
-      :err="err"
-      :is-loading="isLoading"
-      :matches="res.matches"
-    />
+    <v-row justify="center">
+      <v-col cols="12" sm="10" md="6">
+        <ReportsSearchMatchList
+          :competition="res.competition"
+          :err="err"
+          :is-loading="isLoading"
+          :matches="res.matches"
+          @click="getTrigger('/competitions/2014/matches?matchday=1')"
+        />
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
-import ButtonBlockBlue from '@/components/molecules/ButtonBlockBlue.vue'
 import ReportsSearchMatchList from '@/components/organisms/ReportsSearchMatchList.vue'
 import getMatches from '@/utils/api/getMatches'
 
@@ -24,9 +23,10 @@ export default defineComponent({
   name: 'Search',
 
   components: {
-    ButtonBlockBlue,
     ReportsSearchMatchList
   },
+
+  layout: 'noside',
 
   setup() {
     const { res, err, isLoading, getTrigger } = getMatches()

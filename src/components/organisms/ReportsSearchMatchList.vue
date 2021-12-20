@@ -24,8 +24,19 @@
             <v-img v-if="match.homeTeamImg !== ''" :src="match.homeTeamImg" />
           </v-list-item-avatar>
           <v-list-item-content>
-            <v-list-item-title class="text-center">{{ match.firstLine }}</v-list-item-title>
-            <v-list-item-subtitle class="text-center">{{ match.secondLine }}</v-list-item-subtitle>
+            <v-row>
+              <v-col cols="6"
+                ><v-list-item-title class="text-right">{{
+                  match.homeTeamName
+                }}</v-list-item-title></v-col
+              >
+              <v-col cols="6"
+                ><v-list-item-title class="text-left">{{
+                  match.awayTeamName
+                }}</v-list-item-title></v-col
+              >
+            </v-row>
+            <v-list-item-subtitle class="text-center mt-n3">{{ match.score }}</v-list-item-subtitle>
             <v-list-item-subtitle class="text-center">{{ match.thirdLine }}</v-list-item-subtitle>
           </v-list-item-content>
           <v-list-item-avatar>
@@ -91,9 +102,10 @@ export default defineComponent({
           awayTeamImg: match.awayTeam.id
             ? `https://crests.football-data.org/${match.awayTeam.id}.svg`
             : '',
-          firstLine: `${match.homeTeam.name} ${homeTeamScore} - ${awayTeamScore} ${match.awayTeam.name}`,
-          secondLine: `${match.utcDate.substring(0, 10)}`,
-          thirdLine: `${props.competition.name} - ${props.competition.area.name}`,
+          homeTeamName: match.homeTeam.name,
+          awayTeamName: match.awayTeam.name,
+          score: `${homeTeamScore} - ${awayTeamScore}`,
+          thirdLine: `${match.utcDate.substring(0, 10)} ${props.competition.name}`,
           to: '/'
         }
       })
