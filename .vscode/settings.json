@@ -14,5 +14,7 @@
   "vetur.validation.script": false,
   "css.validate": false,
   "scss.validate": false,
-  "vetur.validation.style": false
+  "vetur.validation.style": false,
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": "active"
 }
