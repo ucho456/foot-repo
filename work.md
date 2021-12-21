@@ -32,3 +32,13 @@
 - docker-compose up -d
 - docker exec -it app sh
 - docker-compose down
+
+# コード規約
+
+- v-if 存在
+- class スタイル
+- gridSystem cols md sm xs
+- v-〇〇
+- :(v-bind)
+- icon とか router とか
+- @(v-on)

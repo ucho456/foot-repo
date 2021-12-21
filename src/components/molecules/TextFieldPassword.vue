@@ -1,11 +1,11 @@
 <template>
   <ValidationProvider v-slot="{ errors }" rules="required|minPassword:4">
     <BaseTextField
-      :value="value"
+      :error-message="errors[0]"
       :icon="'mdi-lock'"
       :label="'パスワード'"
       :type="'password'"
-      :error-message="errors[0]"
+      :value="value"
       @input="handleInput"
     />
   </ValidationProvider>

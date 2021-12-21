@@ -1,11 +1,11 @@
 <template>
   <ValidationProvider v-slot="{ errors }" rules="required|email">
     <BaseTextField
-      :value="value"
+      :error-message="errors[0]"
       :icon="'mdi-email'"
       :label="'メール'"
       :type="'email'"
-      :error-message="errors[0]"
+      :value="value"
       @input="handleInput"
     />
   </ValidationProvider>

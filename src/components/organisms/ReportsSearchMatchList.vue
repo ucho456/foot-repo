@@ -9,17 +9,17 @@
     </v-toolbar>
     <v-container v-if="isLoading" class="pb-10">
       <v-row justify="center">
-        <v-progress-circular indeterminate color="darkBlue" />
+        <v-progress-circular color="darkBlue" indeterminate />
       </v-row>
     </v-container>
-    <v-list v-else three-line class="mt-n4">
+    <v-list v-else class="mt-n4" three-line>
       <v-container v-if="err" class="mt-4">
         <v-row justify="center">
           {{ err }}
         </v-row>
       </v-container>
-      <template v-for="match in dispMatches">
-        <v-list-item :key="`${match.id}-match`" :to="match.to" router exact>
+      <template v-for="match in displayMatches">
+        <v-list-item :key="`${match.id}-match`" :to="match.to" exact router>
           <v-list-item-avatar>
             <v-img v-if="match.homeTeamImg !== ''" :src="match.homeTeamImg" />
           </v-list-item-avatar>
@@ -36,7 +36,7 @@
                 }}</v-list-item-title></v-col
               >
             </v-row>
-            <v-list-item-subtitle class="text-center mt-n3">{{ match.score }}</v-list-item-subtitle>
+            <v-list-item-subtitle class="mt-n3 text-center">{{ match.score }}</v-list-item-subtitle>
             <v-list-item-subtitle class="text-center">{{ match.thirdLine }}</v-list-item-subtitle>
           </v-list-item-content>
           <v-list-item-avatar>
@@ -89,8 +89,8 @@ export default defineComponent({
   },
 
   setup(props, ctx) {
-    const dispMatches = computed(() => {
-      if (!props.matches || !props.competition) return
+    const displayMatches = computed(() => {
+      if (!props.matches || !props.competition) return []
       return props.matches.map((match) => {
         const homeTeamScore = match.score.fullTime.homeTeam ? match.score.fullTime.homeTeam : 0
         const awayTeamScore = match.score.fullTime.awayTeam ? match.score.fullTime.awayTeam : 0
@@ -111,7 +111,7 @@ export default defineComponent({
       })
     })
     const handleClick = (): void => ctx.emit('click')
-    return { handleClick, dispMatches }
+    return { handleClick, displayMatches }
   }
 })
 </script>

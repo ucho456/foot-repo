@@ -1,24 +1,24 @@
 <template>
-  <v-card outlined max-width="400" class="mx-auto">
+  <v-card class="mx-auto" max-width="400" outlined>
     <v-card-title>
       <v-row justify="center">Foot-Repo(ロゴ予定)</v-row>
     </v-card-title>
     <ValidationObserver v-slot="{ invalid }">
       <v-container>
         <v-row justify="center">
-          <v-col cols="10" class="mt-4 mb-n4">
+          <v-col cols="10" class="mb-n4 mt-4">
             <TextFieldEmail v-model="data.email" />
           </v-col>
           <v-col cols="10">
             <TextFieldPassword v-model="data.password" />
           </v-col>
-          <v-row justify="center" class="mb-8">
+          <v-row class="mb-8" justify="center">
             <v-col cols="8">
               <ButtonBlockBlue
-                :icon="'mdi-login'"
-                :text="'Login'"
                 :disabled="invalid"
+                :icon="'mdi-login'"
                 :loading="isLoading"
+                :text="'Login'"
                 @click="login"
               />
             </v-col>

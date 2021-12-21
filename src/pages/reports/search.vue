@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row justify="center">
-      <v-col cols="12" sm="10" md="6">
+      <v-col cols="12" md="6" sm="10">
         <ReportsSearchMatchList
           :competition="res.competition"
           :err="err"

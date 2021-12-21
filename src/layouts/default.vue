@@ -1,7 +1,7 @@
 <template>
   <v-app class="light-gray">
-    <v-app-bar class="white--text" app fixed color="darkBlue">
-      <v-container class="d-flex align-center">
+    <v-app-bar class="white--text" app color="darkBlue" fixed>
+      <v-container class="align-center d-flex">
         <v-toolbar-title v-text="'Foot-Repo'" />
         <v-spacer />
         <v-btn class="white--text" icon @click.stop="toggleDrawer">
@@ -41,7 +41,7 @@
       </template>
     </v-navigation-drawer>
     <v-footer class="white--text" :absolute="true" app color="darkGrey">
-      <v-container class="d-flex align-center">
+      <v-container class="align-center d-flex">
         <span>&copy; {{ new Date().getFullYear() }}</span>
       </v-container>
     </v-footer>
