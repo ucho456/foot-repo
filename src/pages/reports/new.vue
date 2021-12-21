@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api' //, useRoute
-// import getMatches from '@/utils/api/getMatches'
+// import getFootballData from '@/utils/api/getFootballData'
 import { matchData } from '@/utils/testData'
 
 export default defineComponent({
@@ -14,9 +14,10 @@ export default defineComponent({
 
   setup() {
     /*
-    const { res, err, isLoading, getTrigger } = getMatches()
-    const route = useRoute()
-    getTrigger(`/matches/${route.value.query.matchId}`)
+      有料プラン契約後に実装
+      const { res, err, isLoading, getMatches } = getFootballData()
+      const route = useRoute()
+      getMatches(`/matches/${route.value.query.matchId}`)
     */
     return {
       // res,

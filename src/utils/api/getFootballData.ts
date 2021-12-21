@@ -7,7 +7,7 @@ interface BaseState {
   isLoading: boolean
 }
 
-const getMatches = () => {
+const getFootballData = () => {
   const { $axios, $config } = useContext()
   const options = { headers: { 'X-Auth-Token': $config.footballToken } }
   const state = reactive<BaseState>({
@@ -15,7 +15,7 @@ const getMatches = () => {
     err: null,
     isLoading: false
   })
-  const getTrigger = async (url: string): Promise<void> => {
+  const getMatches = async (url: string): Promise<void> => {
     const apiUrl = $config.footballUrl + url
     const { res, err, isLoading, getData } = baseApi($axios, apiUrl, options)
     state.isLoading = isLoading as any
@@ -23,7 +23,7 @@ const getMatches = () => {
     state.res = res as any
     state.err = err as any
   }
-  return { ...toRefs(state), getTrigger }
+  return { ...toRefs(state), getMatches }
 }
 
-export default getMatches
+export default getFootballData

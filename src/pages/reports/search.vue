@@ -7,7 +7,7 @@
           :err="err"
           :is-loading="isLoading"
           :matches="res.matches"
-          @click="getTrigger('/competitions/2014/matches?matchday=1')"
+          @click="getMatches('/competitions/2014/matches?matchday=1')"
         />
       </v-col>
     </v-row>
@@ -17,7 +17,7 @@
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
 import ReportsSearchMatchList from '@/components/organisms/ReportsSearchMatchList.vue'
-import getMatches from '@/utils/api/getMatches'
+import getFootballData from '@/utils/api/getFootballData'
 
 export default defineComponent({
   name: 'Search',
@@ -29,10 +29,10 @@ export default defineComponent({
   layout: 'noside',
 
   setup() {
-    const { res, err, isLoading, getTrigger } = getMatches()
+    const { res, err, isLoading, getMatches } = getFootballData()
     const url = '/competitions/2021/matches?season=2020&&matchday=1'
-    getTrigger(url)
-    return { res, isLoading, err, getTrigger }
+    getMatches(url)
+    return { res, isLoading, err, getMatches }
   }
 })
 </script>
