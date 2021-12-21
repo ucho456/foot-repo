@@ -30,7 +30,7 @@ export default defineComponent({
 
   setup() {
     const { res, err, isLoading, getTrigger } = getMatches()
-    const url = '/competitions/2021/matches?matchday=1'
+    const url = '/competitions/2021/matches?season=2020&&matchday=1'
     getTrigger(url)
     return { res, isLoading, err, getTrigger }
   }

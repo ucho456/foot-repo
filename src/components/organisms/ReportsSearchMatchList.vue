@@ -106,7 +106,7 @@ export default defineComponent({
           awayTeamName: match.awayTeam.name,
           score: `${homeTeamScore} - ${awayTeamScore}`,
           thirdLine: `${match.utcDate.substring(0, 10)} ${props.competition.name}`,
-          to: '/'
+          to: { path: 'new', query: { matchId: match.id } }
         }
       })
     })
