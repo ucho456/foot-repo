@@ -36,9 +36,9 @@
 # コード規約
 
 - v-if 存在
+- v-〇〇
 - class スタイル
 - gridSystem cols md sm xs
-- v-〇〇
 - :(v-bind)
 - icon とか router とか
 - @(v-on)

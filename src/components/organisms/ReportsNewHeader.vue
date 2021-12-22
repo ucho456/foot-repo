@@ -1,5 +1,5 @@
 <template>
-  <v-sheet>
+  <v-container>
     <v-row class="text-center">
       <v-col class="text-center">
         {{ data.match.utcDate.substring(0, 10) }} {{ data.match.competition.name }}</v-col
@@ -35,7 +35,7 @@
         </v-row>
       </v-col>
     </v-row>
-  </v-sheet>
+  </v-container>
 </template>
 
 <script lang="ts">
