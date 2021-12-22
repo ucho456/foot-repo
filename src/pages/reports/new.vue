@@ -1,16 +1,27 @@
 <template>
-  <div>
-    {{ matchData }}
-  </div>
+  <v-container>
+    <v-row justify="center">
+      <v-col cols="12" md="6" sm="10">
+        <ReportsNewHeader :data="matchData" />
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api' //, useRoute
+import ReportsNewHeader from '@/components/organisms/ReportsNewHeader.vue'
 // import getFootballData from '@/utils/api/getFootballData'
 import { matchData } from '@/utils/testData'
 
 export default defineComponent({
   name: 'ReportNew',
+
+  components: {
+    ReportsNewHeader
+  },
+
+  layout: 'noside',
 
   setup() {
     /*
