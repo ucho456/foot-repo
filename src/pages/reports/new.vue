@@ -19,7 +19,7 @@
 import { defineComponent, reactive } from '@nuxtjs/composition-api' //, useRoute
 import ReportsNewHeader from '@/components/organisms/ReportsNewHeader.vue'
 import SelectReportFormat from '@/components/molecules/SelectReportFormat.vue'
-// import getFootballData from '@/utils/api/getFootballData'
+// import getFootballData from '@/api/getFootballData'
 import { matchData } from '@/utils/testData'
 
 interface InputData {

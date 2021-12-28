@@ -1,5 +1,5 @@
 import { toRefs, reactive, useContext } from '@nuxtjs/composition-api'
-import baseApi from '@/utils/api/index'
+import baseApi from '@/api/index'
 
 interface BaseState {
   res: any

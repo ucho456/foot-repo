@@ -17,7 +17,7 @@
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
 import ReportsSearchMatchList from '@/components/organisms/ReportsSearchMatchList.vue'
-import getFootballData from '@/utils/api/getFootballData'
+import getFootballData from '@/api/getFootballData'
 
 export default defineComponent({
   name: 'Search',
