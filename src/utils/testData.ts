@@ -1,8 +1,7 @@
 /* 
   football-data.orgの有料プランを契約する前はこのファイルのデータを使用して開発する。
 */
-
-export const matchData = {
+export const testData: ResponseMatch = {
   head2head: {
     numberOfMatches: 1,
     totalGoals: 3,

@@ -20,7 +20,7 @@ const getFootballData = () => {
     const { res, err, isLoading, getData } = baseApi($axios, apiUrl, options)
     state.isLoading = isLoading as any
     await getData()
-    state.res = res as any
+    state.res = res as any // any => ResponseMatch???
     state.err = err as any
   }
   return { ...toRefs(state), getMatches }

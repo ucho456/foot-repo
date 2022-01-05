@@ -42,3 +42,7 @@
 - :(v-bind)
 - icon とか router とか
 - @(v-on)
+
+# 型定義
+
+- api を経由するデータは types に定義する
