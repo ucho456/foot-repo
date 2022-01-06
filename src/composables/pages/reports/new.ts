@@ -1,3 +1,5 @@
+import { reactive } from '@nuxtjs/composition-api'
+
 interface PositionInfo {
   position: Position
   positionId: PositionId
@@ -46,7 +48,7 @@ const makeSubstitutions = (
     })
 }
 
-export const setUpReportItems = (match: Match): ReportItem[] => {
+const setUpReportItems = (match: Match): ReportItem[] => {
   const homeTeam = match.homeTeam
   const awayTeam = match.awayTeam
   const homeLineup = makeLineup(homeTeam.lineup, 'home')
@@ -59,4 +61,25 @@ export const setUpReportItems = (match: Match): ReportItem[] => {
   homeSubstitutions.push(homeCoach)
   awaySubstitutions.push(awayCoach)
   return homeLineup.concat(homeSubstitutions).concat(awayLineup).concat(awaySubstitutions)
+}
+
+export const setUpReport = (match: Match): Report => {
+  const reportItems = setUpReportItems(match)
+  return reactive({
+    matchId: match.id,
+    competitionId: match.competition.id,
+    competitionName: match.competition.name,
+    seasonId: match.season.id,
+    seasonStartDate: match.season.startDate,
+    seasonEndDate: match.season.endDate,
+    utcDate: match.utcDate,
+    homeTeamId: match.homeTeam.id,
+    homeTeamName: match.homeTeam.name,
+    homeTeamScore: match.score.fullTime.homeTeam,
+    awayTeamId: match.awayTeam.id,
+    awayTeamName: match.awayTeam.name,
+    awayTeamScore: match.score.fullTime.awayTeam,
+    formatType: 'Home team only',
+    reportItems
+  })
 }

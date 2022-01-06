@@ -12,6 +12,19 @@ interface ReportItem {
   text: string
 }
 interface Report {
+  matchId: number
+  competitionId: number
+  competitionName: string
+  seasonId: number
+  seasonStartDate: string
+  seasonEndDate: string
+  utcDate: string
+  homeTeamId: number
+  homeTeamName: string
+  homeTeamScore: number
+  awayTeamId: number
+  awayTeamName: string
+  awayTeamScore: number
   formatType: FormatType
   reportItems: ReportItem[]
 }

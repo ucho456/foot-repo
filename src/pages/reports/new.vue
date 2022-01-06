@@ -3,7 +3,7 @@
     <v-row justify="center">
       <v-col cols="12" md="6" sm="10">
         <v-sheet>
-          <ReportsNewHeader :match="match" />
+          <ReportsNewHeader v-bind="report" />
           <v-row>
             <v-col cols="8" md="5" sm="5">
               <SelectReportFormat v-model="report.formatType" class="ml-4 mt-4" />
@@ -16,12 +16,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from '@nuxtjs/composition-api' //, useRoute
+import { defineComponent } from '@nuxtjs/composition-api' //, useRoute
 import ReportsNewHeader from '@/components/organisms/ReportsNewHeader.vue'
 import SelectReportFormat from '@/components/molecules/SelectReportFormat.vue'
 // import getFootballData from '@/api/getFootballData'
 import { testData } from '@/utils/testData'
-import { setUpReportItems } from '@/composables/pages/reports/new'
+import { setUpReport } from '@/composables/pages/reports/new'
 
 export default defineComponent({
   name: 'ReportNew',
@@ -41,16 +41,12 @@ export default defineComponent({
       getMatches(`/matches/${route.value.query.matchId}`)
     */
     const match = testData.match as Match
-    const reportItems = setUpReportItems(match)
-    const report = reactive<Report>({ formatType: 'Home team only', reportItems })
-    console.log(reportItems)
+    const report = setUpReport(match)
     return {
       // res,
       // err,
       // isLoading,
-      match,
-      report,
-      bbbbb
+      report
     }
   }
 })
