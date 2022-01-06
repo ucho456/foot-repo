@@ -12,8 +12,6 @@
 import { defineComponent } from '@nuxtjs/composition-api'
 import BaseSelect from '@/components/atoms/BaseSelect.vue'
 
-type FormatType = 'ホームチームのみ' | 'アウェイチームのみ' | '両チーム' | 'フリーフォーマット'
-
 export default defineComponent({
   name: 'SelectFormat',
 
@@ -22,11 +20,11 @@ export default defineComponent({
   },
 
   props: {
-    value: { type: String as () => FormatType, default: 'ホームチームのみ' }
+    value: { type: String as () => FormatType, default: 'Home team only' }
   },
 
   setup(_, ctx) {
-    const formats = ['ホームチームのみ', 'アウェイチームのみ', '両チーム', 'フリーフォーマット']
+    const formats = ['Home team only', 'Away team only', 'Both teams']
     const handleInput = (value: string): void => ctx.emit('input', value)
     return { formats, handleInput }
   }
