@@ -3,8 +3,9 @@ type HomeAway = 'home' | 'away'
 type Position = 'GK' | 'DF' | 'MF' | 'FW' | 'HC'
 type PositionId = 1 | 2 | 3 | 4 | 5
 interface ReportItem {
+  key: number
   homeAway: HomeAway
-  name: string
+  playerName: string
   position: Position
   positionId: PositionId
   shirtNumber: number
@@ -19,12 +20,13 @@ interface Report {
   seasonStartDate: string
   seasonEndDate: string
   utcDate: string
+  formatType: FormatType
   homeTeamId: number
   homeTeamName: string
   homeTeamScore: number
+  homeTeamReportItems: ReportItem[]
   awayTeamId: number
   awayTeamName: string
   awayTeamScore: number
-  formatType: FormatType
-  reportItems: ReportItem[]
+  awayTeamReportItems: ReportItem[]
 }

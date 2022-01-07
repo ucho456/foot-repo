@@ -4,8 +4,17 @@ interface PositionInfo {
   position: Position
   positionId: PositionId
 }
+interface ReportItemNoKey {
+  homeAway: HomeAway
+  playerName: string
+  position: Position
+  positionId: PositionId
+  shirtNumber: number
+  point: number
+  text: string
+}
 
-const makeLineup = (lineup: Player[], homeAway: HomeAway): ReportItem[] => {
+const makeLineup = (lineup: Player[], homeAway: HomeAway): ReportItemNoKey[] => {
   return lineup
     .map((v) => {
       const { position, positionId } = omitPosition(v.position)
@@ -25,20 +34,20 @@ const omitPosition = (p: DefaultPosition): PositionInfo => {
 }
 
 const makeReportItem = (
-  name: string,
+  playerName: string,
   shirtNumber: number,
   homeAway: HomeAway,
   position: Position,
   positionId: PositionId
-): ReportItem => {
-  return { homeAway, name, position, positionId, shirtNumber, point: 6.5, text: '' }
+): ReportItemNoKey => {
+  return { homeAway, playerName, position, positionId, shirtNumber, point: 6.5, text: '' }
 }
 
 const makeSubstitutions = (
   substitutions: Substitution[],
   bench: Player[],
   homeAway: HomeAway
-): ReportItem[] => {
+): ReportItemNoKey[] => {
   const substitutionIds = substitutions.map((v) => v.playerIn.id)
   return bench
     .filter((v) => substitutionIds.includes(v.id))
@@ -48,7 +57,9 @@ const makeSubstitutions = (
     })
 }
 
-const setUpReportItems = (match: Match): ReportItem[] => {
+const setUpReportItems = (
+  match: Match
+): { homeTeamReportItems: ReportItem[]; awayTeamReportItems: ReportItem[] } => {
   const homeTeam = match.homeTeam
   const awayTeam = match.awayTeam
   const homeLineup = makeLineup(homeTeam.lineup, 'home')
@@ -60,11 +71,17 @@ const setUpReportItems = (match: Match): ReportItem[] => {
   const awayCoach = makeReportItem(awayTeam.coach.name, 0, 'away', 'HC', 5)
   homeSubstitutions.push(homeCoach)
   awaySubstitutions.push(awayCoach)
-  return homeLineup.concat(homeSubstitutions).concat(awayLineup).concat(awaySubstitutions)
+  const homeTeamReportItems = homeLineup.concat(homeSubstitutions).map((v, i) => {
+    return { ...v, key: i + 1 }
+  })
+  const awayTeamReportItems = awayLineup.concat(awaySubstitutions).map((v, i) => {
+    return { ...v, key: i + 100 }
+  })
+  return { homeTeamReportItems, awayTeamReportItems }
 }
 
 export const setUpReport = (match: Match): Report => {
-  const reportItems = setUpReportItems(match)
+  const { homeTeamReportItems, awayTeamReportItems } = setUpReportItems(match)
   return reactive({
     matchId: match.id,
     competitionId: match.competition.id,
@@ -73,13 +90,14 @@ export const setUpReport = (match: Match): Report => {
     seasonStartDate: match.season.startDate,
     seasonEndDate: match.season.endDate,
     utcDate: match.utcDate,
+    formatType: 'Home team only',
     homeTeamId: match.homeTeam.id,
     homeTeamName: match.homeTeam.name,
     homeTeamScore: match.score.fullTime.homeTeam,
+    homeTeamReportItems,
     awayTeamId: match.awayTeam.id,
     awayTeamName: match.awayTeam.name,
     awayTeamScore: match.score.fullTime.awayTeam,
-    formatType: 'Home team only',
-    reportItems
+    awayTeamReportItems
   })
 }
