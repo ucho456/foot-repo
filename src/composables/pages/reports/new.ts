@@ -4,7 +4,7 @@ interface PositionInfo {
   position: Position
   positionId: PositionId
 }
-interface ReportItemNoKey {
+interface ReportItemNoId {
   homeAway: HomeAway
   playerName: string
   position: Position
@@ -14,7 +14,7 @@ interface ReportItemNoKey {
   text: string
 }
 
-const makeLineup = (lineup: Player[], homeAway: HomeAway): ReportItemNoKey[] => {
+const makeLineup = (lineup: Player[], homeAway: HomeAway): ReportItemNoId[] => {
   return lineup
     .map((v) => {
       const { position, positionId } = omitPosition(v.position)
@@ -39,7 +39,7 @@ const makeReportItem = (
   homeAway: HomeAway,
   position: Position,
   positionId: PositionId
-): ReportItemNoKey => {
+): ReportItemNoId => {
   return { homeAway, playerName, position, positionId, shirtNumber, point: 6.5, text: '' }
 }
 
@@ -47,7 +47,7 @@ const makeSubstitutions = (
   substitutions: Substitution[],
   bench: Player[],
   homeAway: HomeAway
-): ReportItemNoKey[] => {
+): ReportItemNoId[] => {
   const substitutionIds = substitutions.map((v) => v.playerIn.id)
   return bench
     .filter((v) => substitutionIds.includes(v.id))
@@ -72,10 +72,10 @@ const setUpReportItems = (
   homeSubstitutions.push(homeCoach)
   awaySubstitutions.push(awayCoach)
   const homeTeamReportItems = homeLineup.concat(homeSubstitutions).map((v, i) => {
-    return { ...v, key: i + 1 }
+    return { ...v, id: i + 1 }
   })
   const awayTeamReportItems = awayLineup.concat(awaySubstitutions).map((v, i) => {
-    return { ...v, key: i + 100 }
+    return { ...v, id: i + 100 }
   })
   return { homeTeamReportItems, awayTeamReportItems }
 }

@@ -12,13 +12,21 @@
             </v-row>
           </v-container>
           <v-container v-if="report.formatType !== 'Away team only'">
-            <v-row v-for="reportItem in report.homeTeamReportItems" :key="reportItem.key">
-              <ReportsNewForm v-bind="reportItem" />
+            <v-row v-for="(reportItem, index) in report.homeTeamReportItems" :key="reportItem.id">
+              <ReportsNewForm
+                v-bind="reportItem"
+                @input-point="(point) => inputPoint(point, 'home', index)"
+                @input-text="(text) => inputText(text, 'home', index)"
+              />
             </v-row>
           </v-container>
           <v-container v-if="report.formatType !== 'Home team only'">
-            <v-row v-for="reportItem in report.awayTeamReportItems" :key="reportItem.key">
-              <ReportsNewForm v-bind="reportItem" />
+            <v-row v-for="(reportItem, index) in report.awayTeamReportItems" :key="reportItem.id">
+              <ReportsNewForm
+                v-bind="reportItem"
+                @input-point="(point) => inputPoint(point, 'away', index)"
+                @input-text="(text) => inputText(text, 'away', index)"
+              />
             </v-row>
           </v-container>
         </v-sheet>
@@ -56,11 +64,23 @@ export default defineComponent({
     */
     const match = testData.match as Match
     const report = setUpReport(match)
+    const inputPoint = (point: number, homeAway: HomeAway, index: number): void => {
+      homeAway === 'home'
+        ? (report.homeTeamReportItems[index].point = point)
+        : (report.awayTeamReportItems[index].point = point)
+    }
+    const inputText = (text: string, homeAway: HomeAway, index: number): void => {
+      homeAway === 'home'
+        ? (report.homeTeamReportItems[index].text = text)
+        : (report.awayTeamReportItems[index].text = text)
+    }
     return {
       // res,
       // err,
       // isLoading,
-      report
+      report,
+      inputPoint,
+      inputText
     }
   }
 })

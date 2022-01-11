@@ -3,7 +3,7 @@ type HomeAway = 'home' | 'away'
 type Position = 'GK' | 'DF' | 'MF' | 'FW' | 'HC'
 type PositionId = 1 | 2 | 3 | 4 | 5
 interface ReportItem {
-  key: number
+  id: number
   homeAway: HomeAway
   playerName: string
   position: Position

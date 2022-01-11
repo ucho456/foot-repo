@@ -28,7 +28,7 @@ export default defineComponent({
     min: { type: Number, default: 0 },
     step: { type: Number, default: 1 },
     type: { type: String, default: 'text' },
-    value: { type: String, default: '' }
+    value: { type: [String, Number], default: '' }
   },
 
   setup(_, ctx) {
