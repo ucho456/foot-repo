@@ -98,6 +98,7 @@ export const setUpReport = (match: Match): Report => {
     awayTeamId: match.awayTeam.id,
     awayTeamName: match.awayTeam.name,
     awayTeamScore: match.score.fullTime.awayTeam,
-    awayTeamReportItems
+    awayTeamReportItems,
+    summary: ''
   })
 }

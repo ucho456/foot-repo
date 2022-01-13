@@ -29,6 +29,13 @@
               />
             </v-row>
           </v-container>
+          <v-container>
+            <v-row>
+              <v-col>
+                <TextareaSummary v-model="report.summary" />
+              </v-col>
+            </v-row>
+          </v-container>
         </v-sheet>
       </v-col>
     </v-row>
@@ -40,6 +47,7 @@ import { defineComponent } from '@nuxtjs/composition-api' //, useRoute
 import ReportsNewHeader from '@/components/organisms/ReportsNewHeader.vue'
 import SelectReportFormat from '@/components/molecules/SelectReportFormat.vue'
 import ReportsNewForm from '@/components/organisms/ReportsNewForm.vue'
+import TextareaSummary from '@/components/molecules/TextareaSummary.vue'
 // import getFootballData from '@/api/getFootballData'
 import { testData } from '@/utils/testData'
 import { setUpReport } from '@/composables/pages/reports/new'
@@ -50,7 +58,8 @@ export default defineComponent({
   components: {
     ReportsNewHeader,
     SelectReportFormat,
-    ReportsNewForm
+    ReportsNewForm,
+    TextareaSummary
   },
 
   layout: 'noside',

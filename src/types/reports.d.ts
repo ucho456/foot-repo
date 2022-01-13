@@ -29,4 +29,5 @@ interface Report {
   awayTeamName: string
   awayTeamScore: number
   awayTeamReportItems: ReportItem[]
+  summary: string
 }
