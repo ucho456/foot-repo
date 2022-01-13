@@ -48,6 +48,16 @@
               </v-col>
             </v-row>
           </v-container>
+          <v-container>
+            <v-row justify="center">
+              <v-col cols="4">
+                <ButtonBlockWhite :icon="'mdi-arrow-left'" :text="'戻る'" @click="back" />
+              </v-col>
+              <v-col cols="4">
+                <ButtonBlockBlue :icon="'mdi-pencil-plus'" :text="'投稿'" :loading="false" />
+              </v-col>
+            </v-row>
+          </v-container>
         </v-sheet>
       </v-col>
     </v-row>
@@ -55,12 +65,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api' //, useRoute
+import { defineComponent, useRouter } from '@nuxtjs/composition-api' //, useRoute
 import ReportsNewHeader from '@/components/organisms/ReportsNewHeader.vue'
 import SelectReportFormat from '@/components/molecules/SelectReportFormat.vue'
 import ReportsNewForm from '@/components/organisms/ReportsNewForm.vue'
 import SelectMom from '@/components/molecules/SelectMom.vue'
 import TextareaSummary from '@/components/molecules/TextareaSummary.vue'
+import ButtonBlockWhite from '@/components/molecules/ButtonBlockWhite.vue'
+import ButtonBlockBlue from '@/components/molecules/ButtonBlockBlue.vue'
 // import getFootballData from '@/api/getFootballData'
 import { testData } from '@/utils/testData'
 import { setUpReport } from '@/composables/pages/reports/new'
@@ -73,7 +85,9 @@ export default defineComponent({
     SelectReportFormat,
     ReportsNewForm,
     SelectMom,
-    TextareaSummary
+    TextareaSummary,
+    ButtonBlockWhite,
+    ButtonBlockBlue
   },
 
   layout: 'noside',
@@ -87,6 +101,8 @@ export default defineComponent({
     */
     const match = testData.match as Match
     const report = setUpReport(match)
+    const router = useRouter()
+    const back = () => router.back()
     const inputPoint = (point: number, homeAway: HomeAway, index: number): void => {
       homeAway === 'home'
         ? (report.homeTeamReportItems[index].point = point)
@@ -103,7 +119,8 @@ export default defineComponent({
       // isLoading,
       report,
       inputPoint,
-      inputText
+      inputText,
+      back
     }
   }
 })
