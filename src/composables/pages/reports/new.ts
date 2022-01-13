@@ -1,10 +1,10 @@
 import { reactive } from '@nuxtjs/composition-api'
 
-interface PositionInfo {
+interface LPosition {
   position: Position
   positionId: PositionId
 }
-interface ReportItemNoId {
+interface LReportItem {
   homeAway: HomeAway
   playerName: string
   position: Position
@@ -14,7 +14,7 @@ interface ReportItemNoId {
   text: string
 }
 
-const makeLineup = (lineup: Player[], homeAway: HomeAway): ReportItemNoId[] => {
+const makeLineup = (lineup: Player[], homeAway: HomeAway): LReportItem[] => {
   return lineup
     .map((v) => {
       const { position, positionId } = omitPosition(v.position)
@@ -23,7 +23,7 @@ const makeLineup = (lineup: Player[], homeAway: HomeAway): ReportItemNoId[] => {
     .sort((a, b) => (a.positionId > b.positionId ? 1 : -1))
 }
 
-const omitPosition = (p: DefaultPosition): PositionInfo => {
+const omitPosition = (p: DefaultPosition): LPosition => {
   return p === 'Goalkeeper'
     ? { position: 'GK', positionId: 1 }
     : p === 'Defender'
@@ -39,7 +39,7 @@ const makeReportItem = (
   homeAway: HomeAway,
   position: Position,
   positionId: PositionId
-): ReportItemNoId => {
+): LReportItem => {
   return { homeAway, playerName, position, positionId, shirtNumber, point: 6.5, text: '' }
 }
 
@@ -47,7 +47,7 @@ const makeSubstitutions = (
   substitutions: Substitution[],
   bench: Player[],
   homeAway: HomeAway
-): ReportItemNoId[] => {
+): LReportItem[] => {
   const substitutionIds = substitutions.map((v) => v.playerIn.id)
   return bench
     .filter((v) => substitutionIds.includes(v.id))
@@ -99,6 +99,7 @@ export const setUpReport = (match: Match): Report => {
     awayTeamName: match.awayTeam.name,
     awayTeamScore: match.score.fullTime.awayTeam,
     awayTeamReportItems,
-    summary: ''
+    summary: '',
+    mom: ''
   })
 }
