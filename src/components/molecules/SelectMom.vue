@@ -35,7 +35,6 @@ export default defineComponent({
         }
       ]
     },
-    formatType: { type: String as () => FormatType, default: 'Home team only' },
     homeTeamReportItems: {
       type: Array as () => ReportItem[],
       default: () => [
@@ -51,14 +50,15 @@ export default defineComponent({
         }
       ]
     },
+    reportTeam: { type: String as () => ReportTeam, default: 'Home team only' },
     value: { type: String, default: '' }
   },
 
   setup(props, ctx) {
     const players = computed(() => {
-      return props.formatType === 'Home team only'
+      return props.reportTeam === 'Home team only'
         ? props.homeTeamReportItems.map((v) => v.playerName)
-        : props.formatType === 'Away team only'
+        : props.reportTeam === 'Away team only'
         ? props.awayTeamReportItems.map((v) => v.playerName)
         : props.homeTeamReportItems.concat(props.awayTeamReportItems).map((v) => v.playerName)
     })

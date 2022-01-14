@@ -3,26 +3,26 @@
     <v-row justify="center">
       <v-col cols="12" md="6" sm="10">
         <v-sheet>
-          <ReportsNewHeader v-bind="report" />
+          <ReportsHeader v-bind="report" />
           <v-container>
             <v-row>
               <v-col cols="8" md="5" sm="5">
-                <SelectReportFormat v-model="report.formatType" class="ml-4 mt-4" />
+                <SelectHomeAway v-model="report.reportTeam" class="ml-4 mt-4" />
               </v-col>
             </v-row>
           </v-container>
-          <v-container v-if="report.formatType !== 'Away team only'">
+          <v-container v-if="report.reportTeam !== 'Away team only'">
             <v-row v-for="(reportItem, index) in report.homeTeamReportItems" :key="reportItem.id">
-              <ReportsNewForm
+              <ReportsPlayerForm
                 v-bind="reportItem"
                 @input-point="(point) => inputPoint(report, point, 'home', index)"
                 @input-text="(text) => inputText(report, text, 'home', index)"
               />
             </v-row>
           </v-container>
-          <v-container v-if="report.formatType !== 'Home team only'">
+          <v-container v-if="report.reportTeam !== 'Home team only'">
             <v-row v-for="(reportItem, index) in report.awayTeamReportItems" :key="reportItem.id">
-              <ReportsNewForm
+              <ReportsPlayerForm
                 v-bind="reportItem"
                 @input-point="(point) => inputPoint(report, point, 'away', index)"
                 @input-text="(text) => inputText(report, text, 'away', index)"
@@ -35,7 +35,7 @@
                 <SelectMom
                   v-model="report.mom"
                   :away-team-report-items="report.awayTeamReportItems"
-                  :format-type="report.formatType"
+                  :report-team="report.reportTeam"
                   :home-team-report-items="report.homeTeamReportItems"
                 />
               </v-col>
@@ -44,7 +44,11 @@
           <v-container>
             <v-row>
               <v-col>
-                <TextareaSummary v-model="report.summary" />
+                <Textarea
+                  v-model="report.summary"
+                  :icon="'mdi-note-text-outline'"
+                  :label="'総評'"
+                />
               </v-col>
             </v-row>
           </v-container>
@@ -66,11 +70,11 @@
 
 <script lang="ts">
 import { defineComponent, useRouter } from '@nuxtjs/composition-api' //, useRoute
-import ReportsNewHeader from '@/components/organisms/ReportsNewHeader.vue'
-import SelectReportFormat from '@/components/molecules/SelectReportFormat.vue'
-import ReportsNewForm from '@/components/organisms/ReportsNewForm.vue'
+import ReportsHeader from '@/components/organisms/ReportsHeader.vue'
+import SelectHomeAway from '@/components/molecules/SelectHomeAway.vue'
+import ReportsPlayerForm from '@/components/organisms/ReportsPlayerForm.vue'
 import SelectMom from '@/components/molecules/SelectMom.vue'
-import TextareaSummary from '@/components/molecules/TextareaSummary.vue'
+import Textarea from '@/components/molecules/Textarea.vue'
 import ButtonBlockWhite from '@/components/molecules/ButtonBlockWhite.vue'
 import ButtonBlockBlue from '@/components/molecules/ButtonBlockBlue.vue'
 // import getFootballData from '@/api/getFootballData'
@@ -81,11 +85,11 @@ export default defineComponent({
   name: 'ReportNew',
 
   components: {
-    ReportsNewHeader,
-    SelectReportFormat,
-    ReportsNewForm,
+    ReportsHeader,
+    SelectHomeAway,
+    ReportsPlayerForm,
     SelectMom,
-    TextareaSummary,
+    Textarea,
     ButtonBlockWhite,
     ButtonBlockBlue
   },

@@ -1,6 +1,12 @@
 <template>
   <ValidationProvider v-slot="{ errors }" rules="characterLimit">
-    <BaseTextarea :error-message="errors[0]" :value="value" @input="handleInput" />
+    <BaseTextarea
+      :error-message="errors[0]"
+      :icon="icon"
+      :label="label"
+      :value="value"
+      @input="handleInput"
+    />
   </ValidationProvider>
 </template>
 
@@ -17,6 +23,7 @@ export default defineComponent({
 
   props: {
     icon: { type: String, default: '' },
+    label: { type: String, default: '' },
     value: { type: String, default: '' }
   },
 

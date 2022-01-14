@@ -1,8 +1,8 @@
 <template>
   <BaseSelect
     :icon="'mdi-format-list-bulleted-type'"
-    :items="formats"
-    :label="'フォーマット'"
+    :items="items"
+    :label="'チーム選択'"
     :value="value"
     @input="handleInput"
   />
@@ -13,20 +13,20 @@ import { defineComponent } from '@nuxtjs/composition-api'
 import BaseSelect from '@/components/atoms/BaseSelect.vue'
 
 export default defineComponent({
-  name: 'SelectFormat',
+  name: 'SelectHomeAway',
 
   components: {
     BaseSelect
   },
 
   props: {
-    value: { type: String as () => FormatType, default: 'Home team only' }
+    value: { type: String as () => ReportTeam, default: 'Home team only' }
   },
 
   setup(_, ctx) {
-    const formats = ['Home team only', 'Away team only', 'Both teams']
+    const items = ['Home team only', 'Away team only', 'Both teams']
     const handleInput = (value: string): void => ctx.emit('input', value)
-    return { formats, handleInput }
+    return { items, handleInput }
   }
 })
 </script>

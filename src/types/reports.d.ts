@@ -1,4 +1,4 @@
-type FormatType = 'Home team only' | 'Away team only' | 'Both teams'
+type ReportTeam = 'Home team only' | 'Away team only' | 'Both teams'
 type HomeAway = 'home' | 'away'
 type Position = 'GK' | 'DF' | 'MF' | 'FW' | 'HC'
 type PositionId = 1 | 2 | 3 | 4 | 5
@@ -20,7 +20,7 @@ interface Report {
   seasonStartDate: string
   seasonEndDate: string
   utcDate: string
-  formatType: FormatType
+  reportTeam: ReportTeam
   homeTeamId: number
   homeTeamName: string
   homeTeamScore: number

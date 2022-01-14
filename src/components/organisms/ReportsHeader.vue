@@ -40,7 +40,7 @@
 import { defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
-  name: 'ReportsNewHeader',
+  name: 'ReportsHeader',
 
   props: {
     awayTeamId: { type: Number, default: 0 },

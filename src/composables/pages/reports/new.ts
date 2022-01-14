@@ -90,7 +90,7 @@ export const setUpReport = (match: Match): Report => {
     seasonStartDate: match.season.startDate,
     seasonEndDate: match.season.endDate,
     utcDate: match.utcDate,
-    formatType: 'Home team only',
+    reportTeam: 'Home team only',
     homeTeamId: match.homeTeam.id,
     homeTeamName: match.homeTeam.name,
     homeTeamScore: match.score.fullTime.homeTeam,
