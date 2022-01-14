@@ -103,3 +103,25 @@ export const setUpReport = (match: Match): Report => {
     mom: ''
   })
 }
+
+export const inputPoint = (
+  report: Report,
+  point: number,
+  homeAway: HomeAway,
+  index: number
+): void => {
+  homeAway === 'home'
+    ? (report.homeTeamReportItems[index].point = point)
+    : (report.awayTeamReportItems[index].point = point)
+}
+
+export const inputText = (
+  report: Report,
+  text: string,
+  homeAway: HomeAway,
+  index: number
+): void => {
+  homeAway === 'home'
+    ? (report.homeTeamReportItems[index].text = text)
+    : (report.awayTeamReportItems[index].text = text)
+}

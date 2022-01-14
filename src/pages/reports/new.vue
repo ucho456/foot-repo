@@ -15,8 +15,8 @@
             <v-row v-for="(reportItem, index) in report.homeTeamReportItems" :key="reportItem.id">
               <ReportsNewForm
                 v-bind="reportItem"
-                @input-point="(point) => inputPoint(point, 'home', index)"
-                @input-text="(text) => inputText(text, 'home', index)"
+                @input-point="(point) => inputPoint(report, point, 'home', index)"
+                @input-text="(text) => inputText(report, text, 'home', index)"
               />
             </v-row>
           </v-container>
@@ -24,8 +24,8 @@
             <v-row v-for="(reportItem, index) in report.awayTeamReportItems" :key="reportItem.id">
               <ReportsNewForm
                 v-bind="reportItem"
-                @input-point="(point) => inputPoint(point, 'away', index)"
-                @input-text="(text) => inputText(text, 'away', index)"
+                @input-point="(point) => inputPoint(report, point, 'away', index)"
+                @input-text="(text) => inputText(report, text, 'away', index)"
               />
             </v-row>
           </v-container>
@@ -75,7 +75,7 @@ import ButtonBlockWhite from '@/components/molecules/ButtonBlockWhite.vue'
 import ButtonBlockBlue from '@/components/molecules/ButtonBlockBlue.vue'
 // import getFootballData from '@/api/getFootballData'
 import { testData } from '@/utils/testData'
-import { setUpReport } from '@/composables/pages/reports/new'
+import { setUpReport, inputPoint, inputText } from '@/composables/pages/reports/new'
 
 export default defineComponent({
   name: 'ReportNew',
@@ -103,16 +103,6 @@ export default defineComponent({
     const report = setUpReport(match)
     const router = useRouter()
     const back = () => router.back()
-    const inputPoint = (point: number, homeAway: HomeAway, index: number): void => {
-      homeAway === 'home'
-        ? (report.homeTeamReportItems[index].point = point)
-        : (report.awayTeamReportItems[index].point = point)
-    }
-    const inputText = (text: string, homeAway: HomeAway, index: number): void => {
-      homeAway === 'home'
-        ? (report.homeTeamReportItems[index].text = text)
-        : (report.awayTeamReportItems[index].text = text)
-    }
     return {
       // res,
       // err,
