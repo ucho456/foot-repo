@@ -7,7 +7,7 @@
           <v-container>
             <v-row>
               <v-col cols="8" md="5" sm="5">
-                <SelectHomeAway v-model="report.reportTeam" class="ml-4 mt-4" />
+                <SelectHomeAway v-model="report.reportTeam" />
               </v-col>
             </v-row>
           </v-container>
@@ -31,7 +31,7 @@
           </v-container>
           <v-container>
             <v-row>
-              <v-col cols="8" sm="5" md="5">
+              <v-col cols="9" sm="5" md="5">
                 <SelectMom
                   v-model="report.mom"
                   :away-team-report-items="report.awayTeamReportItems"

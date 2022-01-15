@@ -1,13 +1,11 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="2">{{ position }}</v-col>
-      <v-col cols="10"
-        ><span v-if="shirtNumber !== 0" class="mr-2">No.{{ shirtNumber }}</span
-        >{{ playerName }}</v-col
-      >
-      <v-col class="mt-n7" cols="2"><TextFieldPoint :value="point" @input="inputPoint" /></v-col>
-      <v-col class="mt-n4" cols="10"><Textarea :value="text" @input="inputText" /></v-col>
+      <v-col cols="2"
+        >{{ position }}<span v-if="shirtNumber !== 0" class="ml-2">{{ shirtNumber }}</span
+        ><TextFieldPoint :value="point" @input="inputPoint"
+      /></v-col>
+      <v-col cols="10"><Textarea :value="text" :label="playerName" @input="inputText" /></v-col>
     </v-row>
   </v-container>
 </template>
