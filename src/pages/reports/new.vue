@@ -79,7 +79,7 @@ import ButtonBlockWhite from '@/components/molecules/ButtonBlockWhite.vue'
 import ButtonBlockBlue from '@/components/molecules/ButtonBlockBlue.vue'
 // import getFootballData from '@/api/getFootballData'
 import { testData } from '@/utils/testData'
-import { setUpReport, inputPoint, inputText } from '@/composables/pages/reports/new'
+import { setUpReport, inputPoint, inputText } from '@/composables/useReportsNew'
 
 export default defineComponent({
   name: 'ReportNew',
