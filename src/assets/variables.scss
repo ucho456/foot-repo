@@ -2,3 +2,8 @@
 //
 // The variables you want to modify
 // $font-size-root: 20px;
+$container-max-widths: (
+  'md': 720px,
+  'lg': 960px,
+  'xl': 1140px
+);
