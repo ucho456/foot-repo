@@ -3,35 +3,12 @@
     <v-sheet>
       <v-container>
         <ReportsHeader v-bind="report" />
-        <v-container>
-          <v-row>
-            <v-col>
-              <h1 class="h1">{{ report.title }}</h1>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="3" md="1" sm="2">
-              <v-avatar size="30px">
-                <v-img :src="user.imageUrl" />
-              </v-avatar>
-            </v-col>
-            <v-col class="user-name" cols="9" sm="10" md="11">{{ user.name }}</v-col>
-          </v-row>
-        </v-container>
-        <v-container>
-          <v-row v-for="reportItem in reportItems" :key="reportItem.id">
-            <v-col class="mt-5 body-1" cols="12"
-              ><span :class="{ mom: report.mom === reportItem.playerName }">{{
-                reportItem.playerName
-              }}</span></v-col
-            >
-            <v-col class="mt-n6 caption" cols="12">{{ reportItem.text }}</v-col>
-          </v-row>
-          <v-row>
-            <v-col class="mt-5 body-1" cols="12">総評</v-col>
-            <v-col class="mt-n6 caption" cols="12">{{ report.summary }}</v-col>
-          </v-row>
-        </v-container>
+        <ReportsShowBody
+          :report-items="reportItems"
+          :summary="report.summary"
+          :title="report.title"
+          :user="user"
+        />
       </v-container>
     </v-sheet>
   </v-container>
@@ -40,12 +17,15 @@
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
 import ReportsHeader from '@/components/organisms/ReportsHeader.vue'
+import ReportsShowBody from '@/components/organisms/ReportsShowBody.vue'
+import { setUpReportItems } from '@/composables/useReportsShow'
 
 export default defineComponent({
   name: 'ReportShow',
 
   components: {
-    ReportsHeader
+    ReportsHeader,
+    ReportsShowBody
   },
 
   setup(_, ctx) {
@@ -54,7 +34,7 @@ export default defineComponent({
       id: 1,
       name: '鈴木太郎',
       imageUrl: 'https://cdn.vuetifyjs.com/images/lists/1.jpg'
-    }
+    } as User
     const report = {
       title: 'ダービーマッチ！！！',
       userId: 1,
@@ -79,6 +59,46 @@ export default defineComponent({
           shirtNumber: 1,
           point: 7,
           text: '良かった'
+        },
+        {
+          id: 2,
+          homeAway: 'home',
+          playerName: 'かきくけこ',
+          position: 'DF',
+          positionId: 2,
+          shirtNumber: 2,
+          point: 7,
+          text: '良かった'
+        },
+        {
+          id: 3,
+          homeAway: 'home',
+          playerName: 'さしすせそ',
+          position: 'MF',
+          positionId: 3,
+          shirtNumber: 3,
+          point: 7,
+          text: '良かった'
+        },
+        {
+          id: 4,
+          homeAway: 'home',
+          playerName: 'たちつてと',
+          position: 'FW',
+          positionId: 4,
+          shirtNumber: 4,
+          point: 7,
+          text: '良かった'
+        },
+        {
+          id: 5,
+          homeAway: 'home',
+          playerName: 'なにぬねの',
+          position: 'HC',
+          positionId: 5,
+          shirtNumber: 5,
+          point: 7,
+          text: '良かった'
         }
       ],
       awayTeamId: 2,
@@ -86,20 +106,60 @@ export default defineComponent({
       awayTeamScore: 1,
       awayTeamReportItems: [
         {
-          id: 100,
+          id: 101,
           homeAway: 'away',
-          playerName: 'たちつてと',
+          playerName: 'はひふへほ',
           position: 'GK',
           positionId: 1,
           shirtNumber: 1,
-          point: 8,
-          text: '最高'
+          point: 7,
+          text: '良かった'
+        },
+        {
+          id: 102,
+          homeAway: 'away',
+          playerName: 'かきくけこ',
+          position: 'DF',
+          positionId: 2,
+          shirtNumber: 2,
+          point: 7,
+          text: '良かった'
+        },
+        {
+          id: 103,
+          homeAway: 'away',
+          playerName: 'さしすせそ',
+          position: 'MF',
+          positionId: 3,
+          shirtNumber: 3,
+          point: 7,
+          text: '良かった'
+        },
+        {
+          id: 104,
+          homeAway: 'away',
+          playerName: 'たちつてと',
+          position: 'FW',
+          positionId: 4,
+          shirtNumber: 4,
+          point: 7,
+          text: '良かった'
+        },
+        {
+          id: 105,
+          homeAway: 'away',
+          playerName: 'なにぬねの',
+          position: 'HC',
+          positionId: 5,
+          shirtNumber: 5,
+          point: 7,
+          text: '良かった'
         }
       ],
       summary: '総評だよ',
-      mom: 'あいうえお'
-    }
-    const reportItems = report.homeTeamReportItems.concat(report.awayTeamReportItems)
+      mom: 'はひふへほ'
+    } as Report
+    const reportItems = setUpReportItems(report)
     return { id, report, user, reportItems }
   }
 })
