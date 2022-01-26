@@ -8,9 +8,9 @@
         <v-row justify="center">
           <v-img
             class="rounded-circle"
-            :src="`https://crests.football-data.org/${homeTeamId}.svg`"
             max-height="60"
             max-width="60"
+            :src="`https://crests.football-data.org/${homeTeamId}.svg`"
           />
         </v-row>
       </v-col>
@@ -26,9 +26,9 @@
         <v-row justify="center">
           <v-img
             class="rounded-circle"
-            :src="`https://crests.football-data.org/${awayTeamId}.svg`"
             max-height="60"
             max-width="60"
+            :src="`https://crests.football-data.org/${awayTeamId}.svg`"
           />
         </v-row>
       </v-col>
