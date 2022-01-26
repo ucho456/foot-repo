@@ -1,7 +1,7 @@
 <template>
   <v-text-field
     :dense="denseFlg"
-    :error-messages="errorMessage"
+    :error-messages="errMessage"
     :label="label"
     :max="max"
     :min="min"
@@ -21,14 +21,14 @@ export default defineComponent({
 
   props: {
     denseFlg: { type: Boolean, default: false },
-    errorMessage: { type: String, default: '' },
+    errMessage: { type: String, default: '' },
     icon: { type: String, default: '' },
     label: { type: String, default: '' },
     max: { type: Number, default: 10 },
     min: { type: Number, default: 0 },
     step: { type: Number, default: 1 },
-    type: { type: String, default: 'text' },
-    value: { type: [String, Number], default: '' }
+    type: { type: String, default: '' },
+    value: { type: String, default: '' }
   },
 
   setup(_, ctx) {

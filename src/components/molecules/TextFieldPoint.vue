@@ -22,11 +22,15 @@ export default defineComponent({
   },
 
   props: {
-    value: { type: Number, default: 6.5 }
+    value: { type: String, default: '6.5' }
   },
 
   setup(_, ctx) {
-    const handleInput = (value: string): void => ctx.emit('input', Number(value))
+    const handleInput = (value: string): void => {
+      // 6.0, 7.0 のように小数点第一位まで整数であっても表示する
+      const point = value.length === 3 ? value : value + '.0'
+      ctx.emit('input', point)
+    }
     return { handleInput }
   }
 })

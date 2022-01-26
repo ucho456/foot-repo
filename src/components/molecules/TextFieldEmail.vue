@@ -1,7 +1,7 @@
 <template>
-  <ValidationProvider v-slot="{ errors }" rules="required|email">
+  <ValidationProvider v-slot="{ errors }" rules="email|required">
     <BaseTextField
-      :error-message="errors[0]"
+      :err-message="errors[0]"
       :icon="'mdi-email'"
       :label="'メール'"
       :type="'email'"

@@ -1,9 +1,9 @@
 <template>
   <BaseSelect
-    :value="value"
     :items="players"
     :icon="'mdi-account-star'"
     :label="'マン・オブ・ザ・マッチ'"
+    :value="value"
     @input="handleInput"
   />
 </template>
@@ -13,7 +13,7 @@ import { defineComponent, computed } from '@nuxtjs/composition-api'
 import BaseSelect from '@/components/atoms/BaseSelect.vue'
 
 export default defineComponent({
-  name: 'SelectFormat',
+  name: 'SelectMom',
 
   components: {
     BaseSelect
@@ -27,10 +27,10 @@ export default defineComponent({
           id: 0,
           homeAway: 'away',
           playerName: '',
-          position: 'FW',
-          positionId: 4,
-          shirtNumber: 10,
-          point: 6.5,
+          position: 'GK',
+          positionId: 1,
+          shirtNumber: 0,
+          point: '6.5',
           text: ''
         }
       ]
@@ -42,25 +42,25 @@ export default defineComponent({
           id: 0,
           homeAway: 'home',
           playerName: '',
-          position: 'FW',
-          positionId: 4,
-          shirtNumber: 10,
-          point: 6.5,
+          position: 'GK',
+          positionId: 1,
+          shirtNumber: 0,
+          point: '6.5',
           text: ''
         }
       ]
     },
-    reportTeam: { type: String as () => ReportTeam, default: 'Home team only' },
+    selectTeam: { type: String as () => SelectTeam, default: 'Home team only' },
     value: { type: String, default: '' }
   },
 
   setup(props, ctx) {
     const players = computed(() => {
-      return props.reportTeam === 'Home team only'
-        ? props.homeTeamReportItems.map((v) => v.playerName)
-        : props.reportTeam === 'Away team only'
-        ? props.awayTeamReportItems.map((v) => v.playerName)
-        : props.homeTeamReportItems.concat(props.awayTeamReportItems).map((v) => v.playerName)
+      return props.selectTeam === 'Home team only'
+        ? props.homeTeamReportItems.map((htri) => htri.playerName)
+        : props.selectTeam === 'Away team only'
+        ? props.awayTeamReportItems.map((atri) => atri.playerName)
+        : props.homeTeamReportItems.concat(props.awayTeamReportItems).map((ri) => ri.playerName)
     })
     const handleInput = (value: string): void => ctx.emit('input', value)
     return { players, handleInput }

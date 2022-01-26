@@ -1,8 +1,8 @@
 <template>
   <v-textarea
-    :error-messages="errorMessage"
+    :error-messages="errMessage"
     :label="label"
-    :outlined="true"
+    outlined
     :prepend-inner-icon="icon"
     :value="value"
     @input="handleInput"
@@ -16,7 +16,7 @@ export default defineComponent({
   name: 'BaseTextarea',
 
   props: {
-    errorMessage: { type: String, default: '' },
+    errMessage: { type: String, default: '' },
     label: { type: String, default: '' },
     icon: { type: String, default: '' },
     value: { type: String, default: '' }

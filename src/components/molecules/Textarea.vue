@@ -1,7 +1,7 @@
 <template>
   <ValidationProvider v-slot="{ errors }" rules="characterLimit">
     <BaseTextarea
-      :error-message="errors[0]"
+      :err-message="errors[0]"
       :icon="icon"
       :label="label"
       :value="value"

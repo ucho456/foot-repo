@@ -1,8 +1,6 @@
 <template>
   <v-select
     :background-color="'white'"
-    :item-text="'name'"
-    :item-value="'id'"
     :items="items"
     :label="label"
     :prepend-inner-icon="icon"
@@ -19,13 +17,13 @@ export default defineComponent({
 
   props: {
     icon: { type: String, default: '' },
-    items: { type: Array as () => string | number[], default: () => [''] },
+    items: { type: Array as () => string[], default: () => [''] },
     label: { type: String, default: '' },
-    value: { type: [String, Number], default: '' }
+    value: { type: String, default: '' }
   },
 
   setup(_, ctx) {
-    const handleInput = (value: string | number): void => ctx.emit('input', value)
+    const handleInput = (value: string): void => ctx.emit('input', value)
     return { handleInput }
   }
 })
