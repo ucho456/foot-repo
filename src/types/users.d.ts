@@ -3,3 +3,5 @@ interface User {
   name: string
   imageUrl: string
 }
+
+type UserMap = Map<number, User>

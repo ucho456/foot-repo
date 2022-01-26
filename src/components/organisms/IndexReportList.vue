@@ -1,7 +1,7 @@
 <template>
   <v-sheet>
     <v-toolbar flat>
-      <v-toolbar-title>レポート一覧</v-toolbar-title>
+      <v-toolbar-title>選手採点一覧</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn icon @click="handleClick">
         <v-icon>mdi-magnify</v-icon>
@@ -18,16 +18,16 @@
           {{ err }}
         </v-row>
       </v-container>
-      <template v-for="report in reports">
-        <v-list-item :key="report.id" :to="report.to" exact router>
+      <template v-for="rItem in reportList">
+        <v-list-item :key="rItem.id" exact router :to="rItem.to">
           <v-list-item-avatar>
-            <v-img v-if="report.avatar !== ''" :src="report.avatar"></v-img>
-            <v-img v-else :src="noAvatarImg"></v-img>
+            <v-img v-if="rItem.userImageUrl !== ''" :src="rItem.userImageUrl"></v-img>
+            <v-img v-else :src="noAvatarImage"></v-img>
           </v-list-item-avatar>
           <v-list-item-content>
-            <v-list-item-title>{{ report.title }}</v-list-item-title>
-            <v-list-item-subtitle>{{ report.userName }}</v-list-item-subtitle>
-            <v-list-item-subtitle>{{ report.description }}</v-list-item-subtitle>
+            <v-list-item-title>{{ rItem.title }}</v-list-item-title>
+            <v-list-item-subtitle>{{ rItem.userName }}</v-list-item-subtitle>
+            <v-list-item-subtitle>{{ rItem.description }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </template>
@@ -38,31 +38,22 @@
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
 
-interface Reports {
-  id: number
-  avatar: string
-  title: string
-  userName: string
-  description: string
-  to: string
-}
-
 export default defineComponent({
-  name: 'IndexReports',
+  name: 'IndexReportList',
 
   props: {
     err: { type: String, default: '' },
     isLoading: { type: Boolean, default: false },
-    reports: {
-      type: Array as () => Reports[],
-      default: () => [{ id: 0, avatar: '', title: '', userName: '', description: '', to: '' }]
+    reportList: {
+      type: Array as () => ReportListItem[],
+      default: () => [{ id: 0, title: '', userName: '', userImageUrl: '', description: '', to: '' }]
     }
   },
 
   setup(_, ctx) {
     const handleClick = (): void => ctx.emit('click')
-    const noAvatarImg = require('@/assets/no_avatar.png')
-    return { handleClick, noAvatarImg }
+    const noAvatarImage = require('@/assets/no_avatar.png')
+    return { handleClick, noAvatarImage }
   }
 })
 </script>
