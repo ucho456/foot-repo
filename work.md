@@ -49,4 +49,26 @@
 
 # メモ
 
+- firebase 導入前に今実装できている部分を整理する。
+- mom セレクトボックスでホームチームから選択 => awayTeamOnly にすると homeTeam のままになっている。
+- reportItem の id の決め方
 - utcDate について日本時間にすべきか検討
+
+# report 検索条件案
+
+userId(フォローしてるユーザー)
+matchId(その試合直)
+competitionId(リーグ名・大会名)
+seasonId(シーズンで検索)
+teamId(チームで検索)
+
+# match 検索条件案
+
+matchId()
+
+入力ボックスをどうするか。
+who scores のデータサイトなどがどのようにしているか調べてみる。
+
+Map
+https://nulab.com/ja/blog/nulab/100times-faster-performance-improvement-set-map/
+https://tcd-theme.com/2021/10/javascript-map-set.html
