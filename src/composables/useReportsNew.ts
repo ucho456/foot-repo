@@ -1,60 +1,26 @@
 import { reactive } from '@nuxtjs/composition-api'
 
-interface LPosition {
-  position: Position
-  positionId: PositionId
-}
-interface LReportItem {
-  homeAway: HomeAway
-  playerName: string
-  position: Position
-  positionId: PositionId
-  shirtNumber: number
-  point: number
-  text: string
+const makeReportItem = (
+  id: number,
+  playerName: string,
+  shirtNumber: number,
+  homeAway: ReportHomeAway,
+  positionId: ReportPositionId,
+  position: ReportPosition
+): ReportItem => {
+  return { id, homeAway, playerName, position, positionId, shirtNumber, point: '6.5', text: '' }
 }
 
-const makeLineup = (lineup: Player[], homeAway: HomeAway): LReportItem[] => {
+const makeLineup = (lineup: MatchPlayer[], homeAway: ReportHomeAway): ReportItem[] => {
   return lineup
-    .map((v) => {
-      const { position, positionId } = omitPosition(v.position)
-      return makeReportItem(v.name, v.shirtNumber, homeAway, position, positionId)
-    })
+    .map((l) => makeReportItem(l.id, l.name, l.shirtNumber, homeAway, l.positionId, l.position))
     .sort((a, b) => (a.positionId > b.positionId ? 1 : -1))
 }
 
-const omitPosition = (p: DefaultPosition): LPosition => {
-  return p === 'Goalkeeper'
-    ? { position: 'GK', positionId: 1 }
-    : p === 'Defender'
-    ? { position: 'DF', positionId: 2 }
-    : p === 'Midfielder'
-    ? { position: 'MF', positionId: 3 }
-    : { position: 'FW', positionId: 4 }
-}
-
-const makeReportItem = (
-  playerName: string,
-  shirtNumber: number,
-  homeAway: HomeAway,
-  position: Position,
-  positionId: PositionId
-): LReportItem => {
-  return { homeAway, playerName, position, positionId, shirtNumber, point: 6.5, text: '' }
-}
-
-const makeSubstitutions = (
-  substitutions: Substitution[],
-  bench: Player[],
-  homeAway: HomeAway
-): LReportItem[] => {
-  const substitutionIds = substitutions.map((v) => v.playerIn.id)
+const makeSubstitutions = (bench: MatchPlayer[], homeAway: ReportHomeAway): ReportItem[] => {
   return bench
-    .filter((v) => substitutionIds.includes(v.id))
-    .map((v) => {
-      const { position, positionId } = omitPosition(v.position)
-      return makeReportItem(v.name, v.shirtNumber, homeAway, position, positionId)
-    })
+    .filter((b) => b.in !== 0)
+    .map((b) => makeReportItem(b.id, b.name, b.shirtNumber, homeAway, b.positionId, b.position))
 }
 
 const setUpReportItems = (
@@ -64,40 +30,40 @@ const setUpReportItems = (
   const awayTeam = match.awayTeam
   const homeLineup = makeLineup(homeTeam.lineup, 'home')
   const awayLineup = makeLineup(awayTeam.lineup, 'away')
-  const substitutions = match.substitutions
-  const homeSubstitutions = makeSubstitutions(substitutions, homeTeam.bench, 'home')
-  const awaySubstitutions = makeSubstitutions(substitutions, awayTeam.bench, 'away')
-  const homeCoach = makeReportItem(homeTeam.coach.name, 0, 'home', 'HC', 5)
-  const awayCoach = makeReportItem(awayTeam.coach.name, 0, 'away', 'HC', 5)
+  const homeSubstitutions = makeSubstitutions(homeTeam.bench, 'home')
+  const awaySubstitutions = makeSubstitutions(awayTeam.bench, 'away')
+  const homeCoach = makeReportItem(homeTeam.coach.id, homeTeam.coach.name, 0, 'home', 5, 'HC')
+  const awayCoach = makeReportItem(awayTeam.coach.id, awayTeam.coach.name, 0, 'away', 5, 'HC')
   homeSubstitutions.push(homeCoach)
   awaySubstitutions.push(awayCoach)
-  const homeTeamReportItems = homeLineup.concat(homeSubstitutions).map((v, i) => {
-    return { ...v, id: i + 1 }
-  })
-  const awayTeamReportItems = awayLineup.concat(awaySubstitutions).map((v, i) => {
-    return { ...v, id: i + 100 }
-  })
+  const homeTeamReportItems = homeLineup.concat(homeSubstitutions)
+  const awayTeamReportItems = awayLineup.concat(awaySubstitutions)
   return { homeTeamReportItems, awayTeamReportItems }
 }
 
-export const setUpReport = (match: Match): Report => {
+export const setUpReport = (match: Match, user: User | GuestUser): Report => {
   const { homeTeamReportItems, awayTeamReportItems } = setUpReportItems(match)
   return reactive({
+    id: 0,
+    title: `${match.homeTeam.name} vs ${match.awayTeam.name} の選手採点`,
+    userId: user.id,
+    guestName: user.id === 0 ? user.name : '',
     matchId: match.id,
-    competitionId: match.competition.id,
-    competitionName: match.competition.name,
-    seasonId: match.season.id,
-    seasonStartDate: match.season.startDate,
-    seasonEndDate: match.season.endDate,
+    competitionId: match.competitionId,
+    competitionName: match.competitionName,
+    seasonId: match.seasonId,
+    season: match.season,
     utcDate: match.utcDate,
-    reportTeam: 'Home team only',
+    selectTeam: 'Home team only',
     homeTeamId: match.homeTeam.id,
     homeTeamName: match.homeTeam.name,
-    homeTeamScore: match.score.fullTime.homeTeam,
+    homeTeamScore: match.homeTeamScore,
+    homeTeamPenalty: match.homeTeamPenalty,
     homeTeamReportItems,
     awayTeamId: match.awayTeam.id,
     awayTeamName: match.awayTeam.name,
-    awayTeamScore: match.score.fullTime.awayTeam,
+    awayTeamScore: match.awayTeamScore,
+    awayTeamPenalty: match.awayTeamPenalty,
     awayTeamReportItems,
     summary: '',
     mom: ''
@@ -106,8 +72,8 @@ export const setUpReport = (match: Match): Report => {
 
 export const inputPoint = (
   report: Report,
-  point: number,
-  homeAway: HomeAway,
+  point: string,
+  homeAway: ReportHomeAway,
   index: number
 ): void => {
   homeAway === 'home'
@@ -118,7 +84,7 @@ export const inputPoint = (
 export const inputText = (
   report: Report,
   text: string,
-  homeAway: HomeAway,
+  homeAway: ReportHomeAway,
   index: number
 ): void => {
   homeAway === 'home'
