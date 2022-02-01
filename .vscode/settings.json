@@ -16,5 +16,9 @@
   "scss.validate": false,
   "vetur.validation.style": false,
   "editor.bracketPairColorization.enabled": true,
-  "editor.guides.bracketPairs": "active"
+  "editor.guides.bracketPairs": "active",
+  "workbench.colorCustomizations": {
+    "titleBar.activeBackground": "#006eff",
+    "titleBar.activeForeground": "#000000"
+  }
 }
