@@ -50,7 +50,7 @@ export default defineComponent({
         }
       ]
     },
-    selectTeam: { type: String as () => SelectTeam, default: 'Home team only' },
+    selectTeam: { type: String as () => ReportSelectTeam, default: 'Home team only' },
     value: { type: String, default: '' }
   },
 

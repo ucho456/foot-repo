@@ -20,7 +20,7 @@ export default defineComponent({
   },
 
   props: {
-    value: { type: String as () => SelectTeam, default: 'Home team only' }
+    value: { type: String as () => ReportSelectTeam, default: 'Home team only' }
   },
 
   setup(_, ctx) {
