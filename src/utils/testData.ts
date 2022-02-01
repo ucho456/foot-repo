@@ -1,617 +1,612 @@
-/* 
-  football-data.orgの有料プランを契約する前はこのファイルのデータを使用して開発する。
-*/
-export const testData: ResponseMatch = {
-  head2head: {
-    numberOfMatches: 1,
-    totalGoals: 3,
-    homeTeam: {
-      wins: 0,
-      draws: 0,
-      losses: 1
-    },
-    awayTeam: {
-      wins: 1,
-      draws: 0,
-      losses: 0
-    }
-  },
-  match: {
+export const matches: Match[] = [
+  {
     id: 204950,
-    competition: {
-      id: 2013,
-      name: 'Série A'
-    },
-    season: {
-      id: 15,
-      startDate: '2018-04-14',
-      endDate: '2018-12-02',
-      currentMatchday: 25,
-      availableStages: ['REGULAR_SEASON']
-    },
+    competitionId: 2013,
+    competitionName: 'Série A',
+    seasonId: 15,
+    season: '2018',
+    section: 25,
     utcDate: '2018-08-13T23:00:00Z',
     status: 'FINISHED',
-    minute: null,
-    attendance: 14640,
     venue: 'Estadio Jornalista Mário Filho',
-    matchday: 18,
-    stage: 'REGULAR_SEASON',
-    group: 'Regular Season',
-    lastUpdated: '2018-08-19T20:01:26Z',
     homeTeam: {
       id: 1765,
       name: 'Fluminense FC',
-      coach: {
-        id: 73229,
-        name: 'Marcelo Oliveira',
-        countryOfBirth: 'Brazil',
-        nationality: 'Brazil'
-      },
-      captain: {
-        id: 1068,
-        name: 'Gum',
-        shirtNumber: 3
-      },
       lineup: [
         {
           id: 1083,
           name: 'Jádson',
-          position: 'Midfielder',
-          shirtNumber: 16
+          positionId: 3,
+          position: 'MF',
+          shirtNumber: 16,
+          goal: 0,
+          assist: 0,
+          card: '',
+          out: 0,
+          in: 0
         },
         {
           id: 1078,
           name: 'Junior Sornoza',
-          position: 'Midfielder',
-          shirtNumber: 10
+          positionId: 3,
+          position: 'MF',
+          shirtNumber: 10,
+          goal: 0,
+          assist: 0,
+          card: 'YELLOW_CARD',
+          out: 0,
+          in: 0
         },
         {
           id: 1238,
           name: 'Digão',
-          position: 'Defender',
-          shirtNumber: 14
+          positionId: 2,
+          position: 'DF',
+          shirtNumber: 14,
+          goal: 0,
+          assist: 0,
+          card: '',
+          out: 0,
+          in: 0
         },
         {
           id: 1066,
           name: 'Júlio César',
-          position: 'Goalkeeper',
-          shirtNumber: 22
+          positionId: 1,
+          position: 'GK',
+          shirtNumber: 22,
+          goal: 0,
+          assist: 0,
+          card: '',
+          out: 0,
+          in: 0
         },
         {
           id: 1451,
           name: 'Dutra Júnior',
-          position: 'Midfielder',
-          shirtNumber: 11
+          positionId: 3,
+          position: 'MF',
+          shirtNumber: 11,
+          goal: 0,
+          assist: 0,
+          card: 'YELLOW_CARD',
+          out: 73,
+          in: 0
         },
         {
           id: 1085,
           name: 'Airton',
-          position: 'Midfielder',
-          shirtNumber: 5
+          positionId: 3,
+          position: 'MF',
+          shirtNumber: 5,
+          goal: 0,
+          assist: 0,
+          card: '',
+          out: 53,
+          in: 0
         },
         {
           id: 1068,
           name: 'Gum',
-          position: 'Defender',
-          shirtNumber: 3
+          positionId: 2,
+          position: 'DF',
+          shirtNumber: 3,
+          goal: 0,
+          assist: 0,
+          card: '',
+          out: 0,
+          in: 0
         },
         {
           id: 1073,
           name: 'Gilberto Júnior',
-          position: 'Defender',
-          shirtNumber: 2
+          positionId: 2,
+          position: 'DF',
+          shirtNumber: 2,
+          goal: 0,
+          assist: 0,
+          card: '',
+          out: 0,
+          in: 0
         },
         {
           id: 1088,
           name: 'Marcos Júnior',
-          position: 'Attacker',
-          shirtNumber: 35
+          positionId: 4,
+          position: 'FW',
+          shirtNumber: 35,
+          goal: 0,
+          assist: 0,
+          card: '',
+          out: 46,
+          in: 0
         },
         {
           id: 1074,
           name: 'Ayrton Lucas',
-          position: 'Defender',
-          shirtNumber: 6
+          positionId: 2,
+          position: 'DF',
+          shirtNumber: 6,
+          goal: 0,
+          assist: 0,
+          card: '',
+          out: 0,
+          in: 0
         },
         {
           id: 1077,
           name: 'Pedro Santos',
-          position: 'Midfielder',
-          shirtNumber: 9
+          positionId: 3,
+          position: 'MF',
+          shirtNumber: 9,
+          goal: 0,
+          assist: 0,
+          card: '',
+          out: 0,
+          in: 0
         }
       ],
       bench: [
         {
           id: 2817,
           name: 'Bryan Cabezas',
-          position: 'Attacker',
-          shirtNumber: 8
+          positionId: 4,
+          position: 'FW',
+          shirtNumber: 8,
+          goal: 0,
+          assist: 0,
+          card: '',
+          out: 0,
+          in: 0
         },
         {
           id: 1067,
           name: 'Rodolfo',
-          position: 'Goalkeeper',
-          shirtNumber: 39
+          positionId: 1,
+          position: 'GK',
+          shirtNumber: 39,
+          goal: 0,
+          assist: 0,
+          card: '',
+          out: 0,
+          in: 0
         },
         {
           id: 42901,
           name: 'Luciano',
-          position: 'Attacker',
-          shirtNumber: 18
+          positionId: 4,
+          position: 'FW',
+          shirtNumber: 18,
+          goal: 0,
+          assist: 0,
+          card: '',
+          out: 0,
+          in: 53
         },
         {
           id: 1075,
           name: 'Léo Morais',
-          position: 'Defender',
-          shirtNumber: 33
+          positionId: 2,
+          position: 'DF',
+          shirtNumber: 33,
+          goal: 0,
+          assist: 0,
+          card: '',
+          out: 0,
+          in: 0
         },
         {
           id: 1087,
           name: 'Douglas',
-          position: 'Midfielder',
-          shirtNumber: 15
+          positionId: 3,
+          position: 'MF',
+          shirtNumber: 15,
+          goal: 0,
+          assist: 0,
+          card: '',
+          out: 0,
+          in: 0
         },
         {
           id: 1091,
           name: 'Richard',
-          position: 'Attacker',
-          shirtNumber: 25
+          positionId: 4,
+          position: 'FW',
+          shirtNumber: 25,
+          goal: 0,
+          assist: 0,
+          card: '',
+          out: 0,
+          in: 0
         },
         {
           id: 1094,
           name: 'João Carlos',
-          position: 'Attacker',
-          shirtNumber: 29
+          positionId: 4,
+          position: 'FW',
+          shirtNumber: 29,
+          goal: 0,
+          assist: 0,
+          card: '',
+          out: 0,
+          in: 0
         },
         {
           id: 13604,
           name: 'Everaldo',
-          position: 'Midfielder',
-          shirtNumber: 37
+          positionId: 3,
+          position: 'MF',
+          shirtNumber: 37,
+          goal: 0,
+          assist: 0,
+          card: '',
+          out: 0,
+          in: 73
         },
         {
           id: 1071,
           name: 'Frazan',
-          position: 'Defender',
-          shirtNumber: 13
+          positionId: 2,
+          position: 'DF',
+          shirtNumber: 13,
+          goal: 0,
+          assist: 0,
+          card: '',
+          out: 0,
+          in: 0
         },
         {
           id: 1089,
           name: 'Matheus Alessandro',
-          position: 'Attacker',
-          shirtNumber: 28
+          positionId: 4,
+          position: 'FW',
+          shirtNumber: 28,
+          goal: 0,
+          assist: 0,
+          card: 'YELLOW_CARD',
+          out: 0,
+          in: 46
         },
         {
           id: 11179,
           name: 'Joao Vitor',
-          position: 'Defender',
-          shirtNumber: 40
+          positionId: 2,
+          position: 'DF',
+          shirtNumber: 40,
+          goal: 0,
+          assist: 0,
+          card: '',
+          out: 0,
+          in: 0
         },
         {
           id: 1081,
           name: 'Roger Ibanez',
-          position: 'Midfielder',
-          shirtNumber: 41
+          positionId: 3,
+          position: 'MF',
+          shirtNumber: 41,
+          goal: 0,
+          assist: 0,
+          card: '',
+          out: 0,
+          in: 0
         }
-      ]
+      ],
+      coach: {
+        id: 73229,
+        name: 'Marcelo Oliveira',
+        positionId: 5,
+        position: 'HC',
+        shirtNumber: 0,
+        goal: 0,
+        assist: 0,
+        card: '',
+        out: 0,
+        in: 0
+      }
     },
+    homeTeamScore: 0,
+    homeTeamPenalty: 0,
     awayTeam: {
       id: 6684,
       name: 'SC Internacional',
-      coach: {
-        id: 11147,
-        name: 'Odair Hellmann',
-        countryOfBirth: 'Brazil',
-        nationality: 'Brazil'
-      },
-      captain: {
-        id: 1575,
-        name: 'Rodrigo Dourado',
-        shirtNumber: 13
-      },
       lineup: [
         {
           id: 22360,
           name: 'Jonatan Alvez',
-          position: 'Attacker',
-          shirtNumber: 86
+          positionId: 4,
+          position: 'FW',
+          shirtNumber: 86,
+          goal: 1,
+          assist: 0,
+          card: 'YELLOW_CARD',
+          out: 65,
+          in: 0
         },
         {
           id: 1588,
           name: 'Nicolás López',
-          position: 'Attacker',
-          shirtNumber: 7
+          positionId: 4,
+          position: 'FW',
+          shirtNumber: 7,
+          goal: 2,
+          assist: 0,
+          card: '',
+          out: 46,
+          in: 0
         },
         {
           id: 1572,
           name: 'Rodrigo Moledo',
-          position: 'Defender',
-          shirtNumber: 4
+          positionId: 2,
+          position: 'DF',
+          shirtNumber: 4,
+          goal: 0,
+          assist: 0,
+          card: '',
+          out: 0,
+          in: 0
         },
         {
           id: 1562,
           name: 'Marcelo Lomba',
-          position: 'Goalkeeper',
-          shirtNumber: 12
+          positionId: 1,
+          position: 'GK',
+          shirtNumber: 12,
+          goal: 0,
+          assist: 0,
+          card: '',
+          out: 0,
+          in: 0
         },
         {
           id: 1573,
           name: 'Fabiano Leismann',
-          position: 'Defender',
-          shirtNumber: 18
+          positionId: 2,
+          position: 'DF',
+          shirtNumber: 18,
+          goal: 0,
+          assist: 0,
+          card: '',
+          out: 78,
+          in: 0
         },
         {
           id: 1580,
           name: 'Edenilson',
-          position: 'Midfielder',
-          shirtNumber: 8
+          positionId: 3,
+          position: 'MF',
+          shirtNumber: 8,
+          goal: 0,
+          assist: 0,
+          card: 'YELLOW_CARD',
+          out: 0,
+          in: 0
         },
         {
           id: 1575,
           name: 'Rodrigo Dourado',
-          position: 'Midfielder',
-          shirtNumber: 13
+          positionId: 3,
+          position: 'MF',
+          shirtNumber: 13,
+          goal: 0,
+          assist: 1,
+          card: '',
+          out: 0,
+          in: 0
         },
         {
           id: 1567,
           name: 'Víctor Cuesta',
-          position: 'Defender',
-          shirtNumber: 15
+          positionId: 2,
+          position: 'DF',
+          shirtNumber: 15,
+          goal: 0,
+          assist: 0,
+          card: 'YELLOW_CARD',
+          out: 0,
+          in: 0
         },
         {
           id: 1590,
           name: 'William Pottker',
-          position: 'Attacker',
-          shirtNumber: 99
+          positionId: 4,
+          position: 'FW',
+          shirtNumber: 99,
+          goal: 0,
+          assist: 0,
+          card: '',
+          out: 0,
+          in: 0
         },
         {
           id: 1582,
           name: 'Patrick Nascimento',
-          position: 'Midfielder',
-          shirtNumber: 88
+          positionId: 3,
+          position: 'MF',
+          shirtNumber: 88,
+          goal: 0,
+          assist: 0,
+          card: '',
+          out: 0,
+          in: 0
         },
         {
           id: 1566,
           name: 'Iago',
-          position: 'Defender',
-          shirtNumber: 28
+          positionId: 2,
+          position: 'DF',
+          shirtNumber: 28,
+          goal: 0,
+          assist: 1,
+          card: '',
+          out: 0,
+          in: 0
         }
       ],
       bench: [
         {
           id: 1578,
           name: "Andrés D'Alessandro",
-          position: 'Midfielder',
-          shirtNumber: 10
+          positionId: 3,
+          position: 'MF',
+          shirtNumber: 10,
+          goal: 0,
+          assist: 0,
+          card: '',
+          out: 0,
+          in: 46
         },
         {
           id: 1179,
           name: 'Emerson Santos',
-          position: 'Defender',
-          shirtNumber: 20
+          positionId: 2,
+          position: 'DF',
+          shirtNumber: 20,
+          goal: 0,
+          assist: 0,
+          card: '',
+          out: 0,
+          in: 0
         },
         {
           id: 1581,
           name: 'Camilo',
-          position: 'Midfielder',
-          shirtNumber: 21
+          positionId: 3,
+          position: 'MF',
+          shirtNumber: 21,
+          goal: 0,
+          assist: 0,
+          card: '',
+          out: 0,
+          in: 0
         },
         {
           id: 1564,
           name: 'Uendel',
-          position: 'Defender',
-          shirtNumber: 6
+          positionId: 2,
+          position: 'DF',
+          shirtNumber: 6,
+          goal: 0,
+          assist: 0,
+          card: '',
+          out: 0,
+          in: 0
         },
         {
           id: 1594,
           name: 'Lucca',
-          position: 'Attacker',
-          shirtNumber: 19
+          positionId: 4,
+          position: 'FW',
+          shirtNumber: 19,
+          goal: 0,
+          assist: 0,
+          card: '',
+          out: 0,
+          in: 0
         },
         {
           id: 1570,
           name: 'Gabriel Dias',
-          position: 'Defender',
-          shirtNumber: 30
+          positionId: 2,
+          position: 'DF',
+          shirtNumber: 30,
+          goal: 0,
+          assist: 0,
+          card: '',
+          out: 0,
+          in: 0
         },
         {
           id: 1593,
           name: 'Rossi',
-          position: 'Attacker',
-          shirtNumber: 22
+          positionId: 4,
+          position: 'FW',
+          shirtNumber: 22,
+          goal: 0,
+          assist: 0,
+          card: '',
+          out: 0,
+          in: 65
         },
         {
           id: 1565,
           name: 'William Klaus',
-          position: 'Defender',
-          shirtNumber: 44
+          positionId: 2,
+          position: 'DF',
+          shirtNumber: 44,
+          goal: 0,
+          assist: 0,
+          card: '',
+          out: 0,
+          in: 0
         },
         {
           id: 1584,
           name: 'Luis Eduardo Dudu',
-          position: 'Midfielder',
-          shirtNumber: 2
+          positionId: 3,
+          position: 'MF',
+          shirtNumber: 2,
+          goal: 0,
+          assist: 0,
+          card: '',
+          out: 0,
+          in: 78
         },
         {
           id: 1563,
           name: 'Daniel',
-          position: 'Goalkeeper',
-          shirtNumber: 42
+          positionId: 1,
+          position: 'GK',
+          shirtNumber: 42,
+          goal: 0,
+          assist: 0,
+          card: '',
+          out: 0,
+          in: 0
         },
         {
           id: 1579,
           name: 'Juan',
-          position: 'Midfielder',
-          shirtNumber: 47
+          positionId: 3,
+          position: 'MF',
+          shirtNumber: 47,
+          goal: 0,
+          assist: 0,
+          card: '',
+          out: 0,
+          in: 0
         },
         {
           id: 1585,
           name: 'Brenner',
-          position: 'Midfielder',
-          shirtNumber: 48
+          positionId: 3,
+          position: 'MF',
+          shirtNumber: 48,
+          goal: 0,
+          assist: 0,
+          card: '',
+          out: 0,
+          in: 0
         }
-      ]
-    },
-    score: {
-      winner: 'AWAY_TEAM',
-      duration: 'REGULAR',
-      fullTime: {
-        homeTeam: 0,
-        awayTeam: 3
-      },
-      halfTime: {
-        homeTeam: 0,
-        awayTeam: 3
-      },
-      extraTime: {
-        homeTeam: null,
-        awayTeam: null
-      },
-      penalties: {
-        homeTeam: null,
-        awayTeam: null
+      ],
+      coach: {
+        id: 11147,
+        name: 'Odair Hellmann',
+        positionId: 5,
+        position: 'HC',
+        shirtNumber: 0,
+        goal: 0,
+        assist: 0,
+        card: '',
+        out: 0,
+        in: 0
       }
     },
-    goals: [
-      {
-        minute: 23,
-        extraTime: null,
-        type: 'REGULAR',
-        team: {
-          id: 6684,
-          name: 'SC Internacional'
-        },
-        scorer: {
-          id: 1588,
-          name: 'Nicolás López'
-        },
-        assist: {
-          id: 1575,
-          name: 'Rodrigo Dourado'
-        }
-      },
-      {
-        minute: 39,
-        extraTime: null,
-        type: 'REGULAR',
-        team: {
-          id: 6684,
-          name: 'SC Internacional'
-        },
-        scorer: {
-          id: 22360,
-          name: 'Jonatan Alvez'
-        },
-        assist: {
-          id: 1566,
-          name: 'Iago'
-        }
-      },
-      {
-        minute: 45,
-        extraTime: 1,
-        type: 'REGULAR',
-        team: {
-          id: 6684,
-          name: 'SC Internacional'
-        },
-        scorer: {
-          id: 1588,
-          name: 'Nicolás López'
-        },
-        assist: null
-      }
-    ],
-    bookings: [
-      {
-        minute: 3,
-        team: {
-          id: 6684,
-          name: 'SC Internacional'
-        },
-        player: {
-          id: 1567,
-          name: 'Víctor Cuesta'
-        },
-        card: 'YELLOW_CARD'
-      },
-      {
-        minute: 27,
-        team: {
-          id: 6684,
-          name: 'SC Internacional'
-        },
-        player: {
-          id: 22360,
-          name: 'Jonatan Alvez'
-        },
-        card: 'YELLOW_CARD'
-      },
-      {
-        minute: 28,
-        team: {
-          id: 1765,
-          name: 'Fluminense FC'
-        },
-        player: {
-          id: 1451,
-          name: 'Dutra Júnior'
-        },
-        card: 'YELLOW_CARD'
-      },
-      {
-        minute: 43,
-        team: {
-          id: 6684,
-          name: 'SC Internacional'
-        },
-        player: {
-          id: 1580,
-          name: 'Edenilson'
-        },
-        card: 'YELLOW_CARD'
-      },
-      {
-        minute: 90,
-        team: {
-          id: 1765,
-          name: 'Fluminense FC'
-        },
-        player: {
-          id: 1089,
-          name: 'Matheus Alessandro'
-        },
-        card: 'YELLOW_CARD'
-      },
-      {
-        minute: 90,
-        team: {
-          id: 1765,
-          name: 'Fluminense FC'
-        },
-        player: {
-          id: 1078,
-          name: 'Junior Sornoza'
-        },
-        card: 'YELLOW_CARD'
-      }
-    ],
-    substitutions: [
-      {
-        minute: 46,
-        team: {
-          id: 6684,
-          name: 'SC Internacional'
-        },
-        playerOut: {
-          id: 1588,
-          name: 'Nicolás López'
-        },
-        playerIn: {
-          id: 1578,
-          name: "Andrés D'Alessandro"
-        }
-      },
-      {
-        minute: 46,
-        team: {
-          id: 1765,
-          name: 'Fluminense FC'
-        },
-        playerOut: {
-          id: 1088,
-          name: 'Marcos Júnior'
-        },
-        playerIn: {
-          id: 1089,
-          name: 'Matheus Alessandro'
-        }
-      },
-      {
-        minute: 53,
-        team: {
-          id: 1765,
-          name: 'Fluminense FC'
-        },
-        playerOut: {
-          id: 1085,
-          name: 'Airton'
-        },
-        playerIn: {
-          id: 42901,
-          name: 'Luciano'
-        }
-      },
-      {
-        minute: 65,
-        team: {
-          id: 6684,
-          name: 'SC Internacional'
-        },
-        playerOut: {
-          id: 22360,
-          name: 'Jonatan Alvez'
-        },
-        playerIn: {
-          id: 1593,
-          name: 'Rossi'
-        }
-      },
-      {
-        minute: 73,
-        team: {
-          id: 1765,
-          name: 'Fluminense FC'
-        },
-        playerOut: {
-          id: 1451,
-          name: 'Dutra Júnior'
-        },
-        playerIn: {
-          id: 13604,
-          name: 'Everaldo'
-        }
-      },
-      {
-        minute: 78,
-        team: {
-          id: 6684,
-          name: 'SC Internacional'
-        },
-        playerOut: {
-          id: 1573,
-          name: 'Fabiano Leismann'
-        },
-        playerIn: {
-          id: 1584,
-          name: 'Luis Eduardo Dudu'
-        }
-      }
-    ],
-    referees: [
-      {
-        id: 11143,
-        name: 'Savio Pereira',
-        nationality: null
-      },
-      {
-        id: 11144,
-        name: 'Daniel Henrique da Silva Andrade',
-        nationality: null
-      },
-      {
-        id: 11145,
-        name: 'Ciro Chaban Junqueira',
-        nationality: null
-      },
-      {
-        id: 18752,
-        name: 'Lehi Sousa Silva',
-        nationality: null
-      }
-    ]
+    awayTeamScore: 3,
+    awayTeamPenalty: 0
   }
-}
+]
 
 export const reports = [
   {
@@ -623,10 +618,8 @@ export const reports = [
     competitionId: 1,
     competitionName: 'Jリーグ',
     seasonId: 1,
-    seasonStartDate: '2021-12-12',
-    seasonEndDate: '2022-12-12',
+    season: '2021',
     utcDate: '2018-08-13T23:00:00Z',
-    japanDate: '2018-08-13T23:00:00Z',
     selectTeam: 'Both teams',
     homeTeamId: 1,
     homeTeamName: 'ガンバ大阪',
@@ -750,10 +743,8 @@ export const reports = [
     competitionId: 1,
     competitionName: 'Jリーグ',
     seasonId: 1,
-    seasonStartDate: '2021-12-12',
-    seasonEndDate: '2022-12-12',
+    season: '2021',
     utcDate: '2018-08-13T23:00:00Z',
-    japanDate: '2018-08-13T23:00:00Z',
     selectTeam: 'Both teams',
     homeTeamId: 1,
     homeTeamName: 'ガンバ大阪',
@@ -877,10 +868,8 @@ export const reports = [
     competitionId: 1,
     competitionName: 'Jリーグ',
     seasonId: 1,
-    seasonStartDate: '2021-12-12',
-    seasonEndDate: '2022-12-12',
+    season: '2021',
     utcDate: '2018-08-13T23:00:00Z',
-    japanDate: '2018-08-13T23:00:00Z',
     selectTeam: 'Both teams',
     homeTeamId: 1,
     homeTeamName: 'ガンバ大阪',
