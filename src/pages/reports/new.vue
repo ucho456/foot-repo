@@ -7,11 +7,11 @@
           <v-container>
             <v-row>
               <v-col cols="8" md="5" sm="5">
-                <SelectHomeAway v-model="report.reportTeam" />
+                <SelectHomeAway v-model="report.selectTeam" />
               </v-col>
             </v-row>
           </v-container>
-          <v-container v-if="report.reportTeam !== 'Away team only'">
+          <v-container v-if="report.selectTeam !== 'Away team only'">
             <v-row v-for="(reportItem, index) in report.homeTeamReportItems" :key="reportItem.id">
               <ReportsPlayerForm
                 v-bind="reportItem"
@@ -20,7 +20,7 @@
               />
             </v-row>
           </v-container>
-          <v-container v-if="report.reportTeam !== 'Home team only'">
+          <v-container v-if="report.selectTeam !== 'Home team only'">
             <v-row v-for="(reportItem, index) in report.awayTeamReportItems" :key="reportItem.id">
               <ReportsPlayerForm
                 v-bind="reportItem"
@@ -35,7 +35,7 @@
                 <SelectMom
                   v-model="report.mom"
                   :away-team-report-items="report.awayTeamReportItems"
-                  :report-team="report.reportTeam"
+                  :report-team="report.selectTeam"
                   :home-team-report-items="report.homeTeamReportItems"
                 />
               </v-col>
@@ -77,8 +77,7 @@ import SelectMom from '@/components/molecules/SelectMom.vue'
 import Textarea from '@/components/molecules/Textarea.vue'
 import ButtonBlockWhite from '@/components/molecules/ButtonBlockWhite.vue'
 import ButtonBlockBlue from '@/components/molecules/ButtonBlockBlue.vue'
-// import getFootballData from '@/api/getFootballData'
-import { testData } from '@/utils/testData'
+import { matches, users } from '@/utils/testData'
 import { setUpReport, inputPoint, inputText } from '@/composables/useReportsNew'
 
 export default defineComponent({
@@ -97,25 +96,12 @@ export default defineComponent({
   layout: 'noside',
 
   setup() {
-    /*
-      有料プラン契約後に実装
-      const { res, err, isLoading, getMatches } = getFootballData()
-      const route = useRoute()
-      getMatches(`/matches/${route.value.query.matchId}`)
-    */
-    const match = testData.match as Match
-    const report = setUpReport(match)
+    const match = matches[0]
+    const user = users[0]
+    const report = setUpReport(match, user)
     const router = useRouter()
     const back = () => router.back()
-    return {
-      // res,
-      // err,
-      // isLoading,
-      report,
-      inputPoint,
-      inputText,
-      back
-    }
+    return { report, inputPoint, inputText, back }
   }
 })
 </script>
