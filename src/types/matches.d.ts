@@ -44,3 +44,19 @@ interface Match {
   awayTeamScore: number
   awayTeamPenalty: number
 }
+
+interface MatchListItem {
+  id: number
+  homeTeamName: string
+  homeTeamImageUrl: string
+  awayTeamName: string
+  awayTeamImageUrl: string
+  score: string
+  description: string
+  to: {
+    path: string
+    query: {
+      matchId: number
+    }
+  }
+}
