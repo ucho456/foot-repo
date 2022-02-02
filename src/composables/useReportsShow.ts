@@ -1,3 +1,5 @@
+import { markRaw } from '@nuxtjs/composition-api'
+
 const setUpDispReportItems = (report: Report): DispReportItem[] => {
   const dispReportItems = report.homeTeamReportItems
     .concat(report.awayTeamReportItems)
@@ -31,5 +33,5 @@ export const setUpDispReport = (report: Report, user: User): DispReport => {
     dispReportItems,
     summary: report.summary
   }
-  return dispReport
+  return markRaw(dispReport)
 }

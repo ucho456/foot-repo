@@ -1,3 +1,5 @@
+import { markRaw } from '@nuxtjs/composition-api'
+
 export const makeMatchList = (matches: Match[]): MatchListItem[] => {
   const matchList = matches.map((m) => {
     return {
@@ -11,5 +13,5 @@ export const makeMatchList = (matches: Match[]): MatchListItem[] => {
       to: { path: 'new', query: { matchId: m.id } }
     }
   })
-  return matchList
+  return markRaw(matchList)
 }

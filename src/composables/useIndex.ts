@@ -1,3 +1,5 @@
+import { markRaw } from '@nuxtjs/composition-api'
+
 export const makeReportList = (reports: Report[], users: User[]): ReportListItem[] => {
   const userMap: UserMap = new Map(users.map((u) => [u.id, u]))
   const reportList = reports.map((r) => {
@@ -11,5 +13,5 @@ export const makeReportList = (reports: Report[], users: User[]): ReportListItem
       to: `reports/${r.id}`
     }
   })
-  return reportList
+  return markRaw(reportList)
 }
