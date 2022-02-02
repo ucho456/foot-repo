@@ -72,7 +72,7 @@ export const setUpReport = (match: Match, user: User | GuestUser): Report => {
 
 export const inputPoint = (
   report: Report,
-  point: string,
+  point: ReportPoint,
   homeAway: ReportHomeAway,
   index: number
 ): void => {

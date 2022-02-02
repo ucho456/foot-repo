@@ -2,10 +2,11 @@
   <v-container>
     <v-row>
       <v-col cols="2"
-        >{{ position }}<span v-if="shirtNumber !== 0" class="ml-2">{{ shirtNumber }}</span
-        ><TextFieldPoint :value="point" @input="inputPoint"
-      /></v-col>
-      <v-col cols="10"><Textarea :value="text" :label="playerName" @input="inputText" /></v-col>
+        >{{ position }}<span v-if="shirtNumber !== 0" class="ml-2">{{ shirtNumber }}</span></v-col
+      >
+      <v-col cols="10">{{ playerName }}</v-col>
+      <v-col class="mt-n6" cols="2"><TextFieldPoint :value="point" @input="inputPoint" /></v-col>
+      <v-col class="mt-n6" cols="10"><Textarea :value="text" @input="inputText" /></v-col>
     </v-row>
   </v-container>
 </template>
@@ -24,18 +25,18 @@ export default defineComponent({
   },
 
   props: {
+    homeAway: { type: String as () => ReportHomeAway, default: 'home' },
     id: { type: Number, default: 0 },
-    homeAway: { type: String as () => HomeAway, default: 'home' },
     playerName: { type: String, default: '' },
-    position: { type: String as () => Position, default: 'GK' },
-    positionId: { type: Number as () => PositionId, default: 1 },
+    point: { type: String as () => ReportPoint, default: '6.5' },
+    position: { type: String as () => ReportPosition, default: 'GK' },
+    positionId: { type: Number as () => ReportPositionId, default: 1 },
     shirtNumber: { type: Number, default: 0 },
-    point: { type: Number, default: 6.5 },
     text: { type: String, default: '' }
   },
 
   setup(_, ctx) {
-    const inputPoint = (point: number): void => ctx.emit('input-point', point)
+    const inputPoint = (point: string): void => ctx.emit('input-point', point)
     const inputText = (text: string): void => ctx.emit('input-text', text)
     return { inputPoint, inputText }
   }

@@ -22,7 +22,7 @@ export default defineComponent({
   },
 
   props: {
-    value: { type: String, default: '6.5' }
+    value: { type: String as () => ReportPoint, default: '6.5' }
   },
 
   setup(_, ctx) {
