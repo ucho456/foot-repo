@@ -69,6 +69,27 @@ matchId()
 入力ボックスをどうするか。
 who scores のデータサイトなどがどのようにしているか調べてみる。
 
-Map
-https://nulab.com/ja/blog/nulab/100times-faster-performance-improvement-set-map/
-https://tcd-theme.com/2021/10/javascript-map-set.html
+matchList の初期表示。
+ログイン中かつお気に入りチームを登録している場合
+お気に入りチームの試合を最新順で表示。
+
+その他
+日本代表(J リーグ)の試合を最新順で表示
+
+検索
+セレクトボックス 3 つ
+コンペティション＋日本代表＋お気に入りチーム 検索 (初期値がお気に入りチーム又は日本代表)
+シーズン (初期値が今シーズン)
+チーム (初期値が空。日本代表・お気に入りチームの場合は選択できない。)
+
+# matches を firebase に保存する。
+
+firebase の定期実行の関数を利用して、
+matches を保存する。一時間に一回？
+(最新の試合のデータは試合終了後どのくらいで反映されるのか確認する)
+コンペティションでマッチ DB を分けるのは有かも。match の検索条件案をよく検討する。
+https://rooter.jp/web-crawling/set-cron-to-firebase/
+https://qiita.com/nemutas/items/a2ccfb807cb00dcdeabe
+
+コーチと選手の ID が被ってない事が分かったので使用していく。
+Mom とか

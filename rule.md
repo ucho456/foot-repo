@@ -13,11 +13,9 @@
 # 型定義
 
 - 関数の引数と戻り値には必ず型をつける
-- 外部 API から取得したデータ(firebase 含む)には必ず型をつける
-- 外部から取得したデータはアサーションで型定義する
+- データベースのデータの型とそれに関連する型は types で定義する
 - vue.props も可能な限りアサーションで正確な型を定義する
-- d.ts ファイルに全て書く。
-- ファイルは DB のテーブル毎 + footballData.d.ts
+- ファイルは DB のテーブル毎に作成する
 - 細かい定義 Hoge HogeListItem dispHoge HogeMap の順で書く
 
 # props
@@ -57,7 +55,7 @@
 
 # 命名規則
 
-- db データを一覧画面に表示ように変換した時は複数系 hogeList、hogeItem
+- db データを一覧画面に表示ように変換した時は複数系 hogeList、hogeListItem
 - 詳細画面に表示する際のデータは dispHoge
 - db そのままのデータ構造の場合は hoge、hoges（登録画面、編集画面など）
 
@@ -70,4 +68,4 @@
   - hogeItems の場合 (hItem, index) in hogeItems
   - key は id
 
-- map などは hoges.map((h) => h.id)
+- map などは hogeFugas.map((hf) => hf.id)
