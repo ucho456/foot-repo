@@ -31,7 +31,7 @@
           </v-container>
           <v-container>
             <v-row>
-              <v-col cols="9" sm="5" md="5">
+              <v-col cols="9" sm="5" md="6">
                 <SelectMom
                   v-model="report.mom"
                   :away-team-report-items="report.awayTeamReportItems"
