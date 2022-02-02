@@ -27,8 +27,8 @@ export default defineComponent({
           id: 0,
           homeAway: 'away',
           playerName: '',
-          position: 'GK',
           positionId: 1,
+          position: 'GK',
           shirtNumber: 0,
           point: '6.5',
           text: ''
@@ -42,8 +42,8 @@ export default defineComponent({
           id: 0,
           homeAway: 'home',
           playerName: '',
-          position: 'GK',
           positionId: 1,
+          position: 'GK',
           shirtNumber: 0,
           point: '6.5',
           text: ''
