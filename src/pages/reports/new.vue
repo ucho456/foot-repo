@@ -32,8 +32,8 @@
           <v-container>
             <v-row>
               <v-col cols="9" sm="5" md="6">
-                <SelectMom
-                  v-model="report.mom"
+                <SelectIdMom
+                  v-model="report.momId"
                   :away-team-report-items="report.awayTeamReportItems"
                   :report-team="report.selectTeam"
                   :home-team-report-items="report.homeTeamReportItems"
@@ -73,7 +73,7 @@ import { defineComponent, useRouter } from '@nuxtjs/composition-api' //, useRout
 import ReportsHeader from '@/components/organisms/ReportsHeader.vue'
 import SelectHomeAway from '@/components/molecules/SelectHomeAway.vue'
 import ReportsPlayerForm from '@/components/organisms/ReportsPlayerForm.vue'
-import SelectMom from '@/components/molecules/SelectMom.vue'
+import SelectIdMom from '@/components/molecules/SelectIdMom.vue'
 import Textarea from '@/components/molecules/Textarea.vue'
 import ButtonBlockWhite from '@/components/molecules/ButtonBlockWhite.vue'
 import ButtonBlockBlue from '@/components/molecules/ButtonBlockBlue.vue'
@@ -87,7 +87,7 @@ export default defineComponent({
     ReportsHeader,
     SelectHomeAway,
     ReportsPlayerForm,
-    SelectMom,
+    SelectIdMom,
     Textarea,
     ButtonBlockWhite,
     ButtonBlockBlue

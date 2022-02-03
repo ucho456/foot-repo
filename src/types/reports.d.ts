@@ -63,7 +63,7 @@ interface Report {
   awayTeamPenalty: number
   awayTeamReportItems: ReportItem[]
   summary: string
-  mom: string
+  momId: number
 }
 
 interface ReportListItem {

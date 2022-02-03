@@ -611,7 +611,7 @@ export const matches: Match[] = [
 export const reports = [
   {
     id: 1,
-    title: 'ダービーマッチ！！！',
+    title: 'ダービーマッチ!',
     userId: 1,
     guestName: '',
     matchId: 1,
@@ -732,11 +732,11 @@ export const reports = [
       }
     ],
     summary: '総評だよ',
-    mom: 'はひふへほ'
+    momId: 105
   },
   {
     id: 2,
-    title: 'ダービーマッチ！！！',
+    title: 'ダービーマッチ!',
     userId: 2,
     guestName: '',
     matchId: 1,
@@ -857,11 +857,11 @@ export const reports = [
       }
     ],
     summary: '総評だよ',
-    mom: 'はひふへほ'
+    momId: 105
   },
   {
     id: 3,
-    title: 'ダービーマッチ！！！',
+    title: 'ダービーマッチ!',
     userId: 0,
     guestName: 'ゲスト太郎',
     matchId: 1,
@@ -982,7 +982,7 @@ export const reports = [
       }
     ],
     summary: '総評だよ',
-    mom: 'はひふへほ'
+    momId: 105
   }
 ] as Report[]
 

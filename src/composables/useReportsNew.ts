@@ -66,7 +66,7 @@ export const setUpReport = (match: Match, user: User | GuestUser): Report => {
     awayTeamPenalty: match.awayTeamPenalty,
     awayTeamReportItems,
     summary: '',
-    mom: ''
+    momId: 0
   })
 }
 

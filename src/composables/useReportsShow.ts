@@ -9,7 +9,7 @@ const setUpDispReportItems = (report: Report): DispReportItem[] => {
         playerInfo: `${ri.position} ${ri.shirtNumber} ${ri.playerName}`,
         point: ri.point,
         text: ri.text,
-        momFlg: report.mom === ri.playerName
+        momFlg: report.momId === ri.id
       }
     })
   return dispReportItems

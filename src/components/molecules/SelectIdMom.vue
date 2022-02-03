@@ -1,5 +1,5 @@
 <template>
-  <BaseSelect
+  <BaseSelectId
     :items="players"
     :icon="'mdi-account-star'"
     :label="'マン・オブ・ザ・マッチ'"
@@ -10,13 +10,13 @@
 
 <script lang="ts">
 import { defineComponent, computed } from '@nuxtjs/composition-api'
-import BaseSelect from '@/components/atoms/BaseSelect.vue'
+import BaseSelectId from '@/components/atoms/BaseSelectId.vue'
 
 export default defineComponent({
-  name: 'SelectMom',
+  name: 'SelectIdMom',
 
   components: {
-    BaseSelect
+    BaseSelectId
   },
 
   props: {
@@ -51,18 +51,23 @@ export default defineComponent({
       ]
     },
     selectTeam: { type: String as () => ReportSelectTeam, default: 'Home team only' },
-    value: { type: String, default: '' }
+    value: { type: Number, default: 0 }
   },
 
   setup(props, ctx) {
+    const makePlayers = (reportItems: ReportItem[]): { value: number; text: string }[] => {
+      return reportItems.map((ri) => {
+        return { value: ri.id, text: ri.playerName }
+      })
+    }
     const players = computed(() => {
       return props.selectTeam === 'Home team only'
-        ? props.homeTeamReportItems.map((htri) => htri.playerName)
+        ? makePlayers(props.homeTeamReportItems)
         : props.selectTeam === 'Away team only'
-        ? props.awayTeamReportItems.map((atri) => atri.playerName)
-        : props.homeTeamReportItems.concat(props.awayTeamReportItems).map((ri) => ri.playerName)
+        ? makePlayers(props.awayTeamReportItems)
+        : makePlayers(props.homeTeamReportItems.concat(props.awayTeamReportItems))
     })
-    const handleInput = (value: string): void => ctx.emit('input', value)
+    const handleInput = (id: number): void => ctx.emit('input', id)
     return { players, handleInput }
   }
 })
