@@ -19,9 +19,15 @@
     </v-main>
     <v-navigation-drawer v-model="showFlg" fixed right temporary>
       <v-list>
+        <v-list-item class="px-2" :to="'/'">
+          <v-list-item-avatar>
+            <v-img src="https://randomuser.me/api/portraits/men/85.jpg"></v-img>
+          </v-list-item-avatar>
+          <v-list-item-title>John Leider</v-list-item-title>
+        </v-list-item>
         <v-list-item
           v-for="item in navigationDrawerItems"
-          :key="item.key"
+          :key="item.id"
           :to="item.to"
           exact
           router
