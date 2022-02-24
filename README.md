@@ -1,70 +1,117 @@
 # foot-repo
 
-# git push test in container
+# 短縮文字一覧
 
-## Build Setup
+- database => db
+- display => disp
+- error => err
+- flag => flg
+- information => info
+- man of the match => mom
+- response => res
+- request => req
 
-```bash
-# install dependencies
-$ npm install
+# 型定義
 
-# serve with hot reload at localhost:3000
-$ npm run dev
+- 後からコードを読み返した時にこの変数や関数はどんなデータなのか？が分かるように書いていく
+- 関数の引数と戻り値には必ず型をつける
+- 変数は直接定義時以外は ctrl ボタンで検索しやすいように定義する
+- データベースのデータの型とそれに関連する型は types で定義する
+- vue.props も可能な限りアサーションで正確な型を定義する
+- ファイルは DB のテーブル毎に作成する
+- 細かい定義 Hoge HogeListItem dispHoge HogeMap の順で書く
 
-# build for production and launch server
-$ npm run build
-$ npm run start
+# props
 
-# generate static project
-$ npm run generate
-```
+- 可能な限り正確な型を付ける
+- a-z 順で記入
+- default 値
+  - String ''
+  - Number 0
+  - Boolean false
+  - 入る値が決まっている場合はその型から
 
-For detailed explanation on how things work, check out the [documentation](https://nuxtjs.org).
+# html タグのプロパティ順
 
-## Special Directories
+- v-if, v-else, v-show
+- v-for :key
+- v-model
+- v-hoge
+- class
+- gridSystem cols md sm xs (xs < 600px < sm < 960px < md < 1264px < lg < 1904px < xl)
+- v-bind(:) icon とか router など Vuetify 用の props も同じとして考える
+- v-on(@)
 
-You can create the following extra directories, some of which have special behaviors. Only `pages` is required; you can delete them if you don't want to use their functionality.
+# components
 
-### `assets`
+## 粒度
 
-The assets directory contains your uncompiled assets such as Stylus or Sass files, images, or fonts.
+1. デザインを統一する為に分割する。デザインの再利用が確定したタイミングで分割する。ロジックは持たせない。
+2. ロジックを境界として分割する。密結合で良い。基本的に再利用は考えない。
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/assets).
+## pages
 
-### `components`
+- ページを構成する各コンポーネントを配置する事を責務とする。
+- VueRouter によるページ遷移とエラーハンドリングのロジックは記述して良い。
+- その他のロジックに関しては基本的に composables に記述する。
 
-The components directory contains your Vue.js components. Components make up the different parts of your page and can be reused and imported into your pages, layouts and even other components.
+## その他
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/components).
+- atoms は装飾したい v-component
+- modules は atoms を装飾したコンポーネント
+- organisms はその他大きなコンポーネント
+  - 命名は使用するページコンポーネントの冠を取る
+  - 例外的にサイド用のコンポーネントのみ SideHoge.vue
 
-### `layouts`
+# 命名規則
 
-Layouts are a great help when you want to change the look and feel of your Nuxt app, whether you want to include a sidebar or have distinct layouts for mobile and desktop.
+- ~~db データを一覧画面に表示ように変換した時は複数系 hogeList、hogeListItem~~
+- ~~詳細画面に表示する際のデータは dispHoge~~
+- ~~db そのままのデータ構造の場合は hoge、hoges（登録画面、編集画面など）~~
+- 可能な限りデータを弄らないで表示できるデータベース設計・デザイン設計を検討する
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/layouts).
+# ループ
 
-### `pages`
+- v-for
 
-This directory contains your application views and routes. Nuxt will read all the `*.vue` files inside this directory and setup Vue Router automatically.
+  - List の場合 (hItem, index) in hogeList
+  - hoges の場合 (h, index) in hoges
+  - hogeItems の場合 (hItem, index) in hogeItems
+  - key は id
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/get-started/routing).
+- map などは hogeFugas.map((hf) => hf.id)
 
-### `plugins`
+# メモ
 
-The plugins directory contains JavaScript plugins that you want to run before instantiating the root Vue.js Application. This is the place to add Vue plugins and to inject functions or constants. Every time you need to use `Vue.use()`, you should create a file in `plugins/` and add its path to plugins in `nuxt.config.js`.
+## やるべき事
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/plugins).
+reports のカラムに teamIds: Array を加える。
+firebase のクエリ発行時に
+where('teamIds', 'array-contains', teamId)
+で or 検索ができるようになる為。
+https://firebase.google.cn/docs/firestore/query-data/queries?hl=ja#array_membership
 
-### `static`
+## github のアクセストークンが切れた際に行う作業
 
-This directory contains your static files. Each file inside this directory is mapped to `/`.
+https://zerofromlight.com/blogs/detail/106/
 
-Example: `/static/robots.txt` is mapped as `/robots.txt`.
+## cloud functions で cron 処理をする記事
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/static).
+https://rooter.jp/web-crawling/set-cron-to-firebase/
+https://qiita.com/nemutas/items/a2ccfb807cb00dcdeabe
 
-### `store`
+# Report 検索仕様
 
-This directory contains your Vuex store files. Creating a file in this directory automatically activates Vuex.
+- 初期表示 最新 Report 20 件くらい？
+- フォローユーザーの記事のみ表示か全てを表示か選択できる。
+- competitionId で検索
+- 開催日前後 1 日を検索する。
+- teamId で検索。
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/store).
+# Match 検索仕様
+
+- 初期表示 最新のお気に入りチームの Match か最新の Match 20 件
+- competitionId で検索
+- 開催日前後 1 日を検索する。
+- teamId で検索。
+- Report の検索 Popup と同じものを使用する。ラジオボタンのやつは検討。
