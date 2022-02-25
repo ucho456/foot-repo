@@ -1,4 +1,4 @@
-# foot-repo
+# foot-repo a
 
 # 短縮文字一覧
 
