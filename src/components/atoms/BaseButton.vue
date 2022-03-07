@@ -9,8 +9,9 @@
     :outlined="outlinedFlg"
     :text="textFlg"
     @click="handleClick"
-    ><v-icon :left="leftFlg">{{ icon }}</v-icon
-    >{{ text }}</v-btn
+    ><v-icon :left="leftFlg">{{ icon }}</v-icon>
+    <v-img v-if="image" class="mr-1" max-height="18" max-width="18" :src="image"></v-img>
+    {{ text }}</v-btn
   >
 </template>
 
@@ -26,6 +27,7 @@ export default defineComponent({
     disabled: { type: Boolean, default: false },
     icon: { type: String, default: '' },
     iconFlg: { type: Boolean, default: false },
+    image: { type: String, default: '' },
     leftFlg: { type: Boolean, default: false },
     loading: { type: Boolean, default: false },
     outlinedFlg: { type: Boolean, default: false },

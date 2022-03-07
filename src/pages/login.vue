@@ -13,17 +13,23 @@
             <TextFieldPassword v-model="data.password" />
           </v-col>
           <v-row class="mb-8" justify="center">
-            <v-col cols="8">
+            <v-col cols="10">
               <ButtonBlockBlue
                 :disabled="invalid"
                 :icon="'mdi-login'"
                 :loading="isLoading"
-                :text="'Login'"
-                @click="login"
+                :text="'ログイン'"
+                @click="loginEmail"
               />
             </v-col>
-            <v-col cols="8">
-              <ButtonBlockWhite :icon="'mdi-arrow-left'" :text="'Back'" @click="back" />
+            <v-col cols="10">
+              <ButtonTwitter @click="loginTwitter" />
+            </v-col>
+            <v-col cols="10">
+              <ButtonGoogle @click="loginGoogle" />
+            </v-col>
+            <v-col cols="10">
+              <ButtonBlockWhite :icon="'mdi-arrow-left'" :text="'戻る'" @click="back" />
             </v-col>
           </v-row>
         </v-row>
@@ -34,9 +40,12 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref, useRouter } from '@nuxtjs/composition-api'
+import { signInEmail, signInTwitter, signInGoogle } from '@/composables/useLogin'
 import TextFieldEmail from '@/components/molecules/TextFieldEmail.vue'
 import TextFieldPassword from '@/components/molecules/TextFieldPassword.vue'
 import ButtonBlockBlue from '@/components/molecules/ButtonBlockBlue.vue'
+import ButtonTwitter from '@/components/molecules/ButtonTwitter.vue'
+import ButtonGoogle from '@/components/molecules/ButtonGoogle.vue'
 import ButtonBlockWhite from '@/components/molecules/ButtonBlockWhite.vue'
 
 export default defineComponent({
@@ -46,6 +55,8 @@ export default defineComponent({
     TextFieldEmail,
     TextFieldPassword,
     ButtonBlockBlue,
+    ButtonTwitter,
+    ButtonGoogle,
     ButtonBlockWhite
   },
 
@@ -55,9 +66,28 @@ export default defineComponent({
     const data = reactive({ email: '', password: '' })
     const isLoading = ref(false)
     const router = useRouter()
-    const login = () => router.push('/')
     const back = () => router.back()
-    return { data, isLoading, login, back }
+    const loginEmail = async () => {
+      isLoading.value = true
+      const user = await signInEmail(isLoading, data.email, data.password)
+      console.log(user)
+      router.push('/')
+      isLoading.value = false
+    }
+
+    const loginTwitter = async () => {
+      const user = await signInTwitter(isLoading)
+      console.log(user)
+      router.push('/')
+    }
+
+    const loginGoogle = async () => {
+      const user = await signInGoogle(isLoading)
+      console.log(user)
+      router.push('/')
+    }
+
+    return { data, isLoading, back, loginEmail, loginTwitter, loginGoogle }
   }
 })
 </script>
