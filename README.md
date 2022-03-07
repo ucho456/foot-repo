@@ -10,6 +10,7 @@
 - man of the match => mom
 - response => res
 - request => req
+- reference => ref
 
 # 型定義
 

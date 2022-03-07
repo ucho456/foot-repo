@@ -1,3 +1,88 @@
+/*
+  今後の方針
+  userのauthをできるようにする。
+  reportのセキュリティールールを作る。
+  readから実装していく。
+  フィールドの機密レベルを統一する
+  セキュリティールールでの検証ができないので配列で持ちたいデータはなるべくサブコレクションにできないか検証する。(ReportItemsはサブコレクションにする)
+  flgは持たないようにする。代わりに別のドキュメントに分ける。(例: 普通のusers, 退会済みのusers)
+  リファレンスについて86ページ
+  ドキュメント同士の関連を表現するのは原則リファレンス型
+  非正規化されたフィールドの更新例91ページ
+  https://zenn.dev/tentel/articles/ea7d5c03e68e6d142d98 クエリの参考
+  https://webcache.googleusercontent.com/search?q=cache:gYdzhsUF-SoJ:https://zenn.dev/yucatio/articles/5427eede6c3e34+&cd=5&hl=ja&ct=clnk&gl=jp セキュリティールール
+  https://blog.mogmet.com/firestore-implemation-security-rule-logic-introduce/ 設計書簡
+  https://lyohe.github.io/post/2021-10-27-firestore-getting-started/
+*/
+/*
+  user = {
+
+  }
+*/
+/*
+  reports = {
+    title titleだとツールチップで出てしまうのでプロパティ名を変更する。
+    user: {
+      ref
+      name
+      imageUrl
+    }
+    guest
+    matchRef 試合のデータ詳細ページでmatchRefを持つreportItemsを取得？
+    competitionId 検索用
+    competitionName
+    date
+    teamIds: [homeTeamId, awayTeamId] 検索用
+    homeTeamName
+    homeTeamScore
+    awayTeamName
+    awayTeamScore
+    summary
+    momId
+    like
+    createdAt
+    likes: subCollection 
+    comments: subCollection
+    homeTeamReportItems: subCollection 
+    awayTeamReportItems: subCollection 
+  }
+  ・検索ボックス曖昧検索ができないので諦める。
+  ・title, likeの更新の必要があるがセキュリティールールよりクエリが単純になる事を優先する。
+  ・reportDetailは現状summary, momIdしかないので不要。summaryも文字制限してしまえばそこまで大きなデータにはならない筈。
+  ・userは1試合につき1つのレポートしか書けない。レポートがある場合は編集画面に飛ぶようにする。
+  ・関連記事userの記事、同じ試合の記事なども表示したいな。
+
+      likes = {
+        userRef
+      }
+      ・userRefを持っておいてexist()で無かったらlikeを1足してuserRefを追加。あったらlikeを減らしてuserRefを削除？
+
+      comments = {
+        user: {
+          ref
+          name
+          imageUrl
+        }
+        text
+      }
+
+      homeTeam&awayTeam
+      reportItems = {
+        matchRef
+        homeAway
+        playerId
+        playerName
+        positionId
+        positionName
+        shirtNumber
+        point: string
+        text
+      }
+      ・試合詳細で取得してpointの平均を出すのでmatchRefを使う。コレクショングループで対応できそう。96ページ
+      ・並び順をどうするか。GK=>DF=>MF=>FW=>HCの順で。orderを持つ？
+      ・homeTeamとawayTeamの間にチーム名や画像を差し込みたいので分けて持っておく。
+*/
+
 export const matches: Match[] = [
   {
     id: 204950,
