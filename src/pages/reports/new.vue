@@ -55,10 +55,10 @@
           <v-container>
             <v-row justify="center">
               <v-col cols="4">
-                <ButtonBlockWhite :icon="'mdi-arrow-left'" :text="'戻る'" @click="back" />
+                <ButtonBack @click="back" />
               </v-col>
               <v-col cols="4">
-                <ButtonBlockBlue :icon="'mdi-pencil-plus'" :text="'投稿'" :loading="false" />
+                <ButtonSubmit :icon="'mdi-pencil-plus'" :text="'投稿'" :loading="false" />
               </v-col>
             </v-row>
           </v-container>
@@ -75,8 +75,8 @@ import SelectHomeAway from '@/components/molecules/SelectHomeAway.vue'
 import ReportsPlayerForm from '@/components/organisms/ReportsPlayerForm.vue'
 import SelectIdMom from '@/components/molecules/SelectIdMom.vue'
 import Textarea from '@/components/molecules/Textarea.vue'
-import ButtonBlockWhite from '@/components/molecules/ButtonBlockWhite.vue'
-import ButtonBlockBlue from '@/components/molecules/ButtonBlockBlue.vue'
+import ButtonBack from '@/components/molecules/ButtonBack.vue'
+import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
 import { matches, users } from '@/utils/testData'
 import { setUpReport, inputPoint, inputText } from '@/composables/useReportsNew'
 
@@ -89,8 +89,8 @@ export default defineComponent({
     ReportsPlayerForm,
     SelectIdMom,
     Textarea,
-    ButtonBlockWhite,
-    ButtonBlockBlue
+    ButtonBack,
+    ButtonSubmit
   },
 
   layout: 'noside',

@@ -17,7 +17,7 @@
           </v-col>
           <v-row class="mb-8" justify="center">
             <v-col cols="10">
-              <ButtonBlockBlue
+              <ButtonSubmit
                 :disabled="invalid"
                 :icon="'mdi-login'"
                 :loading="isLoading"
@@ -32,7 +32,7 @@
               <ButtonGoogle :loading="isLoading" @click="submit('google')" />
             </v-col>
             <v-col cols="10">
-              <ButtonBlockWhite :icon="'mdi-arrow-left'" :text="'戻る'" @click="back" />
+              <ButtonBack @click="back" />
             </v-col>
           </v-row>
         </v-row>
@@ -46,10 +46,10 @@ import { defineComponent, reactive, ref, useRouter } from '@nuxtjs/composition-a
 import { signIn } from '@/composables/useLogin'
 import TextFieldEmail from '@/components/molecules/TextFieldEmail.vue'
 import TextFieldPassword from '@/components/molecules/TextFieldPassword.vue'
-import ButtonBlockBlue from '@/components/molecules/ButtonBlockBlue.vue'
+import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
 import ButtonTwitter from '@/components/molecules/ButtonTwitter.vue'
 import ButtonGoogle from '@/components/molecules/ButtonGoogle.vue'
-import ButtonBlockWhite from '@/components/molecules/ButtonBlockWhite.vue'
+import ButtonBack from '@/components/molecules/ButtonBack.vue'
 
 type SignInType = 'email' | 'twitter' | 'google'
 
@@ -59,10 +59,10 @@ export default defineComponent({
   components: {
     TextFieldEmail,
     TextFieldPassword,
-    ButtonBlockBlue,
+    ButtonSubmit,
     ButtonTwitter,
     ButtonGoogle,
-    ButtonBlockWhite
+    ButtonBack
   },
 
   layout: 'white',

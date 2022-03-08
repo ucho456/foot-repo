@@ -2,10 +2,12 @@
   <BaseButton
     :block-flg="true"
     :color="'primary'"
+    :disabled="disabled"
     :icon="icon"
     :left-flg="true"
-    :outlined-flg="true"
+    :loading="loading"
     :text="text"
+    :white-text-flg="true"
     @click="handleClick"
   />
 </template>
@@ -15,14 +17,16 @@ import { defineComponent } from '@nuxtjs/composition-api'
 import BaseButton from '@/components/atoms/BaseButton.vue'
 
 export default defineComponent({
-  name: 'ButtonBlockWhite',
+  name: 'ButtonSubmit',
 
   components: {
     BaseButton
   },
 
   props: {
+    disabled: { type: Boolean, default: false },
     icon: { type: String, default: '' },
+    loading: { type: Boolean, default: false },
     text: { type: String, default: '' }
   },
 

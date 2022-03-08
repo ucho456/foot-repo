@@ -2,12 +2,10 @@
   <BaseButton
     :block-flg="true"
     :color="'primary'"
-    :disabled="disabled"
-    :icon="icon"
+    :icon="'mdi-arrow-left'"
     :left-flg="true"
-    :loading="loading"
-    :text="text"
-    :white-text-flg="true"
+    :outlined-flg="true"
+    :text="'戻る'"
     @click="handleClick"
   />
 </template>
@@ -17,17 +15,10 @@ import { defineComponent } from '@nuxtjs/composition-api'
 import BaseButton from '@/components/atoms/BaseButton.vue'
 
 export default defineComponent({
-  name: 'ButtonBlockBlue',
+  name: 'ButtonBack',
 
   components: {
     BaseButton
-  },
-
-  props: {
-    disabled: { type: Boolean, default: false },
-    icon: { type: String, default: '' },
-    loading: { type: Boolean, default: false },
-    text: { type: String, default: '' }
   },
 
   setup(_, ctx) {
