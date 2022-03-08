@@ -1,4 +1,3 @@
-import { Ref } from '@nuxtjs/composition-api'
 import {
   getAuth,
   signInWithPopup,
@@ -6,30 +5,19 @@ import {
   TwitterAuthProvider,
   GoogleAuthProvider
 } from 'firebase/auth'
-const auth = getAuth()
+type SignInType = 'email' | 'twitter' | 'google'
 
-export const signInEmail = async (isLoading: Ref<boolean>, email: string, password: string) => {
-  isLoading.value = true
-  const userCredential = await signInWithEmailAndPassword(auth, email, password)
-  const user = userCredential.user
-  isLoading.value = false
-  return user
-}
-
-export const signInTwitter = async (isLoading: Ref<boolean>) => {
-  isLoading.value = true
-  const provider = new TwitterAuthProvider()
-  const userCredential = await signInWithPopup(auth, provider)
-  const user = userCredential.user
-  isLoading.value = false
-  return user
-}
-
-export const signInGoogle = async (isLoading: Ref<boolean>) => {
-  isLoading.value = true
-  const provider = new GoogleAuthProvider()
-  const userCredential = await signInWithPopup(auth, provider)
-  const user = userCredential.user
-  isLoading.value = false
+export const signIn = async (type: SignInType, email: string, password: string) => {
+  const auth = getAuth()
+  const provider = type === 'twitter' ? new TwitterAuthProvider() : new GoogleAuthProvider()
+  const userCredential =
+    type === 'email'
+      ? await signInWithEmailAndPassword(auth, email, password)
+      : await signInWithPopup(auth, provider)
+  const user = {
+    uid: userCredential.user.uid,
+    name: userCredential.user.displayName,
+    photoUrl: userCredential.user.photoURL
+  }
   return user
 }
