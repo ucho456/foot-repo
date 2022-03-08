@@ -9,7 +9,7 @@
     </v-toolbar>
     <v-container v-if="isLoading" class="pb-10">
       <v-row justify="center">
-        <v-progress-circular color="darkBlue" indeterminate />
+        <v-progress-circular color="primary" indeterminate />
       </v-row>
     </v-container>
     <v-list v-else class="mt-n4" three-line>

@@ -98,11 +98,12 @@ export default {
     theme: {
       themes: {
         light: {
-          blue: colors.indigo.accent4,
-          darkBlue: colors.indigo.darken4,
-          darkGrey: colors.blueGrey.darken4,
-          lightBlue: colors.indigo.lighten1,
-          error: colors.red
+          primary: colors.indigo.darken4,
+          accent: colors.indigo.accent4,
+          fotter: colors.blueGrey.darken4,
+          error: colors.red,
+          warning: colors.yellow,
+          info: colors.green
         }
       }
     }

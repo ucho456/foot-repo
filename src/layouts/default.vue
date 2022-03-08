@@ -1,6 +1,6 @@
 <template>
   <v-app class="light-gray">
-    <v-app-bar class="white--text" app color="darkBlue" fixed>
+    <v-app-bar class="white--text" app color="primary" fixed>
       <v-container class="align-center d-flex">
         <v-toolbar-title v-text="'Foot-Repo'" />
         <v-spacer />
@@ -46,7 +46,7 @@
         </div>
       </template>
     </v-navigation-drawer>
-    <v-footer class="white--text" :absolute="true" app color="darkGrey">
+    <v-footer class="white--text" :absolute="true" app color="fotter">
       <v-container class="align-center d-flex">
         <span>&copy; {{ new Date().getFullYear() }}</span>
       </v-container>

@@ -1,7 +1,7 @@
 <template>
   <BaseButton
     :block-flg="true"
-    :color="'darkBlue'"
+    :color="'primary'"
     :icon="icon"
     :left-flg="true"
     :outlined-flg="true"
