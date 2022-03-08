@@ -1,10 +1,11 @@
 <template>
   <BaseButton
     :block-flg="true"
-    :color="'darkBlue'"
+    :color="'#4285f4'"
     :image="googleIcon"
-    :outlined-flg="true"
+    :loading="loading"
     :text="'Googleアカウントでログイン'"
+    :white-text-flg="true"
     @click="handleClick"
   />
 </template>
@@ -21,8 +22,7 @@ export default defineComponent({
   },
 
   props: {
-    icon: { type: String, default: '' },
-    text: { type: String, default: '' }
+    loading: { type: Boolean, default: false }
   },
 
   setup(_, ctx) {

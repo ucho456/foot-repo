@@ -10,7 +10,7 @@
     :text="textFlg"
     @click="handleClick"
     ><v-icon :left="leftFlg">{{ icon }}</v-icon>
-    <v-img v-if="image" class="mr-1" max-height="18" max-width="18" :src="image"></v-img>
+    <v-img v-if="image" class="mr-2" max-height="18" max-width="18" :src="image"></v-img>
     {{ text }}</v-btn
   >
 </template>

@@ -23,10 +23,7 @@ export default defineComponent({
   },
 
   props: {
-    disabled: { type: Boolean, default: false },
-    icon: { type: String, default: '' },
-    loading: { type: Boolean, default: false },
-    text: { type: String, default: '' }
+    loading: { type: Boolean, default: false }
   },
 
   setup(_, ctx) {
