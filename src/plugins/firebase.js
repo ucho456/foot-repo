@@ -1,4 +1,4 @@
-import { initializeApp } from 'firebase/app'
+import { initializeApp, getApps, getApp } from 'firebase/app'
 import { getFirestore } from 'firebase/firestore'
 
 const config = {
@@ -11,7 +11,7 @@ const config = {
   measurementId: process.env.FIREBASE_MEASUREMENT_ID
 }
 
-const firebase = initializeApp(config)
+const firebase = !getApps().length ? initializeApp(config) : getApp()
 const db = getFirestore(firebase)
 
 export default db
