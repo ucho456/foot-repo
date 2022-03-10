@@ -7,6 +7,7 @@
     :icon="iconFlg"
     :loading="loading"
     :outlined="outlinedFlg"
+    style="text-transform: none"
     :text="textFlg"
     @click="handleClick"
     ><v-icon :left="leftFlg">{{ icon }}</v-icon>
