@@ -12,7 +12,7 @@ import db from '@/plugins/firebase'
 import IndexReportList from '@/components/organisms/IndexReportList.vue'
 import { reports, users } from '@/utils/testData'
 import { makeReportList } from '@/composables/useIndex'
-import { useCurrentUser } from '@/composables/user'
+import { useCurrentUser } from '@/composables/useUser'
 export default defineComponent({
   name: 'Index',
 
