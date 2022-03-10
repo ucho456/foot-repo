@@ -43,6 +43,9 @@
             <v-col cols="10">
               <ButtonBack @click="back" />
             </v-col>
+            <NuxtLink class="text-caption hover" to="/login">
+              アカウントをお持ちの場合はログインから
+            </NuxtLink>
           </v-row>
         </v-row>
       </v-container>
@@ -52,7 +55,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref, useRouter } from '@nuxtjs/composition-api'
-import { signIn } from '@/composables/useLogin'
+import { login } from '@/composables/useUser'
 import TextFieldEmail from '@/components/molecules/TextFieldEmail.vue'
 import TextFieldPassword from '@/components/molecules/TextFieldPassword.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
@@ -86,7 +89,7 @@ export default defineComponent({
     const submit = async (type: SignInType): Promise<void> => {
       try {
         isLoading.value = true
-        const user = await signIn(type, inputData.email, inputData.password)
+        const user = await login(type, inputData.email, inputData.password)
         console.log(user)
         router.push('/')
       } catch {
@@ -100,3 +103,11 @@ export default defineComponent({
   }
 })
 </script>
+
+<style lang="scss" scoped>
+.hover {
+  &:hover {
+    opacity: 0.8;
+  }
+}
+</style>
