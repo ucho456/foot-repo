@@ -26,10 +26,18 @@
               />
             </v-col>
             <v-col cols="10">
-              <ButtonTwitter :loading="isLoading" @click="submit('twitter')" />
+              <ButtonTwitter
+                :loading="isLoading"
+                :text="'Twitterアカウントでログイン'"
+                @click="submit('twitter')"
+              />
             </v-col>
             <v-col cols="10">
-              <ButtonGoogle :loading="isLoading" @click="submit('google')" />
+              <ButtonGoogle
+                :loading="isLoading"
+                :text="'Googleアカウントでログイン'"
+                @click="submit('google')"
+              />
             </v-col>
             <v-col cols="10">
               <ButtonBack @click="back" />

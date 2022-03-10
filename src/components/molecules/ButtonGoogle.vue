@@ -4,7 +4,7 @@
     :color="'#4285f4'"
     :image="googleIcon"
     :loading="loading"
-    :text="'Googleアカウントでログイン'"
+    :text="text"
     :white-text-flg="true"
     @click="handleClick"
   />
@@ -22,7 +22,8 @@ export default defineComponent({
   },
 
   props: {
-    loading: { type: Boolean, default: false }
+    loading: { type: Boolean, default: false },
+    text: { type: String, default: '' }
   },
 
   setup(_, ctx) {

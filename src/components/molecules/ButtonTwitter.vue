@@ -5,7 +5,7 @@
     :icon="'mdi-twitter'"
     :left-flg="true"
     :loading="loading"
-    :text="'Twitterアカウントでログイン'"
+    :text="text"
     :white-text-flg="true"
     @click="handleClick"
   />
@@ -23,7 +23,8 @@ export default defineComponent({
   },
 
   props: {
-    loading: { type: Boolean, default: false }
+    loading: { type: Boolean, default: false },
+    text: { type: String, default: '' }
   },
 
   setup(_, ctx) {
