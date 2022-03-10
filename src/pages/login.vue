@@ -51,7 +51,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref, useRouter } from '@nuxtjs/composition-api'
-import { signIn } from '@/composables/useLogin'
+import { login } from '@/composables/useUser'
 import TextFieldEmail from '@/components/molecules/TextFieldEmail.vue'
 import TextFieldPassword from '@/components/molecules/TextFieldPassword.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
@@ -59,7 +59,7 @@ import ButtonTwitter from '@/components/molecules/ButtonTwitter.vue'
 import ButtonGoogle from '@/components/molecules/ButtonGoogle.vue'
 import ButtonBack from '@/components/molecules/ButtonBack.vue'
 
-type SignInType = 'email' | 'twitter' | 'google'
+type LoginType = 'email' | 'twitter' | 'google'
 
 export default defineComponent({
   name: 'Login',
@@ -82,10 +82,10 @@ export default defineComponent({
     const router = useRouter()
     const back = () => router.back()
 
-    const submit = async (type: SignInType): Promise<void> => {
+    const submit = async (type: LoginType): Promise<void> => {
       try {
         isLoading.value = true
-        const user = await signIn(type, inputData.email, inputData.password)
+        const user = await login(type, inputData.email, inputData.password)
         console.log(user)
         router.push('/')
       } catch {
