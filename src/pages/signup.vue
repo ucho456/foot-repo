@@ -19,7 +19,7 @@
             <v-col cols="10">
               <ButtonSubmit
                 :disabled="invalid"
-                :icon="'mdi-login'"
+                :icon="'mdi-account-plus'"
                 :loading="isLoading"
                 :text="'登録する'"
                 @click="submit('email')"
@@ -55,7 +55,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref, useRouter } from '@nuxtjs/composition-api'
-import { login } from '@/composables/useUser'
+import { signup } from '@/composables/useUser'
 import TextFieldEmail from '@/components/molecules/TextFieldEmail.vue'
 import TextFieldPassword from '@/components/molecules/TextFieldPassword.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
@@ -89,9 +89,12 @@ export default defineComponent({
     const submit = async (type: SignInType): Promise<void> => {
       try {
         isLoading.value = true
-        const user = await login(type, inputData.email, inputData.password)
-        console.log(user)
-        router.push('/')
+        const res = await signup(type, inputData.email, inputData.password)
+        if (res.next === 'create') {
+          router.push({ name: 'public-profile-new', params: { user: res.user } })
+        } else {
+          back()
+        }
       } catch {
         errFlg.value = true
       } finally {
