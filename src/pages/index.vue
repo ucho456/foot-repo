@@ -12,6 +12,7 @@ import db from '@/plugins/firebase'
 import IndexReportList from '@/components/organisms/IndexReportList.vue'
 import { reports, users } from '@/utils/testData'
 import { makeReportList } from '@/composables/useIndex'
+import { useCurrentUser } from '@/composables/user'
 export default defineComponent({
   name: 'Index',
 
@@ -25,6 +26,8 @@ export default defineComponent({
       const snapShot = await getDoc(testUsersRef)
       console.log(snapShot.data())
     }
+    const currentUser = useCurrentUser()
+    console.log('currentUser', currentUser)
     const reportList = makeReportList(reports, users)
     return { reportList, get }
   }

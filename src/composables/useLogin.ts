@@ -5,6 +5,9 @@ import {
   TwitterAuthProvider,
   GoogleAuthProvider
 } from 'firebase/auth'
+import { doc, getDoc } from 'firebase/firestore'
+import db from '@/plugins/firebase'
+
 type SignInType = 'email' | 'twitter' | 'google'
 
 export const signIn = async (type: SignInType, email: string, password: string) => {
@@ -14,10 +17,19 @@ export const signIn = async (type: SignInType, email: string, password: string) 
     type === 'email'
       ? await signInWithEmailAndPassword(auth, email, password)
       : await signInWithPopup(auth, provider)
-  const user = {
-    uid: userCredential.user.uid,
-    name: userCredential.user.displayName,
-    photoUrl: userCredential.user.photoURL
+
+  const uid = userCredential.user.uid
+  const publicProfileRef = await doc(db, 'public-profiles', uid)
+  const publicProfileSnap = await getDoc(publicProfileRef)
+  if (publicProfileSnap.exists()) {
+    return {}
+  } else {
+    console.log('false')
+    const user = {
+      uid: userCredential.user.uid,
+      name: userCredential.user.displayName,
+      photoUrl: userCredential.user.photoURL
+    }
+    return { user }
   }
-  return user
 }

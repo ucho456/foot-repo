@@ -1,13 +1,5 @@
-interface GuestUser {
-  id: 0
+type User = {
+  uid: string
   name: string
-  imageUrl: ''
+  photoUrl: string | null
 }
-
-interface User {
-  id: number
-  name: string
-  imageUrl: string
-}
-
-type UserMap = Map<number, User>
