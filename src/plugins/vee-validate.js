@@ -12,9 +12,11 @@ extend('email', {
   message: '正しいメールアドレスを入力して下さい。'
 })
 
-extend('minPassword', {
-  ...rules.min,
-  message: '6桁以上のパスワードを入力して下さい。'
+extend('password', {
+  validate(value) {
+    return /^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9.?/-]{6,}$/.test(value)
+  },
+  message: '文字・数字を含む6桁以上で入力して下さい。'
 })
 
 extend('characterLimit', {

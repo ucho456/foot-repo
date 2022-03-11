@@ -1,5 +1,5 @@
 <template>
-  <ValidationProvider v-slot="{ errors }" rules="minPassword:6|required">
+  <ValidationProvider v-slot="{ errors }" rules="password|required">
     <BaseTextField
       :err-message="errors[0]"
       :icon="'mdi-lock'"
