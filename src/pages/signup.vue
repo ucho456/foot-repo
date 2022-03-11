@@ -84,12 +84,7 @@ export default defineComponent({
     const { isLoading, isError, signupEmail, signupTwitter, signupGoogle } = useSignup()
 
     const submitEmail = async (): Promise<void> => {
-      const result = await signupEmail(inputData.email, inputData.password)
-      if (result === 'already used') {
-        console.log('already used')
-      } else if (result === 'other errors') {
-        console.log('other error')
-      }
+      await signupEmail(inputData.email, inputData.password)
     }
 
     const submitTwitter = async (): Promise<void> => {

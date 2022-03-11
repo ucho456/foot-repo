@@ -23,20 +23,17 @@ export const useSignup = () => {
   const isLoading = ref(false)
   const isError = ref(false)
 
-  const signupEmail = async (
-    email: string,
-    password: string
-  ): Promise<'success' | 'already used' | 'other errors'> => {
+  const signupEmail = async (email: string, password: string): Promise<void> => {
     try {
       isLoading.value = true
       const auth = getAuth()
       const userCredential = await createUserWithEmailAndPassword(auth, email, password)
       await sendEmailVerification(userCredential.user)
-      return 'success'
+      alert('認証メールを送信しました。')
     } catch (error) {
-      return error instanceof Error && error.message.includes('auth/email-already-in-use')
-        ? 'already used'
-        : 'other errors'
+      error instanceof Error && error.message.includes('auth/email-already-in-use')
+        ? alert('既に使用されているメールアドレスです。')
+        : alert('エラーが発生しました。')
     } finally {
       isLoading.value = false
     }
