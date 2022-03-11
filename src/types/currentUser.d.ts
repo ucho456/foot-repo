@@ -1,6 +1,6 @@
 type ProviderType = 'email' | 'twitter' | 'google'
 
-type initCurrentUser = {
+type InitCurrentUser = {
   uid: string
   name: string | null
   photoUrl: string | null
