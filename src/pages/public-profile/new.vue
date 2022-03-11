@@ -11,7 +11,8 @@ export default defineComponent({
   props: {},
   setup() {
     const route = useRoute()
-    console.log(route.value.params)
+    const initCurrentUser = route.value.params.initCurrentUser
+    console.log(initCurrentUser)
     return {}
   }
 })

@@ -63,8 +63,6 @@ import ButtonTwitter from '@/components/molecules/ButtonTwitter.vue'
 import ButtonGoogle from '@/components/molecules/ButtonGoogle.vue'
 import ButtonBack from '@/components/molecules/ButtonBack.vue'
 
-type SignInType = 'email' | 'twitter' | 'google'
-
 export default defineComponent({
   name: 'Login',
 
@@ -86,12 +84,12 @@ export default defineComponent({
     const router = useRouter()
     const back = () => router.back()
 
-    const submit = async (type: SignInType): Promise<void> => {
+    const submit = async (providerType: ProviderType): Promise<void> => {
       try {
         isLoading.value = true
-        const res = await signup(type, inputData.email, inputData.password)
-        if (res.next === 'create') {
-          router.push({ name: 'public-profile-new', params: { user: res.user } })
+        const initCurrentUser = await signup(providerType, inputData.email, inputData.password)
+        if (initCurrentUser) {
+          router.push({ name: 'public-profile-new', params: { initCurrentUser } })
         } else {
           back()
         }

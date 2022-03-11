@@ -9,20 +9,6 @@ import {
 import { doc, getDoc } from 'firebase/firestore'
 import db from '@/plugins/firebase'
 
-type LoginType = 'email' | 'twitter' | 'google'
-type SignupResult =
-  | {
-      user: null
-      next: 'redirect'
-    }
-  | {
-      user: {
-        uid: string
-        name: string | null
-        photoUrl: string | null
-      }
-    }
-
 export const CurrentUser: InjectionKey<Ref<User | null>> = Symbol('currentUser')
 
 export const useCurrentUser = (): Ref<User | null> => {
@@ -32,14 +18,14 @@ export const useCurrentUser = (): Ref<User | null> => {
 }
 
 export const signup = async (
-  type: LoginType,
+  providerType: ProviderType,
   email: string,
   password: string
-): Promise<SignupResult> => {
+): Promise<initCurrentUser | null> => {
   const auth = getAuth()
-  const provider = type === 'twitter' ? new TwitterAuthProvider() : new GoogleAuthProvider()
+  const provider = providerType === 'twitter' ? new TwitterAuthProvider() : new GoogleAuthProvider()
   const userCredential =
-    type === 'email'
+    providerType === 'email'
       ? await signInWithEmailAndPassword(auth, email, password)
       : await signInWithPopup(auth, provider)
 
@@ -47,22 +33,26 @@ export const signup = async (
   const publicProfileRef = await doc(db, 'public-profiles', uid)
   const publicProfileSnap = await getDoc(publicProfileRef)
   if (publicProfileSnap.exists()) {
-    return { user: null, next: 'redirect' }
+    return null
   } else {
-    const user = {
+    const initCurrentUser = {
       uid: userCredential.user.uid,
       name: userCredential.user.displayName,
       photoUrl: userCredential.user.photoURL
     }
-    return { user, next: 'create' }
+    return initCurrentUser
   }
 }
 
-export const login = async (type: LoginType, email: string, password: string) => {
+export const login = async (
+  providerType: ProviderType,
+  email: string,
+  password: string
+): Promise<initCurrentUser | null> => {
   const auth = getAuth()
-  const provider = type === 'twitter' ? new TwitterAuthProvider() : new GoogleAuthProvider()
+  const provider = providerType === 'twitter' ? new TwitterAuthProvider() : new GoogleAuthProvider()
   const userCredential =
-    type === 'email'
+    providerType === 'email'
       ? await signInWithEmailAndPassword(auth, email, password)
       : await signInWithPopup(auth, provider)
 
@@ -70,14 +60,13 @@ export const login = async (type: LoginType, email: string, password: string) =>
   const publicProfileRef = await doc(db, 'public-profiles', uid)
   const publicProfileSnap = await getDoc(publicProfileRef)
   if (publicProfileSnap.exists()) {
-    return {}
+    return null
   } else {
-    console.log('false')
-    const user = {
+    const initCurrentUser = {
       uid: userCredential.user.uid,
       name: userCredential.user.displayName,
       photoUrl: userCredential.user.photoURL
     }
-    return { user }
+    return initCurrentUser
   }
 }
