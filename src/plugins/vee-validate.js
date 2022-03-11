@@ -14,7 +14,7 @@ extend('email', {
 
 extend('minPassword', {
   ...rules.min,
-  message: '4桁以上のパスワードを入力して下さい。'
+  message: '6桁以上のパスワードを入力して下さい。'
 })
 
 extend('characterLimit', {

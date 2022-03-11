@@ -4,6 +4,7 @@
       :err-message="errors[0]"
       :icon="'mdi-email'"
       :label="'メール'"
+      :maxlength="255"
       :type="'email'"
       :value="value"
       @input="handleInput"
