@@ -51,7 +51,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref, useRouter } from '@nuxtjs/composition-api'
-import { login } from '@/composables/useCurrentUser'
+// import { login } from '@/composables/useCurrentUser'
 import TextFieldEmail from '@/components/molecules/TextFieldEmail.vue'
 import TextFieldPassword from '@/components/molecules/TextFieldPassword.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
@@ -80,18 +80,18 @@ export default defineComponent({
     const router = useRouter()
     const back = () => router.back()
 
-    const submit = async (providerType: ProviderType): Promise<void> => {
-      try {
-        isLoading.value = true
-        const user = await login(providerType, inputData.email, inputData.password)
-        console.log(user)
-        router.push('/')
-      } catch {
-        errFlg.value = true
-      } finally {
-        isLoading.value = false
-      }
-    }
+    // const submit = async (providerType: ProviderType): Promise<void> => {
+    //   try {
+    //     isLoading.value = true
+    //     // const user = await login(providerType, inputData.email, inputData.password)
+    //     console.log(user)
+    //     router.push('/')
+    //   } catch {
+    //     errFlg.value = true
+    //   } finally {
+    //     isLoading.value = false
+    //   }
+    // }
 
     return { inputData, isLoading, errFlg, back, submit }
   }

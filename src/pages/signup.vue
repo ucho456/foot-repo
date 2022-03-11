@@ -3,7 +3,7 @@
     <v-card-title>
       <v-row justify="center">Foot-Repo(ロゴ予定)</v-row>
     </v-card-title>
-    <!-- <v-card-text v-if="errFlg" class="error--text"
+    <!-- <v-card-text v-if="isError" class="error--text"
       >メールアドレスかパスワードが間違っています</v-card-text
     > -->
     <ValidationObserver v-slot="{ invalid }">
@@ -22,7 +22,7 @@
                 :icon="'mdi-account-plus'"
                 :loading="isLoading"
                 :text="'登録する'"
-                @click="submit('email')"
+                @click="submitEmail"
               />
             </v-col>
             利用規約・プライバシーポリシー
@@ -30,14 +30,14 @@
               <ButtonTwitter
                 :loading="isLoading"
                 :text="'Twitterアカウントで登録'"
-                @click="submit('twitter')"
+                @click="submitTwitter"
               />
             </v-col>
             <v-col cols="10">
               <ButtonGoogle
                 :loading="isLoading"
                 :text="'Googleアカウントで登録'"
-                @click="submit('google')"
+                @click="submitGoogle"
               />
             </v-col>
             <v-col cols="10">
@@ -54,8 +54,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, useRouter } from '@nuxtjs/composition-api'
-import { signup } from '@/composables/useCurrentUser'
+import { defineComponent, reactive, useRouter } from '@nuxtjs/composition-api'
+import { useSignup } from '@/composables/useCurrentUser'
 import TextFieldEmail from '@/components/molecules/TextFieldEmail.vue'
 import TextFieldPassword from '@/components/molecules/TextFieldPassword.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
@@ -79,28 +79,34 @@ export default defineComponent({
 
   setup() {
     const inputData = reactive({ email: '', password: '' })
-    const isLoading = ref(false)
-    const errFlg = ref(false)
     const router = useRouter()
     const back = () => router.back()
+    const { isLoading, isError, signupEmail, signupTwitter, signupGoogle } = useSignup()
 
-    const submit = async (providerType: ProviderType): Promise<void> => {
-      try {
-        isLoading.value = true
-        const initCurrentUser = await signup(providerType, inputData.email, inputData.password)
-        if (initCurrentUser) {
-          router.push({ name: 'public-profile-new', params: { initCurrentUser } })
-        } else {
-          back()
-        }
-      } catch {
-        errFlg.value = true
-      } finally {
-        isLoading.value = false
+    const submitEmail = async (): Promise<void> => {
+      const result = await signupEmail(inputData.email, inputData.password)
+      if (result === 'already used') {
+        console.log('already used')
+      } else if (result === 'other errors') {
+        console.log('other error')
       }
     }
 
-    return { inputData, isLoading, errFlg, back, submit }
+    const submitTwitter = async (): Promise<void> => {
+      const initCurrentUser = await signupTwitter()
+      initCurrentUser
+        ? router.push({ name: 'public-profile-new', params: { initCurrentUser } })
+        : back()
+    }
+
+    const submitGoogle = async (): Promise<void> => {
+      const initCurrentUser = await signupGoogle()
+      initCurrentUser
+        ? router.push({ name: 'public-profile-new', params: { initCurrentUser } })
+        : back()
+    }
+
+    return { inputData, isLoading, isError, back, submitEmail, submitTwitter, submitGoogle }
   }
 })
 </script>
