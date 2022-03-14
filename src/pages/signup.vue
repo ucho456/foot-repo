@@ -3,9 +3,6 @@
     <v-card-title>
       <v-row justify="center">Foot-Repo(ロゴ予定)</v-row>
     </v-card-title>
-    <!-- <v-card-text v-if="isError" class="error--text"
-      >メールアドレスかパスワードが間違っています</v-card-text
-    > -->
     <ValidationObserver v-slot="{ invalid }">
       <v-container>
         <v-row justify="center">
@@ -22,7 +19,7 @@
                 :icon="'mdi-account-plus'"
                 :loading="isLoading"
                 :text="'登録する'"
-                @click="submitEmail"
+                @click="signupEmail"
               />
             </v-col>
             利用規約・プライバシーポリシー
@@ -30,18 +27,18 @@
               <ButtonTwitter
                 :loading="isLoading"
                 :text="'Twitterアカウントで登録'"
-                @click="submitTwitter"
+                @click="signupTwitter"
               />
             </v-col>
             <v-col cols="10">
               <ButtonGoogle
                 :loading="isLoading"
                 :text="'Googleアカウントで登録'"
-                @click="submitGoogle"
+                @click="signupGoogle"
               />
             </v-col>
             <v-col cols="10">
-              <ButtonBack @click="back" />
+              <ButtonBack @click="routerBack" />
             </v-col>
             <NuxtLink class="text-caption hover" to="/login">
               アカウントをお持ちの場合はログインから
@@ -50,18 +47,20 @@
         </v-row>
       </v-container>
     </ValidationObserver>
+    <DialogMessage v-bind="dialog" @close="closeDialog" />
   </v-card>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, useRouter } from '@nuxtjs/composition-api'
-import { useSignup } from '@/composables/useCurrentUser'
+import { defineComponent } from '@nuxtjs/composition-api'
+import { useSignup } from '@/composables/useSignup'
 import TextFieldEmail from '@/components/molecules/TextFieldEmail.vue'
 import TextFieldPassword from '@/components/molecules/TextFieldPassword.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
 import ButtonTwitter from '@/components/molecules/ButtonTwitter.vue'
 import ButtonGoogle from '@/components/molecules/ButtonGoogle.vue'
 import ButtonBack from '@/components/molecules/ButtonBack.vue'
+import DialogMessage from '@/components/molecules/DialogMessage.vue'
 
 export default defineComponent({
   name: 'Login',
@@ -72,36 +71,34 @@ export default defineComponent({
     ButtonSubmit,
     ButtonTwitter,
     ButtonGoogle,
-    ButtonBack
+    ButtonBack,
+    DialogMessage
   },
 
   layout: 'white',
 
   setup() {
-    const inputData = reactive({ email: '', password: '' })
-    const router = useRouter()
-    const back = () => router.back()
-    const { isLoading, isError, signupEmail, signupTwitter, signupGoogle } = useSignup()
+    const {
+      inputData,
+      isLoading,
+      dialog,
+      routerBack,
+      signupEmail,
+      signupTwitter,
+      signupGoogle,
+      closeDialog
+    } = useSignup()
 
-    const submitEmail = async (): Promise<void> => {
-      await signupEmail(inputData.email, inputData.password)
+    return {
+      inputData,
+      isLoading,
+      dialog,
+      routerBack,
+      signupEmail,
+      signupTwitter,
+      signupGoogle,
+      closeDialog
     }
-
-    const submitTwitter = async (): Promise<void> => {
-      const initCurrentUser = await signupTwitter()
-      initCurrentUser
-        ? router.push({ name: 'public-profile-new', params: { initCurrentUser } })
-        : back()
-    }
-
-    const submitGoogle = async (): Promise<void> => {
-      const initCurrentUser = await signupGoogle()
-      initCurrentUser
-        ? router.push({ name: 'public-profile-new', params: { initCurrentUser } })
-        : back()
-    }
-
-    return { inputData, isLoading, isError, back, submitEmail, submitTwitter, submitGoogle }
   }
 })
 </script>
