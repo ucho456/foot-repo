@@ -1,6 +1,6 @@
 <template>
   <BaseDialog :show="show" :max-width="380" @close="handleClose">
-    <v-card-title class="text-h6"> {{ title }} </v-card-title>
+    <v-card-title class="font-weight-bold text-h6">{{ title }} </v-card-title>
     <v-card-text class="wrap">{{ message }} </v-card-text>
   </BaseDialog>
 </template>

@@ -1,24 +1,22 @@
 <template>
-  <div class="text-center">
-    <v-dialog
-      :max-width="maxWidth"
-      :persistent="persistent"
-      :value="show"
-      width="90%"
-      @input="handleClose"
-    >
-      <v-card>
-        <slot></slot>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" text @click="handleClose"> 閉じる </v-btn>
-          <v-btn v-if="decideButtonText !== ''" color="primary" text @click="handleDecide">
-            {{ decideButtonText }}
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </div>
+  <v-dialog
+    :max-width="maxWidth"
+    :persistent="persistent"
+    :value="show"
+    width="90%"
+    @input="handleClose"
+  >
+    <v-card>
+      <slot></slot>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="primary" text @click="handleClose"> 閉じる </v-btn>
+        <v-btn v-if="decideButtonText !== ''" color="primary" text @click="handleDecide">
+          {{ decideButtonText }}
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script lang="ts">
