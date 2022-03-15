@@ -1,6 +1,7 @@
 /*
   今後の方針
   userのauthをできるようにする。
+  デプロイしたい。
   reportのセキュリティールールを作る。
   readから実装していく。
   フィールドの機密レベルを統一する
@@ -81,6 +82,8 @@
       ・試合詳細で取得してpointの平均を出すのでmatchRefを使う。コレクショングループで対応できそう。96ページ
       ・並び順をどうするか。GK=>DF=>MF=>FW=>HCの順で。orderを持つ？
       ・homeTeamとawayTeamの間にチーム名や画像を差し込みたいので分けて持っておく。
+
+      reportFormatsをmatchesと1対1リレーションにしておいてcloudFunctionで作成しておけば、フロントでreportを作成する処理をする必要がなくなるな。
 */
 
 export const matches: Match[] = [
