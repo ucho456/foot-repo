@@ -6,7 +6,6 @@
 
 <script lang="ts">
 import { defineComponent, ref, useRoute, useRouter } from '@nuxtjs/composition-api'
-import useCurrentUser from '@/composables/useCurrentUser'
 
 export default defineComponent({
   name: 'EmailAction',
@@ -21,14 +20,8 @@ export default defineComponent({
     switch (mode) {
       case 'verifyEmail': {
         message.value = 'メール認証が完了しました。\n3秒後に登録画面に遷移します。'
-        const currentUser = useCurrentUser()
         setTimeout(() => {
-          if (currentUser.value) {
-            router.push({
-              name: 'public-profile-new',
-              params: { uid: currentUser.value.uid, name: '', photoUrl: '' }
-            })
-          }
+          router.push({ name: 'public-profile-new' })
         }, 3 * 1000)
         break
       }

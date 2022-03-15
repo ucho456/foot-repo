@@ -33,7 +33,7 @@ const useSignup = () => {
 
   const createInitCurrentUser = async (
     provider: TwitterAuthProvider | GoogleAuthProvider
-  ): Promise<InitCurrentUser | null | 'failure'> => {
+  ): Promise<'success' | 'already exist' | 'failure'> => {
     try {
       isLoading.value = true
       const auth = getAuth()
@@ -41,16 +41,7 @@ const useSignup = () => {
       const uid = userCredential.user.uid
       const publicProfileRef = await doc(db, 'public-profiles', uid)
       const publicProfileSnap = await getDoc(publicProfileRef)
-      if (!publicProfileSnap.exists()) {
-        const initCurrentUser = {
-          uid: userCredential.user.uid,
-          name: userCredential.user.displayName || '',
-          photoUrl: userCredential.user.photoURL || ''
-        }
-        return initCurrentUser
-      } else {
-        return null
-      }
+      return !publicProfileSnap.exists() ? 'success' : 'already exist'
     } catch {
       return 'failure'
     } finally {
@@ -58,13 +49,13 @@ const useSignup = () => {
     }
   }
 
-  const signupTwitter = async (): Promise<InitCurrentUser | null | 'failure'> => {
+  const signupTwitter = async (): Promise<'success' | 'already exist' | 'failure'> => {
     const provider = new TwitterAuthProvider()
     const result = await createInitCurrentUser(provider)
     return result
   }
 
-  const signupGoogle = async (): Promise<InitCurrentUser | null | 'failure'> => {
+  const signupGoogle = async (): Promise<'success' | 'already exist' | 'failure'> => {
     const provider = new GoogleAuthProvider()
     const result = await createInitCurrentUser(provider)
     return result

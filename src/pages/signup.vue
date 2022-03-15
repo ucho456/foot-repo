@@ -100,30 +100,24 @@ export default defineComponent({
     }
 
     const router = useRouter()
-    const next = (icu: InitCurrentUser): void => {
-      router.push({
-        name: 'public-profile-new',
-        params: { uid: icu.uid, name: icu.name, photoUrl: icu.photoUrl }
-      })
-    }
     const back = (): void => router.back()
 
     const submitTwitter = async () => {
       const result = await signupTwitter()
-      result === 'failure'
-        ? openDialog('エラーが発生しました。')
-        : result === null
+      result === 'success'
+        ? router.push({ name: 'public-profile-new' })
+        : result === 'already exist'
         ? back()
-        : next(result)
+        : openDialog('エラーが発生しました。')
     }
 
     const submitGoogle = async () => {
       const result = await signupGoogle()
-      result === 'failure'
-        ? openDialog('エラーが発生しました。')
-        : result === null
+      result === 'success'
+        ? router.push({ name: 'public-profile-new' })
+        : result === 'already exist'
         ? back()
-        : next(result)
+        : openDialog('エラーが発生しました。')
     }
 
     return {
