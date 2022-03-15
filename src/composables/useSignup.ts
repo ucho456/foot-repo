@@ -10,7 +10,7 @@ import {
 import { doc, getDoc } from 'firebase/firestore'
 import db from '@/plugins/firebase'
 
-export const useSignup = () => {
+const useSignup = () => {
   const inputData = reactive({ email: '', password: '' })
   const isLoading = ref(false)
   const dialog = reactive({ message: '', title: '', show: false })
@@ -101,3 +101,5 @@ export const useSignup = () => {
     closeDialog
   }
 }
+
+export default useSignup

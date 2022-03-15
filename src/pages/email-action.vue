@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, useRoute, useRouter } from '@nuxtjs/composition-api'
-import { useCurrentUser } from '@/composables/useCurrentUser'
+import useCurrentUser from '@/composables/useCurrentUser'
 
 export default defineComponent({
   name: 'EmailAction',

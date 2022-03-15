@@ -53,7 +53,7 @@
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
-import { useSignup } from '@/composables/useSignup'
+import useSignup from '@/composables/useSignup'
 import TextFieldEmail from '@/components/molecules/TextFieldEmail.vue'
 import TextFieldPassword from '@/components/molecules/TextFieldPassword.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
