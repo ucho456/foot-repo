@@ -102,8 +102,7 @@ export default defineComponent({
     const router = useRouter()
     const back = (): void => router.back()
 
-    const submitTwitter = async () => {
-      const result = await signupTwitter()
+    const next = (result: 'success' | 'already exist' | 'failure'): void => {
       result === 'success'
         ? router.push({ name: 'public-profile-new' })
         : result === 'already exist'
@@ -111,13 +110,14 @@ export default defineComponent({
         : openDialog('エラーが発生しました。')
     }
 
+    const submitTwitter = async () => {
+      const result = await signupTwitter()
+      next(result)
+    }
+
     const submitGoogle = async () => {
       const result = await signupGoogle()
-      result === 'success'
-        ? router.push({ name: 'public-profile-new' })
-        : result === 'already exist'
-        ? back()
-        : openDialog('エラーが発生しました。')
+      next(result)
     }
 
     return {
