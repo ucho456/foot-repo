@@ -14,8 +14,12 @@ export default defineComponent({
 
   setup() {
     const route = useRoute()
-    const initCurrentUser = route.value.params.initCurrentUser as InitCurrentUser
-    console.log(initCurrentUser)
+    const uid = route.value.params.uid
+    const name = route.value.params.name
+    const photoUrl = route.value.params.photoUrl
+    console.log('uid', uid)
+    console.log('name', name)
+    console.log('photoUrl', photoUrl)
     return {}
   }
 })
