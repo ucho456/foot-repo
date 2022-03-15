@@ -1076,13 +1076,13 @@ export const reports = [
 
 export const users = [
   {
-    id: 1,
+    uid: 'aaa',
     name: '鈴木太郎',
-    imageUrl: 'https://cdn.vuetifyjs.com/images/lists/1.jpg'
+    photoUrl: 'https://cdn.vuetifyjs.com/images/lists/1.jpg'
   },
   {
-    id: 2,
+    uid: 'bbb',
     name: '画像無し',
-    imageUrl: ''
+    photoUrl: ''
   }
 ] as User[]

@@ -93,7 +93,7 @@ export default defineComponent({
     //   }
     // }
 
-    return { inputData, isLoading, errFlg, back, submit }
+    return { inputData, isLoading, errFlg, back }
   }
 })
 </script>
