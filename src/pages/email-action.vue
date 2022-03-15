@@ -23,10 +23,12 @@ export default defineComponent({
         message.value = 'メール認証が完了しました。\n3秒後に登録画面に遷移します。'
         const currentUser = useCurrentUser()
         setTimeout(() => {
-          router.push({
-            name: 'public-profile-new',
-            params: { uid: currentUser.value?.uid, name: '', photoUrl: '' }
-          })
+          if (currentUser.value) {
+            router.push({
+              name: 'public-profile-new',
+              params: { uid: currentUser.value.uid, name: '', photoUrl: '' }
+            })
+          }
         }, 3 * 1000)
         break
       }
