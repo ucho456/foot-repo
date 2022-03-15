@@ -1,5 +1,6 @@
 <template>
   <v-text-field
+    :counter="counterFlg"
     :dense="denseFlg"
     :error-messages="errMessage"
     :label="label"
@@ -21,6 +22,7 @@ export default defineComponent({
   name: 'BaseTextField',
 
   props: {
+    counterFlg: { type: Boolean, default: false },
     denseFlg: { type: Boolean, default: false },
     errMessage: { type: String, default: '' },
     icon: { type: String, default: '' },
