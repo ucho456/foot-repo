@@ -1,4 +1,4 @@
-import { ref, reactive, useRouter } from '@nuxtjs/composition-api'
+import { ref } from '@nuxtjs/composition-api'
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -11,41 +11,29 @@ import { doc, getDoc } from 'firebase/firestore'
 import db from '@/plugins/firebase'
 
 const useSignup = () => {
-  const inputData = reactive({ email: '', password: '' })
+  const email = ref('')
+  const password = ref('')
   const isLoading = ref(false)
-  const dialog = reactive({ message: '', title: '', show: false })
 
-  const signupEmail = async (): Promise<void> => {
+  const signupEmail = async (): Promise<'success' | 'already used' | 'failure'> => {
     try {
       isLoading.value = true
       const auth = getAuth()
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        inputData.email,
-        inputData.password
-      )
+      const userCredential = await createUserWithEmailAndPassword(auth, email.value, password.value)
       await sendEmailVerification(userCredential.user)
-      dialog.message =
-        '認証メールを送信しました。\nメールに記載してあるURLをクリックし、認証を完了させて下さい。'
-      dialog.title = '成功'
+      return 'success'
     } catch (error) {
-      dialog.message =
-        error instanceof Error && error.message.includes('auth/email-already-in-use')
-          ? '既に使用されているメールアドレスです。'
-          : 'エラーが発生しました。'
-      dialog.title = '失敗'
+      return error instanceof Error && error.message.includes('auth/email-already-in-use')
+        ? 'already used'
+        : 'failure'
     } finally {
-      dialog.show = true
       isLoading.value = false
     }
   }
 
-  const router = useRouter()
-  const routerBack = (): void => router.back()
-
   const createInitCurrentUser = async (
     provider: TwitterAuthProvider | GoogleAuthProvider
-  ): Promise<void> => {
+  ): Promise<InitCurrentUser | null | 'failure'> => {
     try {
       isLoading.value = true
       const auth = getAuth()
@@ -53,53 +41,36 @@ const useSignup = () => {
       const uid = userCredential.user.uid
       const publicProfileRef = await doc(db, 'public-profiles', uid)
       const publicProfileSnap = await getDoc(publicProfileRef)
-      if (publicProfileSnap.exists()) {
-        routerBack()
+      if (!publicProfileSnap.exists()) {
+        const initCurrentUser = {
+          uid: userCredential.user.uid,
+          name: userCredential.user.displayName || '',
+          photoUrl: userCredential.user.photoURL || ''
+        }
+        return initCurrentUser
       } else {
-        router.push({
-          name: 'public-profile-new',
-          params: {
-            uid: userCredential.user.uid,
-            name: userCredential.user.displayName || '',
-            photoUrl: userCredential.user.photoURL || ''
-          }
-        })
+        return null
       }
     } catch {
-      dialog.message = 'エラーが発生しました。'
-      dialog.title = '失敗'
-      dialog.show = true
+      return 'failure'
     } finally {
       isLoading.value = false
     }
   }
 
-  const signupTwitter = async (): Promise<void> => {
+  const signupTwitter = async (): Promise<InitCurrentUser | null | 'failure'> => {
     const provider = new TwitterAuthProvider()
-    await createInitCurrentUser(provider)
+    const result = await createInitCurrentUser(provider)
+    return result
   }
 
-  const signupGoogle = async (): Promise<void> => {
+  const signupGoogle = async (): Promise<InitCurrentUser | null | 'failure'> => {
     const provider = new GoogleAuthProvider()
-    await createInitCurrentUser(provider)
+    const result = await createInitCurrentUser(provider)
+    return result
   }
 
-  const closeDialog = (): void => {
-    dialog.message = ''
-    dialog.title = ''
-    dialog.show = false
-  }
-
-  return {
-    inputData,
-    isLoading,
-    dialog,
-    routerBack,
-    signupEmail,
-    signupTwitter,
-    signupGoogle,
-    closeDialog
-  }
+  return { email, password, isLoading, signupEmail, signupTwitter, signupGoogle }
 }
 
 export default useSignup

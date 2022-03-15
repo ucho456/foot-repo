@@ -7,10 +7,10 @@
       <v-container>
         <v-row justify="center">
           <v-col cols="10" class="mb-n4 mt-4">
-            <TextFieldEmail v-model="inputData.email" />
+            <TextFieldEmail v-model="email" />
           </v-col>
           <v-col cols="10">
-            <TextFieldPassword v-model="inputData.password" />
+            <TextFieldPassword v-model="password" />
           </v-col>
           <v-row class="mb-8" justify="center">
             <v-col cols="10">
@@ -19,7 +19,7 @@
                 :icon="'mdi-account-plus'"
                 :loading="isLoading"
                 :text="'登録する'"
-                @click="signupEmail"
+                @click="submitEmail"
               />
             </v-col>
             利用規約・プライバシーポリシー
@@ -27,18 +27,18 @@
               <ButtonTwitter
                 :loading="isLoading"
                 :text="'Twitterアカウントで登録'"
-                @click="signupTwitter"
+                @click="submitTwitter"
               />
             </v-col>
             <v-col cols="10">
               <ButtonGoogle
                 :loading="isLoading"
                 :text="'Googleアカウントで登録'"
-                @click="signupGoogle"
+                @click="submitGoogle"
               />
             </v-col>
             <v-col cols="10">
-              <ButtonBack @click="routerBack" />
+              <ButtonBack @click="back" />
             </v-col>
             <NuxtLink class="text-caption hover" to="/login">
               アカウントをお持ちの場合はログインから
@@ -52,7 +52,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, reactive, useRouter } from '@nuxtjs/composition-api'
 import useSignup from '@/composables/useSignup'
 import TextFieldEmail from '@/components/molecules/TextFieldEmail.vue'
 import TextFieldPassword from '@/components/molecules/TextFieldPassword.vue'
@@ -78,26 +78,64 @@ export default defineComponent({
   layout: 'white',
 
   setup() {
-    const {
-      inputData,
-      isLoading,
-      dialog,
-      routerBack,
-      signupEmail,
-      signupTwitter,
-      signupGoogle,
-      closeDialog
-    } = useSignup()
+    const { email, password, isLoading, signupEmail, signupTwitter, signupGoogle } = useSignup()
+
+    const dialog = reactive({ message: '', show: false })
+    const openDialog = (message: string): void => {
+      dialog.message = message
+      dialog.show = true
+    }
+    const closeDialog = (): void => {
+      dialog.message = ''
+      dialog.show = false
+    }
+
+    const submitEmail = async () => {
+      const result = await signupEmail()
+      result === 'success'
+        ? openDialog('認証メールを送信しました。')
+        : result === 'already used'
+        ? openDialog('既に使用されているメールアドレスです。')
+        : openDialog('エラーが発生しました。')
+    }
+
+    const router = useRouter()
+    const next = (icu: InitCurrentUser): void => {
+      router.push({
+        name: 'public-profile-new',
+        params: { uid: icu.uid, name: icu.name, photoUrl: icu.photoUrl }
+      })
+    }
+    const back = (): void => router.back()
+
+    const submitTwitter = async () => {
+      const result = await signupTwitter()
+      result === null
+        ? back()
+        : result === 'failure'
+        ? openDialog('エラーが発生しました。')
+        : next(result)
+    }
+
+    const submitGoogle = async () => {
+      const result = await signupGoogle()
+      result === null
+        ? back()
+        : result === 'failure'
+        ? openDialog('エラーが発生しました。')
+        : next(result)
+    }
 
     return {
-      inputData,
+      email,
+      password,
       isLoading,
       dialog,
-      routerBack,
-      signupEmail,
-      signupTwitter,
-      signupGoogle,
-      closeDialog
+      closeDialog,
+      submitEmail,
+      back,
+      submitTwitter,
+      submitGoogle
     }
   }
 })
