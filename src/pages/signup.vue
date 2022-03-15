@@ -108,26 +108,22 @@ export default defineComponent({
     }
     const back = (): void => router.back()
 
-    const isInitCurrentUser = (
-      result: InitCurrentUser | null | 'failure'
-    ): result is InitCurrentUser => 'uid' in result && 'name' in result && 'photoUrl' in result
-
     const submitTwitter = async () => {
       const result = await signupTwitter()
-      isInitCurrentUser(result)
-        ? next(result)
+      result === 'failure'
+        ? openDialog('エラーが発生しました。')
         : result === null
         ? back()
-        : openDialog('エラーが発生しました。')
+        : next(result)
     }
 
     const submitGoogle = async () => {
       const result = await signupGoogle()
-      isInitCurrentUser(result)
-        ? next(result)
+      result === 'failure'
+        ? openDialog('エラーが発生しました。')
         : result === null
         ? back()
-        : openDialog('エラーが発生しました。')
+        : next(result)
     }
 
     return {
