@@ -101,9 +101,8 @@ export default {
           primary: colors.indigo.darken4,
           accent: colors.indigo.accent4,
           fotter: colors.blueGrey.darken4,
-          error: colors.red,
-          warning: colors.yellow,
-          info: colors.green
+          success: colors.green,
+          failure: colors.pink
         }
       }
     }
