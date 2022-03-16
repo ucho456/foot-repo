@@ -16,7 +16,7 @@
             <v-col cols="10">
               <ButtonSubmit
                 :disabled="invalid"
-                :icon="'mdi-account-plus'"
+                :icon="'mdi-send'"
                 :loading="isLoading"
                 :text="'登録する'"
                 @click="submitEmail"
@@ -47,12 +47,12 @@
         </v-row>
       </v-container>
     </ValidationObserver>
-    <DialogMessage v-bind="dialog" @close="closeDialog" />
+    <DialogMessage v-bind="dialogMessage" @close="closeDialogMessage" />
   </v-card>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, useRouter } from '@nuxtjs/composition-api'
+import { defineComponent, useRouter } from '@nuxtjs/composition-api'
 import useSignup from '@/composables/useSignup'
 import TextFieldEmail from '@/components/molecules/TextFieldEmail.vue'
 import TextFieldPassword from '@/components/molecules/TextFieldPassword.vue'
@@ -61,6 +61,7 @@ import ButtonTwitter from '@/components/molecules/ButtonTwitter.vue'
 import ButtonGoogle from '@/components/molecules/ButtonGoogle.vue'
 import ButtonBack from '@/components/molecules/ButtonBack.vue'
 import DialogMessage from '@/components/molecules/DialogMessage.vue'
+import useMessageDialog from '@/utils/useDialogMessage'
 
 export default defineComponent({
   name: 'Login',
@@ -79,24 +80,15 @@ export default defineComponent({
 
   setup() {
     const { email, password, isLoading, signupEmail, signupTwitter, signupGoogle } = useSignup()
-
-    const dialog = reactive({ message: '', show: false })
-    const openDialog = (message: string): void => {
-      dialog.message = message
-      dialog.show = true
-    }
-    const closeDialog = (): void => {
-      dialog.message = ''
-      dialog.show = false
-    }
+    const { dialogMessage, openDialogMessage, closeDialogMessage } = useMessageDialog()
 
     const submitEmail = async () => {
       const result = await signupEmail()
       result === 'success'
-        ? openDialog('認証メールを送信しました。')
+        ? openDialogMessage('認証メールを送信しました。')
         : result === 'already used'
-        ? openDialog('既に使用されているメールアドレスです。')
-        : openDialog('エラーが発生しました。')
+        ? openDialogMessage('既に使用されているメールアドレスです。')
+        : openDialogMessage('エラーが発生しました。')
     }
 
     const router = useRouter()
@@ -107,7 +99,7 @@ export default defineComponent({
         ? router.push({ name: 'public-profile-new' })
         : result === 'already exist'
         ? back()
-        : openDialog('エラーが発生しました。')
+        : openDialogMessage('エラーが発生しました。')
     }
 
     const submitTwitter = async () => {
@@ -124,8 +116,8 @@ export default defineComponent({
       email,
       password,
       isLoading,
-      dialog,
-      closeDialog,
+      dialogMessage,
+      closeDialogMessage,
       submitEmail,
       back,
       submitTwitter,
