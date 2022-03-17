@@ -76,7 +76,7 @@ export default defineComponent({
     DialogMessage
   },
 
-  layout: 'white',
+  layout: 'gray',
 
   setup() {
     const { email, password, isLoading, signupEmail, signupTwitter, signupGoogle } = useSignup()

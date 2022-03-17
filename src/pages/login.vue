@@ -71,7 +71,7 @@ export default defineComponent({
     ButtonBack
   },
 
-  layout: 'white',
+  layout: 'gray',
 
   setup() {
     const inputData = reactive({ email: '', password: '' })
