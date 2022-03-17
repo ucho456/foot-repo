@@ -1,8 +1,8 @@
 import { inject, InjectionKey, Ref } from '@nuxtjs/composition-api'
 
-export const CurrentUser: InjectionKey<Ref<User | null>> = Symbol('currentUser')
+export const CurrentUser: InjectionKey<Ref<CurrentUser | null>> = Symbol('currentUser')
 
-const useCurrentUser = (): Ref<User | null> => {
+const useCurrentUser = (): Ref<CurrentUser | null> => {
   const currentUser = inject(CurrentUser)
   if (currentUser === undefined) throw new Error('currentUser is no provided')
   return currentUser

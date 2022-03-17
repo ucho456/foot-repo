@@ -1085,4 +1085,4 @@ export const users = [
     name: '画像無し',
     photoUrl: ''
   }
-] as User[]
+]
