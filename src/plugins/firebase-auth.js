@@ -10,8 +10,9 @@ export default defineNuxtPlugin(async (_, inject) => {
   const unsubscribe = await new Promise((resolve) => {
     const auth = getAuth()
     const unsubscribe = onAuthStateChanged(auth, (user) => {
+      // 多分ここでuidを使用してpublicProfileを取得するとログインユーザーをどこでも使いやすくなる筈。
       currentUser.value = user
-        ? { uid: user.uid, name: user.displayName, photoUrl: user.photoURL }
+        ? { uid: user.uid, name: user.displayName, photoUrl: user.photoURL, aaa: '' }
         : null
       resolve(unsubscribe)
     })
