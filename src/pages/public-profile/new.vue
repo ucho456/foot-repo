@@ -35,7 +35,7 @@ export default defineComponent({
     BaseTextField
   },
 
-  layout: 'gray',
+  layout: 'grey',
 
   setup() {
     const { publicProfile } = useNew()

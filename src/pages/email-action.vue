@@ -10,7 +10,7 @@ import { defineComponent, ref, useRoute, useRouter } from '@nuxtjs/composition-a
 export default defineComponent({
   name: 'EmailAction',
 
-  layout: 'gray',
+  layout: 'grey',
 
   setup() {
     const route = useRoute()

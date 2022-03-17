@@ -1,5 +1,5 @@
 <template>
-  <v-app class="light-gray">
+  <v-app class="grey">
     <v-main>
       <v-container>
         <nuxt />
@@ -12,12 +12,12 @@
 import { defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
-  name: 'Gray'
+  name: 'Grey'
 })
 </script>
 
 <style lang="scss" scoped>
-.light-gray {
+.grey {
   background: #eceff1;
 }
 </style>
