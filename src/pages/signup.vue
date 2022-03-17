@@ -47,7 +47,7 @@
         </v-row>
       </v-container>
     </ValidationObserver>
-    <DialogMessage v-bind="dialogMessage" @close="closeDialogMessage" />
+    <Snackbar v-bind="snackbar" />
   </v-card>
 </template>
 
@@ -60,8 +60,8 @@ import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
 import ButtonTwitter from '@/components/molecules/ButtonTwitter.vue'
 import ButtonGoogle from '@/components/molecules/ButtonGoogle.vue'
 import ButtonBack from '@/components/molecules/ButtonBack.vue'
-import DialogMessage from '@/components/molecules/DialogMessage.vue'
-import useMessageDialog from '@/utils/useDialogMessage'
+import Snackbar from '@/components/molecules/Snackbar.vue'
+import useSnackbar from '@/utils/useSnackbar'
 
 export default defineComponent({
   name: 'Login',
@@ -73,22 +73,24 @@ export default defineComponent({
     ButtonTwitter,
     ButtonGoogle,
     ButtonBack,
-    DialogMessage
+    Snackbar
   },
 
   layout: 'grey',
 
   setup() {
     const { email, password, isLoading, signupEmail, signupTwitter, signupGoogle } = useSignup()
-    const { dialogMessage, openDialogMessage, closeDialogMessage } = useMessageDialog()
+    const { snackbar, openSnackbar } = useSnackbar()
 
     const submitEmail = async () => {
       const result = await signupEmail()
-      result === 'success'
-        ? openDialogMessage('認証メールを送信しました。')
-        : result === 'already used'
-        ? openDialogMessage('既に使用されているメールアドレスです。')
-        : openDialogMessage('エラーが発生しました。')
+      const message =
+        result === 'success'
+          ? '認証メールを送信しました。'
+          : result === 'already used'
+          ? '既に使用されているメールアドレスです。'
+          : 'エラーが発生しました。'
+      openSnackbar(result, message)
     }
 
     const router = useRouter()
@@ -98,8 +100,8 @@ export default defineComponent({
       result === 'success'
         ? router.push({ name: 'public-profile-new' })
         : result === 'already exist'
-        ? back()
-        : openDialogMessage('エラーが発生しました。')
+        ? openSnackbar(result, '既に使用されているプロバイダーです。')
+        : openSnackbar(result, 'エラーが発生しました。')
     }
 
     const submitTwitter = async () => {
@@ -116,8 +118,7 @@ export default defineComponent({
       email,
       password,
       isLoading,
-      dialogMessage,
-      closeDialogMessage,
+      snackbar,
       submitEmail,
       back,
       submitTwitter,
