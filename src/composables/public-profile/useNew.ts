@@ -1,5 +1,5 @@
 import { reactive } from '@nuxtjs/composition-api'
-import useCurrentUser from '@/composables/useCurrentUser'
+import useCurrentUser from '@/utils/useCurrentUser'
 
 const useNew = () => {
   const currentUser = useCurrentUser()
