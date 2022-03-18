@@ -1,5 +1,7 @@
 import { defineNuxtPlugin, onGlobalSetup, onUnmounted, ref, provide } from '@nuxtjs/composition-api'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import { getDoc, doc } from 'firebase/firestore'
+import db from '@/plugins/firebase'
 import { CurrentUser } from '@/utils/useCurrentUser'
 
 export default defineNuxtPlugin(async (_, inject) => {
@@ -10,10 +12,24 @@ export default defineNuxtPlugin(async (_, inject) => {
   const unsubscribe = await new Promise((resolve) => {
     const auth = getAuth()
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      // 多分ここでuidを使用してpublicProfileを取得するとログインユーザーをどこでも使いやすくなる筈。
-      currentUser.value = user
-        ? { uid: user.uid, name: user.displayName, photoUrl: user.photoURL, aaa: '' }
-        : null
+      if (user) {
+        getDoc(doc(db, 'public-profiles', user.uid))
+          .then((ppShapShot) => {
+            if (ppShapShot.exists()) {
+              const publicProfile = ppShapShot.data()
+              currentUser.value = {
+                uid: user.uid,
+                name: publicProfile.name,
+                photoUrl: publicProfile.photoUrl
+              }
+            }
+          })
+          .catch(() => {
+            currentUser.value = null
+          })
+      } else {
+        currentUser.value = null
+      }
       resolve(unsubscribe)
     })
   })
