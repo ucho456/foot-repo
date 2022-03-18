@@ -53,6 +53,8 @@ export default defineComponent({
   layout: 'grey',
 
   setup() {
+    // currentUserを更新する。もっといい方法が無いかな？
+    location.reload()
     const { publicProfile, isLoading, create } = useNew()
     const { snackbar, openSnackbar } = useSnackbar()
 

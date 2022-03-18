@@ -5,11 +5,14 @@ import useCurrentUser from '@/utils/useCurrentUser'
 
 const useNew = () => {
   const currentUser = useCurrentUser()
+  console.log('public-profile useNew currentUser', currentUser)
+  console.log(currentUser.value?.name)
   const uid = currentUser.value?.uid || ''
   const publicProfile = reactive({
     name: currentUser.value?.name || `${new Date().getTime()}`,
     photoUrl: currentUser.value?.photoUrl || ''
   })
+  console.log(publicProfile)
   const isLoading = ref(false)
 
   const create = async (): Promise<'success' | 'failure'> => {
