@@ -23,7 +23,7 @@ export default useCurrentUser
 //       : await signInWithPopup(auth, provider)
 
 //   const uid = userCredential.user.uid
-//   const publicProfileRef = await doc(db, 'public-profiles', uid)
+//   const publicProfileRef = await doc(db, 'users', uid)
 //   const publicProfileSnap = await getDoc(publicProfileRef)
 //   if (publicProfileSnap.exists()) {
 //     return null

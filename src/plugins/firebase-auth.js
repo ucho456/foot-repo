@@ -11,16 +11,16 @@ export default defineNuxtPlugin(async (_, inject) => {
 
   const unsubscribe = await new Promise((resolve) => {
     const auth = getAuth()
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        getDoc(doc(db, 'public-profiles', user.uid))
-          .then((ppShapShot) => {
-            if (ppShapShot.exists()) {
-              const publicProfile = ppShapShot.data()
+    const unsubscribe = onAuthStateChanged(auth, (authUser) => {
+      if (authUser) {
+        getDoc(doc(db, 'users', authUser.uid))
+          .then((uSnapshot) => {
+            if (uSnapshot.exists()) {
+              const user = uSnapshot.data()
               currentUser.value = {
-                uid: user.uid,
-                name: publicProfile.name,
-                photoUrl: publicProfile.photoUrl
+                uid: authUser.uid,
+                name: user.name,
+                photoUrl: user.photoUrl
               }
             }
           })

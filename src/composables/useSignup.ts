@@ -21,7 +21,7 @@ const useSignup = () => {
     photoUrl: string | null
   ): Promise<void> => {
     const batch = writeBatch(db)
-    batch.set(doc(db, 'public-profiles', uid), { name, photoUrl })
+    batch.set(doc(db, 'users', uid), { name, photoUrl })
     await batch.commit()
   }
 
@@ -50,9 +50,8 @@ const useSignup = () => {
       const auth = getAuth()
       const userCredential = await signInWithPopup(auth, provider)
       const uid = userCredential.user.uid
-      const publicProfileRef = await doc(db, 'public-profiles', uid)
-      const publicProfileSnap = await getDoc(publicProfileRef)
-      if (!publicProfileSnap.exists()) {
+      const uSnapshot = await getDoc(doc(db, 'users', uid))
+      if (!uSnapshot.exists()) {
         const name = userCredential.user.displayName
         const photoUrl = userCredential.user.photoURL
         await createPublicProfile(uid, name, photoUrl)

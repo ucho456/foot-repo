@@ -21,11 +21,6 @@ export default defineComponent({
   },
 
   setup() {
-    const get = async () => {
-      const testUsersRef = doc(db, 'testUsers', 'BW21faVmA9TEHwSPQtj9')
-      const snapShot = await getDoc(testUsersRef)
-      console.log(snapShot.data())
-    }
     const currentUser = useCurrentUser()
     console.log('currentUser', currentUser)
     const reportList = makeReportList(reports, users)

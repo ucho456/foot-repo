@@ -15,7 +15,7 @@ const useNew = () => {
   const create = async (): Promise<'success' | 'failure'> => {
     try {
       isLoading.value = true
-      await setDoc(doc(db, 'public-profiles', uid), publicProfile)
+      await setDoc(doc(db, 'users', uid), publicProfile)
       return 'success'
     } catch {
       return 'failure'
