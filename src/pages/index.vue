@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from '@nuxtjs/composition-api'
+import { defineComponent } from '@nuxtjs/composition-api'
 import { getAuth, signOut } from 'firebase/auth'
 import IndexReportList from '@/components/organisms/IndexReportList.vue'
 import { reports, users } from '@/utils/testData'
@@ -22,14 +22,6 @@ export default defineComponent({
 
   setup() {
     // user情報を変更する時はreloadを挟んでcurrentUserを更新する。サンプル
-    onMounted(() => {
-      if (window.name !== 'reloaded') {
-        window.name = 'reloaded'
-        window.location.reload(true)
-      } else {
-        window.name = ''
-      }
-    })
     const currentUser = useCurrentUser()
     console.log('currentUser', currentUser)
     const reportList = makeReportList(reports, users)
