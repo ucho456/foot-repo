@@ -5,7 +5,7 @@ import useCurrentUser from '@/utils/useCurrentUser'
 
 const useNew = () => {
   const currentUser = useCurrentUser()
-  console.log('public-profile useNew currentUser', currentUser)
+  console.log('user useNew currentUser', currentUser)
   console.log(currentUser.value?.name)
   const uid = currentUser.value?.uid || ''
   const publicProfile = reactive({

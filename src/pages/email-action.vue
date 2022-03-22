@@ -21,7 +21,7 @@ export default defineComponent({
       case 'verifyEmail': {
         message.value = 'メール認証が完了しました。\n3秒後に登録画面に遷移します。'
         setTimeout(() => {
-          router.push({ name: 'public-profile-new' })
+          router.push({ name: 'users-new' })
         }, 3 * 1000)
         break
       }

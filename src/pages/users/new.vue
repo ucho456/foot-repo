@@ -35,7 +35,7 @@
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
-import useNew from '@/composables/public-profile/useNew'
+import useNew from '@/composables/users/useNew'
 import TextField from '@/components/molecules/TextField.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
 import Snackbar from '@/components/molecules/Snackbar.vue'

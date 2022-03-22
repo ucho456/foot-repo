@@ -98,7 +98,7 @@ export default defineComponent({
 
     const next = (result: 'success' | 'already exist' | 'failure'): void => {
       result === 'success'
-        ? router.push({ name: 'public-profile-new' })
+        ? router.push({ name: 'users-new' })
         : result === 'already exist'
         ? openSnackbar(result, '既に使用されているプロバイダーです。')
         : openSnackbar(result, 'エラーが発生しました。')
