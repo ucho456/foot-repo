@@ -1,27 +1,35 @@
+// firebase deploy --only firestore:rules
+
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    
-    function isAuth() {
-      return request.auth != null;
-    }
 
+    // common functions
     function onlyMe(userId) {
-      return isAuth() && userId == request.auth.uid;
+      return request.auth != null && userId == request.auth.uid;
     }
 
+    function isValidString(value, min, max) {
+      return min <= value.size() && value.size() <= max;
+    }
+
+    function isValidImage(value) {
+      return value == null || value.matches('^https?://.+$');
+    }
+
+    // users
     function isValidUser(user) {
       return user.size() == 2
       && 'name' in user && user.name is string
-      && 'photoUrl' in user && (user.photoUrl is string || user.photoUrl == null);
+      && 'photoUrl' in user && (user.photoUrl == null || user.photoUrl is string);
     }
 
     match /users/{userId} {
       allow read;
       allow create: if onlyMe(userId)
       && isValidUser(request.resource.data)
-      && (0 < request.resource.data.name.size() && request.resource.data.name.size() <= 20)
-      && (0 < request.resource.data.photoUrl.size() && request.resource.data.photoUrl.size() <= 100);
+      && isValidString(request.resource.data.name, 1, 20)
+      && isValidImage(request.resource.data.photoUrl);
     }
   }
 }
