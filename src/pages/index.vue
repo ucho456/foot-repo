@@ -24,6 +24,7 @@ export default defineComponent({
     // user情報を変更する時はreloadを挟んでcurrentUserを更新する。サンプル
     const currentUser = useCurrentUser()
     console.log('currentUser', currentUser)
+    console.log('process.env.FIREBASE_API_KEY', process.env.FIREBASE_API_KEY)
     // const reportList = makeReportList(reports, users)
     const auth = getAuth()
     const logout = () => {
