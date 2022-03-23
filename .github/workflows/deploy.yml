@@ -1,0 +1,57 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  GCP_PROJECT: 'foot-repo'
+  IMAGE: gcr.io/foot-repo/foot-repo:${{ github.sha }}
+
+jobs:
+  delivery:
+    name: Delivery
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: GCP Authenticate
+        uses: google-github-actions/setup-gcloud@v0
+        with:
+          service_account_email: ${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}
+          service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+
+      - name: Configure docker to use the gcloud cli
+        run: gcloud auth configure-docker --quiet
+
+      - name: Build a docker image
+        run: docker build . -t $IMAGE
+
+      - name: Push the docker image
+        run: docker push $IMAGE
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy foot-repo \
+            --image $IMAGE \
+            --project $GCP_PROJECT \
+            --region asia-northeast1 \
+            --set-env-vars=TZ=Asia/Tokyo \
+            --platform managed \
+            --allow-unauthenticated \
+            --quiet
+
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy -P $GCP_PROJECT --force
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY_BASE64 }}
