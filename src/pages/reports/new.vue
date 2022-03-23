@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row justify="center">
+    <!-- <v-row justify="center">
       <v-col cols="12" md="6" sm="10">
         <v-sheet>
           <ReportsHeader v-bind="report" />
@@ -64,44 +64,44 @@
           </v-container>
         </v-sheet>
       </v-col>
-    </v-row>
+    </v-row> -->
   </v-container>
 </template>
 
 <script lang="ts">
-import { defineComponent, useRouter } from '@nuxtjs/composition-api' //, useRoute
-import ReportsHeader from '@/components/organisms/ReportsHeader.vue'
-import SelectHomeAway from '@/components/molecules/SelectHomeAway.vue'
-import ReportsPlayerForm from '@/components/organisms/ReportsPlayerForm.vue'
-import SelectIdMom from '@/components/molecules/SelectIdMom.vue'
-import Textarea from '@/components/molecules/Textarea.vue'
-import ButtonBack from '@/components/molecules/ButtonBack.vue'
-import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
-import { matches, users } from '@/utils/testData'
-import { setUpReport, inputPoint, inputText } from '@/composables/useReportsNew'
+// import { defineComponent, useRouter } from '@nuxtjs/composition-api' //, useRoute
+// import ReportsHeader from '@/components/organisms/ReportsHeader.vue'
+// import SelectHomeAway from '@/components/molecules/SelectHomeAway.vue'
+// import ReportsPlayerForm from '@/components/organisms/ReportsPlayerForm.vue'
+// import SelectIdMom from '@/components/molecules/SelectIdMom.vue'
+// import Textarea from '@/components/molecules/Textarea.vue'
+// import ButtonBack from '@/components/molecules/ButtonBack.vue'
+// import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
+// import { matches, users } from '@/utils/testData'
+// import { setUpReport, inputPoint, inputText } from '@/composables/useReportsNew'
 
-export default defineComponent({
-  name: 'ReportNew',
+// export default defineComponent({
+//   name: 'ReportNew',
 
-  components: {
-    ReportsHeader,
-    SelectHomeAway,
-    ReportsPlayerForm,
-    SelectIdMom,
-    Textarea,
-    ButtonBack,
-    ButtonSubmit
-  },
+//   components: {
+//     ReportsHeader,
+//     SelectHomeAway,
+//     ReportsPlayerForm,
+//     SelectIdMom,
+//     Textarea,
+//     ButtonBack,
+//     ButtonSubmit
+//   },
 
-  layout: 'noside',
+//   layout: 'noside',
 
-  setup() {
-    const match = matches[0]
-    const user = users[0]
-    const report = setUpReport(match, user)
-    const router = useRouter()
-    const back = () => router.back()
-    return { report, inputPoint, inputText, back }
-  }
-})
+//   setup() {
+//     const match = matches[0]
+//     const user = users[0]
+//     const report = setUpReport(match, user)
+//     const router = useRouter()
+//     const back = () => router.back()
+//     return { report, inputPoint, inputText, back }
+//   }
+// })
 </script>
