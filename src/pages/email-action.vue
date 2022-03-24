@@ -1,7 +1,14 @@
 <template>
-  <v-container class="wrap">
-    <v-col class="text-center">{{ message }}</v-col>
-  </v-container>
+  <v-card class="text-center wrap" outlined>
+    <v-container>
+      <v-row>
+        <v-col cols="12">{{ message }}</v-col>
+        <v-col cols="12">
+          <v-progress-circular indeterminate color="primary"></v-progress-circular>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-card>
 </template>
 
 <script lang="ts">
