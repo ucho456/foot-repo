@@ -1,24 +1,32 @@
 import { reactive, ref } from '@nuxtjs/composition-api'
-import { doc, setDoc } from 'firebase/firestore'
 import db from '@/plugins/firebase'
-import useCurrentUser from '@/utils/useCurrentUser'
+import { writeBatch } from 'firebase/firestore'
+import { getUserDoc, updateUserDoc } from '@/db/usersCollection'
 
 const useNew = () => {
-  const currentUser = useCurrentUser()
-  console.log('user useNew currentUser', currentUser)
-  console.log(currentUser.value?.name)
-  const uid = currentUser.value?.uid || ''
-  const publicProfile = reactive({
-    name: currentUser.value?.name || `${new Date().getTime()}`,
-    photoUrl: currentUser.value?.photoUrl || ''
+  const user: User = reactive({
+    id: '',
+    name: '',
+    photoUrl: null
   })
-  console.log(publicProfile)
+
+  const get = async (uid: string): Promise<void> => {
+    const userDoc = await getUserDoc(uid)
+    if (userDoc) {
+      user.id = userDoc.id
+      user.name = userDoc.name
+      user.photoUrl = userDoc.photoUrl
+    }
+  }
+
   const isLoading = ref(false)
 
-  const create = async (): Promise<'success' | 'failure'> => {
+  const update = async (uid: string): Promise<'success' | 'failure'> => {
     try {
       isLoading.value = true
-      await setDoc(doc(db, 'users', uid), publicProfile)
+      const batch = writeBatch(db)
+      updateUserDoc(batch, uid, user)
+      await batch.commit()
       return 'success'
     } catch {
       return 'failure'
@@ -27,7 +35,7 @@ const useNew = () => {
     }
   }
 
-  return { publicProfile, isLoading, create }
+  return { user, get, isLoading, update }
 }
 
 export default useNew

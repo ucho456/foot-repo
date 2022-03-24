@@ -1,41 +1,36 @@
 <template>
-  <v-container>
-    <ValidationObserver v-slot="{ invalid }">
-      <v-row justify="center">
-        <v-col cols="12">
-          <v-sheet>
-            <v-container>
-              <v-row justify="center">
-                <v-col cols="10">
-                  <TextField
-                    v-model="publicProfile.name"
-                    :label="'ニックネーム'"
-                    :max-length="15"
-                    :rules="'required'"
-                  />
-                </v-col>
-                <v-col cols="10">
-                  <ButtonSubmit
-                    :disabled="invalid"
-                    :icon="'mdi-send'"
-                    :loading="isLoading"
-                    :text="'登録する'"
-                    @click="submit"
-                  />
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-sheet>
-        </v-col>
-      </v-row>
-    </ValidationObserver>
+  <v-card outlined>
+    <v-container>
+      <ValidationObserver v-slot="{ invalid }">
+        <v-row justify="center">
+          <v-col cols="10">
+            <TextField
+              v-model="user.name"
+              :label="'ニックネーム'"
+              :max-length="20"
+              :rules="'required'"
+            />
+          </v-col>
+          <v-col cols="10">
+            <ButtonSubmit
+              :disabled="invalid"
+              :icon="'mdi-send'"
+              :loading="isLoading"
+              :text="'登録する'"
+              @click="submit"
+            />
+          </v-col>
+        </v-row>
+      </ValidationObserver>
+    </v-container>
     <Snackbar v-bind="snackbar" />
-  </v-container>
+  </v-card>
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, useRouter } from '@nuxtjs/composition-api'
 import useNew from '@/composables/users/useNew'
+import useCurrentUser from '@/utils/useCurrentUser'
 import TextField from '@/components/molecules/TextField.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
 import Snackbar from '@/components/molecules/Snackbar.vue'
@@ -53,15 +48,21 @@ export default defineComponent({
   layout: 'grey',
 
   setup() {
-    const { publicProfile, isLoading, create } = useNew()
+    const currentUser = useCurrentUser()
+    const uid = currentUser.value?.uid
+    const { user, get, isLoading, update } = useNew()
     const { snackbar, openSnackbar } = useSnackbar()
+    const router = useRouter()
+    if (uid) get(uid)
 
-    const submit = async () => {
-      const result = await create()
+    const submit = async (): Promise<void> => {
+      if (!uid) return
+      const result = await update(uid)
       const message = result === 'success' ? '作成しました。' : '失敗しました。'
       openSnackbar(result, message)
+      if (result === 'success') router.push('/')
     }
-    return { publicProfile, isLoading, snackbar, submit }
+    return { user, isLoading, snackbar, submit }
   }
 })
 </script>
