@@ -30,6 +30,10 @@ service cloud.firestore {
       && isValidUser(request.resource.data)
       && isValidString(request.resource.data.name, 1, 20)
       && isValidImage(request.resource.data.photoUrl);
+      allow update: if onlyMe(userId)
+      && isValidUser(request.resource.data)
+      && isValidString(request.resource.data.name, 1, 20)
+      && isValidImage(request.resource.data.photoUrl);
     }
   }
 }
