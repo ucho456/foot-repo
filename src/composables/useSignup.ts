@@ -1,4 +1,4 @@
-import { ref } from '@nuxtjs/composition-api'
+import { reactive, ref } from '@nuxtjs/composition-api'
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -11,11 +11,10 @@ import { doc, getDoc, writeBatch } from 'firebase/firestore'
 import db from '@/plugins/firebase'
 
 const useSignup = () => {
-  const email = ref('')
-  const password = ref('')
+  const user = reactive({ email: '', password: '' })
   const isLoading = ref(false)
 
-  const createPublicProfile = async (
+  const createInitUser = async (
     uid: string,
     name: string | null,
     photoUrl: string | null
@@ -29,9 +28,9 @@ const useSignup = () => {
     try {
       isLoading.value = true
       const auth = getAuth()
-      const userCredential = await createUserWithEmailAndPassword(auth, email.value, password.value)
+      const userCredential = await createUserWithEmailAndPassword(auth, user.email, user.password)
       await sendEmailVerification(userCredential.user)
-      await createPublicProfile(userCredential.user.uid, `user${new Date().getTime()}`, null)
+      await createInitUser(userCredential.user.uid, `user${new Date().getTime()}`, null)
       return 'success'
     } catch (error) {
       return error instanceof Error && error.message.includes('auth/email-already-in-use')
@@ -54,7 +53,7 @@ const useSignup = () => {
       if (!uSnapshot.exists()) {
         const name = userCredential.user.displayName
         const photoUrl = userCredential.user.photoURL
-        await createPublicProfile(uid, name, photoUrl)
+        await createInitUser(uid, name, photoUrl)
         return 'success'
       } else {
         return 'already exist'
@@ -78,7 +77,7 @@ const useSignup = () => {
     return result
   }
 
-  return { email, password, isLoading, signupEmail, signupTwitter, signupGoogle }
+  return { user, isLoading, signupEmail, signupTwitter, signupGoogle }
 }
 
 export default useSignup

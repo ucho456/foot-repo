@@ -3,50 +3,47 @@
     <v-card-title>
       <v-row justify="center">Foot-Repo(ロゴ予定)</v-row>
     </v-card-title>
-    <ValidationObserver v-slot="{ invalid }">
-      <v-container>
+    <v-container>
+      <ValidationObserver v-slot="{ invalid }">
         <v-row justify="center">
           <v-col cols="10" class="mb-n4 mt-4">
-            <TextFieldEmail v-model="email" />
+            <TextFieldEmail v-model="user.email" />
           </v-col>
           <v-col cols="10">
-            <TextFieldPassword v-model="password" />
+            <TextFieldPassword v-model="user.password" />
           </v-col>
-          <v-row class="mb-8" justify="center">
-            <v-col cols="10">
-              <ButtonSubmit
-                :disabled="invalid"
-                :icon="'mdi-send'"
-                :loading="isLoading"
-                :text="'登録する'"
-                @click="submitEmail"
-              />
-            </v-col>
-            利用規約・プライバシーポリシー
-            <v-col cols="10">
-              <ButtonTwitter
-                :loading="isLoading"
-                :text="'Twitterアカウントで登録'"
-                @click="submitTwitter"
-              />
-            </v-col>
-            <v-col cols="10">
-              <ButtonGoogle
-                :loading="isLoading"
-                :text="'Googleアカウントで登録'"
-                @click="submitGoogle"
-              />
-            </v-col>
-            <v-col cols="10">
-              <ButtonBack @click="back" />
-            </v-col>
-            <NuxtLink class="text-caption hover" to="/login">
-              アカウントをお持ちの場合はログインから
-            </NuxtLink>
-          </v-row>
+          <v-col cols="10">
+            <ButtonSubmit
+              :disabled="invalid"
+              :icon="'mdi-send'"
+              :loading="isLoading"
+              :text="'登録する'"
+              @click="submitEmail"
+            />
+          </v-col>
+          <v-col cols="10">
+            <ButtonTwitter
+              :loading="isLoading"
+              :text="'Twitterアカウントで登録'"
+              @click="submitTwitter"
+            />
+          </v-col>
+          <v-col cols="10">
+            <ButtonGoogle
+              :loading="isLoading"
+              :text="'Googleアカウントで登録'"
+              @click="submitGoogle"
+            />
+          </v-col>
+          <v-col cols="10">
+            <ButtonBack @click="back" />
+          </v-col>
+          <NuxtLink class="text-caption hover mb-4" to="/login">
+            アカウントをお持ちの場合はログインから
+          </NuxtLink>
         </v-row>
-      </v-container>
-    </ValidationObserver>
+      </ValidationObserver>
+    </v-container>
     <Snackbar v-bind="snackbar" />
   </v-card>
 </template>
@@ -79,7 +76,7 @@ export default defineComponent({
   layout: 'grey',
 
   setup() {
-    const { email, password, isLoading, signupEmail, signupTwitter, signupGoogle } = useSignup()
+    const { user, isLoading, signupEmail, signupTwitter, signupGoogle } = useSignup()
     const { snackbar, openSnackbar } = useSnackbar()
 
     const submitEmail = async () => {
@@ -115,8 +112,7 @@ export default defineComponent({
     }
 
     return {
-      email,
-      password,
+      user,
       isLoading,
       snackbar,
       submitEmail,
