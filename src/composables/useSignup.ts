@@ -9,20 +9,11 @@ import {
 } from 'firebase/auth'
 import { doc, getDoc, writeBatch } from 'firebase/firestore'
 import db from '@/plugins/firebase'
+import { createUserDoc } from '@/db/usersCollection'
 
 const useSignup = () => {
   const user = reactive({ email: '', password: '' })
   const isLoading = ref(false)
-
-  const createInitUser = async (
-    uid: string,
-    name: string | null,
-    photoUrl: string | null
-  ): Promise<void> => {
-    const batch = writeBatch(db)
-    batch.set(doc(db, 'users', uid), { name, photoUrl })
-    await batch.commit()
-  }
 
   const signupEmail = async (): Promise<'success' | 'already used' | 'failure'> => {
     try {
@@ -30,7 +21,13 @@ const useSignup = () => {
       const auth = getAuth()
       const userCredential = await createUserWithEmailAndPassword(auth, user.email, user.password)
       await sendEmailVerification(userCredential.user)
-      await createInitUser(userCredential.user.uid, `user${new Date().getTime()}`, null)
+      const batch = writeBatch(db)
+      createUserDoc(batch, userCredential.user.uid, {
+        id: userCredential.user.uid,
+        name: `user${new Date().getTime()}`,
+        photoUrl: null
+      })
+      await batch.commit()
       return 'success'
     } catch (error) {
       return error instanceof Error && error.message.includes('auth/email-already-in-use')
@@ -51,9 +48,13 @@ const useSignup = () => {
       const uid = userCredential.user.uid
       const uSnapshot = await getDoc(doc(db, 'users', uid))
       if (!uSnapshot.exists()) {
-        const name = userCredential.user.displayName
-        const photoUrl = userCredential.user.photoURL
-        await createInitUser(uid, name, photoUrl)
+        const batch = writeBatch(db)
+        createUserDoc(batch, uid, {
+          id: uid,
+          name: userCredential.user.displayName || `user${new Date().getTime()}`,
+          photoUrl: userCredential.user.photoURL
+        })
+        await batch.commit()
         return 'success'
       } else {
         return 'already exist'

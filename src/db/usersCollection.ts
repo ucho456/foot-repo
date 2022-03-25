@@ -32,6 +32,11 @@ export const getUserDoc = async (uid: string): Promise<User | null> => {
   return uSnapshot.exists() ? uSnapshot.data() : null
 }
 
+export const createUserDoc = (batch: WriteBatch, uid: string, user: User): void => {
+  const uRef = doc(db, 'users', uid).withConverter(userConverter)
+  batch.set(uRef, { id: uid, name: user.name, photoUrl: user.photoUrl })
+}
+
 export const updateUserDoc = (batch: WriteBatch, uid: string, user: User): void => {
   const uRef = doc(db, 'users', uid).withConverter(userConverter)
   batch.update(uRef, { name: user.name, photoUrl: user.photoUrl })

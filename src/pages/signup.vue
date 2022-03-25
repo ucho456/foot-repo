@@ -91,11 +91,14 @@ export default defineComponent({
     const back = (): void => router.back()
 
     const next = (result: 'success' | 'already exist' | 'failure'): void => {
-      result === 'success'
-        ? router.push({ name: 'users-new' })
-        : result === 'already exist'
-        ? openSnackbar(result, '既に使用されているプロバイダーです。')
-        : openSnackbar(result, 'エラーが発生しました。')
+      const message =
+        result === 'success'
+          ? '認証が完了しました。'
+          : result === 'already exist'
+          ? '既に使用されているプロバイダーです。'
+          : 'エラーが発生しました。'
+      openSnackbar(result, message)
+      if (result === 'success') router.push({ name: 'users-new' })
     }
 
     const submitTwitter = async () => {
