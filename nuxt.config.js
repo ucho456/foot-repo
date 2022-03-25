@@ -24,7 +24,7 @@ export default {
     '@/plugins/firebase',
     '@/plugins/firebase-auth',
     '@/plugins/vee-validate',
-    '@/plugins/snackbar.ts'
+    '@/plugins/snackbar'
   ],
 
   components: true,

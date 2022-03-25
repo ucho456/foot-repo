@@ -7,8 +7,8 @@ module.exports = {
   extends: ['@nuxtjs/eslint-config-typescript', 'plugin:nuxt/recommended', 'prettier'],
   plugins: [],
   rules: {
+    'import/ignore': 'node_modules',
     'no-unused-vars': 'off',
-    '@typescript-eslint/no-unused-vars': 'error',
-    'import/ignore': 'node_modules'
+    '@typescript-eslint/no-unused-vars': 'error'
   }
 }

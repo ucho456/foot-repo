@@ -1,10 +1,4 @@
-import { inject, InjectionKey, reactive } from '@nuxtjs/composition-api'
-
-type Snackbar = {
-  color: '' | 'success' | 'failure'
-  message: string
-  show: boolean
-}
+import { inject, InjectionKey } from '@nuxtjs/composition-api'
 
 export const SnackbarKey: InjectionKey<Snackbar> = Symbol('snackbar')
 

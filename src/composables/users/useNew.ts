@@ -1,6 +1,6 @@
 import { reactive, ref } from '@nuxtjs/composition-api'
-import db from '@/plugins/firebase'
 import { writeBatch } from 'firebase/firestore'
+import db from '@/plugins/firebase'
 import { getUserDoc, updateUserDoc } from '@/db/usersCollection'
 
 const useNew = () => {

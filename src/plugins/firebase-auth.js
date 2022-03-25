@@ -1,6 +1,6 @@
 import { defineNuxtPlugin, onGlobalSetup, onUnmounted, ref, provide } from '@nuxtjs/composition-api'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
-import { CurrentUser } from '@/utils/useCurrentUser'
+import { CurrentUserKey } from '@/utils/useCurrentUser'
 
 export default defineNuxtPlugin(async (_, inject) => {
   const currentUser = ref(null)
@@ -18,7 +18,7 @@ export default defineNuxtPlugin(async (_, inject) => {
   })
 
   onGlobalSetup(() => {
-    provide(CurrentUser, currentUser)
+    provide(CurrentUserKey, currentUser)
     onUnmounted(unsubscribe)
   })
 })
