@@ -23,7 +23,6 @@
         </v-row>
       </ValidationObserver>
     </v-container>
-    <Snackbar v-bind="snackbar" />
   </v-card>
 </template>
 
@@ -33,7 +32,6 @@ import useNew from '@/composables/users/useNew'
 import useCurrentUser from '@/utils/useCurrentUser'
 import TextField from '@/components/molecules/TextField.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
-import Snackbar from '@/components/molecules/Snackbar.vue'
 import useSnackbar from '@/utils/useSnackbar'
 
 export default defineComponent({
@@ -41,8 +39,7 @@ export default defineComponent({
 
   components: {
     TextField,
-    ButtonSubmit,
-    Snackbar
+    ButtonSubmit
   },
 
   layout: 'grey',
@@ -51,7 +48,7 @@ export default defineComponent({
     const currentUser = useCurrentUser()
     const uid = currentUser.value?.uid
     const { user, get, isLoading, update } = useNew()
-    const { snackbar, openSnackbar } = useSnackbar()
+    const { openSnackbar } = useSnackbar()
     const router = useRouter()
     if (uid) get(uid)
 
@@ -62,7 +59,7 @@ export default defineComponent({
       openSnackbar(result, message)
       if (result === 'success') router.push('/')
     }
-    return { user, isLoading, snackbar, submit }
+    return { user, isLoading, submit }
   }
 })
 </script>

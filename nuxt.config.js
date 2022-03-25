@@ -20,7 +20,12 @@ export default {
 
   css: [],
 
-  plugins: ['@/plugins/firebase', '@/plugins/firebase-auth', '@/plugins/vee-validate'],
+  plugins: [
+    '@/plugins/firebase',
+    '@/plugins/firebase-auth',
+    '@/plugins/vee-validate',
+    '@/plugins/snackbar.ts'
+  ],
 
   components: true,
 

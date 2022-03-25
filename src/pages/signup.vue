@@ -44,7 +44,6 @@
         </v-row>
       </ValidationObserver>
     </v-container>
-    <Snackbar v-bind="snackbar" />
   </v-card>
 </template>
 
@@ -57,7 +56,6 @@ import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
 import ButtonTwitter from '@/components/molecules/ButtonTwitter.vue'
 import ButtonGoogle from '@/components/molecules/ButtonGoogle.vue'
 import ButtonBack from '@/components/molecules/ButtonBack.vue'
-import Snackbar from '@/components/molecules/Snackbar.vue'
 import useSnackbar from '@/utils/useSnackbar'
 
 export default defineComponent({
@@ -69,15 +67,14 @@ export default defineComponent({
     ButtonSubmit,
     ButtonTwitter,
     ButtonGoogle,
-    ButtonBack,
-    Snackbar
+    ButtonBack
   },
 
   layout: 'grey',
 
   setup() {
     const { user, isLoading, signupEmail, signupTwitter, signupGoogle } = useSignup()
-    const { snackbar, openSnackbar } = useSnackbar()
+    const { openSnackbar } = useSnackbar()
 
     const submitEmail = async () => {
       const result = await signupEmail()
@@ -114,7 +111,6 @@ export default defineComponent({
     return {
       user,
       isLoading,
-      snackbar,
       submitEmail,
       back,
       submitTwitter,

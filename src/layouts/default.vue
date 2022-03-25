@@ -51,6 +51,7 @@
         <span>&copy; {{ new Date().getFullYear() }}</span>
       </v-container>
     </v-footer>
+    <Snackbar v-bind="snackbar" />
   </v-app>
 </template>
 
@@ -58,18 +59,22 @@
 import { defineComponent, ref } from '@nuxtjs/composition-api'
 import SideContainer from '@/components/organisms/SideContainer.vue'
 import { navigationDrawerItems } from '@/utils/navigationDrawerItems'
+import Snackbar from '@/components/molecules/Snackbar.vue'
+import useSnackbar from '@/utils/useSnackbar'
 
 export default defineComponent({
   name: 'Default',
 
   components: {
-    SideContainer
+    SideContainer,
+    Snackbar
   },
 
   setup() {
+    const { snackbar } = useSnackbar()
     const showFlg = ref(false)
     const toggleDrawer = (): boolean => (showFlg.value = !showFlg.value)
-    return { navigationDrawerItems, showFlg, toggleDrawer }
+    return { snackbar, navigationDrawerItems, showFlg, toggleDrawer }
   }
 })
 </script>
