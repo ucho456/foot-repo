@@ -1,12 +1,5 @@
-import {
-  doc,
-  DocumentData,
-  FirestoreDataConverter,
-  getDoc,
-  QueryDocumentSnapshot,
-  SnapshotOptions,
-  WriteBatch
-} from 'firebase/firestore'
+import { doc, getDoc, QueryDocumentSnapshot, WriteBatch } from 'firebase/firestore'
+import type { DocumentData, SnapshotOptions, FirestoreDataConverter } from 'firebase/firestore'
 import db from '@/plugins/firebase'
 
 const userConverter: FirestoreDataConverter<User> = {
