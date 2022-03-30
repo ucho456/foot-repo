@@ -15,7 +15,7 @@ const useNew = () => {
     const userDoc = await fetchUserDoc(uid)
     if (userDoc) {
       user.id = userDoc.id
-      user.name = userDoc.name
+      user.name = userDoc.name.substring(0, 20)
       user.photoUrl = userDoc.photoUrl
     }
   }

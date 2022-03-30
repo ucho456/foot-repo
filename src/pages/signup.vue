@@ -9,9 +9,13 @@
           <v-col cols="10" class="mb-n4 mt-4">
             <TextFieldEmail v-model="user.email" />
           </v-col>
+        </v-row>
+        <v-row justify="center">
           <v-col cols="10">
             <TextFieldPassword v-model="user.password" />
           </v-col>
+        </v-row>
+        <v-row justify="center">
           <v-col cols="10">
             <ButtonSubmit
               :disabled="invalid"
@@ -21,6 +25,8 @@
               @click="submitEmail"
             />
           </v-col>
+        </v-row>
+        <v-row justify="center">
           <v-col cols="10">
             <ButtonTwitter
               :loading="isLoading"
@@ -28,6 +34,8 @@
               @click="submitTwitter"
             />
           </v-col>
+        </v-row>
+        <v-row justify="center">
           <v-col cols="10">
             <ButtonGoogle
               :loading="isLoading"
@@ -35,9 +43,13 @@
               @click="submitGoogle"
             />
           </v-col>
+        </v-row>
+        <v-row justify="center">
           <v-col cols="10">
             <ButtonBack @click="back" />
           </v-col>
+        </v-row>
+        <v-row justify="center">
           <NuxtLink class="text-caption hover mb-4" to="/login">
             アカウントをお持ちの場合はログインから
           </NuxtLink>

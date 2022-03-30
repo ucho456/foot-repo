@@ -1,27 +1,32 @@
 <template>
   <v-card outlined>
+    <v-card-title>
+      <v-row justify="center">プロフィール編集</v-row>
+    </v-card-title>
     <v-container>
       <ValidationObserver v-slot="{ invalid }">
         <v-row justify="center">
-          <v-col cols="10">
+          <v-col cols="2" sm="1">
+            <v-list-item-avatar>
+              <v-img :src="user.photoUrl" />
+            </v-list-item-avatar>
+          </v-col>
+          <v-col cols="8" sm="5">
+            <FileInputUserPhoto @change="setPhotoUrl" />
+          </v-col>
+        </v-row>
+        <v-row justify="center">
+          <v-col cols="10" sm="6">
             <TextField
               v-model="user.name"
               :label="'ニックネーム'"
-              :max-length="20"
+              :maxlength="20"
               :rules="'required'"
             />
           </v-col>
-          <v-col cols="10">
-            <v-row>
-              <v-col cols="2">
-                <v-list-item-avatar>
-                  <v-img :src="user.photoUrl" />
-                </v-list-item-avatar>
-              </v-col>
-              <v-col cols="4"><FileInputUserPhoto @change="setPhotoUrl" /></v-col>
-            </v-row>
-          </v-col>
-          <v-col cols="10">
+        </v-row>
+        <v-row justify="center">
+          <v-col cols="10" sm="6">
             <ButtonSubmit
               :disabled="invalid"
               :icon="'mdi-send'"

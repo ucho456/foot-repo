@@ -39,7 +39,7 @@
 - v-model
 - v-hoge
 - class
-- gridSystem cols md sm xs (xs < 600px < sm < 960px < md < 1264px < lg < 1904px < xl)
+- gridSystem cols にスマホサイズ・sm にタブレットサイズ・md に PC サイズ
 - v-bind(:) icon とか router など Vuetify 用の props も同じとして考える
 - v-on(@)
 
