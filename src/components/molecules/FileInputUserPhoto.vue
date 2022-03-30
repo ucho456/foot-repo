@@ -18,7 +18,7 @@ export default defineComponent({
   },
 
   setup(_, ctx) {
-    const handleChange = (base64: string): void => ctx.emit('change', base64)
+    const handleChange = (imageFile: File): void => ctx.emit('change', imageFile)
     return { handleChange }
   }
 })

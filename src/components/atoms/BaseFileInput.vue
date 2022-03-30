@@ -23,21 +23,10 @@ export default defineComponent({
       return resizedImage
     }
 
-    const encodeBase64 = (file: File): Promise<string> => {
-      return new Promise((resolve) => {
-        const reader = new FileReader()
-        reader.readAsDataURL(file)
-        reader.onload = () => {
-          if (typeof reader.result === 'string') resolve(reader.result)
-        }
-      })
-    }
-
     const handleChange = async (file: File): Promise<void> => {
       if (!file.type.match(/^image\/(png|jpeg|gif)$/)) return
       const resizedImage = await resizeImage(file)
-      const base64 = await encodeBase64(resizedImage)
-      ctx.emit('change', base64)
+      ctx.emit('change', resizedImage)
     }
 
     return { handleChange }
