@@ -15,7 +15,7 @@ export default defineComponent({
   },
 
   setup(props, ctx) {
-    const resizeImage = async (file: File): File => {
+    const resizeImage = async (file: File): Promise<File> => {
       const resizedImage = await imageCompression(file, {
         maxSizeMB: 1,
         maxWidthOrHeight: props.maxWidthOrHeight
@@ -27,11 +27,13 @@ export default defineComponent({
       return new Promise((resolve) => {
         const reader = new FileReader()
         reader.readAsDataURL(file)
-        reader.onload = () => resolve(reader.result)
+        reader.onload = () => {
+          if (typeof reader.result === 'string') resolve(reader.result)
+        }
       })
     }
 
-    const handleChange = async (file: File): void => {
+    const handleChange = async (file: File): Promise<void> => {
       if (!file.type.match(/^image\/(png|jpeg|gif)$/)) return
       const resizedImage = await resizeImage(file)
       const base64 = await encodeBase64(resizedImage)
