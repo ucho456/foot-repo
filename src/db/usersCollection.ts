@@ -1,5 +1,6 @@
 import { doc, getDoc, QueryDocumentSnapshot, WriteBatch } from 'firebase/firestore'
 import type { DocumentData, SnapshotOptions, FirestoreDataConverter } from 'firebase/firestore'
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 import db from '@/plugins/firebase'
 
 const userConverter: FirestoreDataConverter<User> = {
@@ -19,7 +20,7 @@ const userConverter: FirestoreDataConverter<User> = {
   }
 }
 
-export const getUserDoc = async (uid: string): Promise<User | null> => {
+export const fetchUserDoc = async (uid: string): Promise<User | null> => {
   const uRef = doc(db, 'users', uid).withConverter(userConverter)
   const uSnapshot = await getDoc(uRef)
   return uSnapshot.exists() ? uSnapshot.data() : null
@@ -35,4 +36,12 @@ export const updateUserDoc = (batch: WriteBatch, uid: string, user: User): void 
   batch.update(uRef, { name: user.name, photoUrl: user.photoUrl })
 }
 
-// getUsersDoc, createUserDoc, updateUserDoc, deleteUserDoc
+export const uploadAndGetPhotoUrl = async (userPhotoFile: File): Promise<string> => {
+  const storage = getStorage()
+  const storageRef = ref(storage, `users/${new Date().getTime()}`)
+  await uploadBytes(storageRef, userPhotoFile)
+  const photoUrl = await getDownloadURL(storageRef)
+  return photoUrl
+}
+
+// fetchUsersDoc, deleteUserDoc

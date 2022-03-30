@@ -1,7 +1,7 @@
 import { reactive, ref } from '@nuxtjs/composition-api'
 import { writeBatch } from 'firebase/firestore'
 import db from '@/plugins/firebase'
-import { getUserDoc, updateUserDoc } from '@/db/usersCollection'
+import { fetchUserDoc, updateUserDoc, uploadAndGetPhotoUrl } from '@/db/usersCollection'
 
 const useNew = () => {
   const user: User = reactive({
@@ -9,9 +9,10 @@ const useNew = () => {
     name: '',
     photoUrl: null
   })
+  const userPhotoFile = ref<File | null>(null)
 
-  const get = async (uid: string): Promise<void> => {
-    const userDoc = await getUserDoc(uid)
+  const fetchUser = async (uid: string): Promise<void> => {
+    const userDoc = await fetchUserDoc(uid)
     if (userDoc) {
       user.id = userDoc.id
       user.name = userDoc.name
@@ -19,11 +20,17 @@ const useNew = () => {
     }
   }
 
-  const isLoading = ref(false)
+  const setPhotoUrl = (imageFile: File): void => {
+    user.photoUrl = URL.createObjectURL(imageFile)
+    userPhotoFile.value = imageFile
+  }
 
-  const update = async (uid: string): Promise<'success' | 'failure'> => {
+  const isLoading = ref(false)
+  const updateUser = async (uid: string): Promise<'success' | 'failure'> => {
     try {
       isLoading.value = true
+      const photoUrl = userPhotoFile.value ? await uploadAndGetPhotoUrl(userPhotoFile.value) : null
+      if (photoUrl) user.photoUrl = photoUrl
       const batch = writeBatch(db)
       updateUserDoc(batch, uid, user)
       await batch.commit()
@@ -35,7 +42,7 @@ const useNew = () => {
     }
   }
 
-  return { user, get, isLoading, update }
+  return { user, fetchUser, setPhotoUrl, isLoading, updateUser }
 }
 
 export default useNew

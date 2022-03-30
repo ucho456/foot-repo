@@ -12,6 +12,16 @@
             />
           </v-col>
           <v-col cols="10">
+            <v-row>
+              <v-col cols="2">
+                <v-list-item-avatar>
+                  <v-img :src="user.photoUrl" />
+                </v-list-item-avatar>
+              </v-col>
+              <v-col cols="4"><FileInputUserPhoto @change="setPhotoUrl" /></v-col>
+            </v-row>
+          </v-col>
+          <v-col cols="10">
             <ButtonSubmit
               :disabled="invalid"
               :icon="'mdi-send'"
@@ -33,13 +43,15 @@ import useCurrentUser from '@/utils/useCurrentUser'
 import TextField from '@/components/molecules/TextField.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
 import useSnackbar from '@/utils/useSnackbar'
+import FileInputUserPhoto from '@/components/molecules/FileInputUserPhoto.vue'
 
 export default defineComponent({
   name: 'PublicProfileNew',
 
   components: {
     TextField,
-    ButtonSubmit
+    ButtonSubmit,
+    FileInputUserPhoto
   },
 
   layout: 'grey',
@@ -47,19 +59,20 @@ export default defineComponent({
   setup() {
     const currentUser = useCurrentUser()
     const uid = currentUser.value?.uid
-    const { user, get, isLoading, update } = useNew()
+    const { user, fetchUser, setPhotoUrl, isLoading, updateUser } = useNew()
     const { openSnackbar } = useSnackbar()
     const router = useRouter()
-    if (uid) get(uid)
+    if (uid) fetchUser(uid)
 
     const submit = async (): Promise<void> => {
       if (!uid) return
-      const result = await update(uid)
+      const result = await updateUser(uid)
       const message = result === 'success' ? '作成しました。' : '失敗しました。'
       openSnackbar(result, message)
       if (result === 'success') router.push('/')
     }
-    return { user, isLoading, submit }
+
+    return { user, isLoading, submit, setPhotoUrl }
   }
 })
 </script>
