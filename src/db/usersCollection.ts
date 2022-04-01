@@ -7,7 +7,11 @@ const userConverter: FirestoreDataConverter<User> = {
   toFirestore(user: User): DocumentData {
     return {
       name: user.name,
-      imageUrl: user.imageUrl
+      imageUrl: user.imageUrl,
+      greet: user.greet,
+      favoriteTeamId1: user.favoriteTeamId1,
+      favoriteTeamId2: user.favoriteTeamId2,
+      favoriteTeamId3: user.favoriteTeamId3
     }
   },
   fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions): User {
@@ -15,7 +19,11 @@ const userConverter: FirestoreDataConverter<User> = {
     return {
       id: snapshot.id,
       name: data.name,
-      imageUrl: data.imageUrl
+      imageUrl: data.imageUrl,
+      greet: data.greet,
+      favoriteTeamId1: data.favoriteTeamId1,
+      favoriteTeamId2: data.favoriteTeamId2,
+      favoriteTeamId3: data.favoriteTeamId3
     }
   }
 }
@@ -29,12 +37,27 @@ export const getUserDoc = async (uid: string | undefined): Promise<User | null> 
 
 export const createUserDoc = (batch: WriteBatch, uid: string, user: User): void => {
   const uRef = doc(db, 'users', uid).withConverter(userConverter)
-  batch.set(uRef, { id: uid, name: user.name, imageUrl: user.imageUrl })
+  batch.set(uRef, {
+    id: uid,
+    name: user.name,
+    imageUrl: user.imageUrl,
+    greet: user.greet,
+    favoriteTeamId1: user.favoriteTeamId1,
+    favoriteTeamId2: user.favoriteTeamId2,
+    favoriteTeamId3: user.favoriteTeamId3
+  })
 }
 
 export const updateUserDoc = (batch: WriteBatch, uid: string, user: User): void => {
   const uRef = doc(db, 'users', uid).withConverter(userConverter)
-  batch.update(uRef, { name: user.name, imageUrl: user.imageUrl })
+  batch.update(uRef, {
+    name: user.name,
+    imageUrl: user.imageUrl,
+    greet: user.greet,
+    favoriteTeamId1: user.favoriteTeamId1,
+    favoriteTeamId2: user.favoriteTeamId2,
+    favoriteTeamId3: user.favoriteTeamId3
+  })
 }
 
 export const uploadAndGetImageUrl = async (userImageFile: File): Promise<string> => {

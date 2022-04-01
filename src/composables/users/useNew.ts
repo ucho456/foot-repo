@@ -7,7 +7,11 @@ const useNew = () => {
   const user: User = reactive({
     id: '',
     name: '',
-    imageUrl: null
+    imageUrl: null,
+    greet: '',
+    favoriteTeamId1: 0,
+    favoriteTeamId2: 0,
+    favoriteTeamId3: 0
   })
   const userImageFile = ref<File | null>(null)
 

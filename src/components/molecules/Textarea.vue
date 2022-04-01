@@ -1,9 +1,11 @@
 <template>
   <ValidationProvider v-slot="{ errors }" rules="characterLimit">
     <BaseTextarea
+      :counter-flg="true"
       :err-message="errors[0]"
       :icon="icon"
       :label="label"
+      :maxlength="maxlength"
       :value="value"
       @input="handleInput"
     />
@@ -24,6 +26,7 @@ export default defineComponent({
   props: {
     icon: { type: String, default: '' },
     label: { type: String, default: '' },
+    maxlength: { type: Number, default: 255 },
     value: { type: String, default: '' }
   },
 

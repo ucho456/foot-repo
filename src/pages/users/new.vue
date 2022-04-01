@@ -23,6 +23,16 @@
           </v-col>
         </v-row>
         <v-row justify="center">
+          <v-col cols="10" sm="8">
+            <Textarea
+              v-model="user.greet"
+              :icon="'mdi-human-greeting-variant'"
+              :label="'自己紹介文'"
+              :maxlength="140"
+            />
+          </v-col>
+        </v-row>
+        <v-row justify="center">
           <v-col cols="10" sm="6">
             <ButtonSubmit
               :disabled="invalid"
@@ -41,19 +51,21 @@
 <script lang="ts">
 import { defineComponent, useRouter } from '@nuxtjs/composition-api'
 import useNew from '@/composables/users/useNew'
-import useCurrentUser from '@/utils/useCurrentUser'
-import TextField from '@/components/molecules/TextField.vue'
-import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
-import useSnackbar from '@/utils/useSnackbar'
 import ImageUploaderUserImage from '@/components/molecules/ImageUploaderUserImage.vue'
+import TextField from '@/components/molecules/TextField.vue'
+import Textarea from '@/components/molecules/Textarea.vue'
+import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
+import useCurrentUser from '@/utils/useCurrentUser'
+import useSnackbar from '@/utils/useSnackbar'
 
 export default defineComponent({
   name: 'PublicProfileNew',
 
   components: {
+    ImageUploaderUserImage,
     TextField,
-    ButtonSubmit,
-    ImageUploaderUserImage
+    Textarea,
+    ButtonSubmit
   },
 
   layout: 'grey',
