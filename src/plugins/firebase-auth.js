@@ -11,7 +11,7 @@ export default defineNuxtPlugin(async (_, inject) => {
     const auth = getAuth()
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       currentUser.value = user
-        ? { uid: user.uid, name: user.displayName, photoUrl: user.photoURL }
+        ? { uid: user.uid, name: user.displayName, imageUrl: user.photoURL }
         : null
       resolve(unsubscribe)
     })

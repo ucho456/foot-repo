@@ -1,7 +1,7 @@
 type CurrentUser = {
   uid: string
   name: string | null
-  photoUrl: string | null
+  imageUrl: string | null
 }
 
 type Snackbar = {

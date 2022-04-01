@@ -8,9 +8,9 @@
         <v-row justify="center">
           <v-col cols="3" sm="2">
             <ImageUploaderUserImage
-              :value="user.photoUrl"
-              @change="changePhotoUrl"
-              @clear="clearPhotoUrl"
+              :value="user.imageUrl"
+              @change="changeImageUrl"
+              @clear="clearImageUrl"
             />
           </v-col>
           <v-col class="mt-4" cols="7" sm="6">
@@ -61,10 +61,10 @@ export default defineComponent({
   setup() {
     const currentUser = useCurrentUser()
     const uid = currentUser.value?.uid
-    const { user, fetchUser, changePhotoUrl, clearPhotoUrl, isLoading, updateUser } = useNew()
+    const { user, getUser, changeImageUrl, clearImageUrl, isLoading, updateUser } = useNew()
     const { openSnackbar } = useSnackbar()
     const router = useRouter()
-    if (uid) fetchUser(uid)
+    getUser(uid)
 
     const submit = async (): Promise<void> => {
       if (!uid) return
@@ -74,7 +74,7 @@ export default defineComponent({
       if (result === 'success') router.push('/')
     }
 
-    return { user, isLoading, submit, changePhotoUrl, clearPhotoUrl }
+    return { user, isLoading, submit, changeImageUrl, clearImageUrl }
   }
 })
 </script>

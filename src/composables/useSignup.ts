@@ -25,7 +25,7 @@ const useSignup = () => {
       createUserDoc(batch, userCredential.user.uid, {
         id: userCredential.user.uid,
         name: `user${new Date().getTime()}`,
-        photoUrl: null
+        imageUrl: null
       })
       await batch.commit()
       return 'success'
@@ -52,7 +52,7 @@ const useSignup = () => {
         createUserDoc(batch, uid, {
           id: uid,
           name: userCredential.user.displayName || `user${new Date().getTime()}`,
-          photoUrl: userCredential.user.photoURL
+          imageUrl: userCredential.user.photoURL
         })
         await batch.commit()
         return 'success'

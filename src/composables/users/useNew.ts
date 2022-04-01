@@ -1,41 +1,41 @@
 import { reactive, ref } from '@nuxtjs/composition-api'
 import { writeBatch } from 'firebase/firestore'
 import db from '@/plugins/firebase'
-import { fetchUserDoc, updateUserDoc, uploadAndGetPhotoUrl } from '@/db/usersCollection'
+import { getUserDoc, updateUserDoc, uploadAndGetImageUrl } from '@/db/usersCollection'
 
 const useNew = () => {
   const user: User = reactive({
     id: '',
     name: '',
-    photoUrl: null
+    imageUrl: null
   })
-  const userPhotoFile = ref<File | null>(null)
+  const userImageFile = ref<File | null>(null)
 
-  const fetchUser = async (uid: string): Promise<void> => {
-    const userDoc = await fetchUserDoc(uid)
+  const getUser = async (uid: string | undefined): Promise<void> => {
+    const userDoc = await getUserDoc(uid)
     if (userDoc) {
       user.id = userDoc.id
       user.name = userDoc.name.substring(0, 20)
-      user.photoUrl = userDoc.photoUrl
+      user.imageUrl = userDoc.imageUrl
     }
   }
 
-  const changePhotoUrl = (imageFile: File): void => {
-    user.photoUrl = URL.createObjectURL(imageFile)
-    userPhotoFile.value = imageFile
+  const changeImageUrl = (imageFile: File): void => {
+    user.imageUrl = URL.createObjectURL(imageFile)
+    userImageFile.value = imageFile
   }
 
-  const clearPhotoUrl = (): void => {
-    user.photoUrl = null
-    userPhotoFile.value = null
+  const clearImageUrl = (): void => {
+    user.imageUrl = null
+    userImageFile.value = null
   }
 
   const isLoading = ref(false)
   const updateUser = async (uid: string): Promise<'success' | 'failure'> => {
     try {
       isLoading.value = true
-      const photoUrl = userPhotoFile.value ? await uploadAndGetPhotoUrl(userPhotoFile.value) : null
-      if (photoUrl) user.photoUrl = photoUrl
+      const imageUrl = userImageFile.value ? await uploadAndGetImageUrl(userImageFile.value) : null
+      if (imageUrl) user.imageUrl = imageUrl
       const batch = writeBatch(db)
       updateUserDoc(batch, uid, user)
       await batch.commit()
@@ -47,7 +47,7 @@ const useNew = () => {
     }
   }
 
-  return { user, fetchUser, changePhotoUrl, clearPhotoUrl, isLoading, updateUser }
+  return { user, getUser, changeImageUrl, clearImageUrl, isLoading, updateUser }
 }
 
 export default useNew

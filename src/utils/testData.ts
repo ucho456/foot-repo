@@ -1078,11 +1078,11 @@ export const users = [
   {
     uid: 'aaa',
     name: '鈴木太郎',
-    photoUrl: 'https://cdn.vuetifyjs.com/images/lists/1.jpg'
+    imageUrl: 'https://cdn.vuetifyjs.com/images/lists/1.jpg'
   },
   {
     uid: 'bbb',
     name: '画像無し',
-    photoUrl: ''
+    imageUrl: ''
   }
 ]
