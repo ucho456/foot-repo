@@ -6,17 +6,14 @@
     <v-container>
       <ValidationObserver v-slot="{ invalid }">
         <v-row justify="center">
-          <v-col cols="2" sm="1">
-            <v-list-item-avatar>
-              <v-img :src="user.photoUrl" />
-            </v-list-item-avatar>
+          <v-col cols="3" sm="2">
+            <ImageUploaderUserImage
+              :value="user.photoUrl"
+              @change="changePhotoUrl"
+              @clear="clearPhotoUrl"
+            />
           </v-col>
-          <v-col cols="8" sm="5">
-            <FileInputUserPhoto @change="setPhotoUrl" />
-          </v-col>
-        </v-row>
-        <v-row justify="center">
-          <v-col cols="10" sm="6">
+          <v-col class="mt-4" cols="7" sm="6">
             <TextField
               v-model="user.name"
               :label="'ニックネーム'"
@@ -48,7 +45,7 @@ import useCurrentUser from '@/utils/useCurrentUser'
 import TextField from '@/components/molecules/TextField.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
 import useSnackbar from '@/utils/useSnackbar'
-import FileInputUserPhoto from '@/components/molecules/FileInputUserPhoto.vue'
+import ImageUploaderUserImage from '@/components/molecules/ImageUploaderUserImage.vue'
 
 export default defineComponent({
   name: 'PublicProfileNew',
@@ -56,7 +53,7 @@ export default defineComponent({
   components: {
     TextField,
     ButtonSubmit,
-    FileInputUserPhoto
+    ImageUploaderUserImage
   },
 
   layout: 'grey',
@@ -64,7 +61,7 @@ export default defineComponent({
   setup() {
     const currentUser = useCurrentUser()
     const uid = currentUser.value?.uid
-    const { user, fetchUser, setPhotoUrl, isLoading, updateUser } = useNew()
+    const { user, fetchUser, changePhotoUrl, clearPhotoUrl, isLoading, updateUser } = useNew()
     const { openSnackbar } = useSnackbar()
     const router = useRouter()
     if (uid) fetchUser(uid)
@@ -77,7 +74,7 @@ export default defineComponent({
       if (result === 'success') router.push('/')
     }
 
-    return { user, isLoading, submit, setPhotoUrl }
+    return { user, isLoading, submit, changePhotoUrl, clearPhotoUrl }
   }
 })
 </script>

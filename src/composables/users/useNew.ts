@@ -20,9 +20,14 @@ const useNew = () => {
     }
   }
 
-  const setPhotoUrl = (imageFile: File): void => {
+  const changePhotoUrl = (imageFile: File): void => {
     user.photoUrl = URL.createObjectURL(imageFile)
     userPhotoFile.value = imageFile
+  }
+
+  const clearPhotoUrl = (): void => {
+    user.photoUrl = null
+    userPhotoFile.value = null
   }
 
   const isLoading = ref(false)
@@ -42,7 +47,7 @@ const useNew = () => {
     }
   }
 
-  return { user, fetchUser, setPhotoUrl, isLoading, updateUser }
+  return { user, fetchUser, changePhotoUrl, clearPhotoUrl, isLoading, updateUser }
 }
 
 export default useNew
