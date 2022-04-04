@@ -21,8 +21,6 @@ export default defineComponent({
     ReportsMatchList
   },
 
-  layout: 'noside',
-
   setup() {
     const matchList = makeMatchList(matches)
     return { matchList }
