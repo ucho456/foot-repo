@@ -1,7 +1,7 @@
 import { reactive, ref } from '@nuxtjs/composition-api'
 import { writeBatch } from 'firebase/firestore'
 import db from '@/plugins/firebase'
-import { getUserDoc, updateUserDoc, uploadAndGetImageUrl } from '@/db/usersCollection'
+import { getUserDoc, updateInitUserDoc, uploadAndGetImageUrl } from '@/db/usersCollection'
 
 const useNew = () => {
   const user: User = reactive({
@@ -14,7 +14,8 @@ const useNew = () => {
     competitionId2: 0,
     teamId2: 0,
     competitionId3: 0,
-    teamId3: 0
+    teamId3: 0,
+    completeInit: true
   })
   const userImageFile = ref<File | null>(null)
 
@@ -46,13 +47,13 @@ const useNew = () => {
   }
 
   const isLoading = ref(false)
-  const updateUser = async (uid: string): Promise<'success' | 'failure'> => {
+  const updateInitUser = async (uid: string): Promise<'success' | 'failure'> => {
     try {
       isLoading.value = true
       const imageUrl = userImageFile.value ? await uploadAndGetImageUrl(userImageFile.value) : null
       if (imageUrl) user.imageUrl = imageUrl
       const batch = writeBatch(db)
-      updateUserDoc(batch, uid, user)
+      updateInitUserDoc(batch, uid, user)
       await batch.commit()
       return 'success'
     } catch {
@@ -62,7 +63,15 @@ const useNew = () => {
     }
   }
 
-  return { user, getUser, changeImageUrl, clearImageUrl, inputCompetitionId, isLoading, updateUser }
+  return {
+    user,
+    getUser,
+    changeImageUrl,
+    clearImageUrl,
+    inputCompetitionId,
+    isLoading,
+    updateInitUser
+  }
 }
 
 export default useNew

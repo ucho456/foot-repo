@@ -9,4 +9,5 @@ type User = {
   teamId2: number
   competitionId3: number
   teamId3: number
+  completeInit: boolean
 }

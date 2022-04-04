@@ -71,7 +71,7 @@ import ButtonBack from '@/components/molecules/ButtonBack.vue'
 import useSnackbar from '@/utils/useSnackbar'
 
 export default defineComponent({
-  name: 'Login',
+  name: 'Signup',
 
   components: {
     TextFieldEmail,
@@ -103,14 +103,14 @@ export default defineComponent({
     const back = (): void => router.back()
 
     const next = (result: 'success' | 'already exist' | 'failure'): void => {
-      const message =
-        result === 'success'
-          ? '認証が完了しました。'
-          : result === 'already exist'
-          ? '既に使用されているプロバイダーです。'
-          : 'エラーが発生しました。'
-      openSnackbar(result, message)
-      if (result === 'success') router.push({ name: 'users-new' })
+      if (result === 'success' || result === 'already exist') {
+        const message = result === 'success' ? '認証が完了しました。' : 'ログインしました。'
+        openSnackbar('success', message)
+        result === 'success' ? router.push({ name: 'users-new' }) : router.push('/')
+      } else {
+        const message = 'エラーが発生しました'
+        openSnackbar(result, message)
+      }
     }
 
     const submitTwitter = async () => {

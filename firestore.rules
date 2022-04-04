@@ -23,7 +23,7 @@ service cloud.firestore {
 
     // users
     function isValidUser(user) {
-      return user.size() == 9
+      return user.size() == 10
       && 'name' in user && user.name is string
       && 'imageUrl' in user && (user.imageUrl == null || user.imageUrl is string)
       && 'greet' in user && user.greet is string
@@ -32,7 +32,8 @@ service cloud.firestore {
       && 'competitionId2' in user && user.competitionId2 is int
       && 'teamId2' in user && user.teamId2 is int
       && 'competitionId3' in user && user.competitionId3 is int
-      && 'teamId3' in user && user.teamId3 is int;
+      && 'teamId3' in user && user.teamId3 is int
+      && 'completeInit' in user && user.completeInit is bool;
     }
 
     match /users/{userId} {

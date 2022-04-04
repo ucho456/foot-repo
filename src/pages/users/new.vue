@@ -1,7 +1,7 @@
 <template>
   <v-card outlined>
     <v-card-title>
-      <v-row justify="center">プロフィール編集</v-row>
+      <v-row justify="center">プロフィール登録</v-row>
     </v-card-title>
     <v-container>
       <ValidationObserver v-slot="{ invalid }">
@@ -100,7 +100,7 @@ export default defineComponent({
       clearImageUrl,
       inputCompetitionId,
       isLoading,
-      updateUser
+      updateInitUser
     } = useNew()
     const { openSnackbar } = useSnackbar()
     const router = useRouter()
@@ -108,7 +108,7 @@ export default defineComponent({
 
     const submit = async (): Promise<void> => {
       if (!uid) return
-      const result = await updateUser(uid)
+      const result = await updateInitUser(uid)
       const message = result === 'success' ? '作成しました。' : '失敗しました。'
       openSnackbar(result, message)
       if (result === 'success') router.push('/')

@@ -7,9 +7,9 @@ import {
   signInWithPopup,
   TwitterAuthProvider
 } from 'firebase/auth'
-import { doc, getDoc, writeBatch } from 'firebase/firestore'
+import { writeBatch } from 'firebase/firestore'
 import db from '@/plugins/firebase'
-import { createUserDoc } from '@/db/usersCollection'
+import { createInitUserDoc, getUserDoc } from '@/db/usersCollection'
 
 const useSignup = () => {
   const user = reactive({ email: '', password: '' })
@@ -22,18 +22,7 @@ const useSignup = () => {
       const userCredential = await createUserWithEmailAndPassword(auth, user.email, user.password)
       await sendEmailVerification(userCredential.user)
       const batch = writeBatch(db)
-      createUserDoc(batch, userCredential.user.uid, {
-        id: userCredential.user.uid,
-        name: `user${new Date().getTime()}`,
-        imageUrl: null,
-        greet: '',
-        competitionId1: 0,
-        teamId1: 0,
-        competitionId2: 0,
-        teamId2: 0,
-        competitionId3: 0,
-        teamId3: 0
-      })
+      createInitUserDoc(batch, userCredential.user.uid, `user${new Date().getTime()}`, null)
       await batch.commit()
       return 'success'
     } catch (error) {
@@ -53,21 +42,16 @@ const useSignup = () => {
       const auth = getAuth()
       const userCredential = await signInWithPopup(auth, provider)
       const uid = userCredential.user.uid
-      const uSnapshot = await getDoc(doc(db, 'users', uid))
-      if (!uSnapshot.exists()) {
+      const user = await getUserDoc(uid)
+      console.log(user)
+      if (!user || user.completeInit === false) {
         const batch = writeBatch(db)
-        createUserDoc(batch, uid, {
-          id: uid,
-          name: userCredential.user.displayName || `user${new Date().getTime()}`,
-          imageUrl: userCredential.user.photoURL,
-          greet: '',
-          competitionId1: 0,
-          teamId1: 0,
-          competitionId2: 0,
-          teamId2: 0,
-          competitionId3: 0,
-          teamId3: 0
-        })
+        createInitUserDoc(
+          batch,
+          uid,
+          userCredential.user.displayName || `user${new Date().getTime()}`,
+          userCredential.user.photoURL
+        )
         await batch.commit()
         return 'success'
       } else {

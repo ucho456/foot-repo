@@ -13,7 +13,8 @@ const userProperties = (user: User) => {
     competitionId2: user.competitionId2,
     teamId2: user.teamId1,
     competitionId3: user.competitionId3,
-    teamId3: user.competitionId1
+    teamId3: user.competitionId1,
+    completeInit: user.completeInit
   }
 }
 
@@ -33,7 +34,8 @@ const userConverter: FirestoreDataConverter<User> = {
       competitionId2: data.competitionId2,
       teamId2: data.teamId1,
       competitionId3: data.competitionId3,
-      teamId3: data.competitionId1
+      teamId3: data.competitionId1,
+      completeInit: data.completeInit
     }
   }
 }
@@ -45,12 +47,29 @@ export const getUserDoc = async (uid: string | undefined): Promise<User | null> 
   return uSnapshot.exists() ? uSnapshot.data() : null
 }
 
-export const createUserDoc = (batch: WriteBatch, uid: string, user: User): void => {
+export const createInitUserDoc = (
+  batch: WriteBatch,
+  uid: string,
+  name: string,
+  imageUrl: string | null
+): void => {
   const uRef = doc(db, 'users', uid).withConverter(userConverter)
-  batch.set(uRef, { id: uid, ...userProperties(user) })
+  batch.set(uRef, {
+    id: uid,
+    name,
+    imageUrl,
+    greet: '',
+    competitionId1: 0,
+    teamId1: 0,
+    competitionId2: 0,
+    teamId2: 0,
+    competitionId3: 0,
+    teamId3: 0,
+    completeInit: false
+  })
 }
 
-export const updateUserDoc = (batch: WriteBatch, uid: string, user: User): void => {
+export const updateInitUserDoc = (batch: WriteBatch, uid: string, user: User): void => {
   const uRef = doc(db, 'users', uid).withConverter(userConverter)
   batch.update(uRef, userProperties(user))
 }
