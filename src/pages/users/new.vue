@@ -13,7 +13,7 @@
               @clear="clearImageUrl"
             />
           </v-col>
-          <v-col class="mt-4" cols="7" sm="6">
+          <v-col class="mt-4" cols="7" sm="8">
             <TextField
               v-model="user.name"
               :label="'ニックネーム'"
@@ -23,12 +23,28 @@
           </v-col>
         </v-row>
         <v-row justify="center">
-          <v-col cols="10" sm="8">
+          <v-col cols="10">
             <Textarea
               v-model="user.greet"
               :icon="'mdi-human-greeting-variant'"
               :label="'自己紹介文'"
               :maxlength="140"
+            />
+          </v-col>
+        </v-row>
+        <v-row v-for="n of 3" :key="n" class="mb-10" justify="center">
+          <v-col cols="10"> ◆お気に入りチーム{{ n }} </v-col>
+          <v-col cols="10" sm="5">
+            <SelectIdCompetition
+              :number="n"
+              :value="user[`competitionId${n}`]"
+              @input="inputCompetitionId"
+            />
+          </v-col>
+          <v-col cols="10" sm="5">
+            <SelectIdTeam
+              v-model="user[`teamId${n}`]"
+              :competition-id="user[`competitionId${n}`]"
             />
           </v-col>
         </v-row>
@@ -49,31 +65,43 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useRouter } from '@nuxtjs/composition-api'
+import { defineComponent, useRouter, reactive } from '@nuxtjs/composition-api'
 import useNew from '@/composables/users/useNew'
 import ImageUploaderUserImage from '@/components/molecules/ImageUploaderUserImage.vue'
 import TextField from '@/components/molecules/TextField.vue'
 import Textarea from '@/components/molecules/Textarea.vue'
+import SelectIdCompetition from '@/components/molecules/SelectIdCompetition.vue'
+import SelectIdTeam from '@/components/molecules/SelectIdTeam.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
 import useCurrentUser from '@/utils/useCurrentUser'
 import useSnackbar from '@/utils/useSnackbar'
 
 export default defineComponent({
-  name: 'PublicProfileNew',
+  name: 'UserNew',
 
   components: {
     ImageUploaderUserImage,
     TextField,
     Textarea,
+    SelectIdCompetition,
+    SelectIdTeam,
     ButtonSubmit
   },
 
-  layout: 'grey',
+  // layout: 'grey',
 
   setup() {
     const currentUser = useCurrentUser()
     const uid = currentUser.value?.uid
-    const { user, getUser, changeImageUrl, clearImageUrl, isLoading, updateUser } = useNew()
+    const {
+      user,
+      getUser,
+      changeImageUrl,
+      clearImageUrl,
+      inputCompetitionId,
+      isLoading,
+      updateUser
+    } = useNew()
     const { openSnackbar } = useSnackbar()
     const router = useRouter()
     getUser(uid)
@@ -86,7 +114,21 @@ export default defineComponent({
       if (result === 'success') router.push('/')
     }
 
-    return { user, isLoading, submit, changeImageUrl, clearImageUrl }
+    const competitions = reactive([
+      { id: 1, selectId: 0 },
+      { id: 2, selectId: 0 },
+      { id: 3, selectId: 0 }
+    ])
+
+    return {
+      user,
+      isLoading,
+      submit,
+      changeImageUrl,
+      clearImageUrl,
+      inputCompetitionId,
+      competitions
+    }
   }
 })
 </script>

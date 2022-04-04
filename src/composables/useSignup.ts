@@ -27,9 +27,12 @@ const useSignup = () => {
         name: `user${new Date().getTime()}`,
         imageUrl: null,
         greet: '',
-        favoriteTeamId1: 0,
-        favoriteTeamId2: 0,
-        favoriteTeamId3: 0
+        competitionId1: 0,
+        teamId1: 0,
+        competitionId2: 0,
+        teamId2: 0,
+        competitionId3: 0,
+        teamId3: 0
       })
       await batch.commit()
       return 'success'
@@ -58,9 +61,12 @@ const useSignup = () => {
           name: userCredential.user.displayName || `user${new Date().getTime()}`,
           imageUrl: userCredential.user.photoURL,
           greet: '',
-          favoriteTeamId1: 0,
-          favoriteTeamId2: 0,
-          favoriteTeamId3: 0
+          competitionId1: 0,
+          teamId1: 0,
+          competitionId2: 0,
+          teamId2: 0,
+          competitionId3: 0,
+          teamId3: 0
         })
         await batch.commit()
         return 'success'

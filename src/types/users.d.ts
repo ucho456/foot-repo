@@ -3,7 +3,10 @@ type User = {
   name: string
   imageUrl: string | null
   greet: string
-  favoriteTeamId1: number
-  favoriteTeamId2: number
-  favoriteTeamId3: number
+  competitionId1: number
+  teamId1: number
+  competitionId2: number
+  teamId2: number
+  competitionId3: number
+  teamId3: number
 }

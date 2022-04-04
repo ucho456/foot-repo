@@ -3,16 +3,23 @@ import type { DocumentData, SnapshotOptions, FirestoreDataConverter } from 'fire
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 import db from '@/plugins/firebase'
 
+const userProperties = (user: User) => {
+  return {
+    name: user.name,
+    imageUrl: user.imageUrl,
+    greet: user.greet,
+    competitionId1: user.competitionId1,
+    teamId1: user.teamId1,
+    competitionId2: user.competitionId2,
+    teamId2: user.teamId1,
+    competitionId3: user.competitionId3,
+    teamId3: user.competitionId1
+  }
+}
+
 const userConverter: FirestoreDataConverter<User> = {
   toFirestore(user: User): DocumentData {
-    return {
-      name: user.name,
-      imageUrl: user.imageUrl,
-      greet: user.greet,
-      favoriteTeamId1: user.favoriteTeamId1,
-      favoriteTeamId2: user.favoriteTeamId2,
-      favoriteTeamId3: user.favoriteTeamId3
-    }
+    return userProperties(user)
   },
   fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions): User {
     const data = snapshot.data(options)
@@ -21,9 +28,12 @@ const userConverter: FirestoreDataConverter<User> = {
       name: data.name,
       imageUrl: data.imageUrl,
       greet: data.greet,
-      favoriteTeamId1: data.favoriteTeamId1,
-      favoriteTeamId2: data.favoriteTeamId2,
-      favoriteTeamId3: data.favoriteTeamId3
+      competitionId1: data.competitionId1,
+      teamId1: data.teamId1,
+      competitionId2: data.competitionId2,
+      teamId2: data.teamId1,
+      competitionId3: data.competitionId3,
+      teamId3: data.competitionId1
     }
   }
 }
@@ -37,27 +47,12 @@ export const getUserDoc = async (uid: string | undefined): Promise<User | null> 
 
 export const createUserDoc = (batch: WriteBatch, uid: string, user: User): void => {
   const uRef = doc(db, 'users', uid).withConverter(userConverter)
-  batch.set(uRef, {
-    id: uid,
-    name: user.name,
-    imageUrl: user.imageUrl,
-    greet: user.greet,
-    favoriteTeamId1: user.favoriteTeamId1,
-    favoriteTeamId2: user.favoriteTeamId2,
-    favoriteTeamId3: user.favoriteTeamId3
-  })
+  batch.set(uRef, { id: uid, ...userProperties(user) })
 }
 
 export const updateUserDoc = (batch: WriteBatch, uid: string, user: User): void => {
   const uRef = doc(db, 'users', uid).withConverter(userConverter)
-  batch.update(uRef, {
-    name: user.name,
-    imageUrl: user.imageUrl,
-    greet: user.greet,
-    favoriteTeamId1: user.favoriteTeamId1,
-    favoriteTeamId2: user.favoriteTeamId2,
-    favoriteTeamId3: user.favoriteTeamId3
-  })
+  batch.update(uRef, userProperties(user))
 }
 
 export const uploadAndGetImageUrl = async (userImageFile: File): Promise<string> => {
