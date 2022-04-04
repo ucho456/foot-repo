@@ -13,15 +13,26 @@ service cloud.firestore {
       return min <= value.size() && value.size() <= max;
     }
 
+    function isValidInt(value, min, max) {
+      return min <= value && value <= max;
+    }
+
     function isValidImage(value) {
       return value == null || value.matches('^https?://.+$');
     }
 
     // users
     function isValidUser(user) {
-      return user.size() == 2
+      return user.size() == 9
       && 'name' in user && user.name is string
-      && 'imageUrl' in user && (user.imageUrl == null || user.imageUrl is string);
+      && 'imageUrl' in user && (user.imageUrl == null || user.imageUrl is string)
+      && 'greet' in user && user.greet is string
+      && 'competitionId1' in user && user.competitionId1 is int
+      && 'teamId1' in user && user.teamId1 is int
+      && 'competitionId2' in user && user.competitionId2 is int
+      && 'teamId2' in user && user.teamId2 is int
+      && 'competitionId3' in user && user.competitionId3 is int
+      && 'teamId3' in user && user.teamId3 is int;
     }
 
     match /users/{userId} {
@@ -33,7 +44,14 @@ service cloud.firestore {
       allow update: if onlyMe(userId)
       && isValidUser(request.resource.data)
       && isValidString(request.resource.data.name, 1, 20)
-      && isValidImage(request.resource.data.imageUrl);
+      && isValidImage(request.resource.data.imageUrl)
+      && isValidString(request.resource.data.greet, 0, 140)
+      && isValidInt(request.resource.data.competitionId1, 0, 100000)
+      && isValidInt(request.resource.data.teamId1, 0, 100000)
+      && isValidInt(request.resource.data.competitionId2, 0, 100000)
+      && isValidInt(request.resource.data.teamId2, 0, 100000)
+      && isValidInt(request.resource.data.competitionId3, 0, 100000)
+      && isValidInt(request.resource.data.teamId3, 0, 100000);
     }
   }
 }
