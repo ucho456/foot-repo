@@ -1,9 +1,8 @@
 import { reactive, ref } from '@nuxtjs/composition-api'
 import {
-  createUserWithEmailAndPassword,
   getAuth,
   GoogleAuthProvider,
-  sendEmailVerification,
+  signInWithEmailAndPassword,
   signInWithPopup,
   TwitterAuthProvider
 } from 'firebase/auth'
@@ -11,30 +10,24 @@ import { writeBatch } from 'firebase/firestore'
 import db from '@/plugins/firebase'
 import { createInitUserDoc, getUserDoc } from '@/db/usersCollection'
 
-const useSignup = () => {
+const useLogin = () => {
   const user = reactive({ email: '', password: '' })
   const isLoading = ref(false)
 
-  const signupEmail = async (): Promise<'success' | 'already used' | 'failure'> => {
+  const loginEmail = async (): Promise<'success' | 'failure'> => {
     try {
       isLoading.value = true
       const auth = getAuth()
-      const userCredential = await createUserWithEmailAndPassword(auth, user.email, user.password)
-      await sendEmailVerification(userCredential.user)
-      const batch = writeBatch(db)
-      createInitUserDoc(batch, userCredential.user.uid, `user${new Date().getTime()}`, null)
-      await batch.commit()
+      await signInWithEmailAndPassword(auth, user.email, user.password)
       return 'success'
-    } catch (error) {
-      return error instanceof Error && error.message.includes('auth/email-already-in-use')
-        ? 'already used'
-        : 'failure'
+    } catch {
+      return 'failure'
     } finally {
       isLoading.value = false
     }
   }
 
-  const createInitUser = async (
+  const loginTwitterOrGoogle = async (
     provider: TwitterAuthProvider | GoogleAuthProvider
   ): Promise<'success' | 'already exist' | 'failure'> => {
     try {
@@ -43,7 +36,9 @@ const useSignup = () => {
       const userCredential = await signInWithPopup(auth, provider)
       const uid = userCredential.user.uid
       const user = await getUserDoc(uid)
-      if (!user || user.completeInit === false) {
+      if (user?.completeInit) {
+        return 'success'
+      } else {
         const batch = writeBatch(db)
         createInitUserDoc(
           batch,
@@ -52,8 +47,6 @@ const useSignup = () => {
           userCredential.user.photoURL
         )
         await batch.commit()
-        return 'success'
-      } else {
         return 'already exist'
       }
     } catch {
@@ -63,19 +56,19 @@ const useSignup = () => {
     }
   }
 
-  const signupTwitter = async (): Promise<'success' | 'already exist' | 'failure'> => {
+  const loginTwitter = async (): Promise<'success' | 'already exist' | 'failure'> => {
     const provider = new TwitterAuthProvider()
-    const result = await createInitUser(provider)
+    const result = await loginTwitterOrGoogle(provider)
     return result
   }
 
-  const signupGoogle = async (): Promise<'success' | 'already exist' | 'failure'> => {
+  const loginGoogle = async (): Promise<'success' | 'already exist' | 'failure'> => {
     const provider = new GoogleAuthProvider()
-    const result = await createInitUser(provider)
+    const result = await loginTwitterOrGoogle(provider)
     return result
   }
 
-  return { user, isLoading, signupEmail, signupTwitter, signupGoogle }
+  return { user, isLoading, loginEmail, loginTwitter, loginGoogle }
 }
 
-export default useSignup
+export default useLogin
