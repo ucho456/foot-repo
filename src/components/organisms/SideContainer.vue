@@ -1,11 +1,11 @@
 <template>
-  <v-container>
+  <v-card class="light-grey" elevation="0">
     <SideSampleCard />
     <SideSampleCard class="mt-4" />
     <SideSampleCard class="mt-4" />
     <SideSampleCard class="mt-4" />
     <SideSampleCard class="mt-4" />
-  </v-container>
+  </v-card>
 </template>
 
 <script lang="ts">
@@ -20,3 +20,9 @@ export default defineComponent({
   }
 })
 </script>
+
+<style lang="scss" scoped>
+.light-grey {
+  background: #eceff1;
+}
+</style>
