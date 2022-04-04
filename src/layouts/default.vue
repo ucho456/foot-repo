@@ -5,12 +5,12 @@
         <v-toolbar-title class="hover" @click="pushToHome" v-text="'Foot-Repo'" />
         <v-spacer />
         <v-btn class="white--text" color="accent" elevation="0" to="/reports/search"> 投稿 </v-btn>
-        <ClientOnly>
-          <v-list-item-avatar class="hover" @click.stop="toggleDrawer">
+        <v-list-item-avatar class="hover" @click.stop="toggleDrawer">
+          <client-only>
             <v-img v-if="currentUser" :src="currentUser.imageUrl"></v-img>
             <v-img v-else :src="noAvatarImage"></v-img>
-          </v-list-item-avatar>
-        </ClientOnly>
+          </client-only>
+        </v-list-item-avatar>
       </v-container>
     </v-app-bar>
     <v-main>
@@ -27,22 +27,22 @@
       </v-container>
     </v-footer>
     <v-navigation-drawer v-model="showFlg" fixed right temporary>
-      <v-list>
-        <v-list-item
-          v-for="item in navigationDrawerItems"
-          :key="item.id"
-          :to="item.to"
-          exact
-          router
-        >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
-          </v-list-item-content>
-        </v-list-item>
-        <ClientOnly>
+      <client-only>
+        <v-list>
+          <v-list-item
+            v-for="item in navigationDrawerItems"
+            :key="item.id"
+            :to="item.to"
+            exact
+            router
+          >
+            <v-list-item-action>
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title v-text="item.title" />
+            </v-list-item-content>
+          </v-list-item>
           <v-list-item v-if="currentUser" class="px-2 ml-2" @click="logout">
             <v-list-item-action>
               <v-icon>mdi-logout</v-icon>
@@ -51,8 +51,8 @@
               <v-list-item-title v-text="'ログアウト'" />
             </v-list-item-content>
           </v-list-item>
-        </ClientOnly>
-      </v-list>
+        </v-list>
+      </client-only>
     </v-navigation-drawer>
     <Snackbar v-bind="snackbar" />
   </v-app>
@@ -91,7 +91,7 @@ export default defineComponent({
       const login = { icon: 'mdi-login', title: 'ログイン', to: '/login' }
       const about = { icon: 'mdi-information', title: '当サイトについて', to: '/about' }
       const signup = { icon: 'mdi-account-plus', title: '新規登録', to: '/signup' }
-      return currentUser.value
+      return currentUser && currentUser.value
         ? [
             { id: 1, ...home },
             { id: 2, ...myPage },
