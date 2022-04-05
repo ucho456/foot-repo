@@ -1,14 +1,14 @@
 import Vue from 'vue'
 import { ValidationProvider, ValidationObserver, extend } from 'vee-validate'
-import * as rules from 'vee-validate/dist/rules'
+import { required, email } from 'vee-validate/dist/rules'
 
 extend('required', {
-  ...rules.required,
+  ...required,
   message: '必須項目です。'
 })
 
 extend('email', {
-  ...rules.email,
+  ...email,
   message: '正しいメールアドレスを入力して下さい。'
 })
 
