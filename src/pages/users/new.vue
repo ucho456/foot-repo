@@ -88,8 +88,6 @@ export default defineComponent({
     ButtonSubmit
   },
 
-  // layout: 'grey',
-
   setup() {
     const currentUser = useCurrentUser()
     const uid = currentUser.value?.uid
