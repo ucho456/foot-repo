@@ -1,7 +1,6 @@
-import { doc, getDoc, QueryDocumentSnapshot, WriteBatch } from 'firebase/firestore'
+import { doc, getDoc, getFirestore, QueryDocumentSnapshot, WriteBatch } from 'firebase/firestore'
 import type { DocumentData, SnapshotOptions, FirestoreDataConverter } from 'firebase/firestore'
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
-import db from '@/plugins/firebase'
 
 const userProperties = (user: User) => {
   return {
@@ -42,6 +41,7 @@ const userConverter: FirestoreDataConverter<User> = {
 
 export const getUserDoc = async (uid: string | undefined): Promise<User | null> => {
   if (!uid) return null
+  const db = getFirestore()
   const uRef = doc(db, 'users', uid).withConverter(userConverter)
   const uSnapshot = await getDoc(uRef)
   return uSnapshot.exists() ? uSnapshot.data() : null
@@ -53,6 +53,7 @@ export const createInitUserDoc = (
   name: string,
   imageUrl: string | null
 ): void => {
+  const db = getFirestore()
   const uRef = doc(db, 'users', uid).withConverter(userConverter)
   batch.set(uRef, {
     id: uid,
@@ -70,6 +71,7 @@ export const createInitUserDoc = (
 }
 
 export const updateInitUserDoc = (batch: WriteBatch, uid: string, user: User): void => {
+  const db = getFirestore()
   const uRef = doc(db, 'users', uid).withConverter(userConverter)
   batch.update(uRef, userProperties(user))
 }

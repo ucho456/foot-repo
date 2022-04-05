@@ -1,6 +1,5 @@
 import { reactive, ref } from '@nuxtjs/composition-api'
-import { writeBatch } from 'firebase/firestore'
-import db from '@/plugins/firebase'
+import { getFirestore, writeBatch } from 'firebase/firestore'
 import { getUserDoc, updateInitUserDoc, uploadAndGetImageUrl } from '@/db/usersCollection'
 
 const useNew = () => {
@@ -52,6 +51,7 @@ const useNew = () => {
       isLoading.value = true
       const imageUrl = userImageFile.value ? await uploadAndGetImageUrl(userImageFile.value) : null
       if (imageUrl) user.imageUrl = imageUrl
+      const db = getFirestore()
       const batch = writeBatch(db)
       updateInitUserDoc(batch, uid, user)
       await batch.commit()

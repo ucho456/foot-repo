@@ -6,8 +6,7 @@ import {
   signInWithPopup,
   TwitterAuthProvider
 } from 'firebase/auth'
-import { writeBatch } from 'firebase/firestore'
-import db from '@/plugins/firebase'
+import { getFirestore, writeBatch } from 'firebase/firestore'
 import { createInitUserDoc, getUserDoc } from '@/db/usersCollection'
 
 const useLogin = () => {
@@ -39,6 +38,7 @@ const useLogin = () => {
       if (user?.completeInit) {
         return 'success'
       } else {
+        const db = getFirestore()
         const batch = writeBatch(db)
         createInitUserDoc(
           batch,

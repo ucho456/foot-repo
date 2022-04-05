@@ -7,8 +7,7 @@ import {
   signInWithPopup,
   TwitterAuthProvider
 } from 'firebase/auth'
-import { writeBatch } from 'firebase/firestore'
-import db from '@/plugins/firebase'
+import { getFirestore, writeBatch } from 'firebase/firestore'
 import { createInitUserDoc, getUserDoc } from '@/db/usersCollection'
 
 const useSignup = () => {
@@ -21,6 +20,7 @@ const useSignup = () => {
       const auth = getAuth()
       const userCredential = await createUserWithEmailAndPassword(auth, user.email, user.password)
       await sendEmailVerification(userCredential.user)
+      const db = getFirestore()
       const batch = writeBatch(db)
       createInitUserDoc(batch, userCredential.user.uid, `user${new Date().getTime()}`, null)
       await batch.commit()
@@ -44,6 +44,7 @@ const useSignup = () => {
       const uid = userCredential.user.uid
       const user = await getUserDoc(uid)
       if (!user || user.completeInit === false) {
+        const db = getFirestore()
         const batch = writeBatch(db)
         createInitUserDoc(
           batch,
