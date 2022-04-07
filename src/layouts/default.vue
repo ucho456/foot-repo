@@ -75,7 +75,9 @@ export default defineComponent({
   },
 
   setup() {
-    const { currentUser } = useCurrentUser()
+    const { currentUser, resetCurrentUser } = useCurrentUser()
+    resetCurrentUser()
+
     const noAvatarImage = require('@/assets/no_avatar.png')
     const router = useRouter()
     const pushToHome = () => router.push('/')
