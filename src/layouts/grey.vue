@@ -2,7 +2,7 @@
   <v-app class="grey">
     <v-main>
       <v-container>
-        <nuxt />
+        <Nuxt />
       </v-container>
     </v-main>
     <Snackbar v-bind="snackbar" />

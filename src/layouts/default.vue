@@ -16,7 +16,7 @@
     <v-main>
       <v-container>
         <v-row>
-          <v-col cols="12" sm="8" md="9"><nuxt /></v-col>
+          <v-col cols="12" sm="8" md="9"><Nuxt /></v-col>
           <v-col cols="12" sm="4" md="3"><SideContainer /></v-col>
         </v-row>
       </v-container>
@@ -75,7 +75,7 @@ export default defineComponent({
   },
 
   setup() {
-    const currentUser = useCurrentUser()
+    const { currentUser } = useCurrentUser()
     const noAvatarImage = require('@/assets/no_avatar.png')
     const router = useRouter()
     const pushToHome = () => router.push('/')

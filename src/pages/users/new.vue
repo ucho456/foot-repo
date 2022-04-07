@@ -89,7 +89,7 @@ export default defineComponent({
   },
 
   setup() {
-    const currentUser = useCurrentUser()
+    const { currentUser } = useCurrentUser()
     const uid = currentUser.value?.uid
     const {
       user,
