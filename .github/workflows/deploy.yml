@@ -46,12 +46,13 @@ jobs:
             --region asia-northeast1 \
             --set-env-vars=TZ=Asia/Tokyo \
             --platform managed \
-            --allow-unauthenticated \
+            --no-allow-unauthenticated \
             --quiet
 
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
-          args: deploy -P $GCP_PROJECT --force
+          args: deploy --only hosting --force
+          # args: deploy -P $GCP_PROJECT --force
         env:
           GCP_SA_KEY: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY_BASE64 }}
