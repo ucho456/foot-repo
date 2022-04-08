@@ -1,8 +1,9 @@
 import { defineNuxtPlugin } from '@nuxtjs/composition-api'
-import { initializeApp, getApps } from 'firebase/app'
+import { initializeApp, getApps, getApp } from 'firebase/app'
 import { getAuth, connectAuthEmulator } from 'firebase/auth'
 import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore'
 import { getStorage, connectStorageEmulator } from 'firebase/storage'
+import { getFunctions, connectFunctionsEmulator } from 'firebase/functions'
 
 export default defineNuxtPlugin(() => {
   if (getApps().length !== 0) return
@@ -25,5 +26,7 @@ export default defineNuxtPlugin(() => {
     connectFirestoreEmulator(db, 'localhost', 8081)
     const storage = getStorage()
     connectStorageEmulator(storage, 'localhost', 9199)
+    const functions = getFunctions(getApp())
+    connectFunctionsEmulator(functions, 'localhost', 5001)
   }
 })
