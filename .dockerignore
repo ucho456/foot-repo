@@ -1,5 +1,7 @@
 /.devcontainer
 
+/.emulator
+
 /.github
 
 /.vscode
@@ -22,6 +24,8 @@
 
 firebase.json
 
+firestore-debug.log
+
 firestore.indexes.json
 
 firestore.rules
@@ -39,5 +43,7 @@ shims-vue.d.ts
 stylelint.config.js
 
 tsconfig.json
+
+ui-debug.log
 
 webpack.config.js

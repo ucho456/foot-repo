@@ -10,7 +10,8 @@
     "lint:prettier": "prettier -c .",
     "lint:js": "eslint --ext .js,.ts,.vue --ignore-path .gitignore .",
     "lint:style": "stylelint **/*.{vue,css,scss} --ignore-path .gitignore",
-    "fix": "npm run lint:prettier -- --write; npm run lint:js -- --fix; npm run lint:style -- --fix"
+    "fix": "npm run lint:prettier -- --write; npm run lint:js -- --fix; npm run lint:style -- --fix",
+    "emu": "firebase emulators:start --import=./.emulator --export-on-exit"
   },
   "dependencies": {
     "@nuxt/typescript-runtime": "^2.1.0",

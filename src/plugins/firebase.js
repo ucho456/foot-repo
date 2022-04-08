@@ -1,5 +1,7 @@
 import { defineNuxtPlugin } from '@nuxtjs/composition-api'
 import { initializeApp, getApps } from 'firebase/app'
+import { getAuth, connectAuthEmulator } from 'firebase/auth'
+import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore'
 
 export default defineNuxtPlugin(() => {
   if (getApps().length !== 0) return
@@ -13,4 +15,12 @@ export default defineNuxtPlugin(() => {
     measurementId: 'G-FFB7N3Q6LY'
   }
   initializeApp(config)
+
+  // Emulator setting
+  if (process.env.NODE_ENV === 'development') {
+    const auth = getAuth()
+    connectAuthEmulator(auth, 'http://localhost:9099')
+    const db = getFirestore()
+    connectFirestoreEmulator(db, 'localhost', 8081)
+  }
 })
