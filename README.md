@@ -116,3 +116,9 @@ https://qiita.com/nemutas/items/a2ccfb807cb00dcdeabe
 - 開催日前後 1 日を検索する。
 - teamId で検索。
 - Report の検索 Popup と同じものを使用する。ラジオボタンのやつは検討。
+
+# 課題
+
+- cloudrun の環境変数が使えない。(plugins で)
+- functions 内にある package.json を無くして root のやつに統合したい。
+- github actions のデプロイで firebase deploy --only hosting じゃないと失敗してしまう。
