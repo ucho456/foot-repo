@@ -2,6 +2,7 @@
   <BaseButton
     :block-flg="true"
     :color="'primary'"
+    :disabled="disabled"
     :icon="'mdi-arrow-left'"
     :left-flg="true"
     :outlined-flg="true"
@@ -19,6 +20,10 @@ export default defineComponent({
 
   components: {
     BaseButton
+  },
+
+  props: {
+    disabled: { type: Boolean, default: false }
   },
 
   setup(_, ctx) {

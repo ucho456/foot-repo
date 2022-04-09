@@ -46,7 +46,7 @@
         </v-row>
         <v-row justify="center">
           <v-col cols="10">
-            <ButtonBack @click="back" />
+            <ButtonBack :disabled="isLoading" @click="back" />
           </v-col>
         </v-row>
         <v-row justify="center">
@@ -62,13 +62,13 @@
 <script lang="ts">
 import { defineComponent, useRouter } from '@nuxtjs/composition-api'
 import useSignup from '@/composables/useSignup'
+import useSnackbar from '@/utils/useSnackbar'
 import TextFieldEmail from '@/components/molecules/TextFieldEmail.vue'
 import TextFieldPassword from '@/components/molecules/TextFieldPassword.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
 import ButtonTwitter from '@/components/molecules/ButtonTwitter.vue'
 import ButtonGoogle from '@/components/molecules/ButtonGoogle.vue'
 import ButtonBack from '@/components/molecules/ButtonBack.vue'
-import useSnackbar from '@/utils/useSnackbar'
 
 export default defineComponent({
   name: 'Signup',
@@ -85,6 +85,7 @@ export default defineComponent({
   layout: 'grey',
 
   setup() {
+    const router = useRouter()
     const { user, isLoading, signupEmail, signupTwitter, signupGoogle } = useSignup()
     const { openSnackbar } = useSnackbar()
 
@@ -98,9 +99,6 @@ export default defineComponent({
           : 'エラーが発生しました。'
       openSnackbar(result, message)
     }
-
-    const router = useRouter()
-    const back = (): void => router.back()
 
     const next = (result: 'success' | 'already exist' | 'failure'): void => {
       if (result === 'success' || result === 'already exist') {
@@ -123,13 +121,15 @@ export default defineComponent({
       next(result)
     }
 
+    const back = (): void => router.back()
+
     return {
       user,
       isLoading,
       submitEmail,
-      back,
       submitTwitter,
-      submitGoogle
+      submitGoogle,
+      back
     }
   }
 })
