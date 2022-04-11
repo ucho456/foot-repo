@@ -67,6 +67,7 @@
 <script lang="ts">
 import { defineComponent, useRouter, reactive, watch } from '@nuxtjs/composition-api'
 import useNew from '@/composables/users/useNew'
+import useCurrentUser from '@/utils/useCurrentUser'
 import useSnackbar from '@/utils/useSnackbar'
 import ImageUploaderUserImage from '@/components/molecules/ImageUploaderUserImage.vue'
 import TextField from '@/components/molecules/TextField.vue'
@@ -101,6 +102,7 @@ export default defineComponent({
       isLoading,
       createUser
     } = useNew()
+    const { setUpCurrentUser } = useCurrentUser()
     const { openSnackbar } = useSnackbar()
 
     watch(unauthorized, () => {
@@ -116,7 +118,10 @@ export default defineComponent({
       const result = await createUser()
       const message = result === 'success' ? '作成しました。' : '失敗しました。'
       openSnackbar(result, message)
-      if (result === 'success') router.push('/')
+      if (result === 'success') {
+        await setUpCurrentUser()
+        router.push('/')
+      }
     }
 
     const competitions = reactive([

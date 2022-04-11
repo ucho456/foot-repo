@@ -17,9 +17,9 @@ const userProperties = (user: User) => {
     competitionId1: user.competitionId1,
     teamId1: user.teamId1,
     competitionId2: user.competitionId2,
-    teamId2: user.teamId1,
+    teamId2: user.teamId2,
     competitionId3: user.competitionId3,
-    teamId3: user.competitionId1
+    teamId3: user.teamId3
   }
 }
 

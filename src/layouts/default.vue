@@ -76,8 +76,7 @@ export default defineComponent({
   },
 
   setup() {
-    const { currentUser, setUpCurrentUser } = useCurrentUser()
-    setUpCurrentUser()
+    const { currentUser } = useCurrentUser()
 
     const noAvatarImage = require('@/assets/no_avatar.png')
     const router = useRouter()

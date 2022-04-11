@@ -12,20 +12,23 @@ const useCurrentUser = () => {
     const auth = getAuth()
     await onAuthStateChanged(auth, async (authUser) => {
       if (authUser) {
+        await authUser.reload()
         const user = await getUserDoc(authUser.uid)
         const idTokenResult = await authUser.getIdTokenResult(true)
-        console.log('idTokenResult.claims.initSetting', idTokenResult.claims.initSetting)
-        if (user && idTokenResult.claims.initSetting) {
-          currentUser.value = {
-            uid: user.id,
-            name: user.name,
-            imageUrl: user.imageUrl,
-            subscription: idTokenResult.claims.subscription as unknown as boolean
-          }
-        } else if (!idTokenResult.claims.initSetting) {
-          currentUser.value = null
-          console.log('initSetting false')
-        }
+        currentUser.value =
+          user && idTokenResult.claims.initSetting
+            ? {
+                uid: user.id,
+                name: user.name,
+                imageUrl: user.imageUrl,
+                teamId1: user.teamId1,
+                teamId2: user.teamId2,
+                teamId3: user.teamId3,
+                initSetting: idTokenResult.claims.initSetting as unknown as boolean,
+                subscription: idTokenResult.claims.subscription as unknown as boolean,
+                suspended: idTokenResult.claims.suspended as unknown as boolean
+              }
+            : null
       } else {
         currentUser.value = null
       }
