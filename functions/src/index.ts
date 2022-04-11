@@ -12,3 +12,15 @@ export const initAuth = functions
       subscription: false
     })
   })
+
+export const createUser = functions
+  .region('asia-northeast1')
+  .firestore.document('users/{userId}')
+  .onCreate(async (_, context) => {
+    const uid = context.params.userId
+    await admin.auth().setCustomUserClaims(uid, {
+      initSetting: true,
+      suspended: false,
+      subscription: false
+    })
+  })

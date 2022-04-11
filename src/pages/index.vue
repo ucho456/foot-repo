@@ -9,6 +9,7 @@ import { defineComponent } from '@nuxtjs/composition-api'
 // import IndexReportList from '@/components/organisms/IndexReportList.vue'
 // import { reports, users } from '@/utils/testData'
 // import { makeReportList } from '@/composables/useIndex'
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
 
 export default defineComponent({
   name: 'Index',
@@ -18,6 +19,13 @@ export default defineComponent({
   },
 
   setup() {
+    const auth = getAuth()
+    onAuthStateChanged(auth, async (authUser) => {
+      if (authUser) {
+        const idTokenResult = await authUser.getIdTokenResult(true)
+        console.log('index.vue', idTokenResult.claims.initSetting)
+      }
+    })
     // const reportList = makeReportList(reports, users)
   }
 })

@@ -1,7 +1,6 @@
 import { reactive, ref } from '@nuxtjs/composition-api'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
-import { getFirestore, writeBatch } from 'firebase/firestore'
-import { createUserDoc, updateInitUserDoc, uploadAndGetImageUrl } from '@/db/usersCollection'
+import { createUserDoc, uploadAndGetImageUrl } from '@/db/usersCollection'
 
 const useNew = () => {
   const unauthorized = ref(false)
@@ -57,13 +56,9 @@ const useNew = () => {
   const createUser = async (): Promise<'success' | 'failure'> => {
     try {
       isLoading.value = true
+      const imageUrl = userImageFile.value ? await uploadAndGetImageUrl(userImageFile.value) : null
+      if (imageUrl) user.imageUrl = imageUrl
       await createUserDoc(user)
-      // const imageUrl = userImageFile.value ? await uploadAndGetImageUrl(userImageFile.value) : null
-      // if (imageUrl) user.imageUrl = imageUrl
-      // const db = getFirestore()
-      // const batch = writeBatch(db)
-      // updateInitUserDoc(batch, uid, user)
-      // await batch.commit()
       return 'success'
     } catch {
       return 'failure'

@@ -3,8 +3,8 @@ import {
   getDoc,
   getFirestore,
   setDoc,
-  QueryDocumentSnapshot,
-  WriteBatch
+  QueryDocumentSnapshot
+  // WriteBatch
 } from 'firebase/firestore'
 import type { DocumentData, SnapshotOptions, FirestoreDataConverter } from 'firebase/firestore'
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
@@ -55,25 +55,14 @@ export const getUserDoc = async (uid: string | undefined): Promise<User | null> 
 export const createUserDoc = async (user: User): Promise<void> => {
   const db = getFirestore()
   const uRef = doc(db, 'users', user.id).withConverter(userConverter)
-  await setDoc(uRef, {
-    id: user.id,
-    name: user.name,
-    imageUrl: user.imageUrl,
-    greet: '',
-    competitionId1: 0,
-    teamId1: 0,
-    competitionId2: 0,
-    teamId2: 0,
-    competitionId3: 0,
-    teamId3: 0
-  })
+  await setDoc(uRef, { id: user.id, ...userProperties(user) })
 }
 
-export const updateInitUserDoc = (batch: WriteBatch, uid: string, user: User): void => {
-  const db = getFirestore()
-  const uRef = doc(db, 'users', uid).withConverter(userConverter)
-  batch.update(uRef, userProperties(user))
-}
+// export const updateInitUserDoc = (batch: WriteBatch, uid: string, user: User): void => {
+//   const db = getFirestore()
+//   const uRef = doc(db, 'users', uid).withConverter(userConverter)
+//   batch.update(uRef, userProperties(user))
+// }
 
 export const uploadAndGetImageUrl = async (userImageFile: File): Promise<string> => {
   const storage = getStorage()
