@@ -1,4 +1,11 @@
-import { doc, getDoc, getFirestore, QueryDocumentSnapshot, WriteBatch } from 'firebase/firestore'
+import {
+  doc,
+  getDoc,
+  getFirestore,
+  setDoc,
+  QueryDocumentSnapshot,
+  WriteBatch
+} from 'firebase/firestore'
 import type { DocumentData, SnapshotOptions, FirestoreDataConverter } from 'firebase/firestore'
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 
@@ -12,8 +19,7 @@ const userProperties = (user: User) => {
     competitionId2: user.competitionId2,
     teamId2: user.teamId1,
     competitionId3: user.competitionId3,
-    teamId3: user.competitionId1,
-    completeInit: user.completeInit
+    teamId3: user.competitionId1
   }
 }
 
@@ -33,8 +39,7 @@ const userConverter: FirestoreDataConverter<User> = {
       competitionId2: data.competitionId2,
       teamId2: data.teamId1,
       competitionId3: data.competitionId3,
-      teamId3: data.competitionId1,
-      completeInit: data.completeInit
+      teamId3: data.competitionId1
     }
   }
 }
@@ -47,26 +52,20 @@ export const getUserDoc = async (uid: string | undefined): Promise<User | null> 
   return uSnapshot.exists() ? uSnapshot.data() : null
 }
 
-export const createInitUserDoc = (
-  batch: WriteBatch,
-  uid: string,
-  name: string,
-  imageUrl: string | null
-): void => {
+export const createUserDoc = async (user: User): Promise<void> => {
   const db = getFirestore()
-  const uRef = doc(db, 'users', uid).withConverter(userConverter)
-  batch.set(uRef, {
-    id: uid,
-    name,
-    imageUrl,
+  const uRef = doc(db, 'users', user.id).withConverter(userConverter)
+  await setDoc(uRef, {
+    id: user.id,
+    name: user.name,
+    imageUrl: user.imageUrl,
     greet: '',
     competitionId1: 0,
     teamId1: 0,
     competitionId2: 0,
     teamId2: 0,
     competitionId3: 0,
-    teamId3: 0,
-    completeInit: false
+    teamId3: 0
   })
 }
 

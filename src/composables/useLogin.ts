@@ -35,7 +35,7 @@ const useLogin = () => {
       const userCredential = await signInWithPopup(auth, provider)
       const uid = userCredential.user.uid
       const user = await getUserDoc(uid)
-      if (user?.completeInit) {
+      if (user) {
         return 'success'
       } else {
         const db = getFirestore()

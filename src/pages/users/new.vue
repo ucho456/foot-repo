@@ -99,7 +99,7 @@ export default defineComponent({
       clearImageUrl,
       inputCompetitionId,
       isLoading,
-      updateInitUser
+      createUser
     } = useNew()
     const { openSnackbar } = useSnackbar()
 
@@ -113,8 +113,7 @@ export default defineComponent({
     setUpUser()
 
     const submit = async (): Promise<void> => {
-      if (!uid) return
-      const result = await updateInitUser(uid)
+      const result = await createUser()
       const message = result === 'success' ? '作成しました。' : '失敗しました。'
       openSnackbar(result, message)
       if (result === 'success') router.push('/')
