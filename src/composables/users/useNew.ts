@@ -1,8 +1,10 @@
 import { reactive, ref } from '@nuxtjs/composition-api'
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { getFirestore, writeBatch } from 'firebase/firestore'
-import { getUserDoc, updateInitUserDoc, uploadAndGetImageUrl } from '@/db/usersCollection'
+import { updateInitUserDoc, uploadAndGetImageUrl } from '@/db/usersCollection'
 
 const useNew = () => {
+  const unauthorized = ref(false)
   const user: User = reactive({
     id: '',
     name: '',
@@ -18,13 +20,20 @@ const useNew = () => {
   })
   const userImageFile = ref<File | null>(null)
 
-  const getUser = async (uid: string | undefined): Promise<void> => {
-    const userDoc = await getUserDoc(uid)
-    if (userDoc) {
-      user.id = userDoc.id
-      user.name = userDoc.name.substring(0, 20)
-      user.imageUrl = userDoc.imageUrl
-    }
+  const setUpUser = async () => {
+    const auth = getAuth()
+    await onAuthStateChanged(auth, async (authUser) => {
+      if (authUser) {
+        const idTokenResult = await authUser.getIdTokenResult(true)
+        if (idTokenResult.claims.initSetting) {
+          unauthorized.value = true
+        } else {
+          user.id = authUser.uid
+          user.name = authUser.displayName ? authUser.displayName.substring(0, 20) : ''
+          user.imageUrl = authUser.photoURL
+        }
+      }
+    })
   }
 
   const changeImageUrl = (imageFile: File): void => {
@@ -64,8 +73,9 @@ const useNew = () => {
   }
 
   return {
+    unauthorized,
     user,
-    getUser,
+    setUpUser,
     changeImageUrl,
     clearImageUrl,
     inputCompetitionId,

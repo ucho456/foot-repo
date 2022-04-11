@@ -65,16 +65,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useRouter, reactive } from '@nuxtjs/composition-api'
+import { defineComponent, useRouter, reactive, watch } from '@nuxtjs/composition-api'
 import useNew from '@/composables/users/useNew'
+import useSnackbar from '@/utils/useSnackbar'
 import ImageUploaderUserImage from '@/components/molecules/ImageUploaderUserImage.vue'
 import TextField from '@/components/molecules/TextField.vue'
 import Textarea from '@/components/molecules/Textarea.vue'
 import SelectIdCompetition from '@/components/molecules/SelectIdCompetition.vue'
 import SelectIdTeam from '@/components/molecules/SelectIdTeam.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
-import useCurrentUser from '@/utils/useCurrentUser'
-import useSnackbar from '@/utils/useSnackbar'
 
 export default defineComponent({
   name: 'UserNew',
@@ -88,12 +87,14 @@ export default defineComponent({
     ButtonSubmit
   },
 
+  layout: 'grey',
+
   setup() {
-    const { currentUser } = useCurrentUser()
-    const uid = currentUser.value?.uid
+    const router = useRouter()
     const {
+      unauthorized,
       user,
-      getUser,
+      setUpUser,
       changeImageUrl,
       clearImageUrl,
       inputCompetitionId,
@@ -101,8 +102,15 @@ export default defineComponent({
       updateInitUser
     } = useNew()
     const { openSnackbar } = useSnackbar()
-    const router = useRouter()
-    getUser(uid)
+
+    watch(unauthorized, () => {
+      if (unauthorized.value) {
+        console.log('正常なアクセス')
+      } else {
+        console.log('不正なアクセス')
+      }
+    })
+    setUpUser()
 
     const submit = async (): Promise<void> => {
       if (!uid) return
