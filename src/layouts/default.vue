@@ -16,6 +16,7 @@
     <v-main>
       <v-container>
         <v-row>
+          {{ currentUser }}
           <v-col cols="12" sm="8" md="9"><Nuxt /></v-col>
           <v-col cols="12" sm="4" md="3"><SideContainer /></v-col>
         </v-row>
@@ -75,8 +76,8 @@ export default defineComponent({
   },
 
   setup() {
-    const { currentUser, resetCurrentUser } = useCurrentUser()
-    resetCurrentUser()
+    const { currentUser, setUpCurrentUser } = useCurrentUser()
+    setUpCurrentUser()
 
     const noAvatarImage = require('@/assets/no_avatar.png')
     const router = useRouter()
