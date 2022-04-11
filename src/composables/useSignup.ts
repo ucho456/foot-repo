@@ -37,7 +37,6 @@ const useSignup = () => {
       const userCredential = await signInWithPopup(auth, provider)
       const uid = userCredential.user.uid
       const user = await getUserDoc(uid)
-      // 後でコンプフラグの処理に変更する
       return !user ? 'success' : 'already exist'
     } catch {
       return 'failure'

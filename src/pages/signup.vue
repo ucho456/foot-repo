@@ -106,7 +106,7 @@ export default defineComponent({
         openSnackbar('success', message)
         result === 'success' ? router.push({ name: 'users-new' }) : router.push('/')
       } else {
-        const message = 'エラーが発生しました'
+        const message = 'エラーが発生しました。'
         openSnackbar(result, message)
       }
     }
