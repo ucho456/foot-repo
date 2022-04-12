@@ -17,8 +17,8 @@
       <v-container>
         <v-row>
           {{ currentUser }}
-          <v-col cols="12" sm="8" md="9"><Nuxt /></v-col>
-          <v-col cols="12" sm="4" md="3"><SideContainer /></v-col>
+          <v-col cols="12" sm="8" md="8"><Nuxt /></v-col>
+          <v-col cols="12" sm="4" md="4"><SideContainer /></v-col>
         </v-row>
       </v-container>
     </v-main>
