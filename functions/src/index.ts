@@ -1,3 +1,5 @@
+// firebase functions:shell シェル起動
+
 import * as functions from 'firebase-functions'
 import * as admin from 'firebase-admin'
 admin.initializeApp()
@@ -23,4 +25,12 @@ export const createUser = functions
       suspended: false,
       subscription: false
     })
+  })
+
+export const aaa = functions
+  .region('asia-northeast1')
+  .pubsub.schedule('every 1 minutes')
+  .onRun((context) => {
+    console.log('this will be run every 1 minutes!', context)
+    return null
   })
