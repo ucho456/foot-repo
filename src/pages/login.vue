@@ -57,13 +57,14 @@
 <script lang="ts">
 import { defineComponent, useRouter } from '@nuxtjs/composition-api'
 import useLogin from '@/composables/useLogin'
+import useCurrentUser from '@/utils/useCurrentUser'
+import useSnackbar from '@/utils/useSnackbar'
 import TextFieldEmail from '@/components/molecules/TextFieldEmail.vue'
 import TextFieldPassword from '@/components/molecules/TextFieldPassword.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
 import ButtonTwitter from '@/components/molecules/ButtonTwitter.vue'
 import ButtonGoogle from '@/components/molecules/ButtonGoogle.vue'
 import ButtonBack from '@/components/molecules/ButtonBack.vue'
-import useSnackbar from '@/utils/useSnackbar'
 
 export default defineComponent({
   name: 'Login',
@@ -80,50 +81,52 @@ export default defineComponent({
   layout: 'grey',
 
   setup() {
+    const router = useRouter()
     const { user, isLoading, loginEmail, loginTwitter, loginGoogle } = useLogin()
+    const { setUpCurrentUser } = useCurrentUser()
     const { openSnackbar } = useSnackbar()
 
-    const submitEmail = async () => {
+    const submitEmail = async (): Promise<void> => {
       const result = await loginEmail()
-      const message = result === 'success' ? 'ログインしました。' : 'ログインに失敗しました。'
+      const message =
+        result === 'success'
+          ? 'ログインしました。'
+          : 'ログインに失敗しました。メールアドレス、又はパスワードをお確かめ下さい。'
       openSnackbar(result, message)
-      if (result === 'success') router.push('/')
-    }
-
-    const router = useRouter()
-    const back = (): void => router.back()
-
-    const next = (result: 'success' | 'already exist' | 'failure'): void => {
-      if (result === 'success' || result === 'already exist') {
-        const message =
-          result === 'success'
-            ? 'ログインしました。'
-            : '認証が完了しました。プロフィール登録を完了させて下さい。'
-        openSnackbar('success', message)
-        result === 'success' ? router.push('/') : router.push({ name: 'users-new' })
-      } else {
-        const message = 'エラーが発生しました'
-        openSnackbar(result, message)
+      if (result === 'success') {
+        await setUpCurrentUser()
+        router.push('/')
       }
     }
 
-    const submitTwitter = async () => {
+    const next = async (result: 'success' | 'failure'): Promise<void> => {
+      const message = result === 'success' ? 'ログインしました。' : 'エラーが発生しました。'
+      openSnackbar(result, message)
+      if (result === 'success') {
+        await setUpCurrentUser()
+        router.push('/')
+      }
+    }
+
+    const submitTwitter = async (): Promise<void> => {
       const result = await loginTwitter()
       next(result)
     }
 
-    const submitGoogle = async () => {
+    const submitGoogle = async (): Promise<void> => {
       const result = await loginGoogle()
       next(result)
     }
+
+    const back = (): void => router.back()
 
     return {
       user,
       isLoading,
       submitEmail,
-      back,
       submitTwitter,
-      submitGoogle
+      submitGoogle,
+      back
     }
   }
 })

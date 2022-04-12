@@ -89,7 +89,7 @@ export default defineComponent({
     const { user, isLoading, signupEmail, signupTwitter, signupGoogle } = useSignup()
     const { openSnackbar } = useSnackbar()
 
-    const submitEmail = async () => {
+    const submitEmail = async (): Promise<void> => {
       const result = await signupEmail()
       const message =
         result === 'success'
@@ -111,12 +111,12 @@ export default defineComponent({
       }
     }
 
-    const submitTwitter = async () => {
+    const submitTwitter = async (): Promise<void> => {
       const result = await signupTwitter()
       next(result)
     }
 
-    const submitGoogle = async () => {
+    const submitGoogle = async (): Promise<void> => {
       const result = await signupGoogle()
       next(result)
     }
