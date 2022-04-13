@@ -1,7 +1,3 @@
-// firebase functions:shell シェル起動
-// firebase functions:config:set foot-repo.key="value" 環境変数設定
-// firebase functions:config:get > .runtimeconfig.json 環境変数書き出し
-
 import * as functions from 'firebase-functions'
 import * as admin from 'firebase-admin'
 admin.initializeApp()

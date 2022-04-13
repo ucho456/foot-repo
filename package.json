@@ -6,12 +6,14 @@
     "dev": "nuxt-ts",
     "build": "nuxt-ts build",
     "start": "nuxt-ts start",
-    "generate": "nuxt-ts generate",
-    "lint:prettier": "prettier -c .",
-    "lint:js": "eslint --ext .js,.ts,.vue --ignore-path .gitignore .",
-    "lint:style": "stylelint **/*.{vue,css,scss} --ignore-path .gitignore",
-    "fix": "npm run lint:prettier -- --write; npm run lint:js -- --fix; npm run lint:style -- --fix",
-    "emu": "firebase emulators:start --import=./.emulator --export-on-exit"
+    "emu": "firebase emulators:start --import=./.emulator --export-on-exit",
+    "deploy": "firebase deploy",
+    "deploy:firestore:rules": "firebase deploy --only firestore:rules",
+    "deploy:storage:rules": "firebase deploy --only storage:rules",
+    "deploy:functions": "firebase deploy --only functions",
+    "functions:shell": "firebase functions:shell",
+    "functions:config:set": "firebase functions:config:set",
+    "functions:config:get": "firebase functions:config:get > ./functions/.runtimeconfig.json"
   },
   "dependencies": {
     "@nuxt/typescript-runtime": "^2.1.0",
