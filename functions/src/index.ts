@@ -1,5 +1,6 @@
 import * as functions from 'firebase-functions'
 import * as admin from 'firebase-admin'
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 admin.initializeApp()
 const env = functions.config()['foot-repo']
 
@@ -26,11 +27,14 @@ export const createUser = functions
     })
   })
 
-export const aaa = functions
+export const createMatchesFromFootballOrg = functions
   .region('asia-northeast1')
-  .pubsub.schedule('every 1 minutes')
-  .onRun((context) => {
-    console.log(context)
-    console.log('token', env.football_token)
+  .pubsub.schedule('every 60 minutes')
+  .onRun(async () => {
+    const url = env.football_url + 'competitions/2000/teams'
+    const config: AxiosRequestConfig<any> = { headers: { 'X-Auth-Token': env.football_token } }
+    const res: AxiosResponse<any, any> = await axios.get(url, config)
+    console.log(res.data)
+    console.log('test')
     return null
   })

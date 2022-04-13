@@ -9,7 +9,6 @@
     "target": "es2017"
   },
   "compileOnSave": true,
-  "include": [
-    "src"
-  ]
+  "include": ["src"],
+  "types": ["@types/axios"]
 }
