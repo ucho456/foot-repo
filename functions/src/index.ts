@@ -27,7 +27,7 @@ export const createUser = functions
     })
   })
 
-export const createMatchesFromFootballOrg = functions
+export const setMatchesFromFootballOrg = functions
   .region('asia-northeast1')
   .pubsub.schedule('every 60 minutes')
   .onRun(async () => {
@@ -35,6 +35,9 @@ export const createMatchesFromFootballOrg = functions
     const config: AxiosRequestConfig<any> = { headers: { 'X-Auth-Token': env.football_token } }
     const res: AxiosResponse<any, any> = await axios.get(url, config)
     console.log(res.data)
-    console.log('test')
+    const batch = admin.firestore().batch()
+    const ref = admin.firestore().doc(`matches/${123}`)
+    batch.set(ref, { name: 'test' })
+    await batch.commit()
     return null
   })
