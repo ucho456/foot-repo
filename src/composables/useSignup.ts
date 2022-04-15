@@ -7,7 +7,7 @@ import {
   signInWithPopup,
   TwitterAuthProvider
 } from 'firebase/auth'
-import { getUserDoc } from '@/db/usersCollection'
+import { getUser } from '@/db/usersCollection'
 
 const useSignup = () => {
   const user = reactive({ email: '', password: '' })
@@ -36,7 +36,7 @@ const useSignup = () => {
       const provider = new TwitterAuthProvider()
       const userCredential = await signInWithPopup(auth, provider)
       const uid = userCredential.user.uid
-      const user = await getUserDoc(uid)
+      const user = await getUser(uid)
       return !user ? 'success' : 'already exist'
     } catch {
       return 'failure'
@@ -52,7 +52,7 @@ const useSignup = () => {
       const provider = new GoogleAuthProvider()
       const userCredential = await signInWithPopup(auth, provider)
       const uid = userCredential.user.uid
-      const user = await getUserDoc(uid)
+      const user = await getUser(uid)
       return !user ? 'success' : 'already exist'
     } catch {
       return 'failure'

@@ -1,7 +1,7 @@
 import { defineNuxtPlugin, onGlobalSetup, onUnmounted, provide, ref } from '@nuxtjs/composition-api'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { CurrentUserKey } from '@/utils/useCurrentUser'
-import { getUserDoc } from '@/db/usersCollection'
+import { getUser } from '@/db/usersCollection'
 
 export default defineNuxtPlugin(async (_, inject) => {
   const currentUser = ref(null)
@@ -12,7 +12,7 @@ export default defineNuxtPlugin(async (_, inject) => {
     const auth = getAuth()
     const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
       if (authUser) {
-        const user = await getUserDoc(authUser.uid)
+        const user = await getUser(authUser.uid)
         const idTokenResult = await authUser.getIdTokenResult(true)
         currentUser.value =
           user && idTokenResult.claims.initSetting

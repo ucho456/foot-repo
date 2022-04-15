@@ -1,6 +1,6 @@
 import { inject, InjectionKey, Ref } from '@nuxtjs/composition-api'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
-import { getUserDoc } from '@/db/usersCollection'
+import { getUser } from '@/db/usersCollection'
 
 export const CurrentUserKey: InjectionKey<Ref<CurrentUser | null>> = Symbol('currentUser')
 
@@ -13,7 +13,7 @@ const useCurrentUser = () => {
     await onAuthStateChanged(auth, async (authUser) => {
       if (authUser) {
         await authUser.reload()
-        const user = await getUserDoc(authUser.uid)
+        const user = await getUser(authUser.uid)
         const idTokenResult = await authUser.getIdTokenResult(true)
         currentUser.value =
           user && idTokenResult.claims.initSetting

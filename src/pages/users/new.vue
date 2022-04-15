@@ -100,7 +100,7 @@ export default defineComponent({
       clearImageUrl,
       inputCompetitionId,
       isLoading,
-      createUser
+      create
     } = useNew()
     const { setUpCurrentUser } = useCurrentUser()
     const { openSnackbar } = useSnackbar()
@@ -115,7 +115,7 @@ export default defineComponent({
     setUpUser()
 
     const submit = async (): Promise<void> => {
-      const result = await createUser()
+      const result = await create()
       const message = result === 'success' ? '作成しました。' : '失敗しました。'
       openSnackbar(result, message)
       if (result === 'success') {
