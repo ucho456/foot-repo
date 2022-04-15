@@ -13,7 +13,8 @@
     "deploy:functions": "firebase deploy --only functions",
     "functions:shell": "firebase functions:shell",
     "functions:config:set": "firebase functions:config:set",
-    "functions:config:get": "firebase functions:config:get > ./functions/.runtimeconfig.json"
+    "functions:config:get": "firebase functions:config:get > ./functions/.runtimeconfig.json",
+    "functions:tsc": "npm --prefix ./functions run build"
   },
   "dependencies": {
     "@nuxt/typescript-runtime": "^2.1.0",
