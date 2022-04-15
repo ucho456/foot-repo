@@ -62,10 +62,10 @@
 <script lang="ts">
 import { defineComponent, computed, ref, useRouter } from '@nuxtjs/composition-api'
 import { getAuth, signOut } from 'firebase/auth'
-import SideContainer from '@/components/organisms/SideContainer.vue'
 import useCurrentUser from '@/utils/useCurrentUser'
-import Snackbar from '@/components/molecules/Snackbar.vue'
 import useSnackbar from '@/utils/useSnackbar'
+import SideContainer from '@/components/organisms/SideContainer.vue'
+import Snackbar from '@/components/molecules/Snackbar.vue'
 
 export default defineComponent({
   name: 'Default',
@@ -76,12 +76,13 @@ export default defineComponent({
   },
 
   setup() {
+    const router = useRouter()
+    const auth = getAuth()
     const { currentUser } = useCurrentUser()
+    const { snackbar, openSnackbar } = useSnackbar()
 
     const noAvatarImage = require('@/assets/no_avatar.png')
-    const router = useRouter()
     const pushToHome = () => router.push('/')
-    const { snackbar, openSnackbar } = useSnackbar()
 
     const navigationDrawerItems = computed(() => {
       const home = { icon: 'mdi-home', title: 'ホーム', to: '/' }
@@ -117,7 +118,6 @@ export default defineComponent({
     const showFlg = ref(false)
     const toggleDrawer = (): boolean => (showFlg.value = !showFlg.value)
 
-    const auth = getAuth()
     const logout = (): void => {
       signOut(auth)
         .then(() => {
@@ -129,12 +129,12 @@ export default defineComponent({
     }
     return {
       currentUser,
-      noAvatarImage,
       snackbar,
+      noAvatarImage,
+      pushToHome,
       navigationDrawerItems,
       showFlg,
       toggleDrawer,
-      pushToHome,
       logout
     }
   }
