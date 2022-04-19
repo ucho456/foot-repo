@@ -1,6 +1,11 @@
 import * as functions from 'firebase-functions'
 import * as admin from 'firebase-admin'
-import type { DocumentReference } from 'firebase-admin/firestore'
+import type {
+  DocumentData,
+  DocumentReference,
+  FirestoreDataConverter,
+  QueryDocumentSnapshot
+} from 'firebase-admin/firestore'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 type Standings = {
@@ -47,6 +52,24 @@ type ResData = {
       goalDifference: number
     }[]
   }[]
+}
+
+const standingsConverter: FirestoreDataConverter<Standings> = {
+  toFirestore(standings: Standings): DocumentData {
+    return {
+      competitionRef: standings.competitionRef,
+      season: standings.season,
+      table: standings.table
+    }
+  },
+  fromFirestore(snapshot: QueryDocumentSnapshot): Standings {
+    const data = snapshot.data()
+    return {
+      competitionRef: data.competitionRef,
+      season: data.season,
+      table: data.table
+    }
+  }
 }
 
 const env = functions.config()['foot-repo']
@@ -102,6 +125,7 @@ const setStandings = functions
         const sRef = admin
           .firestore()
           .doc(`competitions/${competition.collectionId}/standings/${resStandings.season}`)
+          .withConverter(standingsConverter)
         batch.set(sRef, resStandings)
       }
       await batch.commit()

@@ -1,5 +1,10 @@
-import { doc, getDoc, getFirestore, setDoc, QueryDocumentSnapshot } from 'firebase/firestore'
-import type { DocumentData, SnapshotOptions, FirestoreDataConverter } from 'firebase/firestore'
+import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore'
+import type {
+  DocumentData,
+  FirestoreDataConverter,
+  SnapshotOptions,
+  QueryDocumentSnapshot
+} from 'firebase/firestore'
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 
 const userProperties = (user: User) => {
