@@ -86,6 +86,153 @@
       reportFormatsをmatchesと1対1リレーションにしておいてcloudFunctionで作成しておけば、フロントでreportを作成する処理をする必要がなくなるな。
 */
 
+/*
+  画像：Wikimediaのを優先使用し、無い場合はstorageの画像を取得するようにする。
+
+  コンペティション(firestoreにも持っておくがフロントにも持っておく。)
+  /competitions/{competitionId(PlemiaLeagueなど)} = {
+    type: league | cup | japan
+    name: string
+    imageUrl: wikimediaのやつを探す > フロントで持つ。
+  }
+
+  チーム画像はwikimediaのやつが早そうhttps://upload.wikimedia.org/wikipedia/commons/8/81/Borussia_M%C3%B6nchengladbach_logo.svg
+  順位(１日１回更新確認)実際に何時くらいに更新されてるか調査しても良さそう。
+  /competitions/{competitionId}/standings/{standingId(seasonと同じYYYY)} = {
+    competitionId?
+    season: YYYY
+    table: [
+      {
+        position: 1
+        teamId: number
+        teamName: string
+        teamImageUrl: string
+        playedGames: number
+        won: number
+        draw: number
+        lost: number
+        points: number
+        goalsFor: number
+        goalsAgainst: number
+        goalDifference: number
+      }
+    ]
+    lastUpdated: string
+  }
+
+  チーム(１日１回更新確認)
+  /teams/{teamId} = {
+    name: string
+    imageUrl: string
+    address: string
+    phone: string
+    website: string
+    venue: string
+    squad: [
+      {
+        playerId: number
+        playerName: string
+        position: 'GK'
+        dateOfBirth: '1994-01-19'
+        nationality
+      }
+    ],
+    lastUpdated
+  }
+  
+  
+  得点ランキング(30位まで。１日１回更新確認)実際に何時くらいに更新されてるか調査しても良さそう。
+  /competitions/{competitionId}/scorers/{scorerId(seasonと同じYYYY)} = {
+    competitionId?
+    season: YYYY
+    table: [
+      {
+        teamName: string
+        teamImageUrl: string あっても良さそう。
+        playerName: string
+        goals: number
+      }
+    ]
+    lastUpdated: string
+  }
+  
+  試合(/v2/competitions/{id}/matches?dateFrom=Yesterday&dateTo=Tomorrow)(一時間に一回更新。スケジュールや選手採点検索・選手採点詳細のヘッダー部に使用)
+  /competitions/{competitionId}/matches/{matchId} = {
+    season: YYYY
+    matchId: number,
+    jpnDate: date,
+    matchday: number
+    status: SCHEDULED | FINISHED
+    teamIds: []
+    homeTeamId: number
+    homeTeamName: string
+    homeTeamScore: number | null <=検証
+    homeTeamPenalty: number
+    homeGoalPlayers: [
+      {
+        minute: number
+        name: string
+      }
+    ]
+    lastUpdated: string
+  }
+
+  試合詳細
+  /competitions/{competitionId}/matches/{matchId}/match-details/{matchDetailId(matchIdと一緒)} = {
+    homeLineup: [
+      {
+        playerId: number
+        playerName: string
+        position: GK | DF | MF | FW | HC
+        shirtNumber: number
+      }
+    ],
+    homeBench: []
+    homeCoach: {
+      id: number
+      name: string
+    },
+    goals: [
+      {
+        minute: number
+        teamName: string,
+        goalPlayerName: string
+        assistPlayerName: string
+      }
+    ],
+    bookings: [
+      {
+        minute: number
+        teamName: string
+        playerName: string
+        card: 'yellow' | 'red'
+      }
+    ],
+    substitutions: [
+      {
+        minute: number
+        teamName: string
+        outPlayerName: string
+        inPlayerName: string
+      }
+    ]
+    lastUpdated
+  }
+
+  採点対象
+  /competitions/{competitionId}/matches/{matchDetail}/target-players/{targetPlayerId(matchIdと一緒)} = {
+    homePlayers: [
+      {
+        playerId: number
+        playerName: string
+        position: GK | DF | MF | FW | HC
+        shirtNumber: number
+      }
+    ],
+    lastUpdated
+  }
+*/
+
 export const matches: Match[] = [
   {
     id: 204950,
