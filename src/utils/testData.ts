@@ -91,15 +91,16 @@
 
   コンペティション(firestoreにも持っておくがフロントにも持っておく。)
   /competitions/{competitionId(PlemiaLeagueなど)} = {
+    fbCompetitionId: number
     type: league | cup | japan
     name: string
     imageUrl: wikimediaのやつを探す > フロントで持つ。
   }
 
   チーム画像はwikimediaのやつが早そうhttps://upload.wikimedia.org/wikipedia/commons/8/81/Borussia_M%C3%B6nchengladbach_logo.svg
-  順位(１日１回更新確認)実際に何時くらいに更新されてるか調査しても良さそう。
+  順位(１日１回更新。updatedAtが無いので必ず更新。画像が遅いのでそこが課題)
   /competitions/{competitionId}/standings/{standingId(seasonと同じYYYY)} = {
-    competitionId?
+    competitionRef
     season: YYYY
     table: [
       {
@@ -117,7 +118,6 @@
         goalDifference: number
       }
     ]
-    lastUpdated: string
   }
 
   チーム(１日１回更新確認)
