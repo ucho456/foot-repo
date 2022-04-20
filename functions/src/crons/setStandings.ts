@@ -115,7 +115,7 @@ const setStandings = functions
       const competitions = [
         { fbCompetitionId: 2119, collectionId: 'J-League' },
         { fbCompetitionId: 2021, collectionId: 'Premier-League' },
-        { fbCompetitionId: 2014, collectionId: 'LA-LIGA' },
+        { fbCompetitionId: 2014, collectionId: 'La-Liga' },
         { fbCompetitionId: 2019, collectionId: 'Serie-A' },
         { fbCompetitionId: 2002, collectionId: 'Bundesliga' }
       ]
