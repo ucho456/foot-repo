@@ -2,14 +2,12 @@ import * as functions from 'firebase-functions'
 import * as admin from 'firebase-admin'
 import type {
   DocumentData,
-  DocumentReference,
   FirestoreDataConverter,
   QueryDocumentSnapshot
 } from 'firebase-admin/firestore'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 type Scorers = {
-  competitionRef: DocumentReference
   season: string
   table: {
     playerName: string
@@ -39,7 +37,6 @@ type ResData = {
 const scorersConverter: FirestoreDataConverter<Scorers> = {
   toFirestore(scorers: Scorers): DocumentData {
     return {
-      competitionRef: scorers.competitionRef,
       season: scorers.season,
       table: scorers.table
     }
@@ -47,7 +44,6 @@ const scorersConverter: FirestoreDataConverter<Scorers> = {
   fromFirestore(snapshot: QueryDocumentSnapshot): Scorers {
     const data = snapshot.data()
     return {
-      competitionRef: data.competitionRef,
       season: data.season,
       table: data.table
     }
@@ -58,12 +54,9 @@ const env = functions.config()['foot-repo']
 const footballUrl = env.football_url
 const config: AxiosRequestConfig<any> = { headers: { 'X-Auth-Token': env.football_token } }
 
-const getScorers = async (competition: {
-  fbCompetitionId: number
-  collectionId: string
-}): Promise<Scorers> => {
+const getScorers = async (competition: { id: number; collectionId: string }): Promise<Scorers> => {
   const res: AxiosResponse<any, any> = await axios.get(
-    footballUrl + `competitions/${competition.fbCompetitionId}/scorers?limit=30`,
+    footballUrl + `competitions/${competition.id}/scorers?limit=30`,
     config
   )
   const resData = res.data as ResData
@@ -75,8 +68,7 @@ const getScorers = async (competition: {
       goals: s.numberOfGoals
     }
   })
-  const cRef = await admin.firestore().doc(`competitions/${competition.collectionId}`)
-  return { competitionRef: cRef, season, table }
+  return { season, table }
 }
 
 const setScorers = functions
@@ -86,14 +78,13 @@ const setScorers = functions
     try {
       const batch = admin.firestore().batch()
       const competitions = [
-        { fbCompetitionId: 2119, collectionId: 'J-League' },
-        { fbCompetitionId: 2021, collectionId: 'Premier-League' },
-        { fbCompetitionId: 2014, collectionId: 'La-Liga' },
-        { fbCompetitionId: 2019, collectionId: 'Serie-A' },
-        { fbCompetitionId: 2002, collectionId: 'Bundesliga' }
+        { id: 2119, collectionId: 'J-League' },
+        { id: 2021, collectionId: 'Premier-League' },
+        { id: 2014, collectionId: 'La-Liga' },
+        { id: 2019, collectionId: 'Serie-A' },
+        { id: 2002, collectionId: 'Bundesliga' }
       ]
-      for (let i = 0; i < competitions.length; i++) {
-        const competition = competitions[i]
+      for (const competition of competitions) {
         const resScorers = await getScorers(competition)
         const sRef = admin
           .firestore()

@@ -66,9 +66,9 @@ const env = functions.config()['foot-repo']
 const footballUrl = env.football_url
 const config: AxiosRequestConfig<any> = { headers: { 'X-Auth-Token': env.football_token } }
 
-const getTeamIds = async (fbCompetitionId: number): Promise<number[]> => {
+const getTeamIds = async (competitionId: number): Promise<number[]> => {
   const res: AxiosResponse<any, any> = await axios.get(
-    footballUrl + `competitions/${fbCompetitionId}/teams`,
+    footballUrl + `competitions/${competitionId}/teams`,
     config
   )
   const resData = res.data as { teams: { id: number }[] }
@@ -102,7 +102,7 @@ const getTeam = async (teamId: number): Promise<Team> => {
   return { name, imageUrl, venue, website, squad, lastUpdated }
 }
 
-const setTeam = async (competition: { id: number; collectionId: string }): Promise<void> => {
+const setTeams = async (competition: { id: number; collectionId: string }): Promise<void> => {
   try {
     const teamIds = await getTeamIds(competition.id)
     const batch = admin.firestore().batch()
@@ -128,7 +128,7 @@ export const setJLeagueTeams = functions
   .pubsub.schedule('0 4 * * *') // every 04:00 AM
   .onRun(async () => {
     const competition = { id: 2119, collectionId: 'J-League' }
-    await setTeam(competition)
+    await setTeams(competition)
     return null
   })
 
@@ -137,7 +137,7 @@ export const setPremierLeagueTeams = functions
   .pubsub.schedule('5 4 * * *') // every 04:05 AM
   .onRun(async () => {
     const competition = { id: 2021, collectionId: 'Premier-League' }
-    await setTeam(competition)
+    await setTeams(competition)
     return null
   })
 
@@ -146,7 +146,7 @@ export const setLaLigaTeams = functions
   .pubsub.schedule('10 4 * * *') // every 04:10 AM
   .onRun(async () => {
     const competition = { id: 2014, collectionId: 'La-Liga' }
-    await setTeam(competition)
+    await setTeams(competition)
     return null
   })
 
@@ -155,7 +155,7 @@ export const setSerieATeams = functions
   .pubsub.schedule('15 4 * * *') // every 04:15 AM
   .onRun(async () => {
     const competition = { id: 2019, collectionId: 'Seria-A' }
-    await setTeam(competition)
+    await setTeams(competition)
     return null
   })
 
@@ -164,6 +164,6 @@ export const setBundesligaTeams = functions
   .pubsub.schedule('20 4 * * *') // every 04:20 AM
   .onRun(async () => {
     const competition = { id: 2002, collectionId: 'Bundesliga' }
-    await setTeam(competition)
+    await setTeams(competition)
     return null
   })

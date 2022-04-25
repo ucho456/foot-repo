@@ -10,7 +10,6 @@ import {
   setSerieATeams,
   setBundesligaTeams
 } from './crons/setTeams'
-// import createMatches from './crons/createMatches'
 
 admin.initializeApp()
 
@@ -24,5 +23,4 @@ module.exports = {
   setLaLigaTeams,
   setSerieATeams,
   setBundesligaTeams
-  // createMatches
 }

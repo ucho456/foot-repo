@@ -2,14 +2,12 @@ import * as functions from 'firebase-functions'
 import * as admin from 'firebase-admin'
 import type {
   DocumentData,
-  DocumentReference,
   FirestoreDataConverter,
   QueryDocumentSnapshot
 } from 'firebase-admin/firestore'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 type Standings = {
-  competitionRef: DocumentReference
   season: string
   table: {
     position: number
@@ -57,7 +55,6 @@ type ResData = {
 const standingsConverter: FirestoreDataConverter<Standings> = {
   toFirestore(standings: Standings): DocumentData {
     return {
-      competitionRef: standings.competitionRef,
       season: standings.season,
       table: standings.table
     }
@@ -65,7 +62,6 @@ const standingsConverter: FirestoreDataConverter<Standings> = {
   fromFirestore(snapshot: QueryDocumentSnapshot): Standings {
     const data = snapshot.data()
     return {
-      competitionRef: data.competitionRef,
       season: data.season,
       table: data.table
     }
@@ -77,11 +73,11 @@ const footballUrl = env.football_url
 const config: AxiosRequestConfig<any> = { headers: { 'X-Auth-Token': env.football_token } }
 
 const getStandings = async (competition: {
-  fbCompetitionId: number
+  id: number
   collectionId: string
 }): Promise<Standings> => {
   const res: AxiosResponse<any, any> = await axios.get(
-    footballUrl + `competitions/${competition.fbCompetitionId}/standings`,
+    footballUrl + `competitions/${competition.id}/standings`,
     config
   )
   const resData = res.data as ResData
@@ -102,8 +98,7 @@ const getStandings = async (competition: {
       goalsDifference: t.goalDifference
     }
   })
-  const cRef = await admin.firestore().doc(`competitions/${competition.collectionId}`)
-  return { competitionRef: cRef, season, table }
+  return { season, table }
 }
 
 const setStandings = functions
@@ -113,14 +108,13 @@ const setStandings = functions
     try {
       const batch = admin.firestore().batch()
       const competitions = [
-        { fbCompetitionId: 2119, collectionId: 'J-League' },
-        { fbCompetitionId: 2021, collectionId: 'Premier-League' },
-        { fbCompetitionId: 2014, collectionId: 'La-Liga' },
-        { fbCompetitionId: 2019, collectionId: 'Serie-A' },
-        { fbCompetitionId: 2002, collectionId: 'Bundesliga' }
+        { id: 2119, collectionId: 'J-League' },
+        { id: 2021, collectionId: 'Premier-League' },
+        { id: 2014, collectionId: 'La-Liga' },
+        { id: 2019, collectionId: 'Serie-A' },
+        { id: 2002, collectionId: 'Bundesliga' }
       ]
-      for (let i = 0; i < competitions.length; i++) {
-        const competition = competitions[i]
+      for (const competition of competitions) {
         const resStandings = await getStandings(competition)
         const sRef = admin
           .firestore()
