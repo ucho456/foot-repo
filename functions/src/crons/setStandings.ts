@@ -2,18 +2,23 @@ import * as functions from 'firebase-functions'
 import * as admin from 'firebase-admin'
 import type {
   DocumentData,
+  DocumentReference,
   FirestoreDataConverter,
   QueryDocumentSnapshot
 } from 'firebase-admin/firestore'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 type Standings = {
+  id: string
   season: string
   table: {
     position: number
-    teamId: number
-    teamName: string
-    teamImageUrl: string
+    team: {
+      ref: DocumentReference
+      id: number
+      name: string
+      imageUrl: string
+    }
     playedGames: number
     won: number
     draw: number
@@ -62,6 +67,7 @@ const standingsConverter: FirestoreDataConverter<Standings> = {
   fromFirestore(snapshot: QueryDocumentSnapshot): Standings {
     const data = snapshot.data()
     return {
+      id: snapshot.id,
       season: data.season,
       table: data.table
     }
@@ -85,9 +91,12 @@ const getStandings = async (competition: {
   const table = resData.standings[0].table.map((t) => {
     return {
       position: t.position,
-      teamId: t.team.id,
-      teamName: t.team.name,
-      teamImageUrl: t.team.crestUrl,
+      team: {
+        ref: admin.firestore().doc(`teams/${t.team.id}`),
+        id: t.team.id,
+        name: t.team.name,
+        imageUrl: t.team.crestUrl
+      },
       playedGames: t.playedGames,
       won: t.won,
       draw: t.draw,
@@ -98,7 +107,7 @@ const getStandings = async (competition: {
       goalsDifference: t.goalDifference
     }
   })
-  return { season, table }
+  return { id: season, season, table }
 }
 
 const setStandings = functions

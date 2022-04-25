@@ -7,19 +7,18 @@ import type {
 } from 'firebase-admin/firestore'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 
-type Squad = {
-  playerName: string
-  position: 'GK' | 'DF' | 'MF' | 'FW'
-  dateOfBirth: string
-  nationality: string
-}
-
 type Team = {
+  id: number
   name: string
   imageUrl: string
   venue: string
   website: string
-  squad: Squad[]
+  squad: {
+    playerName: string
+    position: 'GK' | 'DF' | 'MF' | 'FW'
+    dateOfBirth: string
+    nationality: string
+  }[]
   lastUpdated: string
 }
 
@@ -52,6 +51,7 @@ const teamConverter: FirestoreDataConverter<Team> = {
   fromFirestore(snapshot: QueryDocumentSnapshot): Team {
     const data = snapshot.data()
     return {
+      id: data.id,
       name: data.name,
       imageUrl: data.imageUrl,
       venue: data.venue,
@@ -79,27 +79,31 @@ const getTeamIds = async (competitionId: number): Promise<number[]> => {
 const getTeam = async (teamId: number): Promise<Team> => {
   const res: AxiosResponse<any, any> = await axios.get(footballUrl + `teams/${teamId}`, config)
   const resData = res.data as ResData
-  const name = resData.name
-  const imageUrl = resData.crestUrl
-  const venue = resData.venue
-  const website = resData.website
   const squad = resData.squad.map((s) => {
+    const position: 'GK' | 'DF' | 'MF' | 'FW' =
+      s.position === 'Goalkeeper'
+        ? 'GK'
+        : s.position === 'Defence'
+        ? 'DF'
+        : s.position === 'Midfield'
+        ? 'MF'
+        : 'FW'
     return {
       playerName: s.name,
-      position:
-        s.position === 'Goalkeeper'
-          ? 'GK'
-          : s.position === 'Defence'
-          ? 'DF'
-          : s.position === 'Midfield'
-          ? 'MF'
-          : 'FW',
+      position,
       dateOfBirth: s.dateOfBirth,
       nationality: s.nationality
     }
-  }) as Squad[]
-  const lastUpdated = resData.lastUpdated
-  return { name, imageUrl, venue, website, squad, lastUpdated }
+  })
+  return {
+    id: resData.id,
+    name: resData.name,
+    imageUrl: resData.crestUrl,
+    venue: resData.venue,
+    website: resData.website,
+    squad,
+    lastUpdated: resData.lastUpdated
+  }
 }
 
 const setTeams = async (competition: { id: number; collectionId: string }): Promise<void> => {

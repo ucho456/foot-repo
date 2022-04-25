@@ -8,6 +8,7 @@ import type {
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 type Scorers = {
+  id: string
   season: string
   table: {
     playerName: string
@@ -44,6 +45,7 @@ const scorersConverter: FirestoreDataConverter<Scorers> = {
   fromFirestore(snapshot: QueryDocumentSnapshot): Scorers {
     const data = snapshot.data()
     return {
+      id: snapshot.id,
       season: data.season,
       table: data.table
     }
@@ -68,7 +70,7 @@ const getScorers = async (competition: { id: number; collectionId: string }): Pr
       goals: s.numberOfGoals
     }
   })
-  return { season, table }
+  return { id: season, season, table }
 }
 
 const setScorers = functions
