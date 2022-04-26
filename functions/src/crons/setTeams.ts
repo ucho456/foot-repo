@@ -67,7 +67,7 @@ export const setJLeagueTeams = functions
   .onRun(async () => {
     const competition = { id: 2119, collectionId: 'J-League' }
     await setTeams(competition)
-    return null
+    return `success setJLeagueTeams ${new Date()}`
   })
 
 export const setPremierLeagueTeams = functions
@@ -76,7 +76,7 @@ export const setPremierLeagueTeams = functions
   .onRun(async () => {
     const competition = { id: 2021, collectionId: 'Premier-League' }
     await setTeams(competition)
-    return null
+    return `success setPremierLeagueTeams ${new Date()}`
   })
 
 export const setLaLigaTeams = functions
@@ -85,7 +85,7 @@ export const setLaLigaTeams = functions
   .onRun(async () => {
     const competition = { id: 2014, collectionId: 'La-Liga' }
     await setTeams(competition)
-    return null
+    return `success setLaLigaTeams ${new Date()}`
   })
 
 export const setSerieATeams = functions
@@ -94,7 +94,7 @@ export const setSerieATeams = functions
   .onRun(async () => {
     const competition = { id: 2019, collectionId: 'Seria-A' }
     await setTeams(competition)
-    return null
+    return `success setSerieATeams ${new Date()}`
   })
 
 export const setBundesligaTeams = functions
@@ -103,5 +103,5 @@ export const setBundesligaTeams = functions
   .onRun(async () => {
     const competition = { id: 2002, collectionId: 'Bundesliga' }
     await setTeams(competition)
-    return null
+    return `success setBundesligaTeams ${new Date()}`
   })
