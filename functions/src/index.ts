@@ -7,7 +7,7 @@ import {
   setLaLigaMatches,
   setSerieAMatches,
   setBundesligaMatches
-} from './calls/setMatches'
+} from './calls/createMatches'
 import setScorers from './crons/setScorers'
 import setStandings from './crons/setStandings'
 import {
