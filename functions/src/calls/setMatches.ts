@@ -155,8 +155,12 @@ const makeMatch = (resMatch: ResMatch): Match => {
   }
 }
 
-const setMatches = async (competition: { id: number; collectionId: string }): Promise<void> => {
+const setMatches = async (
+  competition: { id: number; collectionId: string },
+  req: functions.https.Request
+): Promise<void> => {
   try {
+    if (req.body.secret !== env.secret) throw new Error('Unauthorized')
     const resMatches = await getResMatches(competition.id)
     const batch = admin.firestore().batch()
     for (const resMatch of resMatches) {
@@ -181,45 +185,40 @@ const setMatches = async (competition: { id: number; collectionId: string }): Pr
 
 export const setJLeagueMatches = functions
   .region('asia-northeast1')
-  .pubsub.schedule('0 4 * * *') // every 04:00 AM
-  .onRun(async () => {
+  .https.onRequest(async (req, res) => {
     const competition = { id: 2119, collectionId: 'J-League' }
-    await setMatches(competition)
-    return null
+    await setMatches(competition, req)
+    res.sendStatus(200)
   })
 
 export const setPremierLeagueMatches = functions
   .region('asia-northeast1')
-  .pubsub.schedule('5 4 * * *') // every 04:05 AM
-  .onRun(async () => {
+  .https.onRequest(async (req, res) => {
     const competition = { id: 2021, collectionId: 'Premier-League' }
-    await setMatches(competition)
-    return null
+    await setMatches(competition, req)
+    res.sendStatus(200)
   })
 
 export const setLaLigaMatches = functions
   .region('asia-northeast1')
-  .pubsub.schedule('10 4 * * *') // every 04:10 AM
-  .onRun(async () => {
+  .https.onRequest(async (req, res) => {
     const competition = { id: 2014, collectionId: 'La-Liga' }
-    await setMatches(competition)
-    return null
+    await setMatches(competition, req)
+    res.sendStatus(200)
   })
 
 export const setSerieAMatches = functions
   .region('asia-northeast1')
-  .pubsub.schedule('15 4 * * *') // every 04:15 AM
-  .onRun(async () => {
+  .https.onRequest(async (req, res) => {
     const competition = { id: 2019, collectionId: 'Seria-A' }
-    await setMatches(competition)
-    return null
+    await setMatches(competition, req)
+    res.sendStatus(200)
   })
 
 export const setBundesligaMatches = functions
   .region('asia-northeast1')
-  .pubsub.schedule('20 4 * * *') // every 04:20 AM
-  .onRun(async () => {
+  .https.onRequest(async (req, res) => {
     const competition = { id: 2002, collectionId: 'Bundesliga' }
-    await setMatches(competition)
-    return null
+    await setMatches(competition, req)
+    res.sendStatus(200)
   })
