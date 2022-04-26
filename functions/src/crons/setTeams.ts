@@ -1,70 +1,8 @@
 import * as functions from 'firebase-functions'
 import * as admin from 'firebase-admin'
-import type {
-  DocumentData,
-  FirestoreDataConverter,
-  QueryDocumentSnapshot
-} from 'firebase-admin/firestore'
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
-
-type Team = {
-  id: number
-  name: string
-  imageUrl: string
-  venue: string
-  website: string
-  squad: {
-    playerName: string
-    position: 'GK' | 'DF' | 'MF' | 'FW'
-    dateOfBirth: string
-    nationality: string
-  }[]
-  lastUpdated: string
-}
-
-type ResData = {
-  id: number
-  name: string
-  crestUrl: string
-  website: string
-  venue: string
-  squad: {
-    name: string
-    position: 'Goalkeeper' | 'Defence' | 'Midfield' | 'Offence'
-    dateOfBirth: string
-    nationality: string
-  }[]
-  lastUpdated: string
-}
-
-const teamConverter: FirestoreDataConverter<Team> = {
-  toFirestore(team: Team): DocumentData {
-    return {
-      name: team.name,
-      imageUrl: team.imageUrl,
-      venue: team.venue,
-      website: team.website,
-      squad: team.squad,
-      lastUpdated: team.lastUpdated
-    }
-  },
-  fromFirestore(snapshot: QueryDocumentSnapshot): Team {
-    const data = snapshot.data()
-    return {
-      id: data.id,
-      name: data.name,
-      imageUrl: data.imageUrl,
-      venue: data.venue,
-      website: data.website,
-      squad: data.squad,
-      lastUpdated: data.lastUpdated
-    }
-  }
-}
-
-const env = functions.config()['foot-repo']
-const footballUrl = env.football_url
-const config: AxiosRequestConfig<any> = { headers: { 'X-Auth-Token': env.football_token } }
+import axios, { AxiosResponse } from 'axios'
+import { teamConverter } from '../converters'
+import { footballUrl, config } from '../utils'
 
 const getTeamIds = async (competitionId: number): Promise<number[]> => {
   const res: AxiosResponse<any, any> = await axios.get(
@@ -78,8 +16,8 @@ const getTeamIds = async (competitionId: number): Promise<number[]> => {
 
 const getTeam = async (teamId: number): Promise<Team> => {
   const res: AxiosResponse<any, any> = await axios.get(footballUrl + `teams/${teamId}`, config)
-  const resData = res.data as ResData
-  const squad = resData.squad.map((s) => {
+  const fbTeam = res.data as FbTeam
+  const squad = fbTeam.squad.map((s) => {
     const position: 'GK' | 'DF' | 'MF' | 'FW' =
       s.position === 'Goalkeeper'
         ? 'GK'
@@ -96,35 +34,31 @@ const getTeam = async (teamId: number): Promise<Team> => {
     }
   })
   return {
-    id: resData.id,
-    name: resData.name,
-    imageUrl: resData.crestUrl,
-    venue: resData.venue,
-    website: resData.website,
+    id: fbTeam.id,
+    name: fbTeam.name,
+    imageUrl: fbTeam.crestUrl,
+    venue: fbTeam.venue,
+    website: fbTeam.website,
     squad,
-    lastUpdated: resData.lastUpdated
+    lastUpdated: fbTeam.lastUpdated
   }
 }
 
 const setTeams = async (competition: { id: number; collectionId: string }): Promise<void> => {
-  try {
-    const teamIds = await getTeamIds(competition.id)
-    const batch = admin.firestore().batch()
-    for (const teamId of teamIds) {
-      const team = await getTeam(teamId)
-      const tRef = admin.firestore().doc(`teams/${teamId}`).withConverter(teamConverter)
-      const tSnapshot = await tRef.get()
-      if (tSnapshot.exists) {
-        const lastUpdated = tSnapshot.data()?.lastUpdated
-        if (team.lastUpdated !== lastUpdated) batch.set(tRef, team)
-      } else {
-        batch.set(tRef, team)
-      }
+  const teamIds = await getTeamIds(competition.id)
+  const batch = admin.firestore().batch()
+  for (const teamId of teamIds) {
+    const team = await getTeam(teamId)
+    const tRef = admin.firestore().doc(`teams/${teamId}`).withConverter(teamConverter)
+    const tSnapshot = await tRef.get()
+    if (tSnapshot.exists) {
+      const lastUpdated = tSnapshot.data()?.lastUpdated
+      if (team.lastUpdated !== lastUpdated) batch.set(tRef, team)
+    } else {
+      batch.set(tRef, team)
     }
-    await batch.commit()
-  } catch (error) {
-    console.log(error)
   }
+  await batch.commit()
 }
 
 export const setJLeagueTeams = functions

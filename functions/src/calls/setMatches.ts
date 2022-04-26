@@ -1,157 +1,50 @@
 import * as functions from 'firebase-functions'
 import * as admin from 'firebase-admin'
-import type {
-  DocumentData,
-  DocumentReference,
-  FirestoreDataConverter,
-  QueryDocumentSnapshot
-} from 'firebase-admin/firestore'
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
-import { convertJST } from '../utils'
+import axios, { AxiosResponse } from 'axios'
+import { Match } from '../@types/matches'
+import { matchConverter } from '../converters'
+import { convertJST, env, footballUrl, config } from '../utils'
 
-type Match = {
-  id: number
-  season: string
-  jstDate: string
-  matchday: number
-  status: 'SCHEDULED' | 'FINISHED'
-  teamIds: number[]
-  homeTeam: {
-    ref: DocumentReference
-    id: number
-    name: string
-    score: number | null
-    penalty: number | null
-    goalPlayers: {
-      minute: number
-      name: string
-    }[]
-  }
-  awayTeam: {
-    ref: DocumentReference
-    id: number
-    name: string
-    score: number | null
-    penalty: number | null
-    goalPlayers: {
-      minute: number
-      name: string
-    }[]
-  }
-  lastUpdated: string
-}
-
-type ResMatch = {
-  id: number
-  season: {
-    startDate: string
-  }
-  utcDate: string
-  status: 'SCHEDULED' | 'FINISHED'
-  matchday: number
-  score: {
-    fullTime: {
-      homeTeam: null | number
-      awayTeam: null | number
-    }
-    penalties: {
-      homeTeam: null | number
-      awayTeam: null | number
-    }
-  }
-  homeTeam: {
-    id: number
-    name: string
-  }
-  awayTeam: {
-    id: number
-    name: string
-  }
-  goals: {
-    minute: number
-    team: {
-      id: number
-    }
-    scorer: {
-      name: string
-    }
-  }[]
-  lastUpdated: string
-}
-
-const matchConverter: FirestoreDataConverter<Match> = {
-  toFirestore(match: Match): DocumentData {
-    return {
-      season: match.season,
-      jstDate: match.jstDate,
-      matchday: match.matchday,
-      status: match.status,
-      teamIds: match.teamIds,
-      homeTeam: match.homeTeam,
-      awayTeam: match.awayTeam,
-      lastUpdated: match.lastUpdated
-    }
-  },
-  fromFirestore(snapshot: QueryDocumentSnapshot): Match {
-    const data = snapshot.data()
-    return {
-      id: data.id,
-      season: data.season,
-      jstDate: data.jstDate,
-      matchday: data.matchday,
-      status: data.status,
-      teamIds: data.teamIds,
-      homeTeam: data.homeTeam,
-      awayTeam: data.awayTeam,
-      lastUpdated: data.lastUpdated
-    }
-  }
-}
-
-const env = functions.config()['foot-repo']
-const footballUrl = env.football_url
-const config: AxiosRequestConfig<any> = { headers: { 'X-Auth-Token': env.football_token } }
-
-const getResMatches = async (competitionId: number): Promise<ResMatch[]> => {
+const getFbMatches = async (competitionId: number): Promise<FbMatch[]> => {
   const res: AxiosResponse<any, any> = await axios.get(
     footballUrl + `competitions/${competitionId}/matches`,
     config
   )
-  const matches = res.data.matches as ResMatch[]
-  return matches
+  const fbMatches = res.data.matches as FbMatch[]
+  return fbMatches
 }
 
-const makeMatch = (resMatch: ResMatch): Match => {
+const makeMatch = (fbMatch: FbMatch): Match => {
   return {
-    id: resMatch.id,
-    season: resMatch.season.startDate.substring(0, 4),
-    jstDate: convertJST(resMatch.utcDate),
-    matchday: resMatch.matchday,
-    status: resMatch.status,
-    teamIds: [resMatch.homeTeam.id, resMatch.awayTeam.id],
+    id: fbMatch.id,
+    season: fbMatch.season.startDate.substring(0, 4),
+    jstDate: convertJST(fbMatch.utcDate),
+    matchday: fbMatch.matchday,
+    status: fbMatch.status,
+    teamIds: [fbMatch.homeTeam.id, fbMatch.awayTeam.id],
     homeTeam: {
-      ref: admin.firestore().doc(`teams/${resMatch.homeTeam.id}`),
-      id: resMatch.homeTeam.id,
-      name: resMatch.homeTeam.name,
-      score: resMatch.score.fullTime.homeTeam,
-      penalty: resMatch.score.penalties.homeTeam,
-      goalPlayers: resMatch.goals.flatMap((g) => {
-        if (g.team.id !== resMatch.homeTeam.id) return []
+      ref: admin.firestore().doc(`teams/${fbMatch.homeTeam.id}`),
+      id: fbMatch.homeTeam.id,
+      name: fbMatch.homeTeam.name,
+      score: fbMatch.score.fullTime.homeTeam,
+      penalty: fbMatch.score.penalties.homeTeam,
+      goalPlayers: fbMatch.goals.flatMap((g) => {
+        if (g.team.id !== fbMatch.homeTeam.id) return []
         return { minute: g.minute, name: g.scorer.name }
       })
     },
     awayTeam: {
-      ref: admin.firestore().doc(`teams/${resMatch.awayTeam.id}`),
-      id: resMatch.awayTeam.id,
-      name: resMatch.awayTeam.name,
-      score: resMatch.score.fullTime.awayTeam,
-      penalty: resMatch.score.penalties.awayTeam,
-      goalPlayers: resMatch.goals.flatMap((g) => {
-        if (g.team.id !== resMatch.awayTeam.id) return []
+      ref: admin.firestore().doc(`teams/${fbMatch.awayTeam.id}`),
+      id: fbMatch.awayTeam.id,
+      name: fbMatch.awayTeam.name,
+      score: fbMatch.score.fullTime.awayTeam,
+      penalty: fbMatch.score.penalties.awayTeam,
+      goalPlayers: fbMatch.goals.flatMap((g) => {
+        if (g.team.id !== fbMatch.awayTeam.id) return []
         return { minute: g.minute, name: g.scorer.name }
       })
     },
-    lastUpdated: resMatch.lastUpdated
+    lastUpdated: fbMatch.lastUpdated
   }
 }
 
@@ -159,28 +52,24 @@ const setMatches = async (
   competition: { id: number; collectionId: string },
   req: functions.https.Request
 ): Promise<void> => {
-  try {
-    if (req.body.secret !== env.secret) throw new Error('Unauthorized')
-    const resMatches = await getResMatches(competition.id)
-    const batch = admin.firestore().batch()
-    for (const resMatch of resMatches) {
-      const mRef = admin.firestore().doc(`matches/${resMatch.id}`).withConverter(matchConverter)
-      const mSnapshot = await mRef.get()
-      if (mSnapshot.exists) {
-        const lastUpdated = mSnapshot.data()?.lastUpdated
-        if (resMatch.lastUpdated !== lastUpdated) {
-          const match = makeMatch(resMatch)
-          batch.set(mRef, match)
-        }
-      } else {
-        const match = makeMatch(resMatch)
+  if (req.body.secret !== env.secret) throw new Error('Unauthorized')
+  const fbMatches = await getFbMatches(competition.id)
+  const batch = admin.firestore().batch()
+  for (const fbMatch of fbMatches) {
+    const mRef = admin.firestore().doc(`matches/${fbMatch.id}`).withConverter(matchConverter)
+    const mSnapshot = await mRef.get()
+    if (mSnapshot.exists) {
+      const lastUpdated = mSnapshot.data()?.lastUpdated
+      if (fbMatch.lastUpdated !== lastUpdated) {
+        const match = makeMatch(fbMatch)
         batch.set(mRef, match)
       }
+    } else {
+      const match = makeMatch(fbMatch)
+      batch.set(mRef, match)
     }
-    await batch.commit()
-  } catch (error) {
-    console.log(error)
   }
+  await batch.commit()
 }
 
 export const setJLeagueMatches = functions
@@ -188,7 +77,7 @@ export const setJLeagueMatches = functions
   .https.onRequest(async (req, res) => {
     const competition = { id: 2119, collectionId: 'J-League' }
     await setMatches(competition, req)
-    res.sendStatus(200)
+    res.send(`success setJLeagueMatches ${new Date()}`)
   })
 
 export const setPremierLeagueMatches = functions
@@ -196,7 +85,7 @@ export const setPremierLeagueMatches = functions
   .https.onRequest(async (req, res) => {
     const competition = { id: 2021, collectionId: 'Premier-League' }
     await setMatches(competition, req)
-    res.sendStatus(200)
+    res.send(`success setPremierLeagueMatches ${new Date()}`)
   })
 
 export const setLaLigaMatches = functions
@@ -204,7 +93,7 @@ export const setLaLigaMatches = functions
   .https.onRequest(async (req, res) => {
     const competition = { id: 2014, collectionId: 'La-Liga' }
     await setMatches(competition, req)
-    res.sendStatus(200)
+    res.send(`success setLaLigaMatches ${new Date()}`)
   })
 
 export const setSerieAMatches = functions
@@ -212,7 +101,7 @@ export const setSerieAMatches = functions
   .https.onRequest(async (req, res) => {
     const competition = { id: 2019, collectionId: 'Seria-A' }
     await setMatches(competition, req)
-    res.sendStatus(200)
+    res.send(`success setSerieAMatches ${new Date()}`)
   })
 
 export const setBundesligaMatches = functions
@@ -220,5 +109,5 @@ export const setBundesligaMatches = functions
   .https.onRequest(async (req, res) => {
     const competition = { id: 2002, collectionId: 'Bundesliga' }
     await setMatches(competition, req)
-    res.sendStatus(200)
+    res.send(`success setBundesligaMatches ${new Date()}`)
   })
