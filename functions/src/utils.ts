@@ -12,3 +12,13 @@ export const convertJST = (utcDate: string) => {
   time.setHours(time.getHours() + 9)
   return time.toLocaleString('ja-JP').slice(0, -3)
 }
+
+export const convertPosition = (position: FbPosition): 'GK' | 'DF' | 'MF' | 'FW' => {
+  return position === 'Goalkeeper'
+    ? 'GK'
+    : position === 'Defence'
+    ? 'DF'
+    : position === 'Midfield'
+    ? 'MF'
+    : 'FW'
+}

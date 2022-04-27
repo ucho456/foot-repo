@@ -16,7 +16,7 @@ const getFbMatches = async (competitionId: number): Promise<FbMatch[]> => {
 
 const makeMatch = (fbMatch: FbMatch): Match => {
   return {
-    id: fbMatch.id,
+    id: String(fbMatch.id),
     season: fbMatch.season.startDate.substring(0, 4),
     jstDate: convertJST(fbMatch.utcDate),
     matchday: fbMatch.matchday,

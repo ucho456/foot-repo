@@ -4,7 +4,7 @@ import type {
   QueryDocumentSnapshot
 } from 'firebase-admin/firestore'
 import { Standings } from './@types/standings'
-import { Match } from './@types/matches'
+import { ForReport, Match, MatchDetail } from './@types/matches'
 
 export const matchConverter: FirestoreDataConverter<Match> = {
   toFirestore(match: Match): DocumentData {
@@ -22,7 +22,7 @@ export const matchConverter: FirestoreDataConverter<Match> = {
   fromFirestore(snapshot: QueryDocumentSnapshot): Match {
     const data = snapshot.data()
     return {
-      id: data.id,
+      id: snapshot.id,
       season: data.season,
       jstDate: data.jstDate,
       matchday: data.matchday,
@@ -31,6 +31,54 @@ export const matchConverter: FirestoreDataConverter<Match> = {
       homeTeam: data.homeTeam,
       awayTeam: data.awayTeam,
       lastUpdated: data.lastUpdated
+    }
+  }
+}
+
+export const matchDetailConverter: FirestoreDataConverter<MatchDetail> = {
+  toFirestore(matchDetail: MatchDetail): DocumentData {
+    return {
+      homeLineup: matchDetail.homeLineup,
+      homeBench: matchDetail.homeBench,
+      homeCoach: matchDetail.homeCoach,
+      awayLineup: matchDetail.awayLineup,
+      awayBench: matchDetail.awayBench,
+      awayCoach: matchDetail.awayCoach,
+      goals: matchDetail.goals,
+      bookings: matchDetail.bookings,
+      substitutions: matchDetail.substitutions
+    }
+  },
+  fromFirestore(snapshot: QueryDocumentSnapshot): MatchDetail {
+    const data = snapshot.data()
+    return {
+      id: snapshot.id,
+      homeLineup: data.homeLineup,
+      homeBench: data.homeBench,
+      homeCoach: data.homeCoach,
+      awayLineup: data.awayLineup,
+      awayBench: data.awayBench,
+      awayCoach: data.awayCoach,
+      goals: data.goals,
+      bookings: data.bookings,
+      substitutions: data.substitutions
+    }
+  }
+}
+
+export const forReportConverter: FirestoreDataConverter<ForReport> = {
+  toFirestore(forReport: ForReport): DocumentData {
+    return {
+      homePlayers: forReport.homePlayers,
+      awayPlayers: forReport.awayPlayers
+    }
+  },
+  fromFirestore(snapshot: QueryDocumentSnapshot): ForReport {
+    const data = snapshot.data()
+    return {
+      id: snapshot.id,
+      homePlayers: data.homePlayers,
+      awayPlayers: data.awayPlayers
     }
   }
 }

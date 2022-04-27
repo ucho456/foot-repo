@@ -1,3 +1,5 @@
+type FbPosition = 'Goalkeeper' | 'Defence' | 'Midfield' | 'Offence' | null
+
 type FbMatch = {
   id: number
   season: {
@@ -26,13 +28,13 @@ type FbMatch = {
     lineup: {
       id: number
       name: string
-      position: 'Goalkeeper' | 'Defence' | 'Midfield' | 'Offence'
+      position: FbPosition
       shirtNumber: number
     }[]
     bench: {
       id: number
       name: string
-      position: 'Goalkeeper' | 'Defence' | 'Midfield' | 'Offence'
+      position: FbPosition
       shirtNumber: number
     }[]
   }
@@ -46,13 +48,13 @@ type FbMatch = {
     lineup: {
       id: number
       name: string
-      position: 'Goalkeeper' | 'Defence' | 'Midfield' | 'Offence'
+      position: FbPosition
       shirtNumber: number
     }[]
     bench: {
       id: number
       name: string
-      position: 'Goalkeeper' | 'Defence' | 'Midfield' | 'Offence'
+      position: FbPosition
       shirtNumber: number
     }[]
   }
@@ -81,15 +83,17 @@ type FbMatch = {
     card: 'YELLOW_CARD' | 'RED_CARD'
   }[]
   substitutions: {
-    minutes: number
+    minute: number
     team: {
       id: number
       name: string
     }
     playerOut: {
+      id: number
       name: string
     }
     playerIn: {
+      id: number
       name: string
     }
   }[]
@@ -149,7 +153,7 @@ type FbTeam = {
   venue: string
   squad: {
     name: string
-    position: 'Goalkeeper' | 'Defence' | 'Midfield' | 'Offence'
+    position: FbPosition
     dateOfBirth: string
     nationality: string
   }[]

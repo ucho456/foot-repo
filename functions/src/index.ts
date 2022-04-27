@@ -8,6 +8,7 @@ import {
   setSerieAMatches,
   setBundesligaMatches
 } from './calls/createMatches'
+import setMatches from './crons/setMatches'
 import setScorers from './crons/setScorers'
 import setStandings from './crons/setStandings'
 import {
@@ -28,6 +29,7 @@ module.exports = {
   setLaLigaMatches,
   setSerieAMatches,
   setBundesligaMatches,
+  setMatches,
   setScorers,
   setStandings,
   setJLeagueTeams,
