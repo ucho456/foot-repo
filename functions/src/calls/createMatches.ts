@@ -3,7 +3,7 @@ import * as admin from 'firebase-admin'
 import axios, { AxiosResponse } from 'axios'
 import { Match } from '../@types/matches'
 import { matchConverter } from '../converters'
-import { convertJST, env, footballUrl, config } from '../utils'
+import { config, convertJST, env, footballUrl } from '../utils'
 
 const getFbMatches = async (competitionId: number): Promise<FbMatch[]> => {
   const res: AxiosResponse<any, any> = await axios.get(
@@ -14,17 +14,16 @@ const getFbMatches = async (competitionId: number): Promise<FbMatch[]> => {
   return fbMatches
 }
 
-const makeMatch = (fbMatch: FbMatch): Match => {
+export const makeMatch = (fbMatch: FbMatch): Match => {
   return {
     id: String(fbMatch.id),
     season: fbMatch.season.startDate.substring(0, 4),
     jstDate: convertJST(fbMatch.utcDate),
     matchday: fbMatch.matchday,
     status: fbMatch.status,
-    teamIds: [fbMatch.homeTeam.id, fbMatch.awayTeam.id],
+    teamIds: [String(fbMatch.homeTeam.id), String(fbMatch.awayTeam.id)],
     homeTeam: {
       ref: admin.firestore().doc(`teams/${fbMatch.homeTeam.id}`),
-      id: fbMatch.homeTeam.id,
       name: fbMatch.homeTeam.name,
       score: fbMatch.score.fullTime.homeTeam,
       penalty: fbMatch.score.penalties.homeTeam,
@@ -35,7 +34,6 @@ const makeMatch = (fbMatch: FbMatch): Match => {
     },
     awayTeam: {
       ref: admin.firestore().doc(`teams/${fbMatch.awayTeam.id}`),
-      id: fbMatch.awayTeam.id,
       name: fbMatch.awayTeam.name,
       score: fbMatch.score.fullTime.awayTeam,
       penalty: fbMatch.score.penalties.awayTeam,
@@ -59,8 +57,7 @@ const setMatches = async (
     const mRef = admin.firestore().doc(`matches/${fbMatch.id}`).withConverter(matchConverter)
     const mSnapshot = await mRef.get()
     if (mSnapshot.exists) {
-      const lastUpdated = mSnapshot.data()?.lastUpdated
-      if (fbMatch.lastUpdated !== lastUpdated) {
+      if (fbMatch.lastUpdated !== mSnapshot.data()?.lastUpdated) {
         const match = makeMatch(fbMatch)
         batch.set(mRef, match)
       }

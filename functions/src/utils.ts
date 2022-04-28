@@ -7,6 +7,14 @@ export const footballUrl = env.football_url
 
 export const config: AxiosRequestConfig<any> = { headers: { 'X-Auth-Token': env.football_token } }
 
+export const leagueCompetitions = [
+  { id: 2119, collectionId: 'J-League' },
+  { id: 2021, collectionId: 'Premier-League' },
+  { id: 2014, collectionId: 'La-Liga' },
+  { id: 2019, collectionId: 'Serie-A' },
+  { id: 2002, collectionId: 'Bundesliga' }
+]
+
 export const convertJST = (utcDate: string) => {
   const time = new Date(utcDate)
   time.setHours(time.getHours() + 9)

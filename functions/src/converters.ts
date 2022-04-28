@@ -3,7 +3,7 @@ import type {
   FirestoreDataConverter,
   QueryDocumentSnapshot
 } from 'firebase-admin/firestore'
-import { Standings } from './@types/standings'
+import { Scorers, Standings } from './@types/competitions'
 import { ForReport, Match, MatchDetail } from './@types/matches'
 
 export const matchConverter: FirestoreDataConverter<Match> = {
@@ -40,13 +40,14 @@ export const matchDetailConverter: FirestoreDataConverter<MatchDetail> = {
     return {
       homeLineup: matchDetail.homeLineup,
       homeBench: matchDetail.homeBench,
-      homeCoach: matchDetail.homeCoach,
+      homeCoachName: matchDetail.homeCoachName,
       awayLineup: matchDetail.awayLineup,
       awayBench: matchDetail.awayBench,
-      awayCoach: matchDetail.awayCoach,
+      awayCoachName: matchDetail.awayCoachName,
       goals: matchDetail.goals,
       bookings: matchDetail.bookings,
-      substitutions: matchDetail.substitutions
+      substitutions: matchDetail.substitutions,
+      lastUpdated: matchDetail.lastUpdated
     }
   },
   fromFirestore(snapshot: QueryDocumentSnapshot): MatchDetail {
@@ -55,13 +56,14 @@ export const matchDetailConverter: FirestoreDataConverter<MatchDetail> = {
       id: snapshot.id,
       homeLineup: data.homeLineup,
       homeBench: data.homeBench,
-      homeCoach: data.homeCoach,
+      homeCoachName: data.homeCoachName,
       awayLineup: data.awayLineup,
       awayBench: data.awayBench,
-      awayCoach: data.awayCoach,
+      awayCoachName: data.awayCoachName,
       goals: data.goals,
       bookings: data.bookings,
-      substitutions: data.substitutions
+      substitutions: data.substitutions,
+      lastUpdated: data.lastUpdated
     }
   }
 }
@@ -70,7 +72,8 @@ export const forReportConverter: FirestoreDataConverter<ForReport> = {
   toFirestore(forReport: ForReport): DocumentData {
     return {
       homePlayers: forReport.homePlayers,
-      awayPlayers: forReport.awayPlayers
+      awayPlayers: forReport.awayPlayers,
+      lastUpdated: forReport.lastUpdated
     }
   },
   fromFirestore(snapshot: QueryDocumentSnapshot): ForReport {
@@ -78,7 +81,8 @@ export const forReportConverter: FirestoreDataConverter<ForReport> = {
     return {
       id: snapshot.id,
       homePlayers: data.homePlayers,
-      awayPlayers: data.awayPlayers
+      awayPlayers: data.awayPlayers,
+      lastUpdated: data.lastUpdated
     }
   }
 }
@@ -131,7 +135,7 @@ export const teamConverter: FirestoreDataConverter<Team> = {
   fromFirestore(snapshot: QueryDocumentSnapshot): Team {
     const data = snapshot.data()
     return {
-      id: data.id,
+      id: snapshot.id,
       name: data.name,
       imageUrl: data.imageUrl,
       venue: data.venue,

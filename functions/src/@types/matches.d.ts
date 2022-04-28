@@ -6,10 +6,9 @@ type Match = {
   jstDate: string
   matchday: number
   status: 'SCHEDULED' | 'FINISHED'
-  teamIds: number[]
+  teamIds: string[]
   homeTeam: {
     ref: DocumentReference
-    id: number
     name: string
     score: number | null
     penalty: number | null
@@ -20,7 +19,6 @@ type Match = {
   }
   awayTeam: {
     ref: DocumentReference
-    id: number
     name: string
     score: number | null
     penalty: number | null
@@ -35,7 +33,6 @@ type Match = {
 type Position = 'GK' | 'DF' | 'MF' | 'FW' | 'HC'
 
 type Player = {
-  id: number
   name: string
   position: Position
   shirtNumber: number | null
@@ -45,16 +42,10 @@ type MatchDetail = {
   id: string
   homeLineup: Player[]
   homeBench: Player[]
-  homeCoach: {
-    id: number
-    name: string
-  }
+  homeCoachName: string
   awayLineup: Player[]
   awayBench: Player[]
-  awayCoach: {
-    id: number
-    name: string
-  }
+  awayCoachName: string
   goals: {
     minute: number
     teamName: string
@@ -73,10 +64,12 @@ type MatchDetail = {
     outPlayerName: string
     inPlayerName: string
   }[]
+  lastUpdated: string
 }
 
 type ForReport = {
   id: string
   homePlayers: Player[]
   awayPlayers: Player[]
+  lastUpdated: string
 }

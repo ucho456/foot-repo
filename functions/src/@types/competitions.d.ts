@@ -1,5 +1,12 @@
 import type { DocumentReference } from 'firebase-admin/firestore'
 
+type Competitions = {
+  id: number
+  name: string
+  type: 'cup' | 'league' | 'japan'
+  imageUrl: string
+}
+
 type Standings = {
   id: string
   season: string
@@ -7,7 +14,6 @@ type Standings = {
     position: number
     team: {
       ref: DocumentReference
-      id: number
       name: string
       imageUrl: string
     }
@@ -19,5 +25,15 @@ type Standings = {
     goalsFor: number
     goalsAgainst: number
     goalsDifference: number
+  }[]
+}
+
+type Scorers = {
+  id: string
+  season: string
+  table: {
+    playerName: string
+    teamName: string
+    goals: number
   }[]
 }

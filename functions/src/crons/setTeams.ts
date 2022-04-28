@@ -2,7 +2,7 @@ import * as functions from 'firebase-functions'
 import * as admin from 'firebase-admin'
 import axios, { AxiosResponse } from 'axios'
 import { teamConverter } from '../converters'
-import { footballUrl, config } from '../utils'
+import { config, convertPosition, footballUrl } from '../utils'
 
 const getTeamIds = async (competitionId: number): Promise<number[]> => {
   const res: AxiosResponse<any, any> = await axios.get(
@@ -17,29 +17,20 @@ const getTeamIds = async (competitionId: number): Promise<number[]> => {
 const getTeam = async (teamId: number): Promise<Team> => {
   const res: AxiosResponse<any, any> = await axios.get(footballUrl + `teams/${teamId}`, config)
   const fbTeam = res.data as FbTeam
-  const squad = fbTeam.squad.map((s) => {
-    const position: 'GK' | 'DF' | 'MF' | 'FW' =
-      s.position === 'Goalkeeper'
-        ? 'GK'
-        : s.position === 'Defence'
-        ? 'DF'
-        : s.position === 'Midfield'
-        ? 'MF'
-        : 'FW'
-    return {
-      playerName: s.name,
-      position,
-      dateOfBirth: s.dateOfBirth,
-      nationality: s.nationality
-    }
-  })
   return {
-    id: fbTeam.id,
+    id: String(fbTeam.id),
     name: fbTeam.name,
     imageUrl: fbTeam.crestUrl,
     venue: fbTeam.venue,
     website: fbTeam.website,
-    squad,
+    squad: fbTeam.squad.map((s) => {
+      return {
+        playerName: s.name,
+        position: convertPosition(s.position),
+        dateOfBirth: s.dateOfBirth,
+        nationality: s.nationality
+      }
+    }),
     lastUpdated: fbTeam.lastUpdated
   }
 }
@@ -63,7 +54,7 @@ const setTeams = async (competition: { id: number; collectionId: string }): Prom
 
 export const setJLeagueTeams = functions
   .region('asia-northeast1')
-  .pubsub.schedule('0 4 * * *') // every 04:00 AM
+  .pubsub.schedule('0 4 * * *')
   .onRun(async () => {
     const competition = { id: 2119, collectionId: 'J-League' }
     await setTeams(competition)
@@ -72,7 +63,7 @@ export const setJLeagueTeams = functions
 
 export const setPremierLeagueTeams = functions
   .region('asia-northeast1')
-  .pubsub.schedule('5 4 * * *') // every 04:05 AM
+  .pubsub.schedule('5 4 * * *')
   .onRun(async () => {
     const competition = { id: 2021, collectionId: 'Premier-League' }
     await setTeams(competition)
@@ -81,7 +72,7 @@ export const setPremierLeagueTeams = functions
 
 export const setLaLigaTeams = functions
   .region('asia-northeast1')
-  .pubsub.schedule('10 4 * * *') // every 04:10 AM
+  .pubsub.schedule('10 4 * * *')
   .onRun(async () => {
     const competition = { id: 2014, collectionId: 'La-Liga' }
     await setTeams(competition)
@@ -90,7 +81,7 @@ export const setLaLigaTeams = functions
 
 export const setSerieATeams = functions
   .region('asia-northeast1')
-  .pubsub.schedule('15 4 * * *') // every 04:15 AM
+  .pubsub.schedule('15 4 * * *')
   .onRun(async () => {
     const competition = { id: 2019, collectionId: 'Seria-A' }
     await setTeams(competition)
@@ -99,7 +90,7 @@ export const setSerieATeams = functions
 
 export const setBundesligaTeams = functions
   .region('asia-northeast1')
-  .pubsub.schedule('20 4 * * *') // every 04:20 AM
+  .pubsub.schedule('20 4 * * *')
   .onRun(async () => {
     const competition = { id: 2002, collectionId: 'Bundesliga' }
     await setTeams(competition)

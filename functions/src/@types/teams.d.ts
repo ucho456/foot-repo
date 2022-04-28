@@ -1,5 +1,5 @@
 type Team = {
-  id: number
+  id: string
   name: string
   imageUrl: string
   venue: string

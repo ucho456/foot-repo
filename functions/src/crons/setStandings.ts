@@ -1,9 +1,9 @@
 import * as functions from 'firebase-functions'
 import * as admin from 'firebase-admin'
 import axios, { AxiosResponse } from 'axios'
-import { Standings } from '../@types/standings' // 何故か読み込めないのでインポート中
+import { Standings } from '../@types/competitions'
 import { standingsConverter } from '../converters'
-import { footballUrl, config } from '../utils'
+import { config, footballUrl, leagueCompetitions } from '../utils'
 
 const getStandings = async (competition: {
   id: number
@@ -14,27 +14,28 @@ const getStandings = async (competition: {
     config
   )
   const fbStandings = res.data as FbStandings
-  const season = fbStandings.season.startDate.substring(0, 4)
-  const table = fbStandings.standings[0].table.map((t) => {
-    return {
-      position: t.position,
-      team: {
-        ref: admin.firestore().doc(`teams/${t.team.id}`),
-        id: t.team.id,
-        name: t.team.name,
-        imageUrl: t.team.crestUrl
-      },
-      playedGames: t.playedGames,
-      won: t.won,
-      draw: t.draw,
-      lost: t.lost,
-      points: t.points,
-      goalsFor: t.goalsFor,
-      goalsAgainst: t.goalsAgainst,
-      goalsDifference: t.goalDifference
-    }
-  })
-  return { id: season, season, table }
+  return {
+    id: fbStandings.season.startDate.substring(0, 4),
+    season: fbStandings.season.startDate.substring(0, 4),
+    table: fbStandings.standings[0].table.map((t) => {
+      return {
+        position: t.position,
+        team: {
+          ref: admin.firestore().doc(`teams/${t.team.id}`),
+          name: t.team.name,
+          imageUrl: t.team.crestUrl
+        },
+        playedGames: t.playedGames,
+        won: t.won,
+        draw: t.draw,
+        lost: t.lost,
+        points: t.points,
+        goalsFor: t.goalsFor,
+        goalsAgainst: t.goalsAgainst,
+        goalsDifference: t.goalDifference
+      }
+    })
+  }
 }
 
 const setStandings = functions
@@ -42,20 +43,13 @@ const setStandings = functions
   .pubsub.schedule('0 5 * * *')
   .onRun(async () => {
     const batch = admin.firestore().batch()
-    const competitions = [
-      { id: 2119, collectionId: 'J-League' },
-      { id: 2021, collectionId: 'Premier-League' },
-      { id: 2014, collectionId: 'La-Liga' },
-      { id: 2019, collectionId: 'Serie-A' },
-      { id: 2002, collectionId: 'Bundesliga' }
-    ]
-    for (const competition of competitions) {
-      const resStandings = await getStandings(competition)
+    for (const competition of leagueCompetitions) {
+      const standings = await getStandings(competition)
       const sRef = admin
         .firestore()
-        .doc(`competitions/${competition.collectionId}/standings/${resStandings.season}`)
+        .doc(`competitions/${competition.collectionId}/standings/${standings.season}`)
         .withConverter(standingsConverter)
-      batch.set(sRef, resStandings)
+      batch.set(sRef, standings)
     }
     await batch.commit()
     return `success setStandings ${new Date()}`
