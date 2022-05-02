@@ -17,47 +17,54 @@ const getFbMatches = async (competitionId: number): Promise<FbMatch[]> => {
 }
 
 const makeMatchDetail = (fbMatch: FbMatch): MatchDetail => {
+  const homeLineup = fbMatch.homeTeam.lineup.map((l) => {
+    return { name: l.name, position: convertPosition(l.position), shirtNumber: l.shirtNumber }
+  })
+  const homeBench = fbMatch.homeTeam.bench.map((b) => {
+    return { name: b.name, position: convertPosition(b.position), shirtNumber: b.shirtNumber }
+  })
+  const awayLineup = fbMatch.awayTeam.lineup.map((l) => {
+    return { name: l.name, position: convertPosition(l.position), shirtNumber: l.shirtNumber }
+  })
+  const awayBench = fbMatch.awayTeam.bench.map((b) => {
+    return { name: b.name, position: convertPosition(b.position), shirtNumber: b.shirtNumber }
+  })
+  const goals = fbMatch.goals.map((g) => {
+    return {
+      minute: g.minute,
+      teamName: g.team.name,
+      goalPlayerName: g.scorer.name,
+      assistPlayerName: g.assist?.name || null
+    }
+  })
+  const bookings = fbMatch.bookings.map((b) => {
+    const card: 'red' | 'yellow' = b.card === 'RED_CARD' ? 'red' : 'yellow'
+    return {
+      minute: b.minute,
+      teamName: b.team.name,
+      playerName: b.player.name,
+      card
+    }
+  })
+  const substitutions = fbMatch.substitutions.map((s) => {
+    return {
+      minute: s.minute,
+      teamName: s.team.name,
+      outPlayerName: s.playerOut.name,
+      inPlayerName: s.playerIn.name
+    }
+  })
   return {
     id: String(fbMatch.id),
-    homeLineup: fbMatch.homeTeam.lineup.map((l) => {
-      return { name: l.name, position: convertPosition(l.position), shirtNumber: l.shirtNumber }
-    }),
-    homeBench: fbMatch.homeTeam.bench.map((b) => {
-      return { name: b.name, position: convertPosition(b.position), shirtNumber: b.shirtNumber }
-    }),
+    homeLineup,
+    homeBench,
     homeCoachName: fbMatch.homeTeam.coach.name,
-    awayLineup: fbMatch.awayTeam.lineup.map((l) => {
-      return { name: l.name, position: convertPosition(l.position), shirtNumber: l.shirtNumber }
-    }),
-    awayBench: fbMatch.awayTeam.bench.map((b) => {
-      return { name: b.name, position: convertPosition(b.position), shirtNumber: b.shirtNumber }
-    }),
+    awayLineup,
+    awayBench,
     awayCoachName: fbMatch.awayTeam.coach.name,
-    goals: fbMatch.goals.map((g) => {
-      return {
-        minute: g.minute,
-        teamName: g.team.name,
-        goalPlayerName: g.scorer.name,
-        assistPlayerName: g.assist?.name || null
-      }
-    }),
-    bookings: fbMatch.bookings.map((b) => {
-      const card: 'red' | 'yellow' = b.card === 'RED_CARD' ? 'red' : 'yellow'
-      return {
-        minute: b.minute,
-        teamName: b.team.name,
-        playerName: b.player.name,
-        card
-      }
-    }),
-    substitutions: fbMatch.substitutions.map((s) => {
-      return {
-        minute: s.minute,
-        teamName: s.team.name,
-        outPlayerName: s.playerOut.name,
-        inPlayerName: s.playerIn.name
-      }
-    }),
+    goals,
+    bookings,
+    substitutions,
     lastUpdated: fbMatch.lastUpdated
   }
 }
@@ -98,43 +105,49 @@ const setMatches = functions
   .region('asia-northeast1')
   .pubsub.schedule('every 60 minutes')
   .onRun(async () => {
-    const batch = admin.firestore().batch()
-    for (const competition of leagueCompetitions) {
-      const fbMatches = await getFbMatches(competition.id)
-      console.log(fbMatches.map((v) => v.id))
-      for (const fbMatch of fbMatches) {
-        if (fbMatch.status === 'FINISHED') {
-          const mRef = admin.firestore().doc(`matches/${fbMatch.id}`).withConverter(matchConverter)
-          const mSnapshot = await mRef.get()
-          if (mSnapshot.data()?.lastUpdated !== fbMatch.lastUpdated) {
-            const match = makeMatch(fbMatch)
-            batch.set(mRef, match)
-          }
+    try {
+      const batch = admin.firestore().batch()
+      for (const competition of leagueCompetitions) {
+        const fbMatches = await getFbMatches(competition.id)
+        for (const fbMatch of fbMatches) {
+          if (fbMatch.status === 'FINISHED') {
+            const mRef = admin
+              .firestore()
+              .doc(`matches/${fbMatch.id}`)
+              .withConverter(matchConverter)
+            const mSnapshot = await mRef.get()
+            if (mSnapshot.data()?.lastUpdated !== fbMatch.lastUpdated) {
+              const match = makeMatch(fbMatch)
+              batch.set(mRef, match)
+            }
 
-          const mdRef = admin
-            .firestore()
-            .doc(`matches/${fbMatch.id}/match-detail/${fbMatch.id}`)
-            .withConverter(matchDetailConverter)
-          const mdSnapshot = await mdRef.get()
-          if (!mdSnapshot.exists || mdSnapshot.data()?.lastUpdated !== fbMatch.lastUpdated) {
-            const matchDetail = makeMatchDetail(fbMatch)
-            batch.set(mdRef, matchDetail)
-          }
+            const mdRef = admin
+              .firestore()
+              .doc(`matches/${fbMatch.id}/match-detail/${fbMatch.id}`)
+              .withConverter(matchDetailConverter)
+            const mdSnapshot = await mdRef.get()
+            if (!mdSnapshot.exists || mdSnapshot.data()?.lastUpdated !== fbMatch.lastUpdated) {
+              const matchDetail = makeMatchDetail(fbMatch)
+              batch.set(mdRef, matchDetail)
+            }
 
-          const frRef = admin
-            .firestore()
-            .doc(`matches/${fbMatch.id}/for-report/${fbMatch.id}`)
-            .withConverter(forReportConverter)
-          const frSnapshot = await frRef.get()
-          if (!frSnapshot.exists || frSnapshot.data()?.lastUpdated !== fbMatch.lastUpdated) {
-            const forReport = makeForReport(fbMatch)
-            batch.set(frRef, forReport)
+            const frRef = admin
+              .firestore()
+              .doc(`matches/${fbMatch.id}/for-report/${fbMatch.id}`)
+              .withConverter(forReportConverter)
+            const frSnapshot = await frRef.get()
+            if (!frSnapshot.exists || frSnapshot.data()?.lastUpdated !== fbMatch.lastUpdated) {
+              const forReport = makeForReport(fbMatch)
+              batch.set(frRef, forReport)
+            }
           }
         }
       }
+      await batch.commit()
+      return `success setMatches ${new Date()}`
+    } catch {
+      return `error setMatches ${new Date()}`
     }
-    await batch.commit()
-    return `success setMatches ${new Date()}`
   })
 
 export default setMatches

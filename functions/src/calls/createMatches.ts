@@ -72,39 +72,59 @@ const setMatches = async (
 export const setJLeagueMatches = functions
   .region('asia-northeast1')
   .https.onRequest(async (req, res) => {
-    const competition = { id: 2119, collectionId: 'J-League' }
-    await setMatches(competition, req)
-    res.send(`success setJLeagueMatches ${new Date()}`)
+    try {
+      const competition = { id: 2119, collectionId: 'J-League' }
+      await setMatches(competition, req)
+      res.send(`success setJLeagueMatches ${new Date()}`)
+    } catch {
+      res.send(`error setJLeagueMatches ${new Date()}`)
+    }
   })
 
 export const setPremierLeagueMatches = functions
   .region('asia-northeast1')
   .https.onRequest(async (req, res) => {
-    const competition = { id: 2021, collectionId: 'Premier-League' }
-    await setMatches(competition, req)
-    res.send(`success setPremierLeagueMatches ${new Date()}`)
+    try {
+      const competition = { id: 2021, collectionId: 'Premier-League' }
+      await setMatches(competition, req)
+      res.send(`success setPremierLeagueMatches ${new Date()}`)
+    } catch {
+      res.send(`error setPremierLeagueMatches ${new Date()}`)
+    }
   })
 
 export const setLaLigaMatches = functions
   .region('asia-northeast1')
   .https.onRequest(async (req, res) => {
-    const competition = { id: 2014, collectionId: 'La-Liga' }
-    await setMatches(competition, req)
-    res.send(`success setLaLigaMatches ${new Date()}`)
+    try {
+      const competition = { id: 2014, collectionId: 'La-Liga' }
+      await setMatches(competition, req)
+      res.send(`success setLaLigaMatches ${new Date()}`)
+    } catch {
+      res.send(`error setLaLigaMatches ${new Date()}`)
+    }
   })
 
 export const setSerieAMatches = functions
   .region('asia-northeast1')
   .https.onRequest(async (req, res) => {
-    const competition = { id: 2019, collectionId: 'Seria-A' }
-    await setMatches(competition, req)
-    res.send(`success setSerieAMatches ${new Date()}`)
+    try {
+      const competition = { id: 2019, collectionId: 'Seria-A' }
+      await setMatches(competition, req)
+      res.send(`success setSerieAMatches ${new Date()}`)
+    } catch {
+      res.send(`error setSerieAMatches ${new Date()}`)
+    }
   })
 
 export const setBundesligaMatches = functions
   .region('asia-northeast1')
   .https.onRequest(async (req, res) => {
-    const competition = { id: 2002, collectionId: 'Bundesliga' }
-    await setMatches(competition, req)
-    res.send(`success setBundesligaMatches ${new Date()}`)
+    try {
+      const competition = { id: 2002, collectionId: 'Bundesliga' }
+      await setMatches(competition, req)
+      res.send(`success setBundesligaMatches ${new Date()}`)
+    } catch {
+      res.send(`error setBundesligaMatches ${new Date()}`)
+    }
   })
