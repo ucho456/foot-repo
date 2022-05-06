@@ -46,7 +46,7 @@
             >
             <v-list-item-subtitle class="text-center"
               >{{ match.jstDate.toLocaleString('ja-JP').slice(0, -3) }} -
-              {{ match.competition.name }} - {{ match.status }}</v-list-item-subtitle
+              {{ match.competition.name }} {{ match.matchday }}節</v-list-item-subtitle
             >
           </v-list-item-content>
           <v-list-item-avatar>
