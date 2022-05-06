@@ -15,10 +15,12 @@ export const leagueCompetitions = [
   { id: 2002, collectionId: 'Bundesliga', name: 'Bundesliga' }
 ]
 
-export const convertJST = (utcDate: string): Date => {
+export const convertJST = (utcDate: string): string => {
   const time = new Date(utcDate)
   time.setHours(time.getHours() + 9)
-  return new Date(time)
+  return `${time.getFullYear()}${('00' + (time.getMonth() + 1)).slice(-2)}${(
+    '00' + time.getDate()
+  ).slice(-2)}`
 }
 
 export const convertPosition = (position: FbPosition): 'GK' | 'DF' | 'MF' | 'FW' => {

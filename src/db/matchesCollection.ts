@@ -6,7 +6,8 @@ import {
   limit,
   orderBy,
   query,
-  startAfter
+  startAfter,
+  where
 } from 'firebase/firestore'
 import type {
   DocumentData,
@@ -38,7 +39,7 @@ const userConverter: FirestoreDataConverter<Match> = {
     return {
       id: snapshot.id,
       season: data.season,
-      jstDate: data.jstDate.toDate(),
+      jstDate: data.jstDate,
       matchday: data.matchday,
       status: data.status,
       teamIds: data.teamIds,
@@ -59,7 +60,15 @@ export const getFirstMatches = async (
 }> => {
   const db = getFirestore()
   const mRef = collection(db, 'matches').withConverter(userConverter)
-  const q = query(mRef, orderBy('jstDate', 'desc'), limit(10))
+  const q = query(
+    mRef,
+    where('status', '==', 'FINISHED'),
+    where('competition.id', '==', '2119'),
+    where('teamIds', 'array-contains-any', ['5829']),
+    where('jstDate', '==', '20220429'),
+    orderBy('jstDate', 'desc'),
+    limit(10)
+  )
   const mSnapshot = await getDocs(q)
   mSnapshot.forEach((doc) => {
     if (doc.exists()) matches.value.push(doc.data())
