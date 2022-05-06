@@ -45,9 +45,8 @@
               >{{ match.homeTeam.score }} - {{ match.awayTeam.score }}</v-list-item-subtitle
             >
             <v-list-item-subtitle class="text-center"
-              >{{ match.jstDate.substring(0, 4) }}年{{ match.jstDate.substring(4, 6) }}月{{
-                match.jstDate.substring(6, 8)
-              }}日 - {{ match.competition.name }} {{ match.matchday }}節</v-list-item-subtitle
+              >{{ match.jstDate }} - {{ match.competition.name }}
+              {{ match.matchday }}節</v-list-item-subtitle
             >
           </v-list-item-content>
           <v-list-item-avatar>
@@ -75,7 +74,7 @@ export default defineComponent({
         {
           id: '',
           season: '',
-          jstDate: '',
+          jstDate: '00000000',
           matchday: 0,
           status: 'SCHEDULED',
           competition: {
