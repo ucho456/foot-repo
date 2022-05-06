@@ -2,11 +2,11 @@ import * as admin from 'firebase-admin'
 import createAuth from './calls/createAuth'
 import createUser from './calls/createUser'
 import {
-  setJLeagueMatches,
-  setPremierLeagueMatches,
-  setLaLigaMatches,
-  setSerieAMatches,
-  setBundesligaMatches
+  createJLeagueMatches,
+  createPremierLeagueMatches,
+  createLaLigaMatches,
+  createSerieAMatches,
+  createBundesligaMatches
 } from './calls/createMatches'
 import setMatches from './crons/setMatches'
 import setScorers from './crons/setScorers'
@@ -24,11 +24,11 @@ admin.initializeApp()
 module.exports = {
   createAuth,
   createUser,
-  setJLeagueMatches,
-  setPremierLeagueMatches,
-  setLaLigaMatches,
-  setSerieAMatches,
-  setBundesligaMatches,
+  createJLeagueMatches,
+  createPremierLeagueMatches,
+  createLaLigaMatches,
+  createSerieAMatches,
+  createBundesligaMatches,
   setMatches,
   setScorers,
   setStandings,

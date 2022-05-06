@@ -117,7 +117,7 @@ const setMatches = functions
               .withConverter(matchConverter)
             const mSnapshot = await mRef.get()
             if (mSnapshot.data()?.lastUpdated !== fbMatch.lastUpdated) {
-              const match = makeMatch(fbMatch)
+              const match = makeMatch(fbMatch, competition)
               batch.set(mRef, match)
             }
 

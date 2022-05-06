@@ -96,7 +96,7 @@ export const setSerieATeams = functions
   .pubsub.schedule('15 4 * * *')
   .onRun(async () => {
     try {
-      const competition = { id: 2019, collectionId: 'Seria-A' }
+      const competition = { id: 2019, collectionId: 'Serie-A' }
       await setTeams(competition)
       return `success setSerieATeams ${new Date()}`
     } catch {

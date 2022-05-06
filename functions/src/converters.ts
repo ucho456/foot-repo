@@ -14,6 +14,7 @@ export const matchConverter: FirestoreDataConverter<Match> = {
       matchday: match.matchday,
       status: match.status,
       teamIds: match.teamIds,
+      competition: match.competition,
       homeTeam: match.homeTeam,
       awayTeam: match.awayTeam,
       lastUpdated: match.lastUpdated
@@ -28,6 +29,7 @@ export const matchConverter: FirestoreDataConverter<Match> = {
       matchday: data.matchday,
       status: data.status,
       teamIds: data.teamIds,
+      competition: data.competition,
       homeTeam: data.homeTeam,
       awayTeam: data.awayTeam,
       lastUpdated: data.lastUpdated

@@ -1,7 +1,6 @@
 import type { DocumentReference } from 'firebase-admin/firestore'
 
 type Competitions = {
-  id: number
   name: string
   type: 'cup' | 'league' | 'japan'
   imageUrl: string

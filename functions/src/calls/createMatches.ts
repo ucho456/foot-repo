@@ -5,6 +5,8 @@ import { Match } from '../@types/matches'
 import { matchConverter } from '../converters'
 import { config, convertJST, env, footballUrl } from '../utils'
 
+type Competition = { id: number; collectionId: string; name: string }
+
 const getFbMatches = async (competitionId: number): Promise<FbMatch[]> => {
   const res: AxiosResponse<any, any> = await axios.get(
     footballUrl + `competitions/${competitionId}/matches`,
@@ -14,7 +16,7 @@ const getFbMatches = async (competitionId: number): Promise<FbMatch[]> => {
   return fbMatches
 }
 
-export const makeMatch = (fbMatch: FbMatch): Match => {
+export const makeMatch = (fbMatch: FbMatch, competition: Competition): Match => {
   return {
     id: String(fbMatch.id),
     season: fbMatch.season.startDate.substring(0, 4),
@@ -22,7 +24,13 @@ export const makeMatch = (fbMatch: FbMatch): Match => {
     matchday: fbMatch.matchday,
     status: fbMatch.status,
     teamIds: [String(fbMatch.homeTeam.id), String(fbMatch.awayTeam.id)],
+    competition: {
+      id: String(competition.id),
+      ref: admin.firestore().doc(`competitions/${competition.collectionId}`),
+      name: competition.name
+    },
     homeTeam: {
+      id: String(fbMatch.homeTeam.id),
       ref: admin.firestore().doc(`teams/${fbMatch.homeTeam.id}`),
       name: fbMatch.homeTeam.name,
       score: fbMatch.score.fullTime.homeTeam,
@@ -33,6 +41,7 @@ export const makeMatch = (fbMatch: FbMatch): Match => {
       })
     },
     awayTeam: {
+      id: String(fbMatch.awayTeam.id),
       ref: admin.firestore().doc(`teams/${fbMatch.awayTeam.id}`),
       name: fbMatch.awayTeam.name,
       score: fbMatch.score.fullTime.awayTeam,
@@ -47,10 +56,12 @@ export const makeMatch = (fbMatch: FbMatch): Match => {
 }
 
 const setMatches = async (
-  competition: { id: number; collectionId: string },
+  competition: Competition,
   req: functions.https.Request
 ): Promise<void> => {
-  if (req.body.secret !== env.secret) throw new Error('Unauthorized')
+  if (process.env.NODE_ENV === 'production' && req.body.secret !== env.secret) {
+    throw new Error('Unauthorized')
+  }
   const fbMatches = await getFbMatches(competition.id)
   const batch = admin.firestore().batch()
   for (const fbMatch of fbMatches) {
@@ -58,73 +69,73 @@ const setMatches = async (
     const mSnapshot = await mRef.get()
     if (mSnapshot.exists) {
       if (fbMatch.lastUpdated !== mSnapshot.data()?.lastUpdated) {
-        const match = makeMatch(fbMatch)
+        const match = makeMatch(fbMatch, competition)
         batch.set(mRef, match)
       }
     } else {
-      const match = makeMatch(fbMatch)
+      const match = makeMatch(fbMatch, competition)
       batch.set(mRef, match)
     }
   }
   await batch.commit()
 }
 
-export const setJLeagueMatches = functions
+export const createJLeagueMatches = functions
   .region('asia-northeast1')
   .https.onRequest(async (req, res) => {
     try {
-      const competition = { id: 2119, collectionId: 'J-League' }
+      const competition = { id: 2119, collectionId: 'J-League', name: 'J. League' }
       await setMatches(competition, req)
-      res.send(`success setJLeagueMatches ${new Date()}`)
+      res.send(`success createJLeagueMatches ${new Date()}`)
     } catch {
-      res.send(`error setJLeagueMatches ${new Date()}`)
+      res.send(`error createJLeagueMatches ${new Date()}`)
     }
   })
 
-export const setPremierLeagueMatches = functions
+export const createPremierLeagueMatches = functions
   .region('asia-northeast1')
   .https.onRequest(async (req, res) => {
     try {
-      const competition = { id: 2021, collectionId: 'Premier-League' }
+      const competition = { id: 2021, collectionId: 'Premier-League', name: 'Premier League' }
       await setMatches(competition, req)
-      res.send(`success setPremierLeagueMatches ${new Date()}`)
+      res.send(`success createPremierLeagueMatches ${new Date()}`)
     } catch {
-      res.send(`error setPremierLeagueMatches ${new Date()}`)
+      res.send(`error createPremierLeagueMatches ${new Date()}`)
     }
   })
 
-export const setLaLigaMatches = functions
+export const createLaLigaMatches = functions
   .region('asia-northeast1')
   .https.onRequest(async (req, res) => {
     try {
-      const competition = { id: 2014, collectionId: 'La-Liga' }
+      const competition = { id: 2014, collectionId: 'La-Liga', name: 'La Liga' }
       await setMatches(competition, req)
-      res.send(`success setLaLigaMatches ${new Date()}`)
+      res.send(`success createLaLigaMatches ${new Date()}`)
     } catch {
-      res.send(`error setLaLigaMatches ${new Date()}`)
+      res.send(`error createLaLigaMatches ${new Date()}`)
     }
   })
 
-export const setSerieAMatches = functions
+export const createSerieAMatches = functions
   .region('asia-northeast1')
   .https.onRequest(async (req, res) => {
     try {
-      const competition = { id: 2019, collectionId: 'Seria-A' }
+      const competition = { id: 2019, collectionId: 'Serie-A', name: 'Seria A' }
       await setMatches(competition, req)
-      res.send(`success setSerieAMatches ${new Date()}`)
+      res.send(`success createSerieAMatches ${new Date()}`)
     } catch {
-      res.send(`error setSerieAMatches ${new Date()}`)
+      res.send(`error createSerieAMatches ${new Date()}`)
     }
   })
 
-export const setBundesligaMatches = functions
+export const createBundesligaMatches = functions
   .region('asia-northeast1')
   .https.onRequest(async (req, res) => {
     try {
-      const competition = { id: 2002, collectionId: 'Bundesliga' }
+      const competition = { id: 2002, collectionId: 'Bundesliga', name: 'Bundesliga' }
       await setMatches(competition, req)
-      res.send(`success setBundesligaMatches ${new Date()}`)
+      res.send(`success createBundesligaMatches ${new Date()}`)
     } catch {
-      res.send(`error setBundesligaMatches ${new Date()}`)
+      res.send(`error createBundesligaMatches ${new Date()}`)
     }
   })
