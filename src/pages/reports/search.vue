@@ -1,6 +1,19 @@
 <template>
   <v-card outlined>
-    <MatchTable :err="''" :is-loading="false" :matches="matches" />
+    <MatchTable :err="''" :loading="isLoadingFirst" :matches="matches" />
+    <v-container>
+      <v-row justify="center">
+        <v-col cols="10">
+          <ButtonSubmit
+            :disabled="false"
+            :icon="'mdi-page-next'"
+            :loading="isLoading"
+            :text="'もっと読み込む'"
+            @click="getNextPage"
+          />
+        </v-col>
+      </v-row>
+    </v-container>
   </v-card>
 </template>
 
@@ -8,18 +21,20 @@
 import { defineComponent } from '@nuxtjs/composition-api'
 import useSearch from '@/composables/reports/useSearch'
 import MatchTable from '@/components/organisms/MatchTable.vue'
+import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
 
 export default defineComponent({
   name: 'Search',
 
   components: {
-    MatchTable
+    MatchTable,
+    ButtonSubmit
   },
 
   setup() {
-    const { matches, get } = useSearch()
-    get()
-    return { matches }
+    const { matches, isLoadingFirst, isLoading, getFirstPage, getNextPage } = useSearch()
+    getFirstPage()
+    return { matches, isLoadingFirst, isLoading, getNextPage }
   }
 })
 </script>

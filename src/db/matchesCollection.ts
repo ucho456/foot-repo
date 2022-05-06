@@ -1,5 +1,13 @@
 import { Ref } from '@nuxtjs/composition-api'
-import { collection, getDocs, getFirestore, limit, orderBy, query } from 'firebase/firestore'
+import {
+  collection,
+  getDocs,
+  getFirestore,
+  limit,
+  orderBy,
+  query,
+  startAfter
+} from 'firebase/firestore'
 import type {
   DocumentData,
   FirestoreDataConverter,
@@ -42,13 +50,38 @@ const userConverter: FirestoreDataConverter<Match> = {
   }
 }
 
-export const getMatches = async (matches: Ref<Match[]>): Promise<Ref<Match[]>> => {
+export const getFirstMatches = async (
+  matches: Ref<Match[]>,
+  lastVisible: Ref<QueryDocumentSnapshot<Match> | null>
+): Promise<{
+  matches: Ref<Match[]>
+  lastVisible: Ref<QueryDocumentSnapshot<Match> | null>
+}> => {
   const db = getFirestore()
   const mRef = collection(db, 'matches').withConverter(userConverter)
-  const q = query(mRef, orderBy('jstDate', 'desc'), limit(20))
+  const q = query(mRef, orderBy('jstDate', 'desc'), limit(10))
   const mSnapshot = await getDocs(q)
   mSnapshot.forEach((doc) => {
     if (doc.exists()) matches.value.push(doc.data())
   })
-  return matches
+  lastVisible.value = mSnapshot.docs[mSnapshot.docs.length - 1]
+  return { matches, lastVisible }
+}
+
+export const getNextMatches = async (
+  matches: Ref<Match[]>,
+  lastVisible: Ref<QueryDocumentSnapshot<Match> | null>
+): Promise<{
+  matches: Ref<Match[]>
+  lastVisible: Ref<QueryDocumentSnapshot<Match> | null>
+}> => {
+  const db = getFirestore()
+  const mRef = collection(db, 'matches').withConverter(userConverter)
+  const q = query(mRef, orderBy('jstDate', 'desc'), startAfter(lastVisible.value), limit(10))
+  const mSnapshot = await getDocs(q)
+  mSnapshot.forEach((doc) => {
+    if (doc.exists()) matches.value.push(doc.data())
+  })
+  lastVisible.value = mSnapshot.docs[mSnapshot.docs.length - 1]
+  return { matches, lastVisible }
 }

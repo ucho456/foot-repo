@@ -7,7 +7,7 @@
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
     </v-toolbar>
-    <v-container v-if="isLoading" class="pb-10">
+    <v-container v-if="loading" class="pb-10">
       <v-row justify="center">
         <v-progress-circular color="primary" indeterminate />
       </v-row>
@@ -67,7 +67,7 @@ export default defineComponent({
 
   props: {
     err: { type: String, default: '' },
-    isLoading: { type: Boolean, default: false },
+    loading: { type: Boolean, default: false },
     matches: {
       type: Array as () => Match[],
       default: () => [
