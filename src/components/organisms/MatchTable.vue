@@ -18,29 +18,36 @@
           {{ err }}
         </v-row>
       </v-container>
-      <template v-for="mItem in matchList">
-        <v-list-item :key="mItem.id" :to="mItem.to" exact router>
+      <template v-for="match in matches">
+        <v-list-item
+          :key="match.id"
+          :to="{ path: 'new', query: { matchId: match.id } }"
+          exact
+          router
+        >
           <v-list-item-avatar>
-            <v-img v-if="mItem.homeTeamImageUrl !== ''" :src="mItem.homeTeamImageUrl" />
+            <v-img :src="`https://crests.football-data.org/1.svg`" />
           </v-list-item-avatar>
           <v-list-item-content>
             <v-row>
               <v-col cols="6"
                 ><v-list-item-title class="text-right">{{
-                  mItem.homeTeamName
+                  match.homeTeam.name
                 }}</v-list-item-title></v-col
               >
               <v-col cols="6"
                 ><v-list-item-title class="text-left">{{
-                  mItem.awayTeamName
+                  match.awayTeam.name
                 }}</v-list-item-title></v-col
               >
             </v-row>
-            <v-list-item-subtitle class="mt-n3 text-center">{{ mItem.score }}</v-list-item-subtitle>
-            <v-list-item-subtitle class="text-center">{{ mItem.description }}</v-list-item-subtitle>
+            <v-list-item-subtitle class="mt-n3 text-center"
+              >{{ match.homeTeam.score }} - {{ match.awayTeam.score }}</v-list-item-subtitle
+            >
+            <v-list-item-subtitle class="text-center">{{ match.jstDate }}</v-list-item-subtitle>
           </v-list-item-content>
           <v-list-item-avatar>
-            <v-img v-if="mItem.awayTeamImage !== ''" :src="mItem.awayTeamImage" />
+            <v-img :src="`https://crests.football-data.org/2.svg`" />
           </v-list-item-avatar>
         </v-list-item>
       </template>
@@ -50,29 +57,44 @@
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
+import { Match } from '@/types/matches'
 
 export default defineComponent({
-  name: 'ReportsMatchList',
+  name: 'MatchTable',
 
   props: {
     err: { type: String, default: '' },
     isLoading: { type: Boolean, default: false },
-    matchList: {
-      type: Array as () => MatchListItem[],
+    matches: {
+      type: Array as () => Match[],
       default: () => [
         {
-          id: 0,
-          homeTeamName: '',
-          homeTeamImageUrl: '',
-          awayTeamName: '',
-          awayTeamImageUrl: '',
-          score: '',
-          description: '',
-          to: {
-            path: '',
-            query: {
-              matchId: 0
-            }
+          id: '',
+          season: '',
+          jstDate: '',
+          matchday: 0,
+          status: 'SCHEDULED',
+          homeTeam: {
+            name: '',
+            score: 0,
+            penalty: 0,
+            goalPlayers: [
+              {
+                minute: 0,
+                name: ''
+              }
+            ]
+          },
+          awayTeam: {
+            name: '',
+            score: 0,
+            penalty: 0,
+            goalPlayers: [
+              {
+                minute: 0,
+                name: ''
+              }
+            ]
           }
         }
       ]

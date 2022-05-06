@@ -1,20 +1,19 @@
 <template>
   <v-card outlined>
-    {{ matches }}
-    <!-- <ReportsMatchList :err="''" :is-loading="false" :match-list="matchList" /> -->
+    <MatchTable :err="''" :is-loading="false" :matches="matches" />
   </v-card>
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
 import useSearch from '@/composables/reports/useSearch'
-// import ReportsMatchList from '@/components/organisms/ReportsMatchList.vue'
+import MatchTable from '@/components/organisms/MatchTable.vue'
 
 export default defineComponent({
   name: 'Search',
 
   components: {
-    // ReportsMatchList
+    MatchTable
   },
 
   setup() {
