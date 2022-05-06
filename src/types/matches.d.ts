@@ -7,7 +7,13 @@ type Match = {
   matchday: number
   status: 'SCHEDULED' | 'FINISHED'
   teamIds: string[]
+  competition: {
+    id: string
+    ref: DocumentReference
+    name: string
+  }
   homeTeam: {
+    id: string
     ref: DocumentReference
     name: string
     score: number | null
@@ -18,6 +24,7 @@ type Match = {
     }[]
   }
   awayTeam: {
+    id: string
     ref: DocumentReference
     name: string
     score: number | null

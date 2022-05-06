@@ -26,7 +26,7 @@
           router
         >
           <v-list-item-avatar>
-            <v-img :src="`https://crests.football-data.org/1.svg`" />
+            <v-img :src="`https://crests.football-data.org/${match.homeTeam.id}.svg`" />
           </v-list-item-avatar>
           <v-list-item-content>
             <v-row>
@@ -44,10 +44,13 @@
             <v-list-item-subtitle class="mt-n3 text-center"
               >{{ match.homeTeam.score }} - {{ match.awayTeam.score }}</v-list-item-subtitle
             >
-            <v-list-item-subtitle class="text-center">{{ match.jstDate }}</v-list-item-subtitle>
+            <v-list-item-subtitle class="text-center"
+              >{{ match.jstDate }} - {{ match.competition.name }} -
+              {{ match.status }}</v-list-item-subtitle
+            >
           </v-list-item-content>
           <v-list-item-avatar>
-            <v-img :src="`https://crests.football-data.org/2.svg`" />
+            <v-img :src="`https://crests.football-data.org/${match.awayTeam.id}.svg`" />
           </v-list-item-avatar>
         </v-list-item>
       </template>
@@ -74,7 +77,12 @@ export default defineComponent({
           jstDate: '',
           matchday: 0,
           status: 'SCHEDULED',
+          competition: {
+            id: '',
+            name: ''
+          },
           homeTeam: {
+            id: '',
             name: '',
             score: 0,
             penalty: 0,
@@ -86,6 +94,7 @@ export default defineComponent({
             ]
           },
           awayTeam: {
+            id: '',
             name: '',
             score: 0,
             penalty: 0,

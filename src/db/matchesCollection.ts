@@ -34,6 +34,7 @@ const userConverter: FirestoreDataConverter<Match> = {
       matchday: data.matchday,
       status: data.status,
       teamIds: data.teamIds,
+      competition: data.competition,
       homeTeam: data.homeTeam,
       awayTeam: data.awayTeam,
       lastUpdated: data.lastUpdated
