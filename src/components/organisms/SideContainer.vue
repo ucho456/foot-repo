@@ -1,6 +1,6 @@
 <template>
   <v-card class="light-grey" elevation="0">
-    <v-container>
+    <!-- <v-container>
       <v-row>
         <v-col>
           <a
@@ -13,7 +13,7 @@
         </v-col>
       </v-row>
     </v-container>
-    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> -->
   </v-card>
 </template>
 
