@@ -48,5 +48,10 @@ service cloud.firestore {
       && isValidInt(request.resource.data.competitionId3, 0, 100000)
       && isValidInt(request.resource.data.teamId3, 0, 100000);
     }
+
+    // matches
+    match /matches/{matchId} {
+      allow read;
+    }
   }
 }

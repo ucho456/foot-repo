@@ -1,62 +1,75 @@
-type MatchCard = 'YELLOW_CARD' | 'RED_CARD' | ''
+import type { DocumentReference } from 'firebase-admin/firestore'
 
-type MatchPosition = 'GK' | 'DF' | 'MF' | 'FW' | 'HC'
-
-type MatchPositionId = 1 | 2 | 3 | 4 | 5
-
-type MatchStatus = 'FINISHED' | 'SCHEDULED'
-
-interface MatchPlayer {
-  id: number
-  name: string
-  positionId: MatchPositionId
-  position: MatchPosition
-  shirtNumber: number
-  goal: number
-  assist: number
-  card: MatchCard
-  out: number
-  in: number
-}
-
-interface MatchTeam {
-  id: number
-  name: string
-  lineup: MatchPlayer[]
-  bench: MatchPlayer[]
-  coach: MatchPlayer
-}
-
-interface Match {
-  id: number
-  competitionId: number
-  competitionName: string
-  seasonId: number
+type Match = {
+  id: string
   season: string
-  section: number
-  utcDate: string
-  status: MatchStatus
-  venue: string
-  homeTeam: MatchTeam
-  homeTeamScore: number
-  homeTeamPenalty: number
-  awayTeam: MatchTeam
-  awayTeamScore: number
-  awayTeamPenalty: number
+  jstDate: string
+  matchday: number
+  status: 'SCHEDULED' | 'FINISHED'
+  teamIds: string[]
+  homeTeam: {
+    ref: DocumentReference
+    name: string
+    score: number | null
+    penalty: number | null
+    goalPlayers: {
+      minute: number
+      name: string
+    }[]
+  }
+  awayTeam: {
+    ref: DocumentReference
+    name: string
+    score: number | null
+    penalty: number | null
+    goalPlayers: {
+      minute: number
+      name: string
+    }[]
+  }
+  lastUpdated: string
 }
 
-interface MatchListItem {
-  id: number
-  homeTeamName: string
-  homeTeamImageUrl: string
-  awayTeamName: string
-  awayTeamImageUrl: string
-  score: string
-  description: string
-  to: {
-    path: string
-    query: {
-      matchId: number
-    }
-  }
+type Position = 'GK' | 'DF' | 'MF' | 'FW' | 'HC'
+
+type Player = {
+  name: string
+  position: Position
+  shirtNumber: number | null
+}
+
+type MatchDetail = {
+  id: string
+  homeLineup: Player[]
+  homeBench: Player[]
+  homeCoachName: string
+  awayLineup: Player[]
+  awayBench: Player[]
+  awayCoachName: string
+  goals: {
+    minute: number
+    teamName: string
+    goalPlayerName: string
+    assistPlayerName: string | null
+  }[]
+  bookings: {
+    minute: number
+    teamName: string
+    playerName: string
+    card: 'red' | 'yellow'
+  }[]
+  substitutions: {
+    minute: number
+    teamName: string
+    outPlayerName: string
+    inPlayerName: string
+  }[]
+  lastUpdated: string
+}
+
+type ForReport = {
+  id: string
+  homePlayers: Player[]
+  awayPlayers: Player[]
+  lastUpdated: string
 }
