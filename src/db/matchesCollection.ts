@@ -38,7 +38,7 @@ const userConverter: FirestoreDataConverter<Match> = {
     return {
       id: snapshot.id,
       season: data.season,
-      jstDate: data.jstDate,
+      jstDate: data.jstDate.toDate(),
       matchday: data.matchday,
       status: data.status,
       teamIds: data.teamIds,

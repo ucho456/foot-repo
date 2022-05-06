@@ -3,7 +3,7 @@ import type { DocumentReference } from 'firebase-admin/firestore'
 type Match = {
   id: string
   season: string
-  jstDate: string
+  jstDate: Date
   matchday: number
   status: 'SCHEDULED' | 'FINISHED'
   teamIds: string[]
