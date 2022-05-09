@@ -13,11 +13,6 @@
       </v-row>
     </v-container>
     <v-list v-else class="mt-n4" three-line>
-      <v-container v-if="err" class="mt-4">
-        <v-row justify="center">
-          {{ err }}
-        </v-row>
-      </v-container>
       <template v-for="match in matches">
         <v-list-item
           :key="match.id"
@@ -66,7 +61,6 @@ export default defineComponent({
   name: 'MatchTable',
 
   props: {
-    err: { type: String, default: '' },
     loading: { type: Boolean, default: false },
     matches: {
       type: Array as () => Match[],

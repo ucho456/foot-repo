@@ -5,7 +5,7 @@
         <v-toolbar-title class="hover" @click="pushToHome" v-text="'Foot-Repo'" />
         <v-spacer />
         <v-btn class="white--text" color="accent" elevation="0" to="/reports/search"> 投稿 </v-btn>
-        <v-list-item-avatar class="hover" @click.stop="toggleDrawer">
+        <v-list-item-avatar class="hover" @click.stop="showDrawer">
           <client-only>
             <v-img v-if="currentUser && currentUser.imageUrl" :src="currentUser.imageUrl"></v-img>
             <v-img v-else :src="noAvatarImage"></v-img>
@@ -16,7 +16,6 @@
     <v-main>
       <v-container>
         <v-row>
-          {{ currentUser }}
           <v-col cols="12" sm="8" md="8"><Nuxt /></v-col>
           <v-col cols="12" sm="4" md="4"><SideContainer /></v-col>
         </v-row>
@@ -27,7 +26,7 @@
         <span>&copy; {{ new Date().getFullYear() }}</span>
       </v-container>
     </v-footer>
-    <v-navigation-drawer v-model="showFlg" fixed right temporary>
+    <v-navigation-drawer v-model="drawer" fixed right temporary>
       <client-only>
         <v-list>
           <v-list-item
@@ -115,13 +114,14 @@ export default defineComponent({
             { id: 8, ...contact }
           ]
     })
-    const showFlg = ref(false)
-    const toggleDrawer = (): boolean => (showFlg.value = !showFlg.value)
+    const drawer = ref(false)
+    const showDrawer = (): boolean => (drawer.value = true)
+    const hideDrawer = (): boolean => (drawer.value = false)
 
     const logout = (): void => {
       signOut(auth)
         .then(() => {
-          showFlg.value = false
+          hideDrawer()
           router.push('/')
           openSnackbar('success', 'ログアウトしました。')
         })
@@ -133,8 +133,8 @@ export default defineComponent({
       noAvatarImage,
       pushToHome,
       navigationDrawerItems,
-      showFlg,
-      toggleDrawer,
+      drawer,
+      showDrawer,
       logout
     }
   }

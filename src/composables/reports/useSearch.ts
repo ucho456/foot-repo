@@ -40,7 +40,21 @@ const useSearch = () => {
     }
   }
 
-  return { matches, isLoadingFirst, isLoading, getFirstPage, getNextPage }
+  const dialog = ref(false)
+  const showDialog = (): boolean => (dialog.value = true)
+  const hideDialog = (): boolean => (dialog.value = false)
+
+  return {
+    matches,
+    searchOption,
+    isLoadingFirst,
+    isLoading,
+    getFirstPage,
+    getNextPage,
+    dialog,
+    showDialog,
+    hideDialog
+  }
 }
 
 export default useSearch

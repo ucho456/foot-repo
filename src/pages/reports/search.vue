@@ -1,7 +1,7 @@
 <template>
   <v-card outlined>
-    <MatchTable :err="''" :loading="isLoadingFirst" :matches="matches" />
-    <v-container>
+    <MatchTable :loading="isLoadingFirst" :matches="matches" @click="showDialog" />
+    <v-container class="pb-10">
       <v-row justify="center">
         <v-col cols="10">
           <ButtonSubmit
@@ -14,6 +14,7 @@
         </v-col>
       </v-row>
     </v-container>
+    <DialogSearch :dialog="dialog" :search-option="searchOption" @close="hideDialog" />
   </v-card>
 </template>
 
@@ -22,19 +23,42 @@ import { defineComponent } from '@nuxtjs/composition-api'
 import useSearch from '@/composables/reports/useSearch'
 import MatchTable from '@/components/organisms/MatchTable.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
+import DialogSearch from '@/components/organisms/DialogSearch.vue'
 
 export default defineComponent({
   name: 'Search',
 
   components: {
     MatchTable,
-    ButtonSubmit
+    ButtonSubmit,
+    DialogSearch
   },
 
   setup() {
-    const { matches, isLoadingFirst, isLoading, getFirstPage, getNextPage } = useSearch()
+    const {
+      matches,
+      searchOption,
+      isLoadingFirst,
+      isLoading,
+      getFirstPage,
+      getNextPage,
+      dialog,
+      showDialog,
+      hideDialog
+    } = useSearch()
+
     getFirstPage()
-    return { matches, isLoadingFirst, isLoading, getNextPage }
+
+    return {
+      matches,
+      searchOption,
+      isLoadingFirst,
+      isLoading,
+      getNextPage,
+      dialog,
+      showDialog,
+      hideDialog
+    }
   }
 })
 </script>
