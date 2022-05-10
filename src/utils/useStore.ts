@@ -14,7 +14,7 @@ const useStore = () => {
   const store = inject(StoreKey)
   if (store === undefined) throw new Error('store is no provided')
 
-  return { store }
+  return { match: store.match }
 }
 
 export default useStore

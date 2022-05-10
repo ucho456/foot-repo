@@ -1,4 +1,3 @@
-import { Ref } from '@nuxtjs/composition-api'
 import {
   collection,
   getDocs,
@@ -16,7 +15,7 @@ import type {
   QueryConstraint,
   QueryDocumentSnapshot
 } from 'firebase/firestore'
-import { Match } from '@/types/matches'
+import { Match, SearchOption } from '@/types/matches'
 
 const matchProperties = (match: Match) => {
   return {
@@ -55,61 +54,55 @@ const userConverter: FirestoreDataConverter<Match> = {
 const makeOptions = (searchOption: {
   status: string
   competitionId: string
-  teamId: string
+  teamIds: string[]
   jstDate: string
 }): QueryConstraint[] => {
   const options = []
   if (searchOption.status) options.push(where('status', '==', searchOption.status))
-  if (searchOption.competitionId)
+  if (searchOption.competitionId) {
     options.push(where('competition.id', '==', searchOption.competitionId))
-  if (searchOption.teamId)
-    options.push(where('teamIds', 'array-contains-any', [searchOption.teamId]))
+  }
+  if (searchOption.teamIds.length > 0) {
+    options.push(where('teamIds', 'array-contains-any', searchOption.teamIds))
+  }
   if (searchOption.jstDate) options.push(where('jstDate', '==', searchOption.jstDate))
   return options
 }
 
-export const getFirstMatches = async (
-  matches: Ref<Match[]>,
-  lastVisible: Ref<QueryDocumentSnapshot<Match> | null>,
-  searchOption: { status: string; competitionId: string; teamId: string; jstDate: string }
-): Promise<{
-  matches: Ref<Match[]>
-  lastVisible: Ref<QueryDocumentSnapshot<Match> | null>
-}> => {
+export const getFirstMatches = async (match: {
+  data: Match[]
+  lastVisible: QueryDocumentSnapshot<Match> | null
+  searchOption: SearchOption
+}): Promise<void> => {
   const db = getFirestore()
   const mRef = collection(db, 'matches').withConverter(userConverter)
-  const options = makeOptions(searchOption)
+  const options = makeOptions(match.searchOption)
   const q = query(mRef, ...options, orderBy('jstDate', 'desc'), limit(10))
   const mSnapshot = await getDocs(q)
   mSnapshot.forEach((doc) => {
-    if (doc.exists()) matches.value.push(doc.data())
+    if (doc.exists()) match.data.push(doc.data())
   })
-  lastVisible.value = mSnapshot.docs[mSnapshot.docs.length - 1]
-  return { matches, lastVisible }
+  match.lastVisible = mSnapshot.docs[mSnapshot.docs.length - 1]
 }
 
-export const getNextMatches = async (
-  matches: Ref<Match[]>,
-  lastVisible: Ref<QueryDocumentSnapshot<Match> | null>,
-  searchOption: { status: string; competitionId: string; teamId: string; jstDate: string }
-): Promise<{
-  matches: Ref<Match[]>
-  lastVisible: Ref<QueryDocumentSnapshot<Match> | null>
-}> => {
+export const getNextMatches = async (match: {
+  data: Match[]
+  lastVisible: QueryDocumentSnapshot<Match> | null
+  searchOption: SearchOption
+}): Promise<void> => {
   const db = getFirestore()
   const mRef = collection(db, 'matches').withConverter(userConverter)
-  const options = makeOptions(searchOption)
+  const options = makeOptions(match.searchOption)
   const q = query(
     mRef,
     ...options,
     orderBy('jstDate', 'desc'),
-    startAfter(lastVisible.value),
+    startAfter(match.lastVisible),
     limit(10)
   )
   const mSnapshot = await getDocs(q)
   mSnapshot.forEach((doc) => {
-    if (doc.exists()) matches.value.push(doc.data())
+    if (doc.exists()) match.data.push(doc.data())
   })
-  lastVisible.value = mSnapshot.docs[mSnapshot.docs.length - 1]
-  return { matches, lastVisible }
+  match.lastVisible = mSnapshot.docs[mSnapshot.docs.length - 1]
 }
