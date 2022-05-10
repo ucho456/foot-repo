@@ -34,6 +34,8 @@ const useSearch = () => {
   const showDialog = (): boolean => (dialog.value = true)
   const hideDialog = (): boolean => (dialog.value = false)
 
+  const inputDate = (date: string) => (match.searchOption.jstDate = date)
+
   return {
     isLoadingFirst,
     isLoading,
@@ -41,7 +43,8 @@ const useSearch = () => {
     getNextPage,
     dialog,
     showDialog,
-    hideDialog
+    hideDialog,
+    inputDate
   }
 }
 

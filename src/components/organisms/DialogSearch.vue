@@ -1,16 +1,32 @@
 <template>
   <v-row justify="center">
-    <v-dialog :value="dialog" persistent max-width="290">
+    <v-dialog :value="dialog" persistent max-width="330">
       <v-card>
-        <v-card-title class="text-h5"> Use Google's location service? </v-card-title>
-        <v-card-text
-          >Let Google help apps determine location. This means sending anonymous location data to
-          Google, even when no apps are running.</v-card-text
-        >
+        <v-container>
+          <v-row justify="center">
+            <v-col cols="10">
+              <SelectIdCompetition />
+            </v-col>
+          </v-row>
+        </v-container>
+        <v-container>
+          <v-row justify="center">
+            <v-col cols="10">
+              <SelectIdTeam />
+            </v-col>
+          </v-row>
+        </v-container>
+        <v-container>
+          <v-row justify="center">
+            <v-col cols="10">
+              <DialogDate :date="searchOption.jstDate" @input="inputDate" />
+            </v-col>
+          </v-row>
+        </v-container>
         <v-card-actions>
-          <v-btn color="green darken-1" text @click="handleClose"> 閉じる </v-btn>
+          <v-btn color="primary" text @click="handleClose"> 閉じる </v-btn>
           <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="handleSearch"> 検索 </v-btn>
+          <v-btn color="primary" text @click="handleSearch"> 検索 </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -19,17 +35,19 @@
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
-
-type SearchOption = {
-  competitionId: string
-  teamId: string
-  jstDate: string
-}
+import SelectIdCompetition from '@/components/molecules/SelectIdCompetition.vue'
+import SelectIdTeam from '@/components/molecules/SelectIdTeam.vue'
+import DialogDate from '@/components/molecules/DialogDate.vue'
+import { SearchOption } from '@/types/matches'
 
 export default defineComponent({
   name: 'DialogSearch',
 
-  components: {},
+  components: {
+    SelectIdCompetition,
+    SelectIdTeam,
+    DialogDate
+  },
 
   props: {
     dialog: { type: Boolean, default: false },
@@ -37,8 +55,9 @@ export default defineComponent({
       type: Object as () => SearchOption,
       default: () => {
         return {
+          status: '',
           competitionId: '',
-          teamId: '',
+          teamIds: [],
           jstDate: ''
         }
       }
@@ -48,7 +67,8 @@ export default defineComponent({
   setup(_, ctx) {
     const handleClose = (): void => ctx.emit('close')
     const handleSearch = (): void => ctx.emit('search')
-    return { handleClose, handleSearch }
+    const inputDate = (date: string) => ctx.emit('input-date', date)
+    return { handleClose, handleSearch, inputDate }
   }
 })
 </script>
