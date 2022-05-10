@@ -92,3 +92,7 @@ sw.*
 .docker
 
 .emulator
+
+.firebase
+
+firebase-export*

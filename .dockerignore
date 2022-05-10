@@ -1,10 +1,18 @@
+# .nuxt node_modules package.json Dockerfile が必要
+
 /.devcontainer
 
+/.docker
+
 /.emulator
+
+/.firebase
 
 /.github
 
 /.vscode
+
+/firebase-export*
 
 /functions
 
@@ -26,7 +34,7 @@
 
 firebase.json
 
-firestore-debug.log
+*.log
 
 firestore.indexes.json
 
@@ -47,7 +55,5 @@ storage.rules
 stylelint.config.js
 
 tsconfig.json
-
-ui-debug.log
 
 webpack.config.js
