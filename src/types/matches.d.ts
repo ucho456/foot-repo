@@ -80,3 +80,10 @@ type ForReport = {
   awayPlayers: Player[]
   lastUpdated: string
 }
+
+type SearchOption = {
+  status: string
+  competitionId: string
+  teamIds: string[]
+  jstDate: string
+}

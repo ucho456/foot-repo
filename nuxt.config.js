@@ -23,8 +23,9 @@ export default {
   plugins: [
     '@/plugins/firebase',
     '@/plugins/firebase-auth',
-    '@/plugins/vee-validate',
-    '@/plugins/snackbar'
+    '@/plugins/snackbar',
+    '@/plugins/store',
+    '@/plugins/vee-validate'
   ],
 
   components: true,
