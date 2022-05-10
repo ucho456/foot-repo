@@ -18,7 +18,7 @@ export const leagueCompetitions = [
 export const convertJST = (utcDate: string): string => {
   const time = new Date(utcDate)
   time.setHours(time.getHours() + 9)
-  return `${time.getFullYear()}${('00' + (time.getMonth() + 1)).slice(-2)}${(
+  return `${time.getFullYear()}-${('00' + (time.getMonth() + 1)).slice(-2)}-${(
     '00' + time.getDate()
   ).slice(-2)}`
 }
