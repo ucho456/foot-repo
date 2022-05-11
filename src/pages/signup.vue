@@ -100,6 +100,16 @@ export default defineComponent({
       openSnackbar(result, message)
     }
 
+    const submitTwitter = async (): Promise<void> => {
+      const result = await signupTwitter()
+      next(result)
+    }
+
+    const submitGoogle = async (): Promise<void> => {
+      const result = await signupGoogle()
+      next(result)
+    }
+
     const next = (result: 'success' | 'already exist' | 'failure'): void => {
       if (result === 'success' || result === 'already exist') {
         const message = result === 'success' ? '認証が完了しました。' : 'ログインしました。'
@@ -111,17 +121,9 @@ export default defineComponent({
       }
     }
 
-    const submitTwitter = async (): Promise<void> => {
-      const result = await signupTwitter()
-      next(result)
+    const back = (): void => {
+      router.back()
     }
-
-    const submitGoogle = async (): Promise<void> => {
-      const result = await signupGoogle()
-      next(result)
-    }
-
-    const back = (): void => router.back()
 
     return {
       user,

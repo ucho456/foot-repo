@@ -4,7 +4,7 @@
       <v-row>
         <v-col cols="12">{{ message }}</v-col>
         <v-col cols="12">
-          <v-progress-circular indeterminate color="primary"></v-progress-circular>
+          <v-progress-circular color="primary" indeterminate />
         </v-col>
       </v-row>
     </v-container>
@@ -22,6 +22,7 @@ export default defineComponent({
   setup() {
     const route = useRoute()
     const router = useRouter()
+
     const mode = route.value.query.mode
     const message = ref('')
     switch (mode) {

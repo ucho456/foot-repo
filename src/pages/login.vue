@@ -99,15 +99,6 @@ export default defineComponent({
       }
     }
 
-    const next = async (result: 'success' | 'failure'): Promise<void> => {
-      const message = result === 'success' ? 'ログインしました。' : 'エラーが発生しました。'
-      openSnackbar(result, message)
-      if (result === 'success') {
-        await setUpCurrentUser()
-        router.push('/')
-      }
-    }
-
     const submitTwitter = async (): Promise<void> => {
       const result = await loginTwitter()
       next(result)
@@ -118,7 +109,18 @@ export default defineComponent({
       next(result)
     }
 
-    const back = (): void => router.back()
+    const next = async (result: 'success' | 'failure'): Promise<void> => {
+      const message = result === 'success' ? 'ログインしました。' : 'エラーが発生しました。'
+      openSnackbar(result, message)
+      if (result === 'success') {
+        await setUpCurrentUser()
+        router.push('/')
+      }
+    }
+
+    const back = (): void => {
+      router.back()
+    }
 
     return {
       user,
