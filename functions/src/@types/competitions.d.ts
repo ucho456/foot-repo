@@ -1,4 +1,5 @@
 type Competitions = {
+  id: string
   name: string
   type: 'cup' | 'league' | 'japan'
   imageUrl: string
@@ -10,6 +11,7 @@ type Standings = {
   table: {
     position: number
     team: {
+      id: string
       ref: import('firebase-admin/firestore').DocumentReference
       name: string
       imageUrl: string
