@@ -22,6 +22,7 @@
       @input-team-id="inputTeamId"
       @input-date="inputDate"
       @close="hideDialog"
+      @search="getFirstPage"
     />
   </v-card>
 </template>
@@ -63,6 +64,7 @@ export default defineComponent({
     return {
       isLoadingFirst,
       isLoading,
+      getFirstPage,
       getNextPage,
       dialog,
       showDialog,

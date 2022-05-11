@@ -8,6 +8,7 @@ const useSearch = () => {
 
   const getFirstPage = async (): Promise<'success' | 'failure'> => {
     try {
+      dialog.value = false
       isLoadingFirst.value = true
       await getFirstMatches(match)
       return 'success'

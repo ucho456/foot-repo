@@ -73,6 +73,7 @@ export const getFirstMatches = async (match: {
   lastVisible: QueryDocumentSnapshot<Match> | null
   searchOption: SearchOption
 }): Promise<void> => {
+  match.data = []
   const db = getFirestore()
   const mRef = collection(db, 'matches').withConverter(userConverter)
   const options = makeOptions(match.searchOption)
