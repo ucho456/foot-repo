@@ -13,42 +13,36 @@
       </v-row>
     </v-container>
     <v-list v-else class="mt-n4" three-line>
-      <template v-for="match in matches">
+      <v-container v-for="match in matches" :key="match.id">
         <v-list-item
-          :key="match.id"
+          :exact="true"
+          :router="true"
           :to="{ path: 'new', query: { matchId: match.id } }"
-          exact
-          router
         >
           <v-list-item-avatar>
             <v-img :src="`https://crests.football-data.org/${match.homeTeam.id}.svg`" />
           </v-list-item-avatar>
           <v-list-item-content>
             <v-row>
-              <v-col cols="6"
-                ><v-list-item-title class="text-right">{{
-                  match.homeTeam.name
-                }}</v-list-item-title></v-col
-              >
-              <v-col cols="6"
-                ><v-list-item-title class="text-left">{{
-                  match.awayTeam.name
-                }}</v-list-item-title></v-col
-              >
+              <v-col cols="6">
+                <v-list-item-title class="text-right">{{ match.homeTeam.name }}</v-list-item-title>
+              </v-col>
+              <v-col cols="6">
+                <v-list-item-title class="text-left">{{ match.awayTeam.name }}</v-list-item-title>
+              </v-col>
             </v-row>
-            <v-list-item-subtitle class="mt-n3 text-center"
-              >{{ match.homeTeam.score }} - {{ match.awayTeam.score }}</v-list-item-subtitle
-            >
-            <v-list-item-subtitle class="text-center"
-              >{{ match.jstDate }} - {{ match.competition.name }}
-              {{ match.matchday }}節</v-list-item-subtitle
-            >
+            <v-list-item-subtitle class="mt-n3 text-center">
+              {{ match.homeTeam.score }} - {{ match.awayTeam.score }}
+            </v-list-item-subtitle>
+            <v-list-item-subtitle class="text-center">
+              {{ match.jstDate }} - {{ match.competition.name }}{{ match.matchday }}節
+            </v-list-item-subtitle>
           </v-list-item-content>
           <v-list-item-avatar>
             <v-img :src="`https://crests.football-data.org/${match.awayTeam.id}.svg`" />
           </v-list-item-avatar>
         </v-list-item>
-      </template>
+      </v-container>
     </v-list>
   </v-sheet>
 </template>
@@ -67,9 +61,9 @@ export default defineComponent({
         {
           id: '',
           season: '',
-          jstDate: '00000000',
+          jstDate: '',
           matchday: 0,
-          status: 'SCHEDULED',
+          status: '',
           competition: {
             id: '',
             name: ''
@@ -104,7 +98,10 @@ export default defineComponent({
   },
 
   setup(_, ctx) {
-    const handleClick = (): void => ctx.emit('click')
+    const handleClick = (): void => {
+      ctx.emit('click')
+    }
+
     return { handleClick }
   }
 })

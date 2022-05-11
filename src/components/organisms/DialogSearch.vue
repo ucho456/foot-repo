@@ -1,43 +1,34 @@
 <template>
-  <v-row justify="center">
-    <v-dialog :value="dialog" persistent max-width="330">
-      <v-card>
-        <v-container>
-          <v-row justify="center">
-            <v-col cols="10">
-              <SelectIdCompetition
-                :value="searchOption.competitionId"
-                @input="inputCompetitionId"
-              />
-            </v-col>
-          </v-row>
-        </v-container>
-        <v-container>
-          <v-row justify="center">
-            <v-col cols="10">
-              <SelectIdTeam
-                :competition-id="searchOption.competitionId"
-                :value="searchOption.teamIds[0]"
-                @input="inputTeamId"
-              />
-            </v-col>
-          </v-row>
-        </v-container>
-        <v-container>
-          <v-row justify="center">
-            <v-col cols="10">
-              <DialogDate :date="searchOption.jstDate" @input="inputDate" />
-            </v-col>
-          </v-row>
-        </v-container>
-        <v-card-actions>
-          <v-btn color="primary" text @click="handleClose"> 閉じる </v-btn>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" text @click="handleSearch"> 検索 </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </v-row>
+  <v-dialog :max-width="330" :persistent="true" :value="dialog" :width="'90%'">
+    <v-card>
+      <v-container>
+        <v-row justify="center">
+          <v-col cols="10">
+            <SelectIdCompetition :value="searchOption.competitionId" @input="inputCompetitionId" />
+          </v-col>
+        </v-row>
+        <v-row justify="center">
+          <v-col cols="10">
+            <SelectIdTeam
+              :competition-id="searchOption.competitionId"
+              :value="searchOption.teamIds[0]"
+              @input="inputTeamId"
+            />
+          </v-col>
+        </v-row>
+        <v-row justify="center">
+          <v-col cols="10">
+            <DialogDate :date="searchOption.jstDate" @input="inputDate" />
+          </v-col>
+        </v-row>
+      </v-container>
+      <v-card-actions>
+        <v-btn :color="'primary'" :text="true" @click="handleClose"> 閉じる </v-btn>
+        <v-spacer></v-spacer>
+        <v-btn :color="'primary'" :text="true" @click="handleSearch"> 検索 </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script lang="ts">
@@ -74,10 +65,19 @@ export default defineComponent({
     const inputCompetitionId = (competitionId: string): void => {
       ctx.emit('input-competition-id', competitionId)
     }
-    const inputTeamId = (teamId: string): void => ctx.emit('input-team-id', teamId)
-    const inputDate = (date: string): void => ctx.emit('input-date', date)
-    const handleClose = (): void => ctx.emit('close')
-    const handleSearch = (): void => ctx.emit('search')
+    const inputTeamId = (teamId: string): void => {
+      ctx.emit('input-team-id', teamId)
+    }
+    const inputDate = (date: string): void => {
+      ctx.emit('input-date', date)
+    }
+    const handleClose = (): void => {
+      ctx.emit('close')
+    }
+    const handleSearch = (): void => {
+      ctx.emit('search')
+    }
+
     return { inputCompetitionId, inputTeamId, inputDate, handleClose, handleSearch }
   }
 })
