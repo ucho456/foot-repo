@@ -1,7 +1,6 @@
 import * as functions from 'firebase-functions'
 import * as admin from 'firebase-admin'
 import axios, { AxiosResponse } from 'axios'
-import { ForReport, MatchDetail, Player } from '../@types/matches'
 import { makeMatch } from '../calls/createMatches'
 import { forReportConverter, matchConverter, matchDetailConverter } from '../converters'
 import { config, convertPosition, footballUrl, leagueCompetitions } from '../utils'

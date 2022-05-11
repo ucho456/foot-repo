@@ -1,5 +1,3 @@
-import type { DocumentReference } from 'firebase-admin/firestore'
-
 type Match = {
   id: string
   season: string
@@ -9,12 +7,12 @@ type Match = {
   teamIds: string[]
   competition: {
     id: string
-    ref: DocumentReference
+    ref: import('firebase-admin/firestore').DocumentReference
     name: string
   }
   homeTeam: {
     id: string
-    ref: DocumentReference
+    ref: import('firebase-admin/firestore').DocumentReference
     name: string
     score: number | null
     penalty: number | null
@@ -25,7 +23,7 @@ type Match = {
   }
   awayTeam: {
     id: string
-    ref: DocumentReference
+    ref: import('firebase-admin/firestore').DocumentReference
     name: string
     score: number | null
     penalty: number | null

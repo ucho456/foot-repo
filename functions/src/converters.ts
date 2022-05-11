@@ -3,8 +3,6 @@ import type {
   FirestoreDataConverter,
   QueryDocumentSnapshot
 } from 'firebase-admin/firestore'
-import { Scorers, Standings } from './@types/competitions'
-import { ForReport, Match, MatchDetail } from './@types/matches'
 
 export const matchConverter: FirestoreDataConverter<Match> = {
   toFirestore(match: Match): DocumentData {
