@@ -27,16 +27,19 @@ export default defineComponent({
     errMessage: { type: String, default: '' },
     icon: { type: String, default: '' },
     label: { type: String, default: '' },
-    max: { type: Number, default: 10 },
-    maxlength: { type: Number, default: 255 },
+    max: { type: Number, default: 0 },
+    maxlength: { type: Number, default: 0 },
     min: { type: Number, default: 0 },
-    step: { type: Number, default: 1 },
+    step: { type: Number, default: 0 },
     type: { type: String, default: '' },
     value: { type: String, default: '' }
   },
 
   setup(_, ctx) {
-    const handleInput = (value: string): void => ctx.emit('input', value)
+    const handleInput = (value: string): void => {
+      ctx.emit('input', value)
+    }
+
     return { handleInput }
   }
 })

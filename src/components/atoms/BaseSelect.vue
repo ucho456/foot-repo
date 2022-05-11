@@ -23,7 +23,10 @@ export default defineComponent({
   },
 
   setup(_, ctx) {
-    const handleInput = (value: string): void => ctx.emit('input', value)
+    const handleInput = (value: string): void => {
+      ctx.emit('input', value)
+    }
+
     return { handleInput }
   }
 })

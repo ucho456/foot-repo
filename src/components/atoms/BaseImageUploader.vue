@@ -13,7 +13,7 @@
       accept="image/*"
       @change="handleChange"
     />
-    <v-btn class="button" color="black" icon @click="handleClear">
+    <v-btn class="button" color="black" :icon="true" @click="handleClear">
       <v-icon>mdi-close</v-icon>
     </v-btn>
   </div>
@@ -30,7 +30,7 @@ export default defineComponent({
     imageSize: { type: Number, default: 0 },
     maxWidthOrHeight: { type: Number, default: 0 },
     placeholder: { type: String, default: '' },
-    value: { type: String, required: false, default: null }
+    value: { type: String, default: null, required: false }
   },
 
   setup(props, ctx) {

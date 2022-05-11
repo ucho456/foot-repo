@@ -1,9 +1,9 @@
 <template>
   <v-select
     :background-color="'white'"
+    :item-text="'text'"
+    :item-value="'id'"
     :items="items"
-    item-text="text"
-    item-value="id"
     :label="label"
     :prepend-inner-icon="icon"
     :value="value"
@@ -28,7 +28,10 @@ export default defineComponent({
   },
 
   setup(_, ctx) {
-    const handleInput = (id: string): void => ctx.emit('input', id)
+    const handleInput = (id: string): void => {
+      ctx.emit('input', id)
+    }
+
     return { handleInput }
   }
 })

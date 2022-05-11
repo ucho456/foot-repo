@@ -1,17 +1,16 @@
 <template>
   <v-btn
     :block="blockFlg"
-    :class="{ 'white--text': whiteTextFlg }"
+    :class="{ 'v-btn': true, 'white--text': whiteTextFlg }"
     :color="color"
     :disabled="disabled"
     :icon="iconFlg"
     :loading="loading"
     :outlined="outlinedFlg"
-    style="text-transform: none"
     :text="textFlg"
     @click="handleClick"
     ><v-icon :left="leftFlg">{{ icon }}</v-icon>
-    <v-img v-if="image" class="mr-2" max-height="18" max-width="18" :src="image"></v-img>
+    <v-img v-if="image" class="mr-2" :max-height="18" :max-width="18" :src="image" />
     {{ text }}</v-btn
   >
 </template>
@@ -38,8 +37,17 @@ export default defineComponent({
   },
 
   setup(_, ctx) {
-    const handleClick = (): void => ctx.emit('click')
+    const handleClick = (): void => {
+      ctx.emit('click')
+    }
+
     return { handleClick }
   }
 })
 </script>
+
+<style lang="scss" scoped>
+.v-btn {
+  text-transform: none;
+}
+</style>

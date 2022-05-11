@@ -1,11 +1,11 @@
 <template>
   <v-snackbar
-    centered
+    :centered="true"
     :color="color"
-    text
+    :text="true"
     :timeout="timeout"
-    transition="slide-x-reverse-transition"
-    top
+    :transition="'slide-x-reverse-transition'"
+    :top="true"
     :value="show"
   >
     {{ message }}
@@ -22,7 +22,7 @@ export default defineComponent({
     color: { type: String, default: '' },
     message: { type: String, default: '' },
     show: { type: Boolean, default: false },
-    timeout: { type: Number, default: -1 }
+    timeout: { type: Number, default: 0 }
   }
 })
 </script>
