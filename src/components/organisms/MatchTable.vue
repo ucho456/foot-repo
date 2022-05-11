@@ -55,7 +55,6 @@
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
-import { Match } from '@/types/matches'
 
 export default defineComponent({
   name: 'MatchTable',

@@ -15,7 +15,6 @@ import type {
   QueryConstraint,
   QueryDocumentSnapshot
 } from 'firebase/firestore'
-import { Match, SearchOption } from '@/types/matches'
 
 const matchProperties = (match: Match) => {
   return {

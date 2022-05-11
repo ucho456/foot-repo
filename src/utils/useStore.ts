@@ -1,6 +1,5 @@
 import { inject, InjectionKey } from '@nuxtjs/composition-api'
 import type { QueryDocumentSnapshot } from 'firebase/firestore'
-import { Match, SearchOption } from '@/types/matches'
 
 export const StoreKey: InjectionKey<{
   match: {

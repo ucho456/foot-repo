@@ -7,7 +7,6 @@ import {
 } from '@nuxtjs/composition-api'
 import type { QueryDocumentSnapshot } from 'firebase/firestore'
 import { StoreKey } from '@/utils/useStore'
-import { Match, SearchOption } from '@/types/matches'
 
 export default defineNuxtPlugin((_, inject) => {
   const store: {
