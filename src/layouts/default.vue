@@ -43,7 +43,7 @@
               <v-list-item-title v-text="item.title" />
             </v-list-item-content>
           </v-list-item>
-          <v-list-item v-if="currentUser" class="px-2 ml-2" @click="logout">
+          <v-list-item v-if="currentUser" class="ml-2 px-2" @click="logout">
             <v-list-item-action>
               <v-icon>mdi-logout</v-icon>
             </v-list-item-action>
@@ -81,7 +81,9 @@ export default defineComponent({
     const { snackbar, openSnackbar } = useSnackbar()
 
     const noAvatarImage = require('@/assets/no_avatar.png')
-    const pushToHome = () => router.push('/')
+    const pushToHome = (): void => {
+      router.push('/')
+    }
 
     const navigationDrawerItems = computed(() => {
       const home = { icon: 'mdi-home', title: 'ホーム', to: '/' }
@@ -115,8 +117,12 @@ export default defineComponent({
           ]
     })
     const drawer = ref(false)
-    const showDrawer = (): boolean => (drawer.value = true)
-    const hideDrawer = (): boolean => (drawer.value = false)
+    const showDrawer = (): void => {
+      drawer.value = true
+    }
+    const hideDrawer = (): void => {
+      drawer.value = false
+    }
 
     const logout = (): void => {
       signOut(auth)
@@ -127,6 +133,7 @@ export default defineComponent({
         })
         .catch(() => openSnackbar('failure', 'ログアウトに失敗しました。'))
     }
+
     return {
       currentUser,
       snackbar,
