@@ -21,6 +21,7 @@
       @input-competition-id="inputCompetitionId"
       @input-team-id="inputTeamId"
       @input-date="inputDate"
+      @clear-date="clearDate"
       @close="hideDialog"
       @search="getFirstPage"
     />
@@ -55,7 +56,8 @@ export default defineComponent({
       hideDialog,
       inputCompetitionId,
       inputTeamId,
-      inputDate
+      inputDate,
+      clearDate
     } = useSearch()
     const { match } = useStore()
 
@@ -72,7 +74,8 @@ export default defineComponent({
       match,
       inputCompetitionId,
       inputTeamId,
-      inputDate
+      inputDate,
+      clearDate
     }
   }
 })

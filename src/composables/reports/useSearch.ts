@@ -1,6 +1,7 @@
 import { ref } from '@nuxtjs/composition-api'
 import { getFirstMatches, getNextMatches } from '@/db/matchesCollection'
 import useStore from '@/utils/useStore'
+
 const useSearch = () => {
   const { match } = useStore()
   const isLoadingFirst = ref(false)
@@ -19,7 +20,7 @@ const useSearch = () => {
     }
   }
 
-  const getNextPage = async () => {
+  const getNextPage = async (): Promise<'success' | 'failure'> => {
     try {
       isLoading.value = true
       await getNextMatches(match)
@@ -32,18 +33,27 @@ const useSearch = () => {
   }
 
   const dialog = ref(false)
-  const showDialog = (): boolean => (dialog.value = true)
-  const hideDialog = (): boolean => (dialog.value = false)
+  const showDialog = (): void => {
+    dialog.value = true
+  }
+  const hideDialog = (): void => {
+    dialog.value = false
+  }
 
-  const inputCompetitionId = (competitionId: string) => {
+  const inputCompetitionId = (competitionId: string): void => {
     match.searchOption.teamIds = []
     match.searchOption.competitionId = competitionId
   }
-  const inputTeamId = (teamId: string) => {
+  const inputTeamId = (teamId: string): void => {
     match.searchOption.teamIds = []
     match.searchOption.teamIds.push(teamId)
   }
-  const inputDate = (date: string) => (match.searchOption.jstDate = date)
+  const inputDate = (date: string): void => {
+    match.searchOption.jstDate = date
+  }
+  const clearDate = (): void => {
+    match.searchOption.jstDate = ''
+  }
 
   return {
     isLoadingFirst,
@@ -55,7 +65,8 @@ const useSearch = () => {
     hideDialog,
     inputCompetitionId,
     inputTeamId,
-    inputDate
+    inputDate,
+    clearDate
   }
 }
 

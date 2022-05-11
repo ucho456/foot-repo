@@ -15,6 +15,7 @@
         :readonly="true"
         :value="date"
         v-on="on"
+        @input="clearDate"
       />
     </template>
     <v-date-picker v-model="tmpDate" :no-title="true" :scrollable="true" @input="inputDate">
@@ -40,8 +41,11 @@ export default defineComponent({
     const inputDate = (date: string) => {
       ctx.emit('input', date)
     }
+    const clearDate = (): void => {
+      ctx.emit('clear')
+    }
 
-    return { tmpDate, datePicker, inputDate }
+    return { tmpDate, datePicker, inputDate, clearDate }
   }
 })
 </script>

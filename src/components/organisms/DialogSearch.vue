@@ -18,7 +18,7 @@
         </v-row>
         <v-row justify="center">
           <v-col cols="10">
-            <DialogDate :date="searchOption.jstDate" @input="inputDate" />
+            <DialogDate :date="searchOption.jstDate" @input="inputDate" @clear="clearDate" />
           </v-col>
         </v-row>
       </v-container>
@@ -71,6 +71,9 @@ export default defineComponent({
     const inputDate = (date: string): void => {
       ctx.emit('input-date', date)
     }
+    const clearDate = (): void => {
+      ctx.emit('clear-date')
+    }
     const handleClose = (): void => {
       ctx.emit('close')
     }
@@ -78,7 +81,7 @@ export default defineComponent({
       ctx.emit('search')
     }
 
-    return { inputCompetitionId, inputTeamId, inputDate, handleClose, handleSearch }
+    return { inputCompetitionId, inputTeamId, inputDate, clearDate, handleClose, handleSearch }
   }
 })
 </script>
