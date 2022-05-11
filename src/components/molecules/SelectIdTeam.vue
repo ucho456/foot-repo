@@ -20,34 +20,47 @@ export default defineComponent({
   },
 
   props: {
-    competitionId: { type: Number, default: 0 },
-    value: { type: Number, default: 0 }
+    competitionId: { type: String, default: '' },
+    value: { type: String, default: '' }
   },
 
   setup(props, ctx) {
+    const handleInput = (id: string): void => ctx.emit('input', id)
     const teams = computed(() => {
-      return props.competitionId === 0
-        ? [{ value: 0, text: '未選択' }]
-        : props.competitionId === 1
+      console.log(props.competitionId)
+      return props.competitionId === '2119' // J. League
         ? [
-            { value: 0, text: '未選択' },
-            { value: 1, text: 'teamA' },
-            { value: 2, text: 'teamB' },
-            { value: 3, text: 'teamC' },
-            { value: 4, text: 'teamD' },
-            { value: 5, text: 'teamE' }
+            { id: '5850', text: 'FC Tokyo' },
+            { id: '5851', text: 'Gamba Osaka' },
+            { id: '5852', text: 'Hokkaido Consadole Sapporo' }
           ]
-        : [
-            { value: 0, text: '未選択' },
-            { value: 6, text: 'teamF' },
-            { value: 7, text: 'teamG' },
-            { value: 8, text: 'teamH' },
-            { value: 9, text: 'teamI' },
-            { value: 10, text: 'teamJ' }
+        : props.competitionId === '2021' // Premier League
+        ? [
+            { id: '65', text: 'Manchester City FC' },
+            { id: '64', text: 'Liverpool FC' },
+            { id: '61', text: 'Chelsea FC' }
           ]
+        : props.competitionId === '2014' // La Liga
+        ? [
+            { id: '86', text: 'Real Madrid CF' },
+            { id: '81', text: 'FC Barcelona' },
+            { id: '559', text: 'Sevilla FC' }
+          ]
+        : props.competitionId === '2019' // Serie A
+        ? [
+            { id: '100', text: 'AS Roma' },
+            { id: '102', text: 'Atalanta BC' },
+            { id: '103', text: 'Bologna FC 1909' }
+          ]
+        : props.competitionId === '2002' // Bundesliga
+        ? [
+            { id: '1', text: '1. FC Köln' },
+            { id: '2', text: 'TSG 1899 Hoffenheim' },
+            { id: '4', text: 'Borussia Dortmund' }
+          ]
+        : [{ id: '', text: '未選択' }]
     })
-    const handleInput = (id: number): void => ctx.emit('input', id)
-    return { teams, handleInput }
+    return { handleInput, teams }
   }
 })
 </script>

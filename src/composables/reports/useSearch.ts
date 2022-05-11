@@ -34,6 +34,14 @@ const useSearch = () => {
   const showDialog = (): boolean => (dialog.value = true)
   const hideDialog = (): boolean => (dialog.value = false)
 
+  const inputCompetitionId = (competitionId: string) => {
+    match.searchOption.teamIds = []
+    match.searchOption.competitionId = competitionId
+  }
+  const inputTeamId = (teamId: string) => {
+    match.searchOption.teamIds = []
+    match.searchOption.teamIds.push(teamId)
+  }
   const inputDate = (date: string) => (match.searchOption.jstDate = date)
 
   return {
@@ -44,6 +52,8 @@ const useSearch = () => {
     dialog,
     showDialog,
     hideDialog,
+    inputCompetitionId,
+    inputTeamId,
     inputDate
   }
 }

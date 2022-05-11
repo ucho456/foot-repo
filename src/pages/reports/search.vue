@@ -18,8 +18,10 @@
     <DialogSearch
       :dialog="dialog"
       :search-option="match.searchOption"
-      @close="hideDialog"
+      @input-competition-id="inputCompetitionId"
+      @input-team-id="inputTeamId"
       @input-date="inputDate"
+      @close="hideDialog"
     />
   </v-card>
 </template>
@@ -50,6 +52,8 @@ export default defineComponent({
       dialog,
       showDialog,
       hideDialog,
+      inputCompetitionId,
+      inputTeamId,
       inputDate
     } = useSearch()
     const { match } = useStore()
@@ -64,6 +68,8 @@ export default defineComponent({
       showDialog,
       hideDialog,
       match,
+      inputCompetitionId,
+      inputTeamId,
       inputDate
     }
   }

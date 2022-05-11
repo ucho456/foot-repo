@@ -20,20 +20,19 @@ export default defineComponent({
   },
 
   props: {
-    number: { type: Number, default: 0 },
-    value: { type: Number, default: 0 }
+    value: { type: String, default: '' }
   },
 
-  setup(props, ctx) {
+  setup(_, ctx) {
     const competitions = [
-      { value: 0, text: '未選択' },
-      { value: 1, text: 'プレミアリーグ' },
-      { value: 2, text: 'リーガエスパニョーラ' },
-      { value: 3, text: 'セリエA' },
-      { value: 4, text: 'ブンデスリーガ' },
-      { value: 5, text: 'リーグアン' }
+      { id: '', text: '未選択' },
+      { id: '2119', text: 'J. League' },
+      { id: '2021', text: 'Premier League' },
+      { id: '2014', text: 'La Liga' },
+      { id: '2019', text: 'Serie A' },
+      { id: '2002', text: 'Bundesliga' }
     ]
-    const handleInput = (id: number): void => ctx.emit('input', { number: props.number, id })
+    const handleInput = (competitionId: string): void => ctx.emit('input', competitionId)
     return { competitions, handleInput }
   }
 })

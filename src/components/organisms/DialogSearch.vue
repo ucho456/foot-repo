@@ -5,14 +5,21 @@
         <v-container>
           <v-row justify="center">
             <v-col cols="10">
-              <SelectIdCompetition />
+              <SelectIdCompetition
+                :value="searchOption.competitionId"
+                @input="inputCompetitionId"
+              />
             </v-col>
           </v-row>
         </v-container>
         <v-container>
           <v-row justify="center">
             <v-col cols="10">
-              <SelectIdTeam />
+              <SelectIdTeam
+                :competition-id="searchOption.competitionId"
+                :value="searchOption.teamIds[0]"
+                @input="inputTeamId"
+              />
             </v-col>
           </v-row>
         </v-container>
@@ -38,7 +45,6 @@ import { defineComponent } from '@nuxtjs/composition-api'
 import SelectIdCompetition from '@/components/molecules/SelectIdCompetition.vue'
 import SelectIdTeam from '@/components/molecules/SelectIdTeam.vue'
 import DialogDate from '@/components/molecules/DialogDate.vue'
-import { SearchOption } from '@/types/matches'
 
 export default defineComponent({
   name: 'DialogSearch',
@@ -65,10 +71,14 @@ export default defineComponent({
   },
 
   setup(_, ctx) {
+    const inputCompetitionId = (competitionId: string): void => {
+      ctx.emit('input-competition-id', competitionId)
+    }
+    const inputTeamId = (teamId: string): void => ctx.emit('input-team-id', teamId)
+    const inputDate = (date: string): void => ctx.emit('input-date', date)
     const handleClose = (): void => ctx.emit('close')
     const handleSearch = (): void => ctx.emit('search')
-    const inputDate = (date: string) => ctx.emit('input-date', date)
-    return { handleClose, handleSearch, inputDate }
+    return { inputCompetitionId, inputTeamId, inputDate, handleClose, handleSearch }
   }
 })
 </script>

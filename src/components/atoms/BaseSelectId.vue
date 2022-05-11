@@ -2,6 +2,8 @@
   <v-select
     :background-color="'white'"
     :items="items"
+    item-text="text"
+    item-value="id"
     :label="label"
     :prepend-inner-icon="icon"
     :value="value"
@@ -18,18 +20,15 @@ export default defineComponent({
   props: {
     icon: { type: String, default: '' },
     items: {
-      type: Array as () => { value: number; text: string }[],
-      default: () => [{ value: 0, text: '' }]
+      type: Array as () => { id: string; text: string }[],
+      default: () => [{ id: '', text: '' }]
     },
     label: { type: String, default: '' },
-    value: { type: Number, default: 0 }
+    value: { type: String, default: '' }
   },
 
   setup(_, ctx) {
-    const handleInput = (value: number): void => {
-      const id = value
-      ctx.emit('input', id)
-    }
+    const handleInput = (id: string): void => ctx.emit('input', id)
     return { handleInput }
   }
 })
