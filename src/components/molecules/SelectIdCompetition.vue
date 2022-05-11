@@ -1,7 +1,7 @@
 <template>
   <BaseSelectId
-    :items="competitions"
     :icon="'mdi-tournament'"
+    :items="competitions"
     :label="'コンペティション'"
     :value="value"
     @input="handleInput"
@@ -32,7 +32,10 @@ export default defineComponent({
       { id: '2019', text: 'Serie A' },
       { id: '2002', text: 'Bundesliga' }
     ]
-    const handleInput = (competitionId: string): void => ctx.emit('input', competitionId)
+    const handleInput = (competitionId: string): void => {
+      ctx.emit('input', competitionId)
+    }
+
     return { competitions, handleInput }
   }
 })

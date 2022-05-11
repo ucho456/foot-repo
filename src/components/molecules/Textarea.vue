@@ -26,12 +26,15 @@ export default defineComponent({
   props: {
     icon: { type: String, default: '' },
     label: { type: String, default: '' },
-    maxlength: { type: Number, default: 255 },
+    maxlength: { type: Number, default: 0 },
     value: { type: String, default: '' }
   },
 
   setup(_, ctx) {
-    const handleInput = (value: string): void => ctx.emit('input', value)
+    const handleInput = (value: string): void => {
+      ctx.emit('input', value)
+    }
+
     return { handleInput }
   }
 })

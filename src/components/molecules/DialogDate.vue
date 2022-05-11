@@ -1,19 +1,25 @@
 <template>
-  <v-dialog ref="dialog" v-model="datePicker" persistent :return-value.sync="date" width="290px">
+  <v-dialog
+    ref="dialog"
+    v-model="datePicker"
+    :persistent="true"
+    :return-value.sync="date"
+    :width="'290px'"
+  >
     <template #activator="{ on, attrs }">
       <v-text-field
         v-bind="attrs"
-        clearable
-        label="日にち"
-        prepend-inner-icon="mdi-calendar"
-        readonly
+        :clearable="true"
+        :label="'日にち'"
+        :prepend-inner-icon="'mdi-calendar'"
+        :readonly="true"
         :value="date"
         v-on="on"
       />
     </template>
-    <v-date-picker v-model="tmpDate" no-title scrollable @input="inputDate">
+    <v-date-picker v-model="tmpDate" :no-title="true" :scrollable="true" @input="inputDate">
       <v-spacer />
-      <v-btn color="primary" text @click="$refs.dialog.save(date)"> 決定 </v-btn>
+      <v-btn :color="'primary'" :text="true" @click="$refs.dialog.save(date)"> 決定 </v-btn>
     </v-date-picker>
   </v-dialog>
 </template>
@@ -31,7 +37,10 @@ export default defineComponent({
   setup(props, ctx) {
     const tmpDate = props.date
     const datePicker = ref(false)
-    const inputDate = (date: string) => ctx.emit('input', date)
+    const inputDate = (date: string) => {
+      ctx.emit('input', date)
+    }
+
     return { tmpDate, datePicker, inputDate }
   }
 })

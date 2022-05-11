@@ -25,7 +25,10 @@ export default defineComponent({
 
   setup(_, ctx) {
     const items = ['Home team only', 'Away team only', 'Both teams']
-    const handleInput = (value: string): void => ctx.emit('input', value)
+    const handleInput = (value: string): void => {
+      ctx.emit('input', value)
+    }
+
     return { items, handleInput }
   }
 })

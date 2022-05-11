@@ -31,6 +31,7 @@ export default defineComponent({
       const point = value.length === 3 ? value : value + '.0'
       ctx.emit('input', point)
     }
+
     return { handleInput }
   }
 })

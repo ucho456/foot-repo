@@ -1,7 +1,7 @@
 <template>
   <BaseSelectId
+    :icon="'mdi-soccer'"
     :items="teams"
-    :icon="'mdi-account-group'"
     :label="'チーム'"
     :value="value"
     @input="handleInput"
@@ -25,9 +25,7 @@ export default defineComponent({
   },
 
   setup(props, ctx) {
-    const handleInput = (id: string): void => ctx.emit('input', id)
     const teams = computed(() => {
-      console.log(props.competitionId)
       return props.competitionId === '2119' // J. League
         ? [
             { id: '5850', text: 'FC Tokyo' },
@@ -60,7 +58,11 @@ export default defineComponent({
           ]
         : [{ id: '', text: '未選択' }]
     })
-    return { handleInput, teams }
+    const handleInput = (id: string): void => {
+      ctx.emit('input', id)
+    }
+
+    return { teams, handleInput }
   }
 })
 </script>

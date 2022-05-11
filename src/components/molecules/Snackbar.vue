@@ -1,5 +1,5 @@
 <template>
-  <BaseSnackbar :color="color" :message="message" :show="show" />
+  <BaseSnackbar :color="color" :message="message" :show="show" :timeout="-1" />
 </template>
 
 <script lang="ts">

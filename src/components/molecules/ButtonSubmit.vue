@@ -31,7 +31,10 @@ export default defineComponent({
   },
 
   setup(_, ctx) {
-    const handleClick = (): void => ctx.emit('click')
+    const handleClick = (): void => {
+      ctx.emit('click')
+    }
+
     return { handleClick }
   }
 })

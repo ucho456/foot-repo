@@ -28,7 +28,10 @@ export default defineComponent({
 
   setup(_, ctx) {
     const googleIcon = require('@/assets/google_icon.png')
-    const handleClick = (): void => ctx.emit('click')
+    const handleClick = (): void => {
+      ctx.emit('click')
+    }
+
     return { googleIcon, handleClick }
   }
 })
