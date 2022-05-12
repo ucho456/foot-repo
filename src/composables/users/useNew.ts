@@ -65,7 +65,7 @@ const useNew = () => {
       const imageUrl = userImageFile.value ? await uploadAndGetImageUrl(userImageFile.value) : null
       if (imageUrl) user.imageUrl = imageUrl
       await createUser(user)
-      await setUpCurrentUser()
+      setUpCurrentUser()
       return 'success'
     } catch {
       return 'failure'

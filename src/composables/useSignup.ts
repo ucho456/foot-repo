@@ -43,7 +43,7 @@ const useSignup = () => {
       if (!user) {
         return 'success'
       } else {
-        await setUpCurrentUser()
+        setUpCurrentUser()
         return 'already exist'
       }
     } catch {
@@ -64,7 +64,7 @@ const useSignup = () => {
       if (!user) {
         return 'success'
       } else {
-        await setUpCurrentUser()
+        setUpCurrentUser()
         return 'already exist'
       }
     } catch {

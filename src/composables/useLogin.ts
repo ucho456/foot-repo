@@ -18,7 +18,7 @@ const useLogin = () => {
       isLoading.value = true
       const auth = getAuth()
       await signInWithEmailAndPassword(auth, user.email, user.password)
-      await setUpCurrentUser()
+      setUpCurrentUser()
       return 'success'
     } catch {
       return 'failure'
@@ -33,7 +33,7 @@ const useLogin = () => {
       const auth = getAuth()
       const provider = new TwitterAuthProvider()
       await signInWithPopup(auth, provider)
-      await setUpCurrentUser()
+      setUpCurrentUser()
       return 'success'
     } catch {
       return 'failure'
@@ -48,7 +48,7 @@ const useLogin = () => {
       const auth = getAuth()
       const provider = new GoogleAuthProvider()
       await signInWithPopup(auth, provider)
-      await setUpCurrentUser()
+      setUpCurrentUser()
       return 'success'
     } catch {
       return 'failure'
