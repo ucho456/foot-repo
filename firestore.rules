@@ -7,7 +7,7 @@ service cloud.firestore {
       return request.auth != null && userId == request.auth.uid;
     }
 
-    function isValidString(value, min, max) {
+    function isValidStr(value, min, max) {
       return min <= value.size() && value.size() <= max;
     }
 
@@ -38,15 +38,15 @@ service cloud.firestore {
       allow create: if onlyMe(userId)
       && request.auth.token.initSetting == false
       && isValidUser(request.resource.data)
-      && isValidString(request.resource.data.name, 1, 20)
+      && isValidStr(request.resource.data.name, 1, 20)
       && isValidImage(request.resource.data.imageUrl)
-      && isValidString(request.resource.data.greet, 0, 140)
-      && isValidInt(request.resource.data.competitionId1, 0, 100000)
-      && isValidInt(request.resource.data.teamId1, 0, 100000)
-      && isValidInt(request.resource.data.competitionId2, 0, 100000)
-      && isValidInt(request.resource.data.teamId2, 0, 100000)
-      && isValidInt(request.resource.data.competitionId3, 0, 100000)
-      && isValidInt(request.resource.data.teamId3, 0, 100000);
+      && isValidStr(request.resource.data.greet, 0, 140)
+      && isValidStr(request.resource.data.competitionId1, 0, 10)
+      && isValidStr(request.resource.data.teamId1, 0, 10)
+      && isValidStr(request.resource.data.competitionId2, 0, 10)
+      && isValidStr(request.resource.data.teamId2, 0, 10)
+      && isValidStr(request.resource.data.competitionId3, 0, 10)
+      && isValidStr(request.resource.data.teamId3, 0, 10);
     }
 
     // matches
