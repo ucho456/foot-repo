@@ -36,9 +36,8 @@
           <v-col cols="10"> ◆お気に入りチーム{{ n }} </v-col>
           <v-col cols="10" sm="5">
             <SelectIdCompetition
-              :number="n"
               :value="user[`competitionId${n}`]"
-              @input="inputCompetitionId"
+              @input="inputCompetitionId($event, n)"
             />
           </v-col>
           <v-col cols="10" sm="5">

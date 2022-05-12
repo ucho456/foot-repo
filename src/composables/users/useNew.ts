@@ -9,12 +9,12 @@ const useNew = () => {
     name: '',
     imageUrl: null,
     greet: '',
-    competitionId1: 0,
-    teamId1: 0,
-    competitionId2: 0,
-    teamId2: 0,
-    competitionId3: 0,
-    teamId3: 0
+    competitionId1: '',
+    teamId1: '',
+    competitionId2: '',
+    teamId2: '',
+    competitionId3: '',
+    teamId3: ''
   })
   const userImageFile = ref<File | null>(null)
 
@@ -44,12 +44,12 @@ const useNew = () => {
     userImageFile.value = null
   }
 
-  const inputCompetitionId = (arg: { number: 1 | 2 | 3; id: number }): void => {
+  const inputCompetitionId = (id: string, num: number): void => {
     const competitionId =
-      arg.number === 1 ? 'competitionId1' : arg.number === 2 ? 'competitionId2' : 'competitionId3'
-    const teamId = arg.number === 1 ? 'teamId1' : arg.number === 2 ? 'teamId2' : 'teamId3'
-    user[competitionId] = arg.id
-    user[teamId] = 0
+      num === 1 ? 'competitionId1' : num === 2 ? 'competitionId2' : 'competitionId3'
+    const teamId = num === 1 ? 'teamId1' : num === 2 ? 'teamId2' : 'teamId3'
+    user[competitionId] = id
+    user[teamId] = ''
   }
 
   const isLoading = ref(false)

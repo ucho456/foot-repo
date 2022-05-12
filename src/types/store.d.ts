@@ -2,9 +2,9 @@ type CurrentUser = {
   uid: string
   name: string | null
   imageUrl: string | null
-  teamId1: number
-  teamId2: number
-  teamId3: number
+  teamId1: string
+  teamId2: string
+  teamId3: string
   initSetting: boolean
   subscription: boolean
   suspended: boolean
