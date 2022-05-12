@@ -64,7 +64,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useRouter, reactive, watch } from '@nuxtjs/composition-api'
+import { defineComponent, useRouter } from '@nuxtjs/composition-api'
 import useNew from '@/composables/users/useNew'
 import useCurrentUser from '@/utils/useCurrentUser'
 import useSnackbar from '@/utils/useSnackbar'
@@ -92,7 +92,7 @@ export default defineComponent({
   setup() {
     const router = useRouter()
     const {
-      unauthorized,
+      isNormalAccess,
       user,
       setUpUser,
       changeImageUrl,
@@ -104,14 +104,14 @@ export default defineComponent({
     const { setUpCurrentUser } = useCurrentUser()
     const { openSnackbar } = useSnackbar()
 
-    watch(unauthorized, () => {
-      if (unauthorized.value) {
-        console.log('正常なアクセス')
-      } else {
-        console.log('不正なアクセス')
+    const setUp = async () => {
+      await setUpUser()
+      if (!isNormalAccess.value) {
+        openSnackbar('alert', '不正なアクセスです。')
+        router.push('/')
       }
-    })
-    setUpUser()
+    }
+    setUp()
 
     const submit = async (): Promise<void> => {
       const result = await create()
@@ -123,20 +123,13 @@ export default defineComponent({
       }
     }
 
-    const competitions = reactive([
-      { id: 1, selectId: 0 },
-      { id: 2, selectId: 0 },
-      { id: 3, selectId: 0 }
-    ])
-
     return {
       user,
-      isLoading,
-      submit,
       changeImageUrl,
       clearImageUrl,
       inputCompetitionId,
-      competitions
+      isLoading,
+      submit
     }
   }
 })

@@ -3,7 +3,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { createUser, uploadAndGetImageUrl } from '@/db/usersCollection'
 
 const useNew = () => {
-  const unauthorized = ref(false)
+  const isNormalAccess = ref(true)
   const user: User = reactive({
     id: '',
     name: '',
@@ -18,13 +18,13 @@ const useNew = () => {
   })
   const userImageFile = ref<File | null>(null)
 
-  const setUpUser = async () => {
+  const setUpUser = async (): Promise<void> => {
     const auth = getAuth()
     await onAuthStateChanged(auth, async (authUser) => {
       if (authUser) {
         const idTokenResult = await authUser.getIdTokenResult(true)
         if (idTokenResult.claims.initSetting) {
-          unauthorized.value = true
+          isNormalAccess.value = false
         } else {
           user.id = authUser.uid
           user.name = authUser.displayName ? authUser.displayName.substring(0, 20) : ''
@@ -68,7 +68,7 @@ const useNew = () => {
   }
 
   return {
-    unauthorized,
+    isNormalAccess,
     user,
     setUpUser,
     changeImageUrl,
