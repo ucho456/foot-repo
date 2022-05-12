@@ -35,14 +35,6 @@ type Match = {
   lastUpdated: string
 }
 
-type Position = 'GK' | 'DF' | 'MF' | 'FW' | 'HC'
-
-type Player = {
-  name: string
-  position: Position
-  shirtNumber: number | null
-}
-
 type MatchDetail = {
   id: string
   homeLineup: Player[]
@@ -77,11 +69,4 @@ type ForReport = {
   homePlayers: Player[]
   awayPlayers: Player[]
   lastUpdated: string
-}
-
-type SearchOption = {
-  status: string
-  competitionId: string
-  teamIds: string[]
-  jstDate: string
 }
