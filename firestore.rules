@@ -7,7 +7,7 @@ service cloud.firestore {
       return request.auth != null && userId == request.auth.uid;
     }
 
-    function isValidStr(value, min, max) {
+    function isValidString(value, min, max) {
       return min <= value.size() && value.size() <= max;
     }
 
@@ -25,12 +25,12 @@ service cloud.firestore {
       && 'name' in user && user.name is string
       && 'imageUrl' in user && (user.imageUrl == null || user.imageUrl is string)
       && 'greet' in user && user.greet is string
-      && 'competitionId1' in user && user.competitionId1 is int
-      && 'teamId1' in user && user.teamId1 is int
-      && 'competitionId2' in user && user.competitionId2 is int
-      && 'teamId2' in user && user.teamId2 is int
-      && 'competitionId3' in user && user.competitionId3 is int
-      && 'teamId3' in user && user.teamId3 is int;
+      && 'competitionId1' in user && user.competitionId1 is string
+      && 'teamId1' in user && user.teamId1 is string
+      && 'competitionId2' in user && user.competitionId2 is string
+      && 'teamId2' in user && user.teamId2 is string
+      && 'competitionId3' in user && user.competitionId3 is string
+      && 'teamId3' in user && user.teamId3 is string;
     }
 
     match /users/{userId} {
@@ -38,15 +38,15 @@ service cloud.firestore {
       allow create: if onlyMe(userId)
       && request.auth.token.initSetting == false
       && isValidUser(request.resource.data)
-      && isValidStr(request.resource.data.name, 1, 20)
+      && isValidString(request.resource.data.name, 1, 20)
       && isValidImage(request.resource.data.imageUrl)
-      && isValidStr(request.resource.data.greet, 0, 140)
-      && isValidStr(request.resource.data.competitionId1, 0, 10)
-      && isValidStr(request.resource.data.teamId1, 0, 10)
-      && isValidStr(request.resource.data.competitionId2, 0, 10)
-      && isValidStr(request.resource.data.teamId2, 0, 10)
-      && isValidStr(request.resource.data.competitionId3, 0, 10)
-      && isValidStr(request.resource.data.teamId3, 0, 10);
+      && isValidString(request.resource.data.greet, 0, 140)
+      && isValidString(request.resource.data.competitionId1, 0, 10)
+      && isValidString(request.resource.data.teamId1, 0, 10)
+      && isValidString(request.resource.data.competitionId2, 0, 10)
+      && isValidString(request.resource.data.teamId2, 0, 10)
+      && isValidString(request.resource.data.competitionId3, 0, 10)
+      && isValidString(request.resource.data.teamId3, 0, 10);
     }
 
     // matches
