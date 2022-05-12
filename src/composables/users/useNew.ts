@@ -1,8 +1,11 @@
 import { reactive, ref } from '@nuxtjs/composition-api'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { createUser, uploadAndGetImageUrl } from '@/db/usersCollection'
+import useCurrentUser from '@/utils/useCurrentUser'
 
 const useNew = () => {
+  const { setUpCurrentUser } = useCurrentUser()
+
   const isNormalAccess = ref(true)
   const user: User = reactive({
     id: '',
@@ -19,18 +22,21 @@ const useNew = () => {
   const userImageFile = ref<File | null>(null)
 
   const setUpUser = async (): Promise<void> => {
-    const auth = getAuth()
-    await onAuthStateChanged(auth, async (authUser) => {
-      if (authUser) {
-        const idTokenResult = await authUser.getIdTokenResult(true)
-        if (idTokenResult.claims.initSetting) {
-          isNormalAccess.value = false
-        } else {
-          user.id = authUser.uid
-          user.name = authUser.displayName ? authUser.displayName.substring(0, 20) : ''
-          user.imageUrl = authUser.photoURL
+    await new Promise((resolve) => {
+      const auth = getAuth()
+      const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
+        if (authUser) {
+          const idTokenResult = await authUser.getIdTokenResult(true)
+          if (idTokenResult.claims.initSetting) {
+            isNormalAccess.value = false
+          } else {
+            user.id = authUser.uid
+            user.name = authUser.displayName ? authUser.displayName.substring(0, 20) : ''
+            user.imageUrl = authUser.photoURL
+          }
         }
-      }
+      })
+      resolve(unsubscribe)
     })
   }
 
@@ -59,6 +65,7 @@ const useNew = () => {
       const imageUrl = userImageFile.value ? await uploadAndGetImageUrl(userImageFile.value) : null
       if (imageUrl) user.imageUrl = imageUrl
       await createUser(user)
+      await setUpCurrentUser()
       return 'success'
     } catch {
       return 'failure'

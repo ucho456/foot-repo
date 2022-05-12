@@ -66,7 +66,6 @@
 <script lang="ts">
 import { defineComponent, useRouter } from '@nuxtjs/composition-api'
 import useNew from '@/composables/users/useNew'
-import useCurrentUser from '@/utils/useCurrentUser'
 import useSnackbar from '@/utils/useSnackbar'
 import ImageUploaderUserImage from '@/components/molecules/ImageUploaderUserImage.vue'
 import TextField from '@/components/molecules/TextField.vue'
@@ -101,7 +100,6 @@ export default defineComponent({
       isLoading,
       create
     } = useNew()
-    const { setUpCurrentUser } = useCurrentUser()
     const { openSnackbar } = useSnackbar()
 
     const setUp = async () => {
@@ -118,7 +116,6 @@ export default defineComponent({
       const message = result === 'success' ? '作成しました。' : '失敗しました。'
       openSnackbar(result, message)
       if (result === 'success') {
-        await setUpCurrentUser()
         router.push('/')
       }
     }

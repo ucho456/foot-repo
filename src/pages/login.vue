@@ -57,7 +57,6 @@
 <script lang="ts">
 import { defineComponent, useRouter } from '@nuxtjs/composition-api'
 import useLogin from '@/composables/useLogin'
-import useCurrentUser from '@/utils/useCurrentUser'
 import useSnackbar from '@/utils/useSnackbar'
 import TextFieldEmail from '@/components/molecules/TextFieldEmail.vue'
 import TextFieldPassword from '@/components/molecules/TextFieldPassword.vue'
@@ -83,7 +82,6 @@ export default defineComponent({
   setup() {
     const router = useRouter()
     const { user, isLoading, loginEmail, loginTwitter, loginGoogle } = useLogin()
-    const { setUpCurrentUser } = useCurrentUser()
     const { openSnackbar } = useSnackbar()
 
     const submitEmail = async (): Promise<void> => {
@@ -94,7 +92,6 @@ export default defineComponent({
           : 'ログインに失敗しました。メールアドレス、又はパスワードをお確かめ下さい。'
       openSnackbar(result, message)
       if (result === 'success') {
-        await setUpCurrentUser()
         router.push('/')
       }
     }
@@ -109,11 +106,10 @@ export default defineComponent({
       next(result)
     }
 
-    const next = async (result: 'success' | 'failure'): Promise<void> => {
+    const next = (result: 'success' | 'failure'): void => {
       const message = result === 'success' ? 'ログインしました。' : 'エラーが発生しました。'
       openSnackbar(result, message)
       if (result === 'success') {
-        await setUpCurrentUser()
         router.push('/')
       }
     }

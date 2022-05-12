@@ -8,8 +8,11 @@ import {
   TwitterAuthProvider
 } from 'firebase/auth'
 import { getUser } from '@/db/usersCollection'
+import useCurrentUser from '@/utils/useCurrentUser'
 
 const useSignup = () => {
+  const { setUpCurrentUser } = useCurrentUser()
+
   const user = reactive({ email: '', password: '' })
   const isLoading = ref(false)
 
@@ -37,7 +40,12 @@ const useSignup = () => {
       const userCredential = await signInWithPopup(auth, provider)
       const uid = userCredential.user.uid
       const user = await getUser(uid)
-      return !user ? 'success' : 'already exist'
+      if (!user) {
+        return 'success'
+      } else {
+        await setUpCurrentUser()
+        return 'already exist'
+      }
     } catch {
       return 'failure'
     } finally {
@@ -53,7 +61,12 @@ const useSignup = () => {
       const userCredential = await signInWithPopup(auth, provider)
       const uid = userCredential.user.uid
       const user = await getUser(uid)
-      return !user ? 'success' : 'already exist'
+      if (!user) {
+        return 'success'
+      } else {
+        await setUpCurrentUser()
+        return 'already exist'
+      }
     } catch {
       return 'failure'
     } finally {
