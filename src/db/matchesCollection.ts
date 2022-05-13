@@ -53,18 +53,22 @@ const userConverter: FirestoreDataConverter<Match> = {
 const makeOptions = (searchOption: {
   status: string
   competitionId: string
-  teamIds: string[]
+  teamId: string
   jstDate: string
 }): QueryConstraint[] => {
   const options = []
-  if (searchOption.status) options.push(where('status', '==', searchOption.status))
+  if (searchOption.status) {
+    options.push(where('status', '==', searchOption.status))
+  }
   if (searchOption.competitionId) {
     options.push(where('competition.id', '==', searchOption.competitionId))
   }
-  if (searchOption.teamIds.length > 0) {
-    options.push(where('teamIds', 'array-contains-any', searchOption.teamIds))
+  if (searchOption.teamId !== '') {
+    options.push(where('teamIds', 'array-contains', searchOption.teamId))
   }
-  if (searchOption.jstDate) options.push(where('jstDate', '==', searchOption.jstDate))
+  if (searchOption.jstDate) {
+    options.push(where('jstDate', '==', searchOption.jstDate))
+  }
   return options
 }
 

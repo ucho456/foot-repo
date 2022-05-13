@@ -20,6 +20,7 @@ export default defineNuxtPlugin(async (_, inject) => {
                 uid: user.id,
                 name: user.name,
                 imageUrl: user.imageUrl,
+                competitionId: user.competitionId,
                 teamId: user.teamId,
                 initSetting: idTokenResult.claims.initSetting,
                 subscription: idTokenResult.claims.subscription,

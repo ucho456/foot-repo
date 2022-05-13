@@ -11,8 +11,9 @@ const useSearch = () => {
   const setUp = async (): Promise<'success' | 'failure'> => {
     try {
       isLoadingSetUp.value = true
-      if (currentUser.value && currentUser.value.teamId !== '') {
-        match.searchOption.teamIds.push(currentUser.value.teamId)
+      if (currentUser.value) {
+        match.searchOption.competitionId = currentUser.value.competitionId
+        match.searchOption.teamId = currentUser.value.teamId
       }
       match.searchOption.status = 'FINISHED'
       await getFirstMatches(match)
@@ -59,12 +60,11 @@ const useSearch = () => {
   }
 
   const inputCompetitionId = (competitionId: string): void => {
-    match.searchOption.teamIds = []
+    match.searchOption.teamId = ''
     match.searchOption.competitionId = competitionId
   }
   const inputTeamId = (teamId: string): void => {
-    match.searchOption.teamIds = []
-    match.searchOption.teamIds.push(teamId)
+    match.searchOption.teamId = teamId
   }
   const inputDate = (date: string): void => {
     match.searchOption.jstDate = date

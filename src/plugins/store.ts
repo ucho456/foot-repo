@@ -22,7 +22,7 @@ export default defineNuxtPlugin((_, inject) => {
       searchOption: {
         status: '',
         competitionId: '',
-        teamIds: [],
+        teamId: '',
         jstDate: ''
       }
     }
@@ -36,7 +36,7 @@ export default defineNuxtPlugin((_, inject) => {
     store.match.searchOption = {
       status: '',
       competitionId: '',
-      teamIds: [],
+      teamId: '',
       jstDate: ''
     }
   }

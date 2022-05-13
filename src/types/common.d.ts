@@ -2,6 +2,7 @@ type CurrentUser = {
   uid: string
   name: string | null
   imageUrl: string | null
+  competitionId: string
   teamId: string
   initSetting: boolean
   subscription: boolean
@@ -19,7 +20,7 @@ type Player = {
 type SearchOption = {
   status: string
   competitionId: string
-  teamIds: string[]
+  teamId: string
   jstDate: string
 }
 

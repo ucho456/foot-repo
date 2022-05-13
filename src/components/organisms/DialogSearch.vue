@@ -11,7 +11,7 @@
           <v-col cols="10">
             <SelectIdTeam
               :competition-id="searchOption.competitionId"
-              :value="searchOption.teamIds[0]"
+              :value="searchOption.teamId"
               @input="inputTeamId"
             />
           </v-col>
@@ -54,7 +54,7 @@ export default defineComponent({
         return {
           status: '',
           competitionId: '',
-          teamIds: [],
+          teamId: '',
           jstDate: ''
         }
       }
