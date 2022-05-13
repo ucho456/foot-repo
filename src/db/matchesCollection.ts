@@ -16,22 +16,18 @@ import type {
   QueryDocumentSnapshot
 } from 'firebase/firestore'
 
-const matchProperties = (match: Match) => {
-  return {
-    season: match.season,
-    jstDate: match.jstDate,
-    matchday: match.matchday,
-    status: match.status,
-    teamIds: match.teamIds,
-    homeTeam: match.homeTeam,
-    awayTeam: match.awayTeam,
-    lastUpdated: match.lastUpdated
-  }
-}
-
-const userConverter: FirestoreDataConverter<Match> = {
+const matchConverter: FirestoreDataConverter<Match> = {
   toFirestore(match: Match): DocumentData {
-    return matchProperties(match)
+    return {
+      season: match.season,
+      jstDate: match.jstDate,
+      matchday: match.matchday,
+      status: match.status,
+      teamIds: match.teamIds,
+      homeTeam: match.homeTeam,
+      awayTeam: match.awayTeam,
+      lastUpdated: match.lastUpdated
+    }
   },
   fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions): Match {
     const data = snapshot.data(options)
@@ -79,7 +75,7 @@ export const getFirstMatches = async (match: {
 }): Promise<void> => {
   match.data = []
   const db = getFirestore()
-  const mRef = collection(db, 'matches').withConverter(userConverter)
+  const mRef = collection(db, 'matches').withConverter(matchConverter)
   const options = makeOptions(match.searchOption)
   const q = query(mRef, ...options, orderBy('jstDate', 'desc'), limit(10))
   const mSnapshot = await getDocs(q)
@@ -95,7 +91,7 @@ export const getNextMatches = async (match: {
   searchOption: SearchOption
 }): Promise<void> => {
   const db = getFirestore()
-  const mRef = collection(db, 'matches').withConverter(userConverter)
+  const mRef = collection(db, 'matches').withConverter(matchConverter)
   const options = makeOptions(match.searchOption)
   const q = query(
     mRef,
