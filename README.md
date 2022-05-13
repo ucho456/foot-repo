@@ -92,6 +92,10 @@ where('teamIds', 'array-contains', teamId)
 で or 検索ができるようになる為。
 https://firebase.google.cn/docs/firestore/query-data/queries?hl=ja#array_membership
 
+# サイズを見る方法
+
+https://nishimura.club/nuxt-analyze
+
 ## github のアクセストークンが切れた際に行う作業
 
 https://zerofromlight.com/blogs/detail/106/
