@@ -2,7 +2,7 @@ import { inject, InjectionKey } from '@nuxtjs/composition-api'
 import type { QueryDocumentSnapshot } from 'firebase/firestore'
 
 export const StoreKey: InjectionKey<{
-  match: {
+  matches: {
     data: Match[]
     lastVisible: QueryDocumentSnapshot<Match> | null
     searchOption: SearchOption
@@ -13,7 +13,7 @@ const useStore = () => {
   const store = inject(StoreKey)
   if (store === undefined) throw new Error('store is no provided')
 
-  return { match: store.match }
+  return { matches: store.matches }
 }
 
 export default useStore

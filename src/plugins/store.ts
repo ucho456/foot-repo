@@ -10,13 +10,13 @@ import { StoreKey } from '@/utils/useStore'
 
 export default defineNuxtPlugin((_, inject) => {
   const store: {
-    match: {
+    matches: {
       data: Match[]
       lastVisible: QueryDocumentSnapshot<Match> | null
       searchOption: SearchOption
     }
   } = reactive({
-    match: {
+    matches: {
       data: [],
       lastVisible: null,
       searchOption: {
@@ -31,9 +31,9 @@ export default defineNuxtPlugin((_, inject) => {
   inject('store', store)
 
   const unsubscribe = () => {
-    store.match.data = []
-    store.match.lastVisible = null
-    store.match.searchOption = {
+    store.matches.data = []
+    store.matches.lastVisible = null
+    store.matches.searchOption = {
       status: '',
       competitionId: '',
       teamId: '',

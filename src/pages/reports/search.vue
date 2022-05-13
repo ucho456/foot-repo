@@ -1,7 +1,6 @@
 <template>
   <v-card outlined>
-    {{ match.searchOption }}
-    <MatchTable :loading="isLoadingSetUp" :matches="match.data" @click="showDialog" />
+    <MatchTable :loading="isLoadingSetUp" :matches="matches.data" @click="showDialog" />
     <v-container class="pb-10">
       <v-row justify="center">
         <v-col cols="10">
@@ -17,7 +16,7 @@
     </v-container>
     <DialogSearch
       :dialog="dialog"
-      :search-option="match.searchOption"
+      :search-option="matches.searchOption"
       @input-competition-id="inputCompetitionId"
       @input-team-id="inputTeamId"
       @input-date="inputDate"
@@ -60,9 +59,9 @@ export default defineComponent({
       inputDate,
       clearDate
     } = useSearch()
-    const { match } = useStore()
+    const { matches } = useStore()
 
-    if (match.data.length === 0) setUp()
+    if (matches.data.length === 0) setUp()
 
     return {
       isLoadingSetUp,
@@ -72,7 +71,7 @@ export default defineComponent({
       dialog,
       showDialog,
       hideDialog,
-      match,
+      matches,
       inputCompetitionId,
       inputTeamId,
       inputDate,

@@ -5,18 +5,18 @@ import useStore from '@/utils/useStore'
 
 const useSearch = () => {
   const { currentUser } = useCurrentUser()
-  const { match } = useStore()
+  const { matches } = useStore()
 
   const isLoadingSetUp = ref(false)
   const setUp = async (): Promise<'success' | 'failure'> => {
     try {
       isLoadingSetUp.value = true
       if (currentUser.value) {
-        match.searchOption.competitionId = currentUser.value.competitionId
-        match.searchOption.teamId = currentUser.value.teamId
+        matches.searchOption.competitionId = currentUser.value.competitionId
+        matches.searchOption.teamId = currentUser.value.teamId
       }
-      match.searchOption.status = 'FINISHED'
-      await getFirstMatches(match)
+      matches.searchOption.status = 'FINISHED'
+      await getFirstMatches(matches)
       return 'success'
     } catch {
       return 'failure'
@@ -29,7 +29,7 @@ const useSearch = () => {
   const getNextPage = async (): Promise<'success' | 'failure'> => {
     try {
       isLoading.value = true
-      await getNextMatches(match)
+      await getNextMatches(matches)
       return 'success'
     } catch {
       return 'failure'
@@ -42,7 +42,7 @@ const useSearch = () => {
     try {
       dialog.value = false
       isLoading.value = true
-      await getFirstMatches(match)
+      await getFirstMatches(matches)
       return 'success'
     } catch {
       return 'failure'
@@ -60,17 +60,17 @@ const useSearch = () => {
   }
 
   const inputCompetitionId = (competitionId: string): void => {
-    match.searchOption.teamId = ''
-    match.searchOption.competitionId = competitionId
+    matches.searchOption.teamId = ''
+    matches.searchOption.competitionId = competitionId
   }
   const inputTeamId = (teamId: string): void => {
-    match.searchOption.teamId = teamId
+    matches.searchOption.teamId = teamId
   }
   const inputDate = (date: string): void => {
-    match.searchOption.jstDate = date
+    matches.searchOption.jstDate = date
   }
   const clearDate = (): void => {
-    match.searchOption.jstDate = ''
+    matches.searchOption.jstDate = ''
   }
 
   return {
