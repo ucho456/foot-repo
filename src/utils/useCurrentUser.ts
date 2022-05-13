@@ -21,9 +21,7 @@ const useCurrentUser = () => {
                 uid: user.id,
                 name: user.name,
                 imageUrl: user.imageUrl,
-                teamId1: user.teamId1,
-                teamId2: user.teamId2,
-                teamId3: user.teamId3,
+                teamId: user.teamId,
                 initSetting: idTokenResult.claims.initSetting as unknown as boolean,
                 subscription: idTokenResult.claims.subscription as unknown as boolean,
                 suspended: idTokenResult.claims.suspended as unknown as boolean

@@ -7,23 +7,15 @@ import type {
 } from 'firebase/firestore'
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 
-const userProperties = (user: User) => {
-  return {
-    name: user.name,
-    imageUrl: user.imageUrl,
-    greet: user.greet,
-    competitionId1: user.competitionId1,
-    teamId1: user.teamId1,
-    competitionId2: user.competitionId2,
-    teamId2: user.teamId2,
-    competitionId3: user.competitionId3,
-    teamId3: user.teamId3
-  }
-}
-
 const userConverter: FirestoreDataConverter<User> = {
   toFirestore(user: User): DocumentData {
-    return userProperties(user)
+    return {
+      name: user.name,
+      imageUrl: user.imageUrl,
+      greet: user.greet,
+      competitionId: user.competitionId,
+      teamId: user.teamId
+    }
   },
   fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions): User {
     const data = snapshot.data(options)
@@ -32,12 +24,8 @@ const userConverter: FirestoreDataConverter<User> = {
       name: data.name,
       imageUrl: data.imageUrl,
       greet: data.greet,
-      competitionId1: data.competitionId1,
-      teamId1: data.teamId1,
-      competitionId2: data.competitionId2,
-      teamId2: data.teamId1,
-      competitionId3: data.competitionId3,
-      teamId3: data.competitionId1
+      competitionId: data.competitionId,
+      teamId: data.teamId
     }
   }
 }
@@ -53,14 +41,15 @@ export const getUser = async (uid: string | undefined): Promise<User | null> => 
 export const createUser = async (user: User): Promise<void> => {
   const db = getFirestore()
   const uRef = doc(db, 'users', user.id).withConverter(userConverter)
-  await setDoc(uRef, { id: user.id, ...userProperties(user) })
+  await setDoc(uRef, {
+    id: user.id,
+    name: user.name,
+    imageUrl: user.imageUrl,
+    greet: user.greet,
+    competitionId: user.competitionId,
+    teamId: user.teamId
+  })
 }
-
-// export const updateInitUserDoc = (batch: WriteBatch, uid: string, user: User): void => {
-//   const db = getFirestore()
-//   const uRef = doc(db, 'users', uid).withConverter(userConverter)
-//   batch.update(uRef, userProperties(user))
-// }
 
 export const uploadAndGetImageUrl = async (userImageFile: File): Promise<string> => {
   const storage = getStorage()
@@ -69,5 +58,3 @@ export const uploadAndGetImageUrl = async (userImageFile: File): Promise<string>
   const imageUrl = await getDownloadURL(storageRef)
   return imageUrl
 }
-
-// getUsersDoc, deleteUserDoc

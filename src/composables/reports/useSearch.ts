@@ -1,29 +1,47 @@
 import { ref } from '@nuxtjs/composition-api'
 import { getFirstMatches, getNextMatches } from '@/db/matchesCollection'
+import useCurrentUser from '@/utils/useCurrentUser'
 import useStore from '@/utils/useStore'
 
 const useSearch = () => {
+  const { currentUser } = useCurrentUser()
   const { match } = useStore()
-  const isLoadingFirst = ref(false)
-  const isLoading = ref(false)
 
-  const getFirstPage = async (): Promise<'success' | 'failure'> => {
+  const isLoadingSetUp = ref(false)
+  const setUp = async (): Promise<'success' | 'failure'> => {
     try {
-      dialog.value = false
-      isLoadingFirst.value = true
+      isLoadingSetUp.value = true
+      if (currentUser.value && currentUser.value.teamId !== '') {
+        match.searchOption.teamIds.push(currentUser.value.teamId)
+      }
+      match.searchOption.status = 'FINISHED'
       await getFirstMatches(match)
       return 'success'
     } catch {
       return 'failure'
     } finally {
-      isLoadingFirst.value = false
+      isLoadingSetUp.value = false
     }
   }
 
+  const isLoading = ref(false)
   const getNextPage = async (): Promise<'success' | 'failure'> => {
     try {
       isLoading.value = true
       await getNextMatches(match)
+      return 'success'
+    } catch {
+      return 'failure'
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  const search = async (): Promise<'success' | 'failure'> => {
+    try {
+      dialog.value = false
+      isLoading.value = true
+      await getFirstMatches(match)
       return 'success'
     } catch {
       return 'failure'
@@ -56,10 +74,11 @@ const useSearch = () => {
   }
 
   return {
-    isLoadingFirst,
+    isLoadingSetUp,
+    setUp,
     isLoading,
-    getFirstPage,
     getNextPage,
+    search,
     dialog,
     showDialog,
     hideDialog,

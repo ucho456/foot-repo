@@ -32,19 +32,13 @@
             />
           </v-col>
         </v-row>
-        <v-row v-for="n of 3" :key="n" class="mb-10" justify="center">
-          <v-col cols="10"> ◆お気に入りチーム{{ n }} </v-col>
+        <v-row class="mb-10" justify="center">
+          <v-col cols="10"> マイチーム </v-col>
           <v-col cols="10" sm="5">
-            <SelectIdCompetition
-              :value="user[`competitionId${n}`]"
-              @input="inputCompetitionId($event, n)"
-            />
+            <SelectIdCompetition v-model="user.competitionId" />
           </v-col>
           <v-col cols="10" sm="5">
-            <SelectIdTeam
-              v-model="user[`teamId${n}`]"
-              :competition-id="user[`competitionId${n}`]"
-            />
+            <SelectIdTeam v-model="user.teamId" :competition-id="user.competitionId" />
           </v-col>
         </v-row>
         <v-row justify="center">
@@ -90,16 +84,8 @@ export default defineComponent({
 
   setup() {
     const router = useRouter()
-    const {
-      isNormalAccess,
-      user,
-      setUpUser,
-      changeImageUrl,
-      clearImageUrl,
-      inputCompetitionId,
-      isLoading,
-      create
-    } = useNew()
+    const { isNormalAccess, user, setUpUser, changeImageUrl, clearImageUrl, isLoading, create } =
+      useNew()
     const { openSnackbar } = useSnackbar()
 
     const setUp = async () => {
@@ -124,7 +110,6 @@ export default defineComponent({
       user,
       changeImageUrl,
       clearImageUrl,
-      inputCompetitionId,
       isLoading,
       submit
     }

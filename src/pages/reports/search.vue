@@ -1,7 +1,7 @@
 <template>
   <v-card outlined>
     {{ match.searchOption }}
-    <MatchTable :loading="isLoadingFirst" :matches="match.data" @click="showDialog" />
+    <MatchTable :loading="isLoadingSetUp" :matches="match.data" @click="showDialog" />
     <v-container class="pb-10">
       <v-row justify="center">
         <v-col cols="10">
@@ -23,7 +23,7 @@
       @input-date="inputDate"
       @clear-date="clearDate"
       @close="hideDialog"
-      @search="getFirstPage"
+      @search="search"
     />
   </v-card>
 </template>
@@ -47,10 +47,11 @@ export default defineComponent({
 
   setup() {
     const {
-      isLoadingFirst,
+      isLoadingSetUp,
+      setUp,
       isLoading,
-      getFirstPage,
       getNextPage,
+      search,
       dialog,
       showDialog,
       hideDialog,
@@ -61,13 +62,13 @@ export default defineComponent({
     } = useSearch()
     const { match } = useStore()
 
-    if (match.data.length === 0) getFirstPage()
+    if (match.data.length === 0) setUp()
 
     return {
-      isLoadingFirst,
+      isLoadingSetUp,
       isLoading,
-      getFirstPage,
       getNextPage,
+      search,
       dialog,
       showDialog,
       hideDialog,

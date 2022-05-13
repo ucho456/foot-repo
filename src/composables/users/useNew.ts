@@ -12,12 +12,8 @@ const useNew = () => {
     name: '',
     imageUrl: null,
     greet: '',
-    competitionId1: '',
-    teamId1: '',
-    competitionId2: '',
-    teamId2: '',
-    competitionId3: '',
-    teamId3: ''
+    competitionId: '',
+    teamId: ''
   })
   const userImageFile = ref<File | null>(null)
 
@@ -50,14 +46,6 @@ const useNew = () => {
     userImageFile.value = null
   }
 
-  const inputCompetitionId = (id: string, num: number): void => {
-    const competitionId =
-      num === 1 ? 'competitionId1' : num === 2 ? 'competitionId2' : 'competitionId3'
-    const teamId = num === 1 ? 'teamId1' : num === 2 ? 'teamId2' : 'teamId3'
-    user[competitionId] = id
-    user[teamId] = ''
-  }
-
   const isLoading = ref(false)
   const create = async (): Promise<'success' | 'failure'> => {
     try {
@@ -80,7 +68,6 @@ const useNew = () => {
     setUpUser,
     changeImageUrl,
     clearImageUrl,
-    inputCompetitionId,
     isLoading,
     create
   }
