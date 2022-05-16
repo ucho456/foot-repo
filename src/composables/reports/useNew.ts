@@ -6,15 +6,15 @@ const useNew = () => {
   const report: {
     title: string
     selectTeam: HomeAway
-    homeTeamPlayers: Player[]
-    awayTeamPlayers: Player[]
+    homeTeamReportItems: ReportItem[]
+    awayTeamReportItems: ReportItem[]
     summary: string
     momId: string
   } = reactive({
     title: '',
     selectTeam: 'home',
-    homeTeamPlayers: [],
-    awayTeamPlayers: [],
+    homeTeamReportItems: [],
+    awayTeamReportItems: [],
     summary: '',
     momId: ''
   })
@@ -27,8 +27,8 @@ const useNew = () => {
       match.value = await getMatch(matchId)
       const forReport = await getForReport(matchId)
       if (forReport) {
-        report.homeTeamPlayers = forReport.homePlayers
-        report.awayTeamPlayers = forReport.awayPlayers
+        report.homeTeamReportItems = forReport.homeTeamReportItems
+        report.awayTeamReportItems = forReport.awayTeamReportItems
       }
       return 'success'
     } catch {

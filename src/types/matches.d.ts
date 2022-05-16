@@ -17,6 +17,7 @@ type Match = {
     score: number | null
     penalty: number | null
     goalPlayers: {
+      id: string
       minute: number
       name: string
     }[]
@@ -28,6 +29,7 @@ type Match = {
     score: number | null
     penalty: number | null
     goalPlayers: {
+      id: string
       minute: number
       name: string
     }[]
@@ -44,18 +46,21 @@ type MatchDetail = {
   awayBench: Player[]
   awayCoachName: string
   goals: {
+    id: string
     minute: number
     teamName: string
     goalPlayerName: string
     assistPlayerName: string | null
   }[]
   bookings: {
+    id: string
     minute: number
     teamName: string
     playerName: string
     card: 'red' | 'yellow'
   }[]
   substitutions: {
+    id: string
     minute: number
     teamName: string
     outPlayerName: string
@@ -66,7 +71,7 @@ type MatchDetail = {
 
 type ForReport = {
   id: string
-  homePlayers: Player[]
-  awayPlayers: Player[]
+  homeTeamReportItems: ReportItem[]
+  awayTeamReportItems: ReportItem[]
   lastUpdated: string
 }

@@ -45,14 +45,14 @@
     </v-row>
     <v-row>
       <v-col class="text-truncate" cols="5">
-        <v-row v-for="(player, i) in homeTeam.goalPlayers" :key="i">
-          <v-col>{{ player.minute }}. {{ player.name }}</v-col>
+        <v-row v-for="goalDatum in homeTeam.goalPlayers" :key="goalDatum.id">
+          <v-col>{{ goalDatum.minute }}. {{ goalDatum.name }}</v-col>
         </v-row>
       </v-col>
       <v-col cols="2"></v-col>
       <v-col class="text-truncate" cols="5">
-        <v-row v-for="(player, i) in awayTeam.goalPlayers" :key="i">
-          <v-col>{{ player.minute }}. {{ player.name }}</v-col>
+        <v-row v-for="goalDatum in awayTeam.goalPlayers" :key="goalDatum.id">
+          <v-col>{{ goalDatum.minute }}. {{ goalDatum.name }}</v-col>
         </v-row>
       </v-col>
     </v-row>
@@ -85,6 +85,7 @@ export default defineComponent({
         score: number | null
         penalty: number | null
         goalPlayers: {
+          id: string
           minute: number
           name: string
         }[]
@@ -106,6 +107,7 @@ export default defineComponent({
         score: number | null
         penalty: number | null
         goalPlayers: {
+          id: string
           minute: number
           name: string
         }[]
