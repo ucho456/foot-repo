@@ -1,5 +1,13 @@
 <template>
   <v-card outlined>
+    <v-container v-if="isLoadingSetUp" class="pb-10 pt-10">
+      <v-row justify="center">
+        <v-progress-circular color="primary" indeterminate />
+      </v-row>
+    </v-container>
+    <v-container v-else>
+      <ReportsHeader v-bind="match" />
+    </v-container>
     <!-- <v-row justify="center">
       <v-col cols="12" md="6" sm="10">
         <v-sheet>
@@ -71,7 +79,7 @@
 <script lang="ts">
 import { defineComponent, useRoute } from '@nuxtjs/composition-api' //, useRoute
 import useNew from '@/composables/reports/useNew'
-// import ReportsHeader from '@/components/organisms/ReportsHeader.vue'
+import ReportsHeader from '@/components/organisms/ReportsHeader.vue'
 // import SelectHomeAway from '@/components/molecules/SelectHomeAway.vue'
 // import ReportsPlayerForm from '@/components/organisms/ReportsPlayerForm.vue'
 // import SelectIdMom from '@/components/molecules/SelectIdMom.vue'
@@ -84,17 +92,15 @@ import useNew from '@/composables/reports/useNew'
 export default defineComponent({
   name: 'ReportNew',
 
-  // components: {
-  //   ReportsHeader,
-  //   SelectHomeAway,
-  //   ReportsPlayerForm,
-  //   SelectIdMom,
-  //   Textarea,
-  //   ButtonBack,
-  //   ButtonSubmit
-  // },
-
-  layout: 'default',
+  components: {
+    ReportsHeader
+    //   SelectHomeAway,
+    //   ReportsPlayerForm,
+    //   SelectIdMom,
+    //   Textarea,
+    //   ButtonBack,
+    //   ButtonSubmit
+  },
 
   setup() {
     const route = useRoute()

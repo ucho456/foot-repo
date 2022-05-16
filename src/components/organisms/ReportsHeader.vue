@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row class="text-center">
-      <v-col class="text-center"> {{ utcDate.substring(0, 10) }} {{ competitionName }}</v-col>
+      <v-col class="text-center"> {{ jstDate }} {{ competition.name }} {{ matchday }}節</v-col>
     </v-row>
     <v-row class="mt-n4">
       <v-col cols="5">
@@ -10,7 +10,7 @@
             class="rounded-circle"
             max-height="60"
             max-width="60"
-            :src="`https://crests.football-data.org/${homeTeamId}.svg`"
+            :src="`https://crests.football-data.org/${homeTeam.id}.svg`"
           />
         </v-row>
       </v-col>
@@ -21,14 +21,16 @@
             class="rounded-circle"
             max-height="60"
             max-width="60"
-            :src="`https://crests.football-data.org/${awayTeamId}.svg`"
+            :src="`https://crests.football-data.org/${awayTeam.id}.svg`"
           />
         </v-row>
       </v-col>
+    </v-row>
+    <v-row>
       <v-col class="text-center text-truncate" cols="5">
-        <div>{{ homeTeamName }}</div>
-        <div>{{ homeTeamScore }}</div>
-        <div v-if="isPK">{{ homeTeamPenalty }}</div>
+        <div>{{ homeTeam.name }}</div>
+        <div>{{ homeTeam.score }}</div>
+        <div v-if="isPK">{{ homeTeam.penalty }}</div>
       </v-col>
       <v-col class="text-center text-truncate" cols="2">
         <div>vs</div>
@@ -36,9 +38,22 @@
         <div v-if="isPK">PK</div>
       </v-col>
       <v-col class="text-center text-truncate" cols="5">
-        <div>{{ awayTeamName }}</div>
-        <div>{{ awayTeamScore }}</div>
-        <div v-if="isPK">{{ awayTeamPenalty }}</div>
+        <div>{{ awayTeam.name }}</div>
+        <div>{{ awayTeam.score }}</div>
+        <div v-if="isPK">{{ awayTeam.penalty }}</div>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col class="text-truncate" cols="5">
+        <v-row v-for="(player, i) in homeTeam.goalPlayers" :key="i">
+          <v-col>{{ player.minute }}. {{ player.name }}</v-col>
+        </v-row>
+      </v-col>
+      <v-col cols="2"></v-col>
+      <v-col class="text-truncate" cols="5">
+        <v-row v-for="(player, i) in awayTeam.goalPlayers" :key="i">
+          <v-col>{{ player.minute }}. {{ player.name }}</v-col>
+        </v-row>
       </v-col>
     </v-row>
   </v-container>
@@ -51,23 +66,68 @@ export default defineComponent({
   name: 'ReportsHeader',
 
   props: {
-    awayTeamId: { type: Number, default: 0 },
-    awayTeamName: { type: String, default: '' },
-    awayTeamPenalty: { type: Number, default: 0 },
-    awayTeamScore: { type: Number, default: 0 },
-    competitionName: { type: String, default: '' },
-    homeTeamId: { type: Number, default: 0 },
-    homeTeamName: { type: String, default: '' },
-    homeTeamPenalty: { type: Number, default: 0 },
-    homeTeamScore: { type: Number, default: 0 },
-    utcDate: { type: String, default: '' }
+    id: { type: String, default: '' },
+    season: { type: String, default: '' },
+    jstDate: { type: String, default: '' },
+    matchday: { type: Number, default: 0 },
+    status: { type: String as () => 'SCHEDULED' | 'FINISHED', default: 'FINISHED' },
+    teamIds: { type: Array as () => string[], default: () => [''] },
+    competition: {
+      type: Object as () => { id: string; name: string },
+      default: () => {
+        return { id: '', name: '' }
+      }
+    },
+    homeTeam: {
+      type: Object as () => {
+        id: string
+        name: string
+        score: number | null
+        penalty: number | null
+        goalPlayers: {
+          minute: number
+          name: string
+        }[]
+      },
+      default: () => {
+        return {
+          id: '',
+          name: '',
+          score: 0,
+          penalty: 0,
+          goalPlayers: []
+        }
+      }
+    },
+    awayTeam: {
+      type: Object as () => {
+        id: string
+        name: string
+        score: number | null
+        penalty: number | null
+        goalPlayers: {
+          minute: number
+          name: string
+        }[]
+      },
+      default: () => {
+        return {
+          id: '',
+          name: '',
+          score: 0,
+          penalty: 0,
+          goalPlayers: []
+        }
+      }
+    },
+    lastUpdated: { type: String, default: '' }
   },
 
   setup(props) {
     const isPK =
-      props.homeTeamScore === props.awayTeamScore &&
-      props.homeTeamPenalty !== 0 &&
-      props.awayTeamPenalty !== 0
+      props.homeTeam.score === props.awayTeam.score &&
+      props.homeTeam.penalty !== null &&
+      props.awayTeam.penalty !== null
     return { isPK }
   }
 })
