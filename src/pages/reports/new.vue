@@ -15,12 +15,34 @@
         </v-row>
       </v-container>
       <v-container v-if="report.selectTeam !== 'away'">
-        <v-row v-for="(reportItem, index) in report.homeTeamReportItems" :key="reportItem.id">
-          <ReportsPlayerForm
-            v-bind="reportItem"
-            @input-point="(point) => inputPoint(point, 'home', index)"
-            @input-text="(text) => inputText(text, 'home', index)"
-          />
+        <v-row v-for="reportItem in report.homeTeamReportItems" :key="reportItem.id">
+          <v-container>
+            <v-row>
+              <v-col cols="2">
+                {{ reportItem.position }}
+                <span v-if="reportItem.shirtNumber" class="ml-2">
+                  {{ reportItem.shirtNumber }}
+                </span>
+              </v-col>
+              <v-col cols="10">{{ reportItem.playerName }}</v-col>
+              <v-col class="mt-n6" cols="2"><TextFieldPoint v-model="reportItem.point" /></v-col>
+              <v-col class="mt-n6" cols="10">
+                <Textarea v-model="reportItem.text" :maxlength="140" />
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-row>
+      </v-container>
+      <v-container>
+        <v-row>
+          <v-col>
+            <Textarea
+              v-model="report.summary"
+              :icon="'mdi-note-text-outline'"
+              :label="'総評'"
+              :maxlength="140"
+            />
+          </v-col>
         </v-row>
       </v-container>
     </v-container>
@@ -61,17 +83,7 @@
               </v-col>
             </v-row>
           </v-container>
-          <v-container>
-            <v-row>
-              <v-col>
-                <Textarea
-                  v-model="report.summary"
-                  :icon="'mdi-note-text-outline'"
-                  :label="'総評'"
-                />
-              </v-col>
-            </v-row>
-          </v-container>
+          
           <v-container>
             <v-row justify="center">
               <v-col cols="4">
@@ -93,7 +105,8 @@ import { defineComponent, useRoute } from '@nuxtjs/composition-api' //, useRoute
 import useNew from '@/composables/reports/useNew'
 import ReportsHeader from '@/components/organisms/ReportsHeader.vue'
 import SelectHomeAway from '@/components/molecules/SelectHomeAway.vue'
-import ReportsPlayerForm from '@/components/organisms/ReportsPlayerForm.vue'
+import TextFieldPoint from '@/components/molecules/TextFieldPoint.vue'
+import Textarea from '@/components/molecules/Textarea.vue'
 // import SelectIdMom from '@/components/molecules/SelectIdMom.vue'
 // import Textarea from '@/components/molecules/Textarea.vue'
 // import ButtonBack from '@/components/molecules/ButtonBack.vue'
@@ -107,7 +120,8 @@ export default defineComponent({
   components: {
     ReportsHeader,
     SelectHomeAway,
-    ReportsPlayerForm
+    TextFieldPoint,
+    Textarea
     //   SelectIdMom,
     //   Textarea,
     //   ButtonBack,
@@ -116,7 +130,7 @@ export default defineComponent({
 
   setup() {
     const route = useRoute()
-    const { report, match, isLoadingSetUp, setUp, inputPoint, inputText } = useNew()
+    const { report, match, isLoadingSetUp, setUp } = useNew()
 
     const matchId = route.value.query.matchId as string
     setUp(matchId)
@@ -126,8 +140,8 @@ export default defineComponent({
     // const report = setUpReport(match, user)
     // const router = useRouter()
     // const back = () => router.back()
-    // return { report, inputPoint, inputText, back }
-    return { report, match, isLoadingSetUp, inputPoint, inputText }
+    // return { report, back }
+    return { report, match, isLoadingSetUp }
   }
 })
 </script>
