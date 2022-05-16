@@ -20,11 +20,11 @@ export default defineComponent({
   },
 
   props: {
-    value: { type: String as () => ReportSelectTeam, default: 'Home team only' }
+    value: { type: String as () => HomeAway, default: 'home' }
   },
 
   setup(_, ctx) {
-    const items = ['Home team only', 'Away team only', 'Both teams']
+    const items = ['home', 'away', 'both']
     const handleInput = (value: string): void => {
       ctx.emit('input', value)
     }

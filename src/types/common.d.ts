@@ -9,6 +9,8 @@ type CurrentUser = {
   suspended: boolean
 }
 
+type HomeAway = 'home' | 'away' | 'both'
+
 type Position = 'GK' | 'DF' | 'MF' | 'FW' | 'HC'
 
 type Player = {

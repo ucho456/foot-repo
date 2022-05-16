@@ -7,17 +7,18 @@
     </v-container>
     <v-container v-else>
       <ReportsHeader v-bind="match" />
+      <v-row>
+        <v-col cols="8" md="5" sm="5">
+          <SelectHomeAway v-model="report.selectTeam" />
+        </v-col>
+      </v-row>
     </v-container>
     <!-- <v-row justify="center">
       <v-col cols="12" md="6" sm="10">
         <v-sheet>
           <ReportsHeader v-bind="report" />
           <v-container>
-            <v-row>
-              <v-col cols="8" md="5" sm="5">
-                <SelectHomeAway v-model="report.selectTeam" />
-              </v-col>
-            </v-row>
+            
           </v-container>
           <v-container v-if="report.selectTeam !== 'Away team only'">
             <v-row v-for="(reportItem, index) in report.homeTeamReportItems" :key="reportItem.id">
@@ -80,7 +81,7 @@
 import { defineComponent, useRoute } from '@nuxtjs/composition-api' //, useRoute
 import useNew from '@/composables/reports/useNew'
 import ReportsHeader from '@/components/organisms/ReportsHeader.vue'
-// import SelectHomeAway from '@/components/molecules/SelectHomeAway.vue'
+import SelectHomeAway from '@/components/molecules/SelectHomeAway.vue'
 // import ReportsPlayerForm from '@/components/organisms/ReportsPlayerForm.vue'
 // import SelectIdMom from '@/components/molecules/SelectIdMom.vue'
 // import Textarea from '@/components/molecules/Textarea.vue'
@@ -93,8 +94,8 @@ export default defineComponent({
   name: 'ReportNew',
 
   components: {
-    ReportsHeader
-    //   SelectHomeAway,
+    ReportsHeader,
+    SelectHomeAway
     //   ReportsPlayerForm,
     //   SelectIdMom,
     //   Textarea,
@@ -104,7 +105,7 @@ export default defineComponent({
 
   setup() {
     const route = useRoute()
-    const { match, forReport, isLoadingSetUp, setUp } = useNew()
+    const { report, match, isLoadingSetUp, setUp } = useNew()
 
     const matchId = route.value.query.matchId as string
     setUp(matchId)
@@ -115,7 +116,7 @@ export default defineComponent({
     // const router = useRouter()
     // const back = () => router.back()
     // return { report, inputPoint, inputText, back }
-    return { match, forReport, isLoadingSetUp }
+    return { report, match, isLoadingSetUp }
   }
 })
 </script>
