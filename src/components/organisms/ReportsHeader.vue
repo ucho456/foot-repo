@@ -5,25 +5,21 @@
     </v-row>
     <v-row class="mt-n4">
       <v-col cols="5">
-        <v-row justify="center">
-          <v-img
-            class="rounded-circle"
-            max-height="60"
-            max-width="60"
-            :src="`https://crests.football-data.org/${homeTeam.id}.svg`"
-          />
-        </v-row>
+        <v-img
+          class="center rounded-circle"
+          max-height="60"
+          max-width="60"
+          :src="`https://crests.football-data.org/${homeTeam.id}.svg`"
+        />
       </v-col>
       <v-col cols="2"></v-col>
       <v-col cols="5">
-        <v-row justify="center">
-          <v-img
-            class="rounded-circle"
-            max-height="60"
-            max-width="60"
-            :src="`https://crests.football-data.org/${awayTeam.id}.svg`"
-          />
-        </v-row>
+        <v-img
+          class="center rounded-circle"
+          max-height="60"
+          max-width="60"
+          :src="`https://crests.football-data.org/${awayTeam.id}.svg`"
+        />
       </v-col>
     </v-row>
     <v-row>
@@ -134,3 +130,9 @@ export default defineComponent({
   }
 })
 </script>
+
+<style scoped>
+.center {
+  margin: 0 auto;
+}
+</style>

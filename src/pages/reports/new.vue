@@ -7,11 +7,22 @@
     </v-container>
     <v-container v-else>
       <ReportsHeader v-bind="match" />
-      <v-row>
-        <v-col cols="8" md="5" sm="5">
-          <SelectHomeAway v-model="report.selectTeam" />
-        </v-col>
-      </v-row>
+      <v-container>
+        <v-row>
+          <v-col cols="8" md="5" sm="5">
+            <SelectHomeAway v-model="report.selectTeam" />
+          </v-col>
+        </v-row>
+      </v-container>
+      <v-container v-if="report.selectTeam !== 'away'">
+        <v-row v-for="(reportItem, index) in report.homeTeamReportItems" :key="reportItem.id">
+          <ReportsPlayerForm
+            v-bind="reportItem"
+            @input-point="(point) => inputPoint(point, 'home', index)"
+            @input-text="(text) => inputText(text, 'home', index)"
+          />
+        </v-row>
+      </v-container>
     </v-container>
     <!-- <v-row justify="center">
       <v-col cols="12" md="6" sm="10">
@@ -82,7 +93,7 @@ import { defineComponent, useRoute } from '@nuxtjs/composition-api' //, useRoute
 import useNew from '@/composables/reports/useNew'
 import ReportsHeader from '@/components/organisms/ReportsHeader.vue'
 import SelectHomeAway from '@/components/molecules/SelectHomeAway.vue'
-// import ReportsPlayerForm from '@/components/organisms/ReportsPlayerForm.vue'
+import ReportsPlayerForm from '@/components/organisms/ReportsPlayerForm.vue'
 // import SelectIdMom from '@/components/molecules/SelectIdMom.vue'
 // import Textarea from '@/components/molecules/Textarea.vue'
 // import ButtonBack from '@/components/molecules/ButtonBack.vue'
@@ -95,8 +106,8 @@ export default defineComponent({
 
   components: {
     ReportsHeader,
-    SelectHomeAway
-    //   ReportsPlayerForm,
+    SelectHomeAway,
+    ReportsPlayerForm
     //   SelectIdMom,
     //   Textarea,
     //   ButtonBack,
@@ -105,7 +116,7 @@ export default defineComponent({
 
   setup() {
     const route = useRoute()
-    const { report, match, isLoadingSetUp, setUp } = useNew()
+    const { report, match, isLoadingSetUp, setUp, inputPoint, inputText } = useNew()
 
     const matchId = route.value.query.matchId as string
     setUp(matchId)
@@ -116,7 +127,7 @@ export default defineComponent({
     // const router = useRouter()
     // const back = () => router.back()
     // return { report, inputPoint, inputText, back }
-    return { report, match, isLoadingSetUp }
+    return { report, match, isLoadingSetUp, inputPoint, inputText }
   }
 })
 </script>

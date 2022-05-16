@@ -38,7 +38,20 @@ const useNew = () => {
     }
   }
 
-  return { report, match, isLoadingSetUp, setUp }
+  const inputPoint = (point: Point, homeAway: HomeAway, index: number): void => {
+    homeAway === 'home'
+      ? (report.homeTeamReportItems[index].point = point)
+      : (report.awayTeamReportItems[index].point = point)
+  }
+  const inputText = (text: string, homeAway: HomeAway, index: number): void => {
+    console.log(text)
+    homeAway === 'home'
+      ? (report.homeTeamReportItems[index].text = text)
+      : (report.awayTeamReportItems[index].text = text)
+    console.log(report.homeTeamReportItems[index].text)
+  }
+
+  return { report, match, isLoadingSetUp, setUp, inputPoint, inputText }
 }
 
 export default useNew
