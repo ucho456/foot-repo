@@ -44,6 +44,10 @@ service cloud.firestore {
     // matches
     match /matches/{matchId} {
       allow read;
+
+      match /for-report/{matchId} {
+        allow read;
+      }
     }
   }
 }

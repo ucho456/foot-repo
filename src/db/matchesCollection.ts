@@ -1,5 +1,7 @@
 import {
   collection,
+  doc,
+  getDoc,
   getDocs,
   getFirestore,
   limit,
@@ -105,4 +107,11 @@ export const getNextMatches = async (match: {
     if (doc.exists()) match.data.push(doc.data())
   })
   match.lastVisible = mSnapshot.docs[mSnapshot.docs.length - 1]
+}
+
+export const getMatch = async (matchId: string): Promise<Match | null> => {
+  const db = getFirestore()
+  const mRef = doc(db, 'matches', matchId).withConverter(matchConverter)
+  const mSnapshot = await getDoc(mRef)
+  return mSnapshot.exists() ? mSnapshot.data() : null
 }
