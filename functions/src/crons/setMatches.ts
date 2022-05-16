@@ -17,36 +17,59 @@ const getFbMatches = async (competitionId: number): Promise<FbMatch[]> => {
 
 const makeMatchDetail = (fbMatch: FbMatch): MatchDetail => {
   const homeLineup = fbMatch.homeTeam.lineup.map((l) => {
-    return { name: l.name, position: convertPosition(l.position), shirtNumber: l.shirtNumber }
+    return {
+      id: String(l.id),
+      name: l.name,
+      position: convertPosition(l.position),
+      shirtNumber: l.shirtNumber
+    }
   })
   const homeBench = fbMatch.homeTeam.bench.map((b) => {
-    return { name: b.name, position: convertPosition(b.position), shirtNumber: b.shirtNumber }
+    return {
+      id: String(b.id),
+      name: b.name,
+      position: convertPosition(b.position),
+      shirtNumber: b.shirtNumber
+    }
   })
   const awayLineup = fbMatch.awayTeam.lineup.map((l) => {
-    return { name: l.name, position: convertPosition(l.position), shirtNumber: l.shirtNumber }
+    return {
+      id: String(l.id),
+      name: l.name,
+      position: convertPosition(l.position),
+      shirtNumber: l.shirtNumber
+    }
   })
   const awayBench = fbMatch.awayTeam.bench.map((b) => {
-    return { name: b.name, position: convertPosition(b.position), shirtNumber: b.shirtNumber }
-  })
-  const goals = fbMatch.goals.map((g) => {
     return {
+      id: String(b.id),
+      name: b.name,
+      position: convertPosition(b.position),
+      shirtNumber: b.shirtNumber
+    }
+  })
+  const goals = fbMatch.goals.map((g, i) => {
+    return {
+      id: String(i),
       minute: g.minute,
       teamName: g.team.name,
       goalPlayerName: g.scorer.name,
       assistPlayerName: g.assist?.name || null
     }
   })
-  const bookings = fbMatch.bookings.map((b) => {
+  const bookings = fbMatch.bookings.map((b, i) => {
     const card: 'red' | 'yellow' = b.card === 'RED_CARD' ? 'red' : 'yellow'
     return {
+      id: String(i),
       minute: b.minute,
       teamName: b.team.name,
       playerName: b.player.name,
       card
     }
   })
-  const substitutions = fbMatch.substitutions.map((s) => {
+  const substitutions = fbMatch.substitutions.map((s, i) => {
     return {
+      id: String(i),
       minute: s.minute,
       teamName: s.team.name,
       outPlayerName: s.playerOut.name,
@@ -70,34 +93,73 @@ const makeMatchDetail = (fbMatch: FbMatch): MatchDetail => {
 
 const makeForReport = (fbMatch: FbMatch): ForReport => {
   const inPlayerIds = fbMatch.substitutions.map((s) => s.playerIn.id)
-  const homelineup: Player[] = fbMatch.homeTeam.lineup.map((l) => {
-    return { name: l.name, position: convertPosition(l.position), shirtNumber: l.shirtNumber }
+  const homelineup: ReportItem[] = fbMatch.homeTeam.lineup.map((l) => {
+    return {
+      id: String(l.id),
+      playerName: l.name,
+      position: convertPosition(l.position),
+      shirtNumber: l.shirtNumber,
+      point: '6.5',
+      text: ''
+    }
   })
-  const homeInPlayers: Player[] = fbMatch.homeTeam.bench.flatMap((b) => {
+  const homeInPlayers: ReportItem[] = fbMatch.homeTeam.bench.flatMap((b) => {
     if (!inPlayerIds.includes(b.id)) return []
-    return { name: b.name, position: convertPosition(b.position), shirtNumber: b.shirtNumber }
+    return {
+      id: String(b.id),
+      playerName: b.name,
+      position: convertPosition(b.position),
+      shirtNumber: b.shirtNumber,
+      point: '6.5',
+      text: ''
+    }
   })
-  const homeCoach: Player = {
-    name: fbMatch.homeTeam.coach.name,
+  const homeCoach: ReportItem = {
+    id: String(fbMatch.homeTeam.coach.id),
+    playerName: fbMatch.homeTeam.coach.name,
     position: 'HC',
-    shirtNumber: null
+    shirtNumber: null,
+    point: '6.5',
+    text: ''
   }
-  const homePlayers = homelineup.concat(homeInPlayers).concat([homeCoach])
+  const homeTeamReportItems = homelineup.concat(homeInPlayers).concat([homeCoach])
 
-  const awaylineup: Player[] = fbMatch.awayTeam.lineup.map((l) => {
-    return { name: l.name, position: convertPosition(l.position), shirtNumber: l.shirtNumber }
+  const awaylineup: ReportItem[] = fbMatch.awayTeam.lineup.map((l) => {
+    return {
+      id: String(l.id),
+      playerName: l.name,
+      position: convertPosition(l.position),
+      shirtNumber: l.shirtNumber,
+      point: '6.5',
+      text: ''
+    }
   })
-  const awayInPlayers: Player[] = fbMatch.awayTeam.bench.flatMap((b) => {
+  const awayInPlayers: ReportItem[] = fbMatch.awayTeam.bench.flatMap((b) => {
     if (!inPlayerIds.includes(b.id)) return []
-    return { name: b.name, position: convertPosition(b.position), shirtNumber: b.shirtNumber }
+    return {
+      id: String(b.id),
+      playerName: b.name,
+      position: convertPosition(b.position),
+      shirtNumber: b.shirtNumber,
+      point: '6.5',
+      text: ''
+    }
   })
-  const awayCoach: Player = {
-    name: fbMatch.awayTeam.coach.name,
+  const awayCoach: ReportItem = {
+    id: String(fbMatch.awayTeam.coach.id),
+    playerName: fbMatch.awayTeam.coach.name,
     position: 'HC',
-    shirtNumber: null
+    shirtNumber: null,
+    point: '6.5',
+    text: ''
   }
-  const awayPlayers = awaylineup.concat(awayInPlayers).concat([awayCoach])
-  return { id: String(fbMatch.id), homePlayers, awayPlayers, lastUpdated: fbMatch.lastUpdated }
+  const awayTeamReportItems = awaylineup.concat(awayInPlayers).concat([awayCoach])
+  return {
+    id: String(fbMatch.id),
+    homeTeamReportItems,
+    awayTeamReportItems,
+    lastUpdated: fbMatch.lastUpdated
+  }
 }
 
 const setMatches = functions

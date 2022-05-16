@@ -34,9 +34,9 @@ export const makeMatch = (fbMatch: FbMatch, competition: Competition): Match => 
       name: fbMatch.homeTeam.name,
       score: fbMatch.score.fullTime.homeTeam,
       penalty: fbMatch.score.penalties.homeTeam,
-      goalPlayers: fbMatch.goals.flatMap((g) => {
+      goalPlayers: fbMatch.goals.flatMap((g, i) => {
         if (g.team.id !== fbMatch.homeTeam.id) return []
-        return { minute: g.minute, name: g.scorer.name }
+        return { id: String(i), minute: g.minute, name: g.scorer.name }
       })
     },
     awayTeam: {
@@ -45,9 +45,9 @@ export const makeMatch = (fbMatch: FbMatch, competition: Competition): Match => 
       name: fbMatch.awayTeam.name,
       score: fbMatch.score.fullTime.awayTeam,
       penalty: fbMatch.score.penalties.awayTeam,
-      goalPlayers: fbMatch.goals.flatMap((g) => {
+      goalPlayers: fbMatch.goals.flatMap((g, i) => {
         if (g.team.id !== fbMatch.awayTeam.id) return []
-        return { minute: g.minute, name: g.scorer.name }
+        return { id: String(i), minute: g.minute, name: g.scorer.name }
       })
     },
     lastUpdated: fbMatch.lastUpdated

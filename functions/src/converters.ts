@@ -71,8 +71,8 @@ export const matchDetailConverter: FirestoreDataConverter<MatchDetail> = {
 export const forReportConverter: FirestoreDataConverter<ForReport> = {
   toFirestore(forReport: ForReport): DocumentData {
     return {
-      homePlayers: forReport.homePlayers,
-      awayPlayers: forReport.awayPlayers,
+      homeTeamReportItems: forReport.homeTeamReportItems,
+      awayTeamReportItems: forReport.awayTeamReportItems,
       lastUpdated: forReport.lastUpdated
     }
   },
@@ -80,8 +80,8 @@ export const forReportConverter: FirestoreDataConverter<ForReport> = {
     const data = snapshot.data()
     return {
       id: snapshot.id,
-      homePlayers: data.homePlayers,
-      awayPlayers: data.awayPlayers,
+      homeTeamReportItems: data.homeTeamReportItems,
+      awayTeamReportItems: data.awayTeamReportItems,
       lastUpdated: data.lastUpdated
     }
   }
