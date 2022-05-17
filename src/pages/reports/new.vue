@@ -15,22 +15,47 @@
         </v-row>
       </v-container>
       <v-container v-if="report.selectTeam !== 'away'">
+        <v-row>
+          <v-col>
+            <v-img
+              class="rounded-circle"
+              max-height="60"
+              max-width="60"
+              :src="`https://crests.football-data.org/${match.homeTeam.id}.svg`"
+            />
+          </v-col>
+        </v-row>
+      </v-container>
+      <v-container v-if="report.selectTeam !== 'away'">
         <v-row v-for="reportItem in report.homeTeamReportItems" :key="reportItem.id">
-          <v-container>
-            <v-row>
-              <v-col cols="2">
-                {{ reportItem.position }}
-                <span v-if="reportItem.shirtNumber" class="ml-2">
-                  {{ reportItem.shirtNumber }}
-                </span>
-              </v-col>
-              <v-col cols="10">{{ reportItem.playerName }}</v-col>
-              <v-col class="mt-n6" cols="2"><TextFieldPoint v-model="reportItem.point" /></v-col>
-              <v-col class="mt-n6" cols="10">
-                <Textarea v-model="reportItem.text" :maxlength="140" />
-              </v-col>
-            </v-row>
-          </v-container>
+          <v-col cols="2"> {{ reportItem.position }}. {{ reportItem.shirtNumber }} </v-col>
+          <v-col cols="10">{{ reportItem.playerName }}</v-col>
+          <v-col class="mt-n6" cols="2"><TextFieldPoint v-model="reportItem.point" /></v-col>
+          <v-col class="mt-n6" cols="10">
+            <Textarea v-model="reportItem.text" :maxlength="140" />
+          </v-col>
+        </v-row>
+      </v-container>
+      <v-container v-if="report.selectTeam !== 'home'">
+        <v-row>
+          <v-col>
+            <v-img
+              class="rounded-circle"
+              max-height="60"
+              max-width="60"
+              :src="`https://crests.football-data.org/${match.awayTeam.id}.svg`"
+            />
+          </v-col>
+        </v-row>
+      </v-container>
+      <v-container v-if="report.selectTeam !== 'home'">
+        <v-row v-for="reportItem in report.awayTeamReportItems" :key="reportItem.id">
+          <v-col cols="2"> {{ reportItem.position }}. {{ reportItem.shirtNumber }} </v-col>
+          <v-col cols="10">{{ reportItem.playerName }}</v-col>
+          <v-col class="mt-n6" cols="2"><TextFieldPoint v-model="reportItem.point" /></v-col>
+          <v-col class="mt-n6" cols="10">
+            <Textarea v-model="reportItem.text" :maxlength="140" />
+          </v-col>
         </v-row>
       </v-container>
       <v-container>
