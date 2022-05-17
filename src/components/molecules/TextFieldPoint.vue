@@ -1,6 +1,7 @@
 <template>
   <BaseTextField
     :dense-flg="true"
+    :label="'採点'"
     :max="10"
     :min="0"
     :step="0.5"

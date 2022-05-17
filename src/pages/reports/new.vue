@@ -40,10 +40,10 @@
       </v-container>
       <v-container v-if="report.selectTeam !== 'away'">
         <v-row v-for="reportItem in report.homeTeamReportItems" :key="reportItem.id">
-          <v-col cols="2"> {{ reportItem.position }}. {{ reportItem.shirtNumber }} </v-col>
-          <v-col cols="10">{{ reportItem.playerName }}</v-col>
-          <v-col class="mt-n6" cols="2"><TextFieldPoint v-model="reportItem.point" /></v-col>
-          <v-col class="mt-n6" cols="10">
+          <v-col cols="3"> {{ reportItem.position }}. {{ reportItem.shirtNumber }} </v-col>
+          <v-col cols="9">{{ reportItem.playerName }}</v-col>
+          <v-col class="mt-n3" cols="3"><TextFieldPoint v-model="reportItem.point" /></v-col>
+          <v-col class="mt-n5" cols="9">
             <Textarea v-model="reportItem.text" :maxlength="140" />
           </v-col>
         </v-row>
@@ -62,17 +62,17 @@
       </v-container>
       <v-container v-if="report.selectTeam !== 'home'">
         <v-row v-for="reportItem in report.awayTeamReportItems" :key="reportItem.id">
-          <v-col cols="2"> {{ reportItem.position }}. {{ reportItem.shirtNumber }} </v-col>
-          <v-col cols="10">{{ reportItem.playerName }}</v-col>
-          <v-col class="mt-n6" cols="2"><TextFieldPoint v-model="reportItem.point" /></v-col>
-          <v-col class="mt-n6" cols="10">
+          <v-col cols="3"> {{ reportItem.position }}. {{ reportItem.shirtNumber }} </v-col>
+          <v-col cols="9">{{ reportItem.playerName }}</v-col>
+          <v-col class="mt-n3" cols="3"><TextFieldPoint v-model="reportItem.point" /></v-col>
+          <v-col class="mt-n5" cols="9">
             <Textarea v-model="reportItem.text" :maxlength="140" />
           </v-col>
         </v-row>
       </v-container>
       <v-container>
         <v-row>
-          <v-col cols="9" sm="5">
+          <v-col cols="10" sm="5">
             <SelectIdMom
               v-model="report.momId"
               :away-team-report-items="report.awayTeamReportItems"
