@@ -47,7 +47,17 @@ const useNew = () => {
     }
   )
 
-  return { report, match, isLoadingSetUp, setUp }
+  const isLoading = ref(false)
+
+  const save = () => {
+    console.log('save')
+  }
+
+  const create = () => {
+    console.log('create')
+  }
+
+  return { report, match, isLoadingSetUp, setUp, isLoading, save, create }
 }
 
 export default useNew

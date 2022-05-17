@@ -9,6 +9,18 @@
       <ReportsHeader v-bind="match" />
       <v-container>
         <v-row>
+          <v-col cols="12">
+            <TextField
+              v-model="report.title"
+              :icon="'mdi-format-title'"
+              :label="'タイトル'"
+              :maxlength="32"
+            />
+          </v-col>
+        </v-row>
+      </v-container>
+      <v-container>
+        <v-row>
           <v-col cols="8" md="5" sm="5">
             <SelectHomeAway v-model="report.selectTeam" />
           </v-col>
@@ -82,66 +94,71 @@
           </v-col>
         </v-row>
       </v-container>
+      <v-container>
+        <v-row justify="center">
+          <v-col cols="10" sm="4">
+            <ButtonBack @click="back" />
+          </v-col>
+          <v-col cols="10" sm="4">
+            <ButtonSubmit
+              :icon="'mdi-content-save'"
+              :text="'一時保存'"
+              :loading="isLoading"
+              @click="save"
+            />
+          </v-col>
+          <v-col cols="10" sm="4">
+            <ButtonSubmit
+              :icon="'mdi-pencil-plus'"
+              :text="'投稿'"
+              :loading="isLoading"
+              @click="create"
+            />
+          </v-col>
+        </v-row>
+      </v-container>
     </v-container>
-
-    <!-- <v-container>
-            <v-row justify="center">
-              <v-col cols="4">
-                <ButtonBack @click="back" />
-              </v-col>
-              <v-col cols="4">
-                <ButtonSubmit :icon="'mdi-pencil-plus'" :text="'投稿'" :loading="false" />
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-sheet>
-      </v-col>
-    </v-row>  -->
   </v-card>
 </template>
 
 <script lang="ts">
-import { defineComponent, useRoute } from '@nuxtjs/composition-api' //, useRoute
+import { defineComponent, useRoute, useRouter } from '@nuxtjs/composition-api'
 import useNew from '@/composables/reports/useNew'
 import ReportsHeader from '@/components/organisms/ReportsHeader.vue'
+import TextField from '@/components/molecules/TextField.vue'
 import SelectHomeAway from '@/components/molecules/SelectHomeAway.vue'
 import TextFieldPoint from '@/components/molecules/TextFieldPoint.vue'
 import Textarea from '@/components/molecules/Textarea.vue'
 import SelectIdMom from '@/components/molecules/SelectIdMom.vue'
-// import Textarea from '@/components/molecules/Textarea.vue'
-// import ButtonBack from '@/components/molecules/ButtonBack.vue'
-// import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
-// import { matches, users } from '@/utils/testData'
-// import { setUpReport, inputPoint, inputText } from '@/composables/useReportsNew'
+import ButtonBack from '@/components/molecules/ButtonBack.vue'
+import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
 
 export default defineComponent({
   name: 'ReportNew',
 
   components: {
     ReportsHeader,
+    TextField,
     SelectHomeAway,
     TextFieldPoint,
     Textarea,
-    SelectIdMom
-    //   Textarea,
-    //   ButtonBack,
-    //   ButtonSubmit
+    SelectIdMom,
+    ButtonBack,
+    ButtonSubmit
   },
 
   setup() {
     const route = useRoute()
-    const { report, match, isLoadingSetUp, setUp } = useNew()
+    const router = useRouter()
+    const { report, match, isLoadingSetUp, setUp, isLoading, save, create } = useNew()
 
     const matchId = route.value.query.matchId as string
     setUp(matchId)
-    // console.log(matchId)
-    // const match = matches[0]
-    // const user = users[0]
-    // const report = setUpReport(match, user)
-    // const router = useRouter()
-    // const back = () => router.back()
-    // return { report, back }
-    return { report, match, isLoadingSetUp }
+
+    const back = (): void => {
+      router.back()
+    }
+    return { report, match, isLoadingSetUp, back, isLoading, save, create }
   }
 })
 </script>
