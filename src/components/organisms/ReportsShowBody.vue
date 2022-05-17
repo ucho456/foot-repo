@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row>
+    <!-- <v-row>
       <v-col>
         <h1 class="h1">{{ title }}</h1>
       </v-col>
@@ -22,7 +22,7 @@
     <v-row>
       <v-col class="body-1 mt-5" cols="12">総評</v-col>
       <v-col class="caption mt-n6" cols="12">{{ summary }}</v-col>
-    </v-row>
+    </v-row> -->
   </v-container>
 </template>
 
@@ -33,25 +33,25 @@ export default defineComponent({
   name: 'ReportsShowBody',
 
   props: {
-    dispReportItems: {
-      type: Array as () => DispReportItem[],
-      default: () => {
-        return [
-          {
-            id: 0,
-            playerInfo: '',
-            point: '6.5',
-            text: '',
-            momFlg: false
-          }
-        ]
-      }
-    },
-    summary: { type: String, default: '' },
-    title: { type: String, default: '' },
-    userId: { type: Number, default: 0 },
-    userName: { type: String, default: '' },
-    userImageUrl: { type: String, default: '' }
+    // dispReportItems: {
+    //   type: Array as () => DispReportItem[],
+    //   default: () => {
+    //     return [
+    //       {
+    //         id: 0,
+    //         playerInfo: '',
+    //         point: '6.5',
+    //         text: '',
+    //         momFlg: false
+    //       }
+    //     ]
+    //   }
+    // },
+    // summary: { type: String, default: '' },
+    // title: { type: String, default: '' },
+    // userId: { type: Number, default: 0 },
+    // userName: { type: String, default: '' },
+    // userImageUrl: { type: String, default: '' }
   }
 })
 </script>

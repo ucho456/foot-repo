@@ -1,6 +1,6 @@
 <template>
   <v-sheet>
-    <v-toolbar flat>
+    <!-- <v-toolbar flat>
       <v-toolbar-title>選手採点一覧</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn icon @click="handleClick">
@@ -31,7 +31,7 @@
           </v-list-item-content>
         </v-list-item>
       </template>
-    </v-list>
+    </v-list> -->
   </v-sheet>
 </template>
 
@@ -42,18 +42,18 @@ export default defineComponent({
   name: 'IndexReportList',
 
   props: {
-    err: { type: String, default: '' },
-    isLoading: { type: Boolean, default: false },
-    reportList: {
-      type: Array as () => ReportListItem[],
-      default: () => [{ id: 0, title: '', userName: '', userImageUrl: '', description: '', to: '' }]
-    }
-  },
-
-  setup(_, ctx) {
-    const handleClick = (): void => ctx.emit('click')
-    const noAvatarImage = require('@/assets/no_avatar.png')
-    return { handleClick, noAvatarImage }
+    // err: { type: String, default: '' },
+    // isLoading: { type: Boolean, default: false },
+    // reportList: {
+    //   type: Array as () => ReportListItem[],
+    //   default: () => [{ id: 0, title: '', userName: '', userImageUrl: '', description: '', to: '' }]
+    // }
   }
+
+  // setup(_, ctx) {
+  // const handleClick = (): void => ctx.emit('click')
+  // const noAvatarImage = require('@/assets/no_avatar.png')
+  // return { handleClick, noAvatarImage }
+  // }
 })
 </script>

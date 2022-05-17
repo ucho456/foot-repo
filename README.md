@@ -126,4 +126,4 @@ https://qiita.com/nemutas/items/a2ccfb807cb00dcdeabe
 - cloudrun の環境変数が使えない。
 - github actions のデプロイで firebase deploy --only hosting じゃないと失敗してしまう。
 - functions のスケジュールの時間が本当に良いかどうか。
-- .d.ts ファイルで DocumentReference 型を import していると global な型として読み込めなくなるみたい。
+- オフラインモードを有効にすると書き込みを待たなくても良くなりそうなので実装したい。
