@@ -24,10 +24,8 @@ export default defineComponent({
       type: Array as () => ReportItem[],
       default: () => [
         {
-          id: 0,
-          homeAway: 'away',
+          id: '',
           playerName: '',
-          positionId: 1,
           position: 'GK',
           shirtNumber: 0,
           point: '6.5',
@@ -39,10 +37,8 @@ export default defineComponent({
       type: Array as () => ReportItem[],
       default: () => [
         {
-          id: 0,
-          homeAway: 'home',
+          id: '',
           playerName: '',
-          positionId: 1,
           position: 'GK',
           shirtNumber: 0,
           point: '6.5',
@@ -50,24 +46,26 @@ export default defineComponent({
         }
       ]
     },
-    selectTeam: { type: String as () => ReportSelectTeam, default: 'Home team only' },
-    value: { type: Number, default: 0 }
+    selectTeam: { type: String as () => HomeAway, default: 'home' },
+    value: { type: String, default: '' }
   },
 
   setup(props, ctx) {
-    const makePlayers = (reportItems: ReportItem[]): { value: number; text: string }[] => {
+    const makePlayers = (reportItems: ReportItem[]): { id: string; text: string }[] => {
       return reportItems.map((ri) => {
-        return { value: ri.id, text: ri.playerName }
+        return { id: ri.id, text: ri.playerName }
       })
     }
     const players = computed(() => {
-      return props.selectTeam === 'Home team only'
+      return props.selectTeam === 'home'
         ? makePlayers(props.homeTeamReportItems)
-        : props.selectTeam === 'Away team only'
+        : props.selectTeam === 'away'
         ? makePlayers(props.awayTeamReportItems)
         : makePlayers(props.homeTeamReportItems.concat(props.awayTeamReportItems))
     })
-    const handleInput = (id: number): void => ctx.emit('input', id)
+    const handleInput = (id: string): void => {
+      ctx.emit('input', id)
+    }
     return { players, handleInput }
   }
 })

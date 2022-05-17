@@ -60,6 +60,18 @@
       </v-container>
       <v-container>
         <v-row>
+          <v-col cols="9" sm="5">
+            <SelectIdMom
+              v-model="report.momId"
+              :away-team-report-items="report.awayTeamReportItems"
+              :home-team-report-items="report.homeTeamReportItems"
+              :select-team="report.selectTeam"
+            />
+          </v-col>
+        </v-row>
+      </v-container>
+      <v-container>
+        <v-row>
           <v-col>
             <Textarea
               v-model="report.summary"
@@ -71,45 +83,8 @@
         </v-row>
       </v-container>
     </v-container>
-    <!-- <v-row justify="center">
-      <v-col cols="12" md="6" sm="10">
-        <v-sheet>
-          <ReportsHeader v-bind="report" />
-          <v-container>
-            
-          </v-container>
-          <v-container v-if="report.selectTeam !== 'Away team only'">
-            <v-row v-for="(reportItem, index) in report.homeTeamReportItems" :key="reportItem.id">
-              <ReportsPlayerForm
-                v-bind="reportItem"
-                @input-point="(point) => inputPoint(report, point, 'home', index)"
-                @input-text="(text) => inputText(report, text, 'home', index)"
-              />
-            </v-row>
-          </v-container>
-          <v-container v-if="report.selectTeam !== 'Home team only'">
-            <v-row v-for="(reportItem, index) in report.awayTeamReportItems" :key="reportItem.id">
-              <ReportsPlayerForm
-                v-bind="reportItem"
-                @input-point="(point) => inputPoint(report, point, 'away', index)"
-                @input-text="(text) => inputText(report, text, 'away', index)"
-              />
-            </v-row>
-          </v-container>
-          <v-container>
-            <v-row>
-              <v-col cols="9" sm="5" md="6">
-                <SelectIdMom
-                  v-model="report.momId"
-                  :away-team-report-items="report.awayTeamReportItems"
-                  :report-team="report.selectTeam"
-                  :home-team-report-items="report.homeTeamReportItems"
-                />
-              </v-col>
-            </v-row>
-          </v-container>
-          
-          <v-container>
+
+    <!-- <v-container>
             <v-row justify="center">
               <v-col cols="4">
                 <ButtonBack @click="back" />
@@ -121,7 +96,7 @@
           </v-container>
         </v-sheet>
       </v-col>
-    </v-row> -->
+    </v-row>  -->
   </v-card>
 </template>
 
@@ -132,7 +107,7 @@ import ReportsHeader from '@/components/organisms/ReportsHeader.vue'
 import SelectHomeAway from '@/components/molecules/SelectHomeAway.vue'
 import TextFieldPoint from '@/components/molecules/TextFieldPoint.vue'
 import Textarea from '@/components/molecules/Textarea.vue'
-// import SelectIdMom from '@/components/molecules/SelectIdMom.vue'
+import SelectIdMom from '@/components/molecules/SelectIdMom.vue'
 // import Textarea from '@/components/molecules/Textarea.vue'
 // import ButtonBack from '@/components/molecules/ButtonBack.vue'
 // import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
@@ -146,8 +121,8 @@ export default defineComponent({
     ReportsHeader,
     SelectHomeAway,
     TextFieldPoint,
-    Textarea
-    //   SelectIdMom,
+    Textarea,
+    SelectIdMom
     //   Textarea,
     //   ButtonBack,
     //   ButtonSubmit
