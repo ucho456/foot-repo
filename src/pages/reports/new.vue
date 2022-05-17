@@ -97,23 +97,23 @@
       <v-container>
         <v-row justify="center">
           <v-col cols="10" sm="4">
-            <ButtonBack @click="back" />
+            <ButtonSubmit
+              :icon="'mdi-pencil-plus'"
+              :text="'投稿'"
+              :loading="isLoading"
+              @click="submitCreate"
+            />
           </v-col>
           <v-col cols="10" sm="4">
             <ButtonSubmit
               :icon="'mdi-content-save'"
               :text="'一時保存'"
               :loading="isLoading"
-              @click="save"
+              @click="submitSave"
             />
           </v-col>
           <v-col cols="10" sm="4">
-            <ButtonSubmit
-              :icon="'mdi-pencil-plus'"
-              :text="'投稿'"
-              :loading="isLoading"
-              @click="create"
-            />
+            <ButtonBack @click="back" />
           </v-col>
         </v-row>
       </v-container>
@@ -124,14 +124,15 @@
 <script lang="ts">
 import { defineComponent, useRoute, useRouter } from '@nuxtjs/composition-api'
 import useNew from '@/composables/reports/useNew'
+import useSnackbar from '@/utils/useSnackbar'
 import ReportsHeader from '@/components/organisms/ReportsHeader.vue'
 import TextField from '@/components/molecules/TextField.vue'
 import SelectHomeAway from '@/components/molecules/SelectHomeAway.vue'
 import TextFieldPoint from '@/components/molecules/TextFieldPoint.vue'
 import Textarea from '@/components/molecules/Textarea.vue'
 import SelectIdMom from '@/components/molecules/SelectIdMom.vue'
-import ButtonBack from '@/components/molecules/ButtonBack.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
+import ButtonBack from '@/components/molecules/ButtonBack.vue'
 
 export default defineComponent({
   name: 'ReportNew',
@@ -143,22 +144,50 @@ export default defineComponent({
     TextFieldPoint,
     Textarea,
     SelectIdMom,
-    ButtonBack,
-    ButtonSubmit
+    ButtonSubmit,
+    ButtonBack
   },
 
   setup() {
     const route = useRoute()
     const router = useRouter()
     const { report, match, isLoadingSetUp, setUp, isLoading, save, create } = useNew()
+    const { openSnackbar } = useSnackbar()
 
-    const matchId = route.value.query.matchId as string
-    setUp(matchId)
+    const setUpPage = async () => {
+      const matchId = route.value.query.matchId as string
+      const result = await setUp(matchId)
+      if (result === 'failure') {
+        openSnackbar(result, '試合データの取得に失敗しました。')
+      }
+    }
+    setUpPage()
+
+    const next = (result: 'success' | 'failure', message: string): void => {
+      openSnackbar(result, message)
+      if (result === 'success') {
+        router.push('/')
+      }
+    }
+
+    const submitCreate = async (): Promise<void> => {
+      const result = await create()
+      const message =
+        result === 'success' ? '選手採点を作成しました。' : '選手採点の作成に失敗しました。'
+      next(result, message)
+    }
+
+    const submitSave = async (): Promise<void> => {
+      const result = await save()
+      const message = result === 'success' ? '一時保存しました。' : '一時保存に失敗しました。'
+      next(result, message)
+    }
 
     const back = (): void => {
       router.back()
     }
-    return { report, match, isLoadingSetUp, back, isLoading, save, create }
+
+    return { report, match, isLoadingSetUp, back, isLoading, submitSave, submitCreate }
   }
 })
 </script>

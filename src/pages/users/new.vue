@@ -84,18 +84,18 @@ export default defineComponent({
 
   setup() {
     const router = useRouter()
-    const { isNormalAccess, user, setUpUser, changeImageUrl, clearImageUrl, isLoading, create } =
+    const { isNormalAccess, user, setUp, changeImageUrl, clearImageUrl, isLoading, create } =
       useNew()
     const { openSnackbar } = useSnackbar()
 
-    const setUp = async () => {
-      await setUpUser()
+    const setUpPage = async () => {
+      await setUp()
       if (!isNormalAccess.value) {
         openSnackbar('alert', '不正なアクセスです。')
         router.push('/')
       }
     }
-    setUp()
+    setUpPage()
 
     const submit = async (): Promise<void> => {
       const result = await create()

@@ -49,15 +49,31 @@ const useNew = () => {
 
   const isLoading = ref(false)
 
-  const save = () => {
-    console.log('save')
-  }
-
   const create = () => {
-    console.log('create')
+    try {
+      isLoading.value = true
+      console.log('create')
+      return 'success'
+    } catch {
+      return 'failure'
+    } finally {
+      isLoading.value = false
+    }
   }
 
-  return { report, match, isLoadingSetUp, setUp, isLoading, save, create }
+  const save = () => {
+    try {
+      isLoading.value = true
+      console.log('save')
+      return 'success'
+    } catch {
+      return 'failure'
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  return { report, match, isLoadingSetUp, setUp, isLoading, create, save }
 }
 
 export default useNew

@@ -17,7 +17,7 @@ const useNew = () => {
   })
   const userImageFile = ref<File | null>(null)
 
-  const setUpUser = async (): Promise<void> => {
+  const setUp = async (): Promise<void> => {
     await new Promise((resolve) => {
       const auth = getAuth()
       const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
@@ -65,7 +65,7 @@ const useNew = () => {
   return {
     isNormalAccess,
     user,
-    setUpUser,
+    setUp,
     changeImageUrl,
     clearImageUrl,
     isLoading,
