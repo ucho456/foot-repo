@@ -1,4 +1,4 @@
-type Competitions = {
+type Competition = {
   id: string
   name: string
   type: 'cup' | 'league' | 'japan'
