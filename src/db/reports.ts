@@ -1,5 +1,5 @@
 import { collection, doc, getFirestore, serverTimestamp, writeBatch } from 'firebase/firestore'
-import { reportConverter } from '@/utils/converters'
+import { reportItemConverter, reportConverter } from '@/utils/converters'
 
 export const createReport = async (
   currentUser: CurrentUser | null,
@@ -8,6 +8,7 @@ export const createReport = async (
 ): Promise<void> => {
   const db = getFirestore()
   const batch = writeBatch(db)
+
   const rColRef = collection(db, 'reports')
   const rId = doc(rColRef).id
   const rRef = doc(db, 'reports', rId).withConverter(reportConverter)
@@ -46,6 +47,24 @@ export const createReport = async (
     summary: inputReport.summary,
     teamIds: [match.homeTeam.id, match.awayTeam.id],
     createdAt: serverTimestamp()
+  })
+
+  inputReport.homeTeamReportItems.forEach((htri) => {
+    const htriColRef = collection(db, 'home-team-report-items')
+    const htriId = doc(htriColRef).id
+    const htriRef = doc(db, 'reports', rId, 'home-team-report-items', htriId).withConverter(
+      reportItemConverter
+    )
+    batch.set(htriRef, htri)
+  })
+
+  inputReport.awayTeamReportItems.forEach((atri) => {
+    const atriColRef = collection(db, 'away-team-report-items')
+    const atriId = doc(atriColRef).id
+    const atriRef = doc(db, 'reports', rId, 'away-team-report-items', atriId).withConverter(
+      reportItemConverter
+    )
+    batch.set(atriRef, atri)
   })
   await batch.commit()
 }

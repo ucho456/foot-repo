@@ -167,6 +167,31 @@ export const reportConverter: FirestoreDataConverter<Report> = {
   }
 }
 
+export const reportItemConverter: FirestoreDataConverter<ReportItem> = {
+  toFirestore(reportItem: ReportItem): DocumentData {
+    return {
+      playerName: reportItem.playerName,
+      position: reportItem.position,
+      shirtNumber: reportItem.shirtNumber,
+      point: reportItem.point,
+      text: reportItem.text,
+      order: reportItem.order
+    }
+  },
+  fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions): ReportItem {
+    const data = snapshot.data(options)
+    return {
+      id: snapshot.id,
+      playerName: data.playerName,
+      position: data.position,
+      shirtNumber: data.shirtNumber,
+      point: data.point,
+      text: data.text,
+      order: data.order
+    }
+  }
+}
+
 /*
   teams
 */

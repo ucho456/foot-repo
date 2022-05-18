@@ -11,9 +11,9 @@ service cloud.firestore {
       return min <= value.size() && value.size() <= max;
     }
 
-    function isValidInt(value, min, max) {
-      return min <= value && value <= max;
-    }
+    // function isValidInt(value, min, max) {
+    //   return min <= value && value <= max;
+    // }
 
     function isValidImage(value) {
       return value == null || value.matches('^https?://.+$');
@@ -66,9 +66,27 @@ service cloud.firestore {
       && 'createdAt' in report && report.createdAt is timestamp;
     }
 
+    function isValidReportItem(reportItem) {
+      return reportItem.size() == 6
+      && 'playerName' in reportItem && reportItem.playerName is string
+      && 'position' in reportItem && reportItem.position is string
+      && 'shirtNumber' in reportItem && (reportItem.shirtNumber is int || reportItem.shirtNumber == null)
+      && 'point' in reportItem && reportItem.point is string
+      && 'text' in reportItem && reportItem.text is string
+      && 'order' in reportItem && reportItem.order is int;
+    }
+
     match /reports/{reportId} {
       allow read;
       allow create: if isValidReport(request.resource.data);
+      match /home-team-report-items/{homeTeamReportItemId} {
+        allow read;
+        allow create: if isValidReportItem(request.resource.data)
+      }
+      match /away-team-report-items/{awayTeamReportItemId} {
+        allow read;
+        allow create: if isValidReportItem(request.resource.data)
+      }
     }
   }
 }
