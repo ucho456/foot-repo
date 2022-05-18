@@ -27,6 +27,7 @@ type Report = {
   momId: string
   summary: string
   teamIds: string[]
+  createdAt: import('firebase/firestore').Timestamp
 }
 
 type ReportItem = {

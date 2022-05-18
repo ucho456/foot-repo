@@ -26,7 +26,7 @@ service cloud.firestore {
       && 'imageUrl' in user && (user.imageUrl == null || user.imageUrl is string)
       && 'greet' in user && user.greet is string
       && 'competitionId' in user && user.competitionId is string
-      && 'teamId' in user && user.teamId is string
+      && 'teamId' in user && user.teamId is string;
     }
 
     match /users/{userId} {
@@ -38,16 +38,37 @@ service cloud.firestore {
       && isValidImage(request.resource.data.imageUrl)
       && isValidString(request.resource.data.greet, 0, 140)
       && isValidString(request.resource.data.competitionId, 0, 10)
-      && isValidString(request.resource.data.teamId, 0, 10)
+      && isValidString(request.resource.data.teamId, 0, 10);
     }
 
     // matches
     match /matches/{matchId} {
       allow read;
-
       match /for-report/{matchId} {
         allow read;
       }
+    }
+
+    // reports
+    function isValidReport(report) {
+      return report.size() == 12
+      && 'title' in report && report.title is string
+      && 'user' in report && (report.user is map) || (report.user is null)
+      && 'homeTeam' in report && report.homeTeam is map
+      && 'awayTeam' in report && report.awayTeam is map
+      && 'competition' in report && report.competition is map
+      && 'jstDate' in report && report.jstDate is string
+      && 'match' in report && report.match is map
+      && 'selectTeam' in report && report.selectTeam is string
+      && 'momId' in report && report.momId is string
+      && 'summary' in report && report.summary is string
+      && 'teamIds' in report && report.teamIds is list
+      && 'createdAt' in report && report.createdAt is timestamp;
+    }
+
+    match /reports/{reportId} {
+      allow read;
+      allow create: isValidReport(request.resource.data);
     }
   }
 }
