@@ -100,7 +100,8 @@ const makeForReport = (fbMatch: FbMatch): ForReport => {
       position: convertPosition(l.position),
       shirtNumber: l.shirtNumber,
       point: '6.5',
-      text: ''
+      text: '',
+      order: 0
     }
   })
   const homeInPlayers: ReportItem[] = fbMatch.homeTeam.bench.flatMap((b) => {
@@ -111,7 +112,8 @@ const makeForReport = (fbMatch: FbMatch): ForReport => {
       position: convertPosition(b.position),
       shirtNumber: b.shirtNumber,
       point: '6.5',
-      text: ''
+      text: '',
+      order: 0
     }
   })
   const homeCoach: ReportItem = {
@@ -120,9 +122,15 @@ const makeForReport = (fbMatch: FbMatch): ForReport => {
     position: 'HC',
     shirtNumber: null,
     point: '6.5',
-    text: ''
+    text: '',
+    order: 0
   }
-  const homeTeamReportItems = homelineup.concat(homeInPlayers).concat([homeCoach])
+  const homeTeamReportItems = homelineup
+    .concat(homeInPlayers)
+    .concat([homeCoach])
+    .map((ri, i) => {
+      return { ...ri, order: i + 1 }
+    })
 
   const awaylineup: ReportItem[] = fbMatch.awayTeam.lineup.map((l) => {
     return {
@@ -131,7 +139,8 @@ const makeForReport = (fbMatch: FbMatch): ForReport => {
       position: convertPosition(l.position),
       shirtNumber: l.shirtNumber,
       point: '6.5',
-      text: ''
+      text: '',
+      order: 0
     }
   })
   const awayInPlayers: ReportItem[] = fbMatch.awayTeam.bench.flatMap((b) => {
@@ -142,7 +151,8 @@ const makeForReport = (fbMatch: FbMatch): ForReport => {
       position: convertPosition(b.position),
       shirtNumber: b.shirtNumber,
       point: '6.5',
-      text: ''
+      text: '',
+      order: 0
     }
   })
   const awayCoach: ReportItem = {
@@ -151,9 +161,15 @@ const makeForReport = (fbMatch: FbMatch): ForReport => {
     position: 'HC',
     shirtNumber: null,
     point: '6.5',
-    text: ''
+    text: '',
+    order: 0
   }
-  const awayTeamReportItems = awaylineup.concat(awayInPlayers).concat([awayCoach])
+  const awayTeamReportItems = awaylineup
+    .concat(awayInPlayers)
+    .concat([awayCoach])
+    .map((ri, i) => {
+      return { ...ri, order: i + 1 }
+    })
   return {
     id: String(fbMatch.id),
     homeTeamReportItems,

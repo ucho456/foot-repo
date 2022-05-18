@@ -36,4 +36,5 @@ type ReportItem = {
   shirtNumber: number
   point: Point
   text: string
+  order: number
 }

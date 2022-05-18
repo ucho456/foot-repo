@@ -5,4 +5,5 @@ type ReportItem = {
   shirtNumber: number | null
   point: '6.5'
   text: string
+  order: number
 }
