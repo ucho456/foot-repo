@@ -14,11 +14,17 @@ export const createReport = async (
   batch.set(rRef, {
     id: rId,
     title: inputReport.title,
-    user: {
-      ref: doc(db, `users/${currentUser?.uid}`),
-      name: currentUser?.name!,
-      imageUrl: currentUser?.imageUrl
-    },
+    user: currentUser
+      ? {
+          ref: doc(db, `users/${currentUser.uid}`),
+          name: currentUser.name,
+          imageUrl: currentUser.imageUrl
+        }
+      : {
+          ref: doc(db, 'users/guest'),
+          name: 'ゲスト',
+          imageUrl: null
+        },
     homeTeam: {
       name: match.homeTeam.name,
       score: match.homeTeam.score!
