@@ -11,7 +11,7 @@
         <v-row>
           <v-col cols="12">
             <TextField
-              v-model="report.title"
+              v-model="inputReport.title"
               :icon="'mdi-format-title'"
               :label="'タイトル'"
               :maxlength="32"
@@ -22,11 +22,11 @@
       <v-container>
         <v-row>
           <v-col cols="8" md="5" sm="5">
-            <SelectHomeAway v-model="report.selectTeam" />
+            <SelectHomeAway v-model="inputReport.selectTeam" />
           </v-col>
         </v-row>
       </v-container>
-      <v-container v-if="report.selectTeam !== 'away'">
+      <v-container v-if="inputReport.selectTeam !== 'away'">
         <v-row>
           <v-col>
             <v-img
@@ -38,8 +38,8 @@
           </v-col>
         </v-row>
       </v-container>
-      <v-container v-if="report.selectTeam !== 'away'">
-        <v-row v-for="reportItem in report.homeTeamReportItems" :key="reportItem.id">
+      <v-container v-if="inputReport.selectTeam !== 'away'">
+        <v-row v-for="reportItem in inputReport.homeTeamReportItems" :key="reportItem.id">
           <v-col cols="3"> {{ reportItem.position }}. {{ reportItem.shirtNumber }} </v-col>
           <v-col cols="9">{{ reportItem.playerName }}</v-col>
           <v-col class="mt-n3" cols="3"><TextFieldPoint v-model="reportItem.point" /></v-col>
@@ -48,7 +48,7 @@
           </v-col>
         </v-row>
       </v-container>
-      <v-container v-if="report.selectTeam !== 'home'">
+      <v-container v-if="inputReport.selectTeam !== 'home'">
         <v-row>
           <v-col>
             <v-img
@@ -60,8 +60,8 @@
           </v-col>
         </v-row>
       </v-container>
-      <v-container v-if="report.selectTeam !== 'home'">
-        <v-row v-for="reportItem in report.awayTeamReportItems" :key="reportItem.id">
+      <v-container v-if="inputReport.selectTeam !== 'home'">
+        <v-row v-for="reportItem in inputReport.awayTeamReportItems" :key="reportItem.id">
           <v-col cols="3"> {{ reportItem.position }}. {{ reportItem.shirtNumber }} </v-col>
           <v-col cols="9">{{ reportItem.playerName }}</v-col>
           <v-col class="mt-n3" cols="3"><TextFieldPoint v-model="reportItem.point" /></v-col>
@@ -74,10 +74,10 @@
         <v-row>
           <v-col cols="10" sm="5">
             <SelectIdMom
-              v-model="report.momId"
-              :away-team-report-items="report.awayTeamReportItems"
-              :home-team-report-items="report.homeTeamReportItems"
-              :select-team="report.selectTeam"
+              v-model="inputReport.momId"
+              :away-team-report-items="inputReport.awayTeamReportItems"
+              :home-team-report-items="inputReport.homeTeamReportItems"
+              :select-team="inputReport.selectTeam"
             />
           </v-col>
         </v-row>
@@ -86,7 +86,7 @@
         <v-row>
           <v-col>
             <Textarea
-              v-model="report.summary"
+              v-model="inputReport.summary"
               :icon="'mdi-note-text-outline'"
               :label="'総評'"
               :maxlength="140"
@@ -151,7 +151,7 @@ export default defineComponent({
   setup() {
     const route = useRoute()
     const router = useRouter()
-    const { report, match, isLoadingSetUp, setUp, isLoading, save, create } = useNew()
+    const { inputReport, match, isLoadingSetUp, setUp, isLoading, save, create } = useNew()
     const { openSnackbar } = useSnackbar()
 
     const setUpPage = async () => {
@@ -187,7 +187,7 @@ export default defineComponent({
       router.back()
     }
 
-    return { report, match, isLoadingSetUp, back, isLoading, submitSave, submitCreate }
+    return { inputReport, match, isLoadingSetUp, back, isLoading, submitSave, submitCreate }
   }
 })
 </script>

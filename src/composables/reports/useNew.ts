@@ -1,16 +1,13 @@
 import { reactive, ref, Ref, watch } from '@nuxtjs/composition-api'
 import { getMatch } from '@/db/matchesCollection'
 import { getForReport } from '@/db/forReportCollection'
+import { createReport } from '@/db/reports'
+import useCurrentUser from '@/utils/useCurrentUser'
 
 const useNew = () => {
-  const report: {
-    title: string
-    selectTeam: HomeAway
-    homeTeamReportItems: ReportItem[]
-    awayTeamReportItems: ReportItem[]
-    summary: string
-    momId: string
-  } = reactive({
+  const { currentUser } = useCurrentUser()
+
+  const inputReport: InputReport = reactive({
     title: '',
     selectTeam: 'home',
     homeTeamReportItems: [],
@@ -27,8 +24,8 @@ const useNew = () => {
       match.value = await getMatch(matchId)
       const forReport = await getForReport(matchId)
       if (forReport) {
-        report.homeTeamReportItems = forReport.homeTeamReportItems
-        report.awayTeamReportItems = forReport.awayTeamReportItems
+        inputReport.homeTeamReportItems = forReport.homeTeamReportItems
+        inputReport.awayTeamReportItems = forReport.awayTeamReportItems
       }
       return 'success'
     } catch {
@@ -39,20 +36,21 @@ const useNew = () => {
   }
 
   watch(
-    () => report.selectTeam,
+    () => inputReport.selectTeam,
     (newVal, oldVal) => {
       if ((newVal === 'home' && oldVal === 'away') || (newVal === 'away' && oldVal === 'home')) {
-        report.momId = ''
+        inputReport.momId = ''
       }
     }
   )
 
   const isLoading = ref(false)
 
-  const create = () => {
+  const create = async () => {
     try {
       isLoading.value = true
-      console.log('create')
+      if (!match.value) return
+      await createReport(currentUser.value, inputReport, match.value)
       return 'success'
     } catch {
       return 'failure'
@@ -73,7 +71,7 @@ const useNew = () => {
     }
   }
 
-  return { report, match, isLoadingSetUp, setUp, isLoading, create, save }
+  return { inputReport, match, isLoadingSetUp, setUp, isLoading, create, save }
 }
 
 export default useNew

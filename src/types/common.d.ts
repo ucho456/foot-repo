@@ -11,6 +11,15 @@ type CurrentUser = {
 
 type HomeAway = 'home' | 'away' | 'both'
 
+type InputReport = {
+  title: string
+  selectTeam: HomeAway
+  homeTeamReportItems: ReportItem[]
+  awayTeamReportItems: ReportItem[]
+  summary: string
+  momId: string
+}
+
 type Point =
   | '0.0'
   | '0.5'

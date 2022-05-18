@@ -2,11 +2,10 @@ type Report = {
   id: string
   title: string
   user: {
-    id: string
     ref: import('firebase/firestore').DocumentReference
     name: string
-    imageUrl: string
-  } | null
+    imageUrl: string | null
+  }
   homeTeam: {
     name: string
     score: number
@@ -27,7 +26,7 @@ type Report = {
   momId: string
   summary: string
   teamIds: string[]
-  createdAt: import('firebase/firestore').Timestamp
+  createdAt: import('firebase/firestore').FieldValue
 }
 
 type ReportItem = {
