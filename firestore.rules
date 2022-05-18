@@ -53,7 +53,7 @@ service cloud.firestore {
     function isValidReport(report) {
       return report.size() == 12
       && 'title' in report && report.title is string
-      && 'user' in report && (report.user is map) || (report.user is null)
+      && 'user' in report && report.user is map
       && 'homeTeam' in report && report.homeTeam is map
       && 'awayTeam' in report && report.awayTeam is map
       && 'competition' in report && report.competition is map
@@ -68,7 +68,7 @@ service cloud.firestore {
 
     match /reports/{reportId} {
       allow read;
-      allow create: isValidReport(request.resource.data);
+      allow create: if isValidReport(request.resource.data);
     }
   }
 }
