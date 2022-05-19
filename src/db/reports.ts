@@ -1,5 +1,17 @@
-import { collection, doc, getFirestore, serverTimestamp, writeBatch } from 'firebase/firestore'
+import {
+  collection,
+  doc,
+  getDocs,
+  getFirestore,
+  limit,
+  orderBy,
+  query,
+  serverTimestamp,
+  writeBatch
+} from 'firebase/firestore'
+import type { QueryDocumentSnapshot } from 'firebase/firestore'
 import { reportItemConverter, reportConverter } from '@/utils/converters'
+import { makeSearchOption } from '@/utils/searchOption'
 
 export const createReport = async (
   currentUser: CurrentUser | null,
@@ -67,4 +79,23 @@ export const createReport = async (
     batch.set(atriRef, atri)
   })
   await batch.commit()
+}
+
+export const getFirstReports = async (reports: {
+  data: Report[]
+  lastVisible: QueryDocumentSnapshot<Report> | null
+  searchOption: SearchOption
+}) => {
+  reports.data = []
+  const db = getFirestore()
+  const rRef = collection(db, 'reports').withConverter(reportConverter)
+  const options = makeSearchOption(reports.searchOption)
+  const q = query(rRef, ...options, orderBy('createdAt', 'desc'), limit(10))
+  const rSnapshot = await getDocs(q)
+  rSnapshot.forEach((doc) => {
+    if (doc.exists()) {
+      reports.data.push(doc.data())
+    }
+  })
+  reports.lastVisible = rSnapshot.docs[rSnapshot.docs.length - 1]
 }

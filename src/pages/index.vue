@@ -1,24 +1,26 @@
 <template>
   <v-container>
-    <!-- <IndexReportList :report-list="reportList" :is-loading="false" :err="''" /> -->
+    {{ reports }}
   </v-container>
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
-// import IndexReportList from '@/components/organisms/IndexReportList.vue'
-// import { reports, users } from '@/utils/testData'
-// import { makeReportList } from '@/composables/useIndex'
+import useIndex from '@/composables/useIndex'
+import useStore from '@/utils/useStore'
 
 export default defineComponent({
   name: 'Index',
 
-  components: {
-    // IndexReportList
-  },
+  components: {},
 
   setup() {
-    // const reportList = makeReportList(reports, users)
+    const { setUp } = useIndex()
+    const { reports } = useStore()
+
+    setUp()
+
+    return { reports }
   }
 })
 </script>

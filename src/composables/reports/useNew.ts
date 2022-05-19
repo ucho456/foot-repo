@@ -49,8 +49,7 @@ const useNew = () => {
   const create = async () => {
     try {
       isLoading.value = true
-      if (!match.value) return
-      await createReport(currentUser.value, inputReport, match.value)
+      await createReport(currentUser.value, inputReport, match.value!)
       return 'success'
     } catch {
       return 'failure'

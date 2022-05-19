@@ -1,17 +1,24 @@
-// import { markRaw } from '@nuxtjs/composition-api'
+import { ref } from '@nuxtjs/composition-api'
+import { getFirstReports } from '@/db/reports'
+import useStore from '@/utils/useStore'
 
-// export const makeReportList = (reports: Report[], users: User[]): ReportListItem[] => {
-//   const userMap: UserMap = new Map(users.map((u) => [u.id, u]))
-//   const reportList = reports.map((r) => {
-//     const user = userMap.get(r.userId) || { name: r.guestName, imageUrl: '' }
-//     return {
-//       id: r.id,
-//       title: r.title,
-//       userName: user.name,
-//       userImageUrl: user.imageUrl,
-//       description: `${r.homeTeamName} ${r.homeTeamScore} vs ${r.awayTeamScore} ${r.awayTeamName} / ${r.competitionName} ${r.utcDate}`,
-//       to: `reports/${r.id}`
-//     }
-//   })
-//   return markRaw(reportList)
-// }
+const useIndex = () => {
+  const { reports } = useStore()
+
+  const isLoadingSetUp = ref(false)
+  const setUp = async () => {
+    try {
+      isLoadingSetUp.value = true
+      await getFirstReports(reports)
+      return 'success'
+    } catch {
+      return 'failure'
+    } finally {
+      isLoadingSetUp.value = false
+    }
+  }
+
+  return { setUp }
+}
+
+export default useIndex
