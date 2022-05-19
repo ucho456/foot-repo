@@ -89,7 +89,7 @@
               v-model="inputReport.summary"
               :icon="'mdi-note-text-outline'"
               :label="'総評'"
-              :maxlength="140"
+              :maxlength="300"
             />
           </v-col>
         </v-row>

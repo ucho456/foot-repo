@@ -1,3 +1,6 @@
+// firestore rules sample
+// https://github.com/sgr-ksmt/firebase-ec-demo
+
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -7,16 +10,32 @@ service cloud.firestore {
       return request.auth != null && userId == request.auth.uid;
     }
 
-    function isValidString(value, min, max) {
-      return min <= value.size() && value.size() <= max;
+    function userRef(uid) {
+      return /databases/$(database)/documents/users/$(uid)
     }
 
-    // function isValidInt(value, min, max) {
-    //   return min <= value && value <= max;
-    // }
+    function isValidString(v, min, max) {
+      return min <= v.size() && v.size() <= max;
+    }
 
-    function isValidImage(value) {
-      return value == null || value.matches('^https?://.+$');
+    function isValidInt(v, min, max) {
+      return min <= v && v <= max;
+    }
+
+    function isValidImage(v) {
+      return v == null || v.matches('^https?://.+$');
+    }
+
+    function isValidSelectTeam (v) {
+      return v == 'home' || v == 'away' || v == 'both'
+    }
+
+    function isValidPosition (v) {
+      return v == 'GK' || v == 'DF' || v == 'MF' || v == 'FW' || v == 'HC'
+    }
+
+    function isValidPoint (v) {
+      return v == '0.0' || v == '0.5' || v == '1.0' || v == '1.5' || v == '2.0' || v == '2.5' || v == '3.0' || v == '3.5' || v == '4.0' || v == '4.5' || v == '5.0' || v == '6.0' || v == '6.5' || v == '7.0' || v == '7.5' || v == '8.0' || v == '8.5' || v == '9.0' || v == '9.5' || v == '10.0'
     }
 
     // users
@@ -26,19 +45,19 @@ service cloud.firestore {
       && 'imageUrl' in user && (user.imageUrl == null || user.imageUrl is string)
       && 'greet' in user && user.greet is string
       && 'competitionId' in user && user.competitionId is string
-      && 'teamId' in user && user.teamId is string;
+      && 'teamId' in user && user.teamId is string
+      && isValidString(user.name, 1, 20)
+      && isValidImage(user.imageUrl)
+      && isValidString(user.greet, 0, 140)
+      && isValidString(user.competitionId, 0, 10)
+      && isValidString(user.teamId, 0, 10);
     }
 
     match /users/{userId} {
       allow read;
       allow create: if onlyMe(userId)
       && request.auth.token.initSetting == false
-      && isValidUser(request.resource.data)
-      && isValidString(request.resource.data.name, 1, 20)
-      && isValidImage(request.resource.data.imageUrl)
-      && isValidString(request.resource.data.greet, 0, 140)
-      && isValidString(request.resource.data.competitionId, 0, 10)
-      && isValidString(request.resource.data.teamId, 0, 10);
+      && isValidUser(request.resource.data);
     }
 
     // matches
@@ -63,7 +82,22 @@ service cloud.firestore {
       && 'momId' in report && report.momId is string
       && 'summary' in report && report.summary is string
       && 'teamIds' in report && report.teamIds is list
-      && 'createdAt' in report && report.createdAt is timestamp;
+      && 'createdAt' in report && report.createdAt is timestamp
+      && isValidString(report.title, 0, 32)
+      && (report.user.ref == userRef(request.auth.uid) || report.user.ref == userRef('guest'))
+      && isValidString(report.user.name, 1, 20)
+      && isValidImage(report.user.imageUrl)
+      && isValidString(report.homeTeam.name, 1, 100)
+      && isValidInt(report.homeTeam.score, 0, 100)
+      && isValidString(report.awayTeam.name, 1, 100)
+      && isValidInt(report.awayTeam.score, 0, 100)
+      && isValidString(report.competition.id, 1, 20)
+      && isValidString(report.competition.name, 1, 20)
+      && isValidString(report.jstDate, 10, 10)
+      && exists(report.match.ref)
+      && isValidSelectTeam(report.selectTeam)
+      && isValidString(report.momId, 0, 10)
+      && isValidString(report.summary, 0, 300);
     }
 
     function isValidReportItem(reportItem) {
@@ -73,7 +107,13 @@ service cloud.firestore {
       && 'shirtNumber' in reportItem && (reportItem.shirtNumber is int || reportItem.shirtNumber == null)
       && 'point' in reportItem && reportItem.point is string
       && 'text' in reportItem && reportItem.text is string
-      && 'order' in reportItem && reportItem.order is int;
+      && 'order' in reportItem && reportItem.order is int
+      && isValidString(reportItem.playerName, 1, 100)
+      && isValidPosition(reportItem.position)
+      && (isValidInt(reportItem.shirtNumber, 1, 99) || reportItem.shirtNumber == null)
+      && isValidPoint(reportItem.point)
+      && isValidString(reportItem.text, 0, 140)
+      && isValidInt(reportItem.order, 1, 30);
     }
 
     match /reports/{reportId} {
