@@ -19,14 +19,13 @@
           :router="true"
           :to="{ path: 'reports/show', query: { reportId: report.id } }"
         >
-          <v-list-item-avatar>
+          <v-list-item-avatar class="avatar">
             <v-img v-if="report.user.imageUrl" :src="report.user.imageUrl" />
             <v-img v-else :src="noAvatarImage" />
           </v-list-item-avatar>
-          <div>aaa</div>
-          <v-list-item-content>
+          <div class="name">{{ report.user.name }}</div>
+          <v-list-item-content class="ml-n3">
             <v-list-item-title>{{ report.title }}</v-list-item-title>
-            <v-list-item-subtitle>{{ report.user.name }}</v-list-item-subtitle>
             <v-list-item-subtitle style="display: flex">
               <v-img
                 class="rounded-circle"
@@ -44,14 +43,11 @@
                 :src="`https://crests.football-data.org/${1}.svg`"
               />
             </v-list-item-subtitle>
+            <v-list-item-subtitle>
+              {{ report.competition.name }} {{ report.jstDate }}
+            </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
-        <v-img
-          class="rounded-circle"
-          :max-height="16"
-          :max-width="16"
-          :src="`https://crests.football-data.org/${1}.svg`"
-        />
       </v-container>
     </v-list>
   </v-sheet>
@@ -92,3 +88,18 @@ export default defineComponent({
   }
 })
 </script>
+
+<style scoped>
+.avatar {
+  position: absolute;
+}
+.name {
+  position: relative;
+  top: 20px;
+  right: 15px;
+  font-size: 10px;
+  width: 70px;
+  text-align: center;
+  overflow: hidden;
+}
+</style>
