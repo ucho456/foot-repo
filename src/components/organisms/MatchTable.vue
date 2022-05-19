@@ -60,38 +60,11 @@ export default defineComponent({
       default: () => [
         {
           id: '',
-          season: '',
           jstDate: '',
           matchday: 0,
-          status: '',
-          competition: {
-            id: '',
-            name: ''
-          },
-          homeTeam: {
-            id: '',
-            name: '',
-            score: 0,
-            penalty: 0,
-            goalPlayers: [
-              {
-                minute: 0,
-                name: ''
-              }
-            ]
-          },
-          awayTeam: {
-            id: '',
-            name: '',
-            score: 0,
-            penalty: 0,
-            goalPlayers: [
-              {
-                minute: 0,
-                name: ''
-              }
-            ]
-          }
+          competition: { name: '' },
+          homeTeam: { id: '', name: '', score: 0 },
+          awayTeam: { id: '', name: '', score: 0 }
         }
       ]
     }

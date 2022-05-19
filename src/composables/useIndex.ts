@@ -18,7 +18,7 @@ const useIndex = () => {
     }
   }
 
-  return { setUp }
+  return { isLoadingSetUp, setUp }
 }
 
 export default useIndex

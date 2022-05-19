@@ -1,26 +1,29 @@
 <template>
-  <v-container>
-    {{ reports }}
-  </v-container>
+  <v-card outlined>
+    <ReportTable :loading="isLoadingSetUp" :reports="reports.data" />
+  </v-card>
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
 import useIndex from '@/composables/useIndex'
 import useStore from '@/utils/useStore'
+import ReportTable from '@/components/organisms/ReportTable.vue'
 
 export default defineComponent({
   name: 'Index',
 
-  components: {},
+  components: {
+    ReportTable
+  },
 
   setup() {
-    const { setUp } = useIndex()
+    const { isLoadingSetUp, setUp } = useIndex()
     const { reports } = useStore()
 
     setUp()
 
-    return { reports }
+    return { isLoadingSetUp, reports }
   }
 })
 </script>
