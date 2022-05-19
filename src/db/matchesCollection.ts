@@ -70,43 +70,43 @@ const makeOptions = (searchOption: {
   return options
 }
 
-export const getFirstMatches = async (match: {
+export const getFirstMatches = async (matches: {
   data: Match[]
   lastVisible: QueryDocumentSnapshot<Match> | null
   searchOption: SearchOption
 }): Promise<void> => {
-  match.data = []
+  matches.data = []
   const db = getFirestore()
   const mRef = collection(db, 'matches').withConverter(matchConverter)
-  const options = makeOptions(match.searchOption)
+  const options = makeOptions(matches.searchOption)
   const q = query(mRef, ...options, orderBy('jstDate', 'desc'), limit(10))
   const mSnapshot = await getDocs(q)
   mSnapshot.forEach((doc) => {
-    if (doc.exists()) match.data.push(doc.data())
+    if (doc.exists()) matches.data.push(doc.data())
   })
-  match.lastVisible = mSnapshot.docs[mSnapshot.docs.length - 1]
+  matches.lastVisible = mSnapshot.docs[mSnapshot.docs.length - 1]
 }
 
-export const getNextMatches = async (match: {
+export const getNextMatches = async (matches: {
   data: Match[]
   lastVisible: QueryDocumentSnapshot<Match> | null
   searchOption: SearchOption
 }): Promise<void> => {
   const db = getFirestore()
   const mRef = collection(db, 'matches').withConverter(matchConverter)
-  const options = makeOptions(match.searchOption)
+  const options = makeOptions(matches.searchOption)
   const q = query(
     mRef,
     ...options,
     orderBy('jstDate', 'desc'),
-    startAfter(match.lastVisible),
+    startAfter(matches.lastVisible),
     limit(10)
   )
   const mSnapshot = await getDocs(q)
   mSnapshot.forEach((doc) => {
-    if (doc.exists()) match.data.push(doc.data())
+    if (doc.exists()) matches.data.push(doc.data())
   })
-  match.lastVisible = mSnapshot.docs[mSnapshot.docs.length - 1]
+  matches.lastVisible = mSnapshot.docs[mSnapshot.docs.length - 1]
 }
 
 export const getMatch = async (matchId: string): Promise<Match | null> => {
