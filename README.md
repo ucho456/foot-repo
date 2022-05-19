@@ -127,3 +127,5 @@ https://qiita.com/nemutas/items/a2ccfb807cb00dcdeabe
 - github actions のデプロイで firebase deploy --only hosting じゃないと失敗してしまう。
 - functions のスケジュールの時間が本当に良いかどうか。
 - オフラインモードを有効にすると書き込みを待たなくても良くなりそうなので実装したい。
+- ゲストで書き込みだと何も入力せずとも送信できてしまうがこれでよいか。
+- firestore rules で入力不可文字のバリデーション
