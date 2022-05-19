@@ -129,3 +129,4 @@ https://qiita.com/nemutas/items/a2ccfb807cb00dcdeabe
 - オフラインモードを有効にすると書き込みを待たなくても良くなりそうなので実装したい。
 - ゲストで書き込みだと何も入力せずとも送信できてしまうがこれでよいか。
 - firestore rules で入力不可文字のバリデーション
+- https://zenn.dev/foxtail88/articles/d1d37947529bbf バーチャルスクロールを使用する。フォントなど軽量にする参考。
