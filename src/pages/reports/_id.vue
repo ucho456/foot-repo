@@ -78,16 +78,12 @@ import { defineComponent, useRoute } from '@nuxtjs/composition-api'
 import useShow from '@/composables/reports/useShow'
 import useSnackbar from '@/utils/useSnackbar'
 import ReportsHeader from '@/components/organisms/ReportsHeader.vue'
-// import ReportsShowBody from '@/components/organisms/ReportsShowBody.vue'
-// import { setUpDispReport } from '@/composables/useReportsShow'
-// import { reports, users } from '@/utils/testData'
 
 export default defineComponent({
   name: 'ReportShow',
 
   components: {
     ReportsHeader
-    // ReportsShowBody
   },
 
   setup() {
