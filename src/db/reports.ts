@@ -1,3 +1,4 @@
+import { Ref } from '@nuxtjs/composition-api'
 import {
   collection,
   doc,
@@ -87,8 +88,8 @@ export const getFirstReports = async (reports: {
   lastVisible: QueryDocumentSnapshot<Report> | null
   searchOption: SearchOption
 }) => {
-  reports.data = []
   const db = getFirestore()
+  reports.data = []
   const rRef = collection(db, 'reports').withConverter(reportConverter)
   const options = makeSearchOption(reports.searchOption)
   const q = query(rRef, ...options, orderBy('createdAt', 'desc'), limit(10))
@@ -101,9 +102,52 @@ export const getFirstReports = async (reports: {
   reports.lastVisible = rSnapshot.docs[rSnapshot.docs.length - 1]
 }
 
-export const getReport = async (reportId: string): Promise<Report | null> => {
+export const getReportById = async (
+  reportId: string,
+  report: Ref<Report | null>,
+  homeTeamReportItems: Ref<ReportItem[]>,
+  awayTeamReportItems: Ref<ReportItem[]>
+): Promise<void> => {
   const db = getFirestore()
   const rRef = doc(db, 'reports', reportId).withConverter(reportConverter)
   const rShapshot = await getDoc(rRef)
-  return rShapshot.exists() ? rShapshot.data() : null
+  if (rShapshot.exists()) {
+    report.value = rShapshot.data()
+    const htriRef = collection(db, 'reports', reportId, 'home-team-report-items').withConverter(
+      reportItemConverter
+    )
+    const atriRef = collection(db, 'reports', reportId, 'away-team-report-items').withConverter(
+      reportItemConverter
+    )
+    if (report.value.selectTeam === 'home') {
+      const htriSnapshot = await getDocs(htriRef)
+      htriSnapshot.forEach((doc) => {
+        if (doc.exists()) {
+          homeTeamReportItems.value.push(doc.data())
+        }
+      })
+    } else if (report.value.selectTeam === 'away') {
+      const atriSnapshot = await getDocs(atriRef)
+      atriSnapshot.forEach((doc) => {
+        if (doc.exists()) {
+          awayTeamReportItems.value.push(doc.data())
+        }
+      })
+    } else {
+      const htriSnapshot = await getDocs(htriRef)
+      htriSnapshot.forEach((doc) => {
+        if (doc.exists()) {
+          homeTeamReportItems.value.push(doc.data())
+        }
+      })
+      const atriSnapshot = await getDocs(atriRef)
+      atriSnapshot.forEach((doc) => {
+        if (doc.exists()) {
+          awayTeamReportItems.value.push(doc.data())
+        }
+      })
+    }
+  } else {
+    throw new Error('Not Found')
+  }
 }

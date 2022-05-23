@@ -1,3 +1,4 @@
+import { Ref } from '@nuxtjs/composition-api'
 import {
   collection,
   doc,
@@ -98,8 +99,11 @@ export const getMatch = async (matchId: string): Promise<Match | null> => {
   return mSnapshot.exists() ? mSnapshot.data() : null
 }
 
-export const getMatchByRef = async (matchRef: DocumentReference): Promise<Match | null> => {
+export const getMatchByRef = async (
+  matchRef: DocumentReference,
+  match: Ref<Match | null>
+): Promise<void> => {
   const mRef = matchRef.withConverter(matchConverter)
   const mSnapshot = await getDoc(mRef)
-  return mSnapshot.exists() ? mSnapshot.data() : null
+  match.value = mSnapshot.exists() ? mSnapshot.data() : null
 }

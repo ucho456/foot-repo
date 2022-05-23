@@ -7,6 +7,68 @@
     </v-container>
     <v-container v-else>
       <ReportsHeader v-bind="match" />
+      <v-container>
+        <v-row>
+          <v-col>
+            <h1 class="h1">{{ report.title }}</h1>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="2">
+            <v-img
+              v-if="report.user.imageUrl"
+              class="rounded-circle"
+              :height="30"
+              :width="30"
+              :src="report.user.imageUrl"
+            />
+            <v-img v-else class="rounded-circle" :height="30" :width="30" :src="noAvatarImage" />
+          </v-col>
+          <v-col class="ml-n4 user-name" cols="10">{{ report.user.name }}</v-col>
+        </v-row>
+      </v-container>
+      <v-container v-if="report.selectTeam !== 'away'">
+        <v-row>
+          <v-col>
+            <v-img
+              class="rounded-circle"
+              max-height="30"
+              max-width="30"
+              :src="`https://crests.football-data.org/${match.homeTeam.id}.svg`"
+            />
+          </v-col>
+        </v-row>
+      </v-container>
+      <v-container v-if="report.selectTeam !== 'away'">
+        <v-row v-for="htrItem in homeTeamReportItems" :key="htrItem.id">
+          <v-col cols="12">
+            {{ htrItem.position }} {{ htrItem.shirtNumber }} {{ htrItem.playerName }}
+          </v-col>
+          <v-col class="mt-n6" cols="12"> {{ htrItem.point }} </v-col>
+          <v-col class="caption mb-5 mt-n6" cols="12">{{ htrItem.text }}</v-col>
+        </v-row>
+      </v-container>
+      <v-container v-if="report.selectTeam !== 'home'">
+        <v-row>
+          <v-col>
+            <v-img
+              class="rounded-circle"
+              max-height="30"
+              max-width="30"
+              :src="`https://crests.football-data.org/${match.awayTeam.id}.svg`"
+            />
+          </v-col>
+        </v-row>
+      </v-container>
+      <v-container v-if="report.selectTeam !== 'home'">
+        <v-row v-for="atrItem in awayTeamReportItems" :key="atrItem.id">
+          <v-col cols="12">
+            {{ atrItem.position }} {{ atrItem.shirtNumber }} {{ atrItem.playerName }}
+          </v-col>
+          <v-col class="mt-n6" cols="12"> {{ atrItem.point }} </v-col>
+          <v-col class="caption mb-5 mt-n6" cols="12">{{ atrItem.text }}</v-col>
+        </v-row>
+      </v-container>
     </v-container>
   </v-card>
 </template>
@@ -30,8 +92,10 @@ export default defineComponent({
 
   setup() {
     const route = useRoute()
-    const { report, match, isLoadingSetUp, setUp } = useShow()
+    const { report, homeTeamReportItems, awayTeamReportItems, match, isLoadingSetUp, setUp } =
+      useShow()
     const { openSnackbar } = useSnackbar()
+    const noAvatarImage = require('@/assets/no_avatar.png')
 
     const setUpPage = async () => {
       const reportId = route.value.query.reportId as string
@@ -42,7 +106,14 @@ export default defineComponent({
     }
     setUpPage()
 
-    return { report, match, isLoadingSetUp }
+    return {
+      report,
+      homeTeamReportItems,
+      awayTeamReportItems,
+      match,
+      isLoadingSetUp,
+      noAvatarImage
+    }
   }
 })
 </script>
