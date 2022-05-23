@@ -1,5 +1,5 @@
 import { ref } from '@nuxtjs/composition-api'
-import { getFirstMatches, getNextMatches } from '@/db/matchesCollection'
+import { getFirstMatches, getNextMatches } from '@/db/matches'
 import useCurrentUser from '@/utils/useCurrentUser'
 import useStore from '@/utils/useStore'
 

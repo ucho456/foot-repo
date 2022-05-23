@@ -1,6 +1,7 @@
 import {
   collection,
   doc,
+  getDoc,
   getDocs,
   getFirestore,
   limit,
@@ -98,4 +99,11 @@ export const getFirstReports = async (reports: {
     }
   })
   reports.lastVisible = rSnapshot.docs[rSnapshot.docs.length - 1]
+}
+
+export const getReport = async (reportId: string): Promise<Report | null> => {
+  const db = getFirestore()
+  const rRef = doc(db, 'reports', reportId).withConverter(reportConverter)
+  const rShapshot = await getDoc(rRef)
+  return rShapshot.exists() ? rShapshot.data() : null
 }

@@ -11,6 +11,7 @@ import {
 } from 'firebase/firestore'
 import type {
   DocumentData,
+  DocumentReference,
   FirestoreDataConverter,
   SnapshotOptions,
   QueryDocumentSnapshot
@@ -93,6 +94,12 @@ export const getNextMatches = async (matches: {
 export const getMatch = async (matchId: string): Promise<Match | null> => {
   const db = getFirestore()
   const mRef = doc(db, 'matches', matchId).withConverter(matchConverter)
+  const mSnapshot = await getDoc(mRef)
+  return mSnapshot.exists() ? mSnapshot.data() : null
+}
+
+export const getMatchByRef = async (matchRef: DocumentReference): Promise<Match | null> => {
+  const mRef = matchRef.withConverter(matchConverter)
   const mSnapshot = await getDoc(mRef)
   return mSnapshot.exists() ? mSnapshot.data() : null
 }

@@ -1,5 +1,5 @@
 import { reactive, ref, Ref, watch } from '@nuxtjs/composition-api'
-import { getMatch } from '@/db/matchesCollection'
+import { getMatch } from '@/db/matches'
 import { getForReport } from '@/db/forReportCollection'
 import { createReport } from '@/db/reports'
 import useCurrentUser from '@/utils/useCurrentUser'
