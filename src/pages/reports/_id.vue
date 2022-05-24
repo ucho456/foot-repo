@@ -71,6 +71,11 @@
           <v-col class="caption mb-5 mt-n6" cols="12">{{ atrItem.text }}</v-col>
         </v-row>
       </v-container>
+      <v-container>
+        <v-row>
+          <v-col cols="12">総評：{{ report.summary }}</v-col>
+        </v-row>
+      </v-container>
     </v-container>
   </v-card>
 </template>
