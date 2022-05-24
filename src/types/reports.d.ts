@@ -7,10 +7,12 @@ type Report = {
     imageUrl: string | null
   }
   homeTeam: {
+    id: string
     name: string
     score: number
   }
   awayTeam: {
+    id: string
     name: string
     score: number
   }

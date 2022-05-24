@@ -41,10 +41,12 @@ export const createReport = async (
           imageUrl: null
         },
     homeTeam: {
+      id: match.homeTeam.id,
       name: match.homeTeam.name,
       score: match.homeTeam.score!
     },
     awayTeam: {
+      id: match.awayTeam.id,
       name: match.awayTeam.name,
       score: match.awayTeam.score!
     },
