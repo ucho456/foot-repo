@@ -96,7 +96,10 @@ const makeForReport = (fbMatch: FbMatch): ForReport => {
   const homelineup: ReportItem[] = fbMatch.homeTeam.lineup.map((l) => {
     return {
       id: String(l.id),
-      playerName: l.name,
+      player: {
+        id: String(l.id),
+        name: l.name
+      },
       position: convertPosition(l.position),
       shirtNumber: l.shirtNumber,
       point: '6.5',
@@ -108,7 +111,10 @@ const makeForReport = (fbMatch: FbMatch): ForReport => {
     if (!inPlayerIds.includes(b.id)) return []
     return {
       id: String(b.id),
-      playerName: b.name,
+      player: {
+        id: String(b.id),
+        name: b.name
+      },
       position: convertPosition(b.position),
       shirtNumber: b.shirtNumber,
       point: '6.5',
@@ -118,7 +124,10 @@ const makeForReport = (fbMatch: FbMatch): ForReport => {
   })
   const homeCoach: ReportItem = {
     id: String(fbMatch.homeTeam.coach.id),
-    playerName: fbMatch.homeTeam.coach.name,
+    player: {
+      id: String(fbMatch.homeTeam.coach.id),
+      name: fbMatch.homeTeam.coach.name
+    },
     position: 'HC',
     shirtNumber: null,
     point: '6.5',
@@ -135,7 +144,10 @@ const makeForReport = (fbMatch: FbMatch): ForReport => {
   const awaylineup: ReportItem[] = fbMatch.awayTeam.lineup.map((l) => {
     return {
       id: String(l.id),
-      playerName: l.name,
+      player: {
+        id: String(l.id),
+        name: l.name
+      },
       position: convertPosition(l.position),
       shirtNumber: l.shirtNumber,
       point: '6.5',
@@ -147,7 +159,10 @@ const makeForReport = (fbMatch: FbMatch): ForReport => {
     if (!inPlayerIds.includes(b.id)) return []
     return {
       id: String(b.id),
-      playerName: b.name,
+      player: {
+        id: String(b.id),
+        name: b.name
+      },
       position: convertPosition(b.position),
       shirtNumber: b.shirtNumber,
       point: '6.5',
@@ -157,7 +172,10 @@ const makeForReport = (fbMatch: FbMatch): ForReport => {
   })
   const awayCoach: ReportItem = {
     id: String(fbMatch.awayTeam.coach.id),
-    playerName: fbMatch.awayTeam.coach.name,
+    player: {
+      id: String(fbMatch.awayTeam.coach.id),
+      name: fbMatch.awayTeam.coach.name
+    },
     position: 'HC',
     shirtNumber: null,
     point: '6.5',

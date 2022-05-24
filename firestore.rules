@@ -104,13 +104,14 @@ service cloud.firestore {
 
     function isValidReportItem(reportItem) {
       return reportItem.size() == 6
-      && 'playerName' in reportItem && reportItem.playerName is string
+      && 'player' in reportItem && reportItem.player is map
       && 'position' in reportItem && reportItem.position is string
       && 'shirtNumber' in reportItem && (reportItem.shirtNumber is int || reportItem.shirtNumber == null)
       && 'point' in reportItem && reportItem.point is string
       && 'text' in reportItem && reportItem.text is string
       && 'order' in reportItem && reportItem.order is int
-      && isValidString(reportItem.playerName, 1, 100)
+      && isValidString(reportItem.player.id, 1, 10)
+      && isValidString(reportItem.player.name, 1, 100)
       && isValidPosition(reportItem.position)
       && (isValidInt(reportItem.shirtNumber, 1, 99) || reportItem.shirtNumber == null)
       && isValidPoint(reportItem.point)

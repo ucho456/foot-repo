@@ -42,7 +42,7 @@
       <v-container v-if="report.selectTeam !== 'away'">
         <v-row v-for="htrItem in homeTeamReportItems" :key="htrItem.id">
           <v-col cols="12">
-            {{ htrItem.position }} {{ htrItem.shirtNumber }} {{ htrItem.playerName }}
+            {{ htrItem.position }} {{ htrItem.shirtNumber }} {{ htrItem.player.name }}
           </v-col>
           <v-col class="mt-n6" cols="12"> {{ htrItem.point }} </v-col>
           <v-col class="caption mb-5 mt-n6" cols="12">{{ htrItem.text }}</v-col>
@@ -63,7 +63,7 @@
       <v-container v-if="report.selectTeam !== 'home'">
         <v-row v-for="atrItem in awayTeamReportItems" :key="atrItem.id">
           <v-col cols="12">
-            {{ atrItem.position }} {{ atrItem.shirtNumber }} {{ atrItem.playerName }}
+            {{ atrItem.position }} {{ atrItem.shirtNumber }} {{ atrItem.player.name }}
           </v-col>
           <v-col class="mt-n6" cols="12"> {{ atrItem.point }} </v-col>
           <v-col class="caption mb-5 mt-n6" cols="12">{{ atrItem.text }}</v-col>

@@ -33,7 +33,10 @@ type Report = {
 
 type ReportItem = {
   id: string
-  playerName: string
+  player: {
+    id: string
+    name: string
+  }
   position: Position
   shirtNumber: number
   point: Point
