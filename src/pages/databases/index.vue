@@ -25,11 +25,15 @@ export default defineComponent({
 
   setup() {
     const cards = [
-      { title: 'J. League', src: require('@/assets/JJL.jpg'), to: '/' },
-      { title: 'Premier League', src: require('@/assets/PL.png'), to: '/' },
-      { title: 'La Liga', src: require('@/assets/PD.png'), to: '/' },
-      { title: 'Serie A', src: require('@/assets/SA.png'), to: '/' },
-      { title: 'Bundesliga', src: require('@/assets/BL1.png'), to: '/' }
+      { title: 'J. League', src: require('@/assets/JJL.jpg'), to: '/databases/league/J-League' },
+      {
+        title: 'Premier League',
+        src: require('@/assets/PL.png'),
+        to: '/databases/league/Premier-League'
+      },
+      { title: 'La Liga', src: require('@/assets/PD.png'), to: '/databases/league/La-Liga' },
+      { title: 'Serie A', src: require('@/assets/SA.png'), to: '/databases/league/Serie-A' },
+      { title: 'Bundesliga', src: require('@/assets/BL1.png'), to: '/databases/league/Bundesliga' }
     ]
     return { cards }
   }
