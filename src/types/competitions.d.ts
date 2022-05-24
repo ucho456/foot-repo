@@ -5,6 +5,7 @@ type Competition = {
   imageUrl: string
 }
 
+// playerId teamId positionを加える。10人に絞る。
 type Scorers = {
   id: string
   season: string

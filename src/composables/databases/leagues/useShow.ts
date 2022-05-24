@@ -8,22 +8,20 @@ const useShow = () => {
 
   const isLoadingStandings = ref(false)
   const isLoadingScorers = ref(false)
-  const loading = (value: boolean) => {
-    isLoadingStandings.value = value
-    isLoadingScorers.value = value
-  }
   const setUp = async (competitionId: string) => {
     try {
-      loading(true)
+      isLoadingStandings.value = true
       await getStandings(competitionId, season.value, standings)
       isLoadingStandings.value = false
+      isLoadingScorers.value = true
       await getScores(competitionId, season.value, scorers)
       isLoadingScorers.value = false
       return 'success'
     } catch {
       return 'failure'
     } finally {
-      loading(false)
+      isLoadingStandings.value = false
+      isLoadingScorers.value = false
     }
   }
 
