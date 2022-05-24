@@ -101,7 +101,7 @@ export default defineComponent({
     const noAvatarImage = require('@/assets/no_avatar.png')
 
     const setUpPage = async () => {
-      const reportId = route.value.query.reportId as string
+      const reportId = route.value.params.id as string
       const result = await setUp(reportId)
       if (result === 'failure') {
         openSnackbar(result, '選手採点データの取得に失敗しました。')

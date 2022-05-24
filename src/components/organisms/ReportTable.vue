@@ -14,11 +14,7 @@
     </v-container>
     <v-list v-else class="mt-n4" three-line>
       <v-container v-for="report in reports" :key="report.id">
-        <v-list-item
-          :exact="true"
-          :router="true"
-          :to="{ path: 'reports/show', query: { reportId: report.id } }"
-        >
+        <v-list-item :exact="true" :router="true" :to="{ path: `reports/${report.id}` }">
           <v-list-item-avatar class="avatar">
             <v-img v-if="report.user.imageUrl" :src="report.user.imageUrl" />
             <v-img v-else :src="noAvatarImage" />
