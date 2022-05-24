@@ -43,6 +43,7 @@
         <v-row v-for="htrItem in homeTeamReportItems" :key="htrItem.id">
           <v-col cols="12">
             {{ htrItem.position }} {{ htrItem.shirtNumber }} {{ htrItem.player.name }}
+            <span v-if="report.momId === htrItem.player.id" class="mom">☆MOM</span>
           </v-col>
           <v-col class="mt-n6" cols="12"> {{ htrItem.point }} </v-col>
           <v-col class="caption mb-5 mt-n6" cols="12">{{ htrItem.text }}</v-col>
@@ -64,6 +65,7 @@
         <v-row v-for="atrItem in awayTeamReportItems" :key="atrItem.id">
           <v-col cols="12">
             {{ atrItem.position }} {{ atrItem.shirtNumber }} {{ atrItem.player.name }}
+            <span v-if="report.momId === atrItem.player.id" class="mom">☆MOM</span>
           </v-col>
           <v-col class="mt-n6" cols="12"> {{ atrItem.point }} </v-col>
           <v-col class="caption mb-5 mt-n6" cols="12">{{ atrItem.text }}</v-col>
