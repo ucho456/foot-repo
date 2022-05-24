@@ -118,31 +118,33 @@ export const getReportById = async (
     const htriRef = collection(db, 'reports', reportId, 'home-team-report-items').withConverter(
       reportItemConverter
     )
+    const htriQ = query(htriRef, orderBy('order', 'asc'))
     const atriRef = collection(db, 'reports', reportId, 'away-team-report-items').withConverter(
       reportItemConverter
     )
+    const atriQ = query(atriRef, orderBy('order', 'asc'))
     if (report.value.selectTeam === 'home') {
-      const htriSnapshot = await getDocs(htriRef)
+      const htriSnapshot = await getDocs(htriQ)
       htriSnapshot.forEach((doc) => {
         if (doc.exists()) {
           homeTeamReportItems.value.push(doc.data())
         }
       })
     } else if (report.value.selectTeam === 'away') {
-      const atriSnapshot = await getDocs(atriRef)
+      const atriSnapshot = await getDocs(atriQ)
       atriSnapshot.forEach((doc) => {
         if (doc.exists()) {
           awayTeamReportItems.value.push(doc.data())
         }
       })
     } else {
-      const htriSnapshot = await getDocs(htriRef)
+      const htriSnapshot = await getDocs(htriQ)
       htriSnapshot.forEach((doc) => {
         if (doc.exists()) {
           homeTeamReportItems.value.push(doc.data())
         }
       })
-      const atriSnapshot = await getDocs(atriRef)
+      const atriSnapshot = await getDocs(atriQ)
       atriSnapshot.forEach((doc) => {
         if (doc.exists()) {
           awayTeamReportItems.value.push(doc.data())
