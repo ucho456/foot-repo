@@ -72,7 +72,7 @@
       </v-container>
       <v-container>
         <v-row>
-          <v-col cols="10" sm="5">
+          <v-col cols="10" sm="7">
             <SelectIdMom
               v-model="inputReport.momId"
               :away-team-report-items="inputReport.awayTeamReportItems"
