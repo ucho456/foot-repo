@@ -41,7 +41,7 @@
       <v-container v-if="inputReport.selectTeam !== 'away'">
         <v-row v-for="reportItem in inputReport.homeTeamReportItems" :key="reportItem.id">
           <v-col cols="3"> {{ reportItem.position }}. {{ reportItem.shirtNumber }} </v-col>
-          <v-col cols="9">{{ reportItem.playerName }}</v-col>
+          <v-col cols="9">{{ reportItem.player.name }}</v-col>
           <v-col class="mt-n3" cols="3"><TextFieldPoint v-model="reportItem.point" /></v-col>
           <v-col class="mt-n5" cols="9">
             <Textarea v-model="reportItem.text" :maxlength="140" />
@@ -63,7 +63,7 @@
       <v-container v-if="inputReport.selectTeam !== 'home'">
         <v-row v-for="reportItem in inputReport.awayTeamReportItems" :key="reportItem.id">
           <v-col cols="3"> {{ reportItem.position }}. {{ reportItem.shirtNumber }} </v-col>
-          <v-col cols="9">{{ reportItem.playerName }}</v-col>
+          <v-col cols="9">{{ reportItem.player.name }}</v-col>
           <v-col class="mt-n3" cols="3"><TextFieldPoint v-model="reportItem.point" /></v-col>
           <v-col class="mt-n5" cols="9">
             <Textarea v-model="reportItem.text" :maxlength="140" />
