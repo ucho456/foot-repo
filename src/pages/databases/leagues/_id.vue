@@ -20,11 +20,15 @@
               <th class="text-center">勝点</th>
               <th class="text-center">得点</th>
               <th class="text-center">失点</th>
-              <th class="text-center">得失</th>
+              <th class="text-center">得失差</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in standings.table" :key="item.team.id">
+            <tr
+              v-for="item in standings.table"
+              :key="item.team.ref.path"
+              @click="pushToTeamShow(item.team.ref.path)"
+            >
               <td class="text-center">{{ item.position }}</td>
               <td class="text-center">{{ item.team.name }}</td>
               <td class="text-center">{{ item.playedGames }}</td>
@@ -71,7 +75,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useRoute } from '@nuxtjs/composition-api'
+import { defineComponent, useRoute, useRouter } from '@nuxtjs/composition-api'
 import useShow from '@/composables/databases/leagues/useShow'
 import useSnackbar from '@/utils/useSnackbar'
 
@@ -82,11 +86,12 @@ export default defineComponent({
 
   setup() {
     const route = useRoute()
+    const router = useRouter()
     const { standings, scorers, season, isLoadingStandings, isLoadingScorers, setUp } = useShow()
     const { openSnackbar } = useSnackbar()
+    const competitionId = route.value.params.id as string
 
     const setUpPage = async () => {
-      const competitionId = route.value.params.id as string
       const result = await setUp(competitionId)
       if (result === 'failure') {
         openSnackbar(result, 'データの取得に失敗しました。')
@@ -94,7 +99,11 @@ export default defineComponent({
     }
     setUpPage()
 
-    return { standings, scorers, season, isLoadingStandings, isLoadingScorers }
+    const pushToTeamShow = (path: string): void => {
+      router.push(`/databases/${path}`)
+    }
+
+    return { standings, scorers, season, isLoadingStandings, isLoadingScorers, pushToTeamShow }
   }
 })
 </script>
@@ -109,6 +118,7 @@ tr {
 @media (max-width: $tableBreakPoints) {
   th {
     writing-mode: vertical-rl;
+    letter-spacing: 1px;
   }
 }
 </style>
