@@ -6,7 +6,8 @@ import { forReportConverter, matchConverter, matchDetailConverter } from '../con
 import { config, convertPosition, footballUrl, leagueCompetitions } from '../utils'
 
 const getFbMatches = async (competitionId: number): Promise<FbMatch[]> => {
-  const utcDate = new Date().toISOString().substring(0, 10)
+  const utcDate =
+    process.env.NODE_ENV === 'production' ? new Date().toISOString().substring(0, 10) : '2022-05-22'
   const res: AxiosResponse<any, any> = await axios.get(
     footballUrl + `competitions/${competitionId}/matches?dateFrom=${utcDate}&dateTo=${utcDate}`,
     config
