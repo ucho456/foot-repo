@@ -16,11 +16,11 @@ export const StoreKey: InjectionKey<{
     competitionId: string
     standings: Standings | null
     scorers: Scorers | null
-    matches: Match[]
+    matchSchedule: Match[]
     season: string
     yearMonth: string
   }
-}> = Symbol('matches')
+}> = Symbol('store')
 
 const useStore = () => {
   const store = inject(StoreKey)
@@ -31,7 +31,7 @@ const useStore = () => {
       competitionId: '',
       standings: null,
       scorers: null,
-      matches: [],
+      matchSchedule: [],
       season: '',
       yearMonth: ''
     }

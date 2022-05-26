@@ -5,7 +5,7 @@ export const getScores = async (league: {
   competitionId: string
   standings: Standings | null
   scorers: Scorers | null
-  matches: Match[]
+  matchSchedule: Match[]
   season: string
   yearMonth: string
 }): Promise<void> => {
@@ -25,7 +25,7 @@ export const getStandings = async (league: {
   competitionId: string
   standings: Standings | null
   scorers: Scorers | null
-  matches: Match[]
+  matchSchedule: Match[]
   season: string
   yearMonth: string
 }): Promise<void> => {

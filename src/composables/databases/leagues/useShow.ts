@@ -1,6 +1,6 @@
 import { ref } from '@nuxtjs/composition-api'
 import { getScores, getStandings } from '@/db/competitions'
-import { getMonthMatches } from '@/db/matches'
+import { getMatchSchedule } from '@/db/matches'
 import useStore from '@/utils/useStore'
 
 const useShow = () => {
@@ -28,7 +28,7 @@ const useShow = () => {
       const today = new Date()
       const thisMonth = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`
       league.yearMonth = thisMonth
-      await getMonthMatches(league)
+      await getMatchSchedule(league)
       isLoadingMatches.value = false
 
       return 'success'

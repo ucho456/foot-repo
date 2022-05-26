@@ -51,7 +51,7 @@
     </v-container>
     <v-container v-else-if="!league.scorers" />
     <v-container v-else>
-      <div>得点ランキング</div>
+      <h3>得点ランキング</h3>
       <v-simple-table>
         <template #default>
           <thead>
@@ -70,6 +70,7 @@
           </tbody>
         </template>
       </v-simple-table>
+      <MatchSchedule :loading="isLoadingMatches" :match-schedule="league.matchSchedule" />
     </v-container>
   </v-card>
 </template>
@@ -79,11 +80,14 @@ import { defineComponent, useRoute, useRouter } from '@nuxtjs/composition-api'
 import useShow from '@/composables/databases/leagues/useShow'
 import useStore from '@/utils/useStore'
 import useSnackbar from '@/utils/useSnackbar'
+import MatchSchedule from '@/components/organisms/MatchSchedule.vue'
 
 export default defineComponent({
   name: 'LeagueShow',
 
-  components: {},
+  components: {
+    MatchSchedule
+  },
 
   setup() {
     const route = useRoute()

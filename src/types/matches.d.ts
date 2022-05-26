@@ -3,10 +3,12 @@ type Match = {
   id: string
   season: string
   jstDate: string
+  // yearMonthも設定する
   matchday: number
   status: 'SCHEDULED' | 'FINISHED'
   teamIds: string[]
   competition: {
+    // J-Leagueなどにする。
     id: string
     ref: import('firebase/firestore').DocumentReference
     name: string

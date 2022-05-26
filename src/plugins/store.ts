@@ -24,7 +24,7 @@ export default defineNuxtPlugin((_, inject) => {
       competitionId: string
       standings: Standings | null
       scorers: Scorers | null
-      matches: Match[]
+      matchSchedule: Match[]
       season: string
       yearMonth: string
     }
@@ -43,7 +43,7 @@ export default defineNuxtPlugin((_, inject) => {
       competitionId: '',
       standings: null,
       scorers: null,
-      matches: [],
+      matchSchedule: [],
       season: '',
       yearMonth: ''
     }
@@ -66,7 +66,7 @@ export default defineNuxtPlugin((_, inject) => {
       competitionId: '',
       standings: null,
       scorers: null,
-      matches: [],
+      matchSchedule: [],
       season: '',
       yearMonth: ''
     }
