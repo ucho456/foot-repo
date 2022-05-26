@@ -11,6 +11,8 @@ type CurrentUser = {
 
 type HomeAway = 'home' | 'away' | 'both'
 
+type CompetitionType = 'league' | 'cup' | 'japan'
+
 type InputReport = {
   title: string
   selectTeam: HomeAway

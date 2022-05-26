@@ -2,13 +2,13 @@
   <v-card outlined>
     <v-container fluid>
       <v-row dense>
-        <v-col v-for="card in cards" :key="card.title" cols="6" sm="4">
-          <v-card @click="pushToCompetitionShow(card.to)">
+        <v-col v-for="competition in competitions" :key="competition.title" cols="6" sm="4">
+          <v-card @click="pushToCompetitionShow(competition)">
             <v-card-text>
-              <v-img :src="card.src" />
+              <v-img :src="competition.src" />
             </v-card-text>
             <v-card-text class="font-weight-bold text-center">
-              {{ card.title }}
+              {{ competition.title }}
             </v-card-text>
           </v-card>
         </v-col>
@@ -26,26 +26,58 @@ export default defineComponent({
 
   setup() {
     const router = useRouter()
-    const { resetLeague } = useStore()
+    const { league, resetLeague } = useStore()
 
-    const cards = [
-      { title: 'J. League', src: require('@/assets/JJL.jpg'), to: '/databases/leagues/J-League' },
+    const competitions = [
       {
+        id: 'J-League',
+        title: 'J. League',
+        src: require('@/assets/JJL.jpg'),
+        to: '/databases/leagues/J-League',
+        type: 'league'
+      },
+      {
+        id: 'Premier-League',
         title: 'Premier League',
         src: require('@/assets/PL.png'),
-        to: '/databases/leagues/Premier-League'
+        to: '/databases/leagues/Premier-League',
+        type: 'league'
       },
-      { title: 'La Liga', src: require('@/assets/PD.png'), to: '/databases/leagues/La-Liga' },
-      { title: 'Serie A', src: require('@/assets/SA.png'), to: '/databases/leagues/Serie-A' },
-      { title: 'Bundesliga', src: require('@/assets/BL1.png'), to: '/databases/leagues/Bundesliga' }
+      {
+        id: 'La-Liga',
+        title: 'La Liga',
+        src: require('@/assets/PD.png'),
+        to: '/databases/leagues/La-Liga',
+        type: 'league'
+      },
+      {
+        id: 'Serie-A',
+        title: 'Serie A',
+        src: require('@/assets/SA.png'),
+        to: '/databases/leagues/Serie-A',
+        type: 'league'
+      },
+      {
+        id: 'Bundesliga',
+        title: 'Bundesliga',
+        src: require('@/assets/BL1.png'),
+        to: '/databases/leagues/Bundesliga',
+        type: 'league'
+      }
     ]
 
-    const pushToCompetitionShow = (to: string): void => {
-      resetLeague()
-      router.push(to)
+    const pushToCompetitionShow = (competition: {
+      id: string
+      to: string
+      type: CompetitionType
+    }): void => {
+      if (competition.type === 'league' && league.competitionId !== competition.id) {
+        resetLeague()
+      }
+      router.push(competition.to)
     }
 
-    return { cards, pushToCompetitionShow }
+    return { competitions, pushToCompetitionShow }
   }
 })
 </script>
