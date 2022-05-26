@@ -109,7 +109,7 @@ export const getMatchByRef = async (
   match.value = mSnapshot.exists() ? mSnapshot.data() : null
 }
 
-export const getMonthMatches = async (databases: {
+export const getMonthMatches = async (league: {
   competitionId: string
   standings: Standings | null
   scorers: Scorers | null
@@ -122,13 +122,13 @@ export const getMonthMatches = async (databases: {
   // yearMonthも加える
   const q = query(
     mRef,
-    where('competition.id', '==', databases.competitionId),
+    where('competition.id', '==', league.competitionId),
     orderBy('jstDate', 'desc')
   )
   const mSnapshot = await getDocs(q)
   mSnapshot.forEach((doc) => {
     if (doc.exists()) {
-      databases.matches.push(doc.data())
+      league.matches.push(doc.data())
     }
   })
 }

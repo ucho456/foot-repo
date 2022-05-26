@@ -1,7 +1,7 @@
 import { doc, getDoc, getFirestore } from 'firebase/firestore'
 import { scorersConverter, standingsConverter } from '@/utils/converters'
 
-export const getScores = async (databases: {
+export const getScores = async (league: {
   competitionId: string
   standings: Standings | null
   scorers: Scorers | null
@@ -13,15 +13,15 @@ export const getScores = async (databases: {
   const sRef = doc(
     db,
     'competitions',
-    databases.competitionId,
+    league.competitionId,
     'scorers',
-    databases.season
+    league.season
   ).withConverter(scorersConverter)
   const sSnapshot = await getDoc(sRef)
-  databases.scorers = sSnapshot.exists() ? sSnapshot.data() : null
+  league.scorers = sSnapshot.exists() ? sSnapshot.data() : null
 }
 
-export const getStandings = async (databases: {
+export const getStandings = async (league: {
   competitionId: string
   standings: Standings | null
   scorers: Scorers | null
@@ -33,10 +33,10 @@ export const getStandings = async (databases: {
   const sRef = doc(
     db,
     'competitions',
-    databases.competitionId,
+    league.competitionId,
     'standings',
-    databases.season
+    league.season
   ).withConverter(standingsConverter)
   const sSnapshot = await getDoc(sRef)
-  databases.standings = sSnapshot.exists() ? sSnapshot.data() : null
+  league.standings = sSnapshot.exists() ? sSnapshot.data() : null
 }

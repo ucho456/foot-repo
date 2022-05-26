@@ -1,6 +1,6 @@
 <template>
   <v-card outlined>
-    <v-container v-if="isLoadingStandings && !databases.standings" class="pb-10 pt-10">
+    <v-container v-if="isLoadingStandings && !league.standings" class="pb-10 pt-10">
       <v-row justify="center">
         <v-progress-circular color="primary" indeterminate />
       </v-row>
@@ -25,7 +25,7 @@
           </thead>
           <tbody>
             <tr
-              v-for="item in databases.standings.table"
+              v-for="item in league.standings.table"
               :key="item.team.ref.path"
               @click="pushToTeamShow(item.team.ref.path)"
             >
@@ -44,12 +44,12 @@
         </template>
       </v-simple-table>
     </v-container>
-    <v-container v-if="isLoadingScorers && !databases.scorers" class="pb-10 pt-10">
+    <v-container v-if="isLoadingScorers && !league.scorers" class="pb-10 pt-10">
       <v-row justify="center">
         <v-progress-circular color="primary" indeterminate />
       </v-row>
     </v-container>
-    <v-container v-else-if="!databases.scorers" />
+    <v-container v-else-if="!league.scorers" />
     <v-container v-else>
       <div>得点ランキング</div>
       <v-simple-table>
@@ -62,7 +62,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, i) in databases.scorers.table" :key="i">
+            <tr v-for="(item, i) in league.scorers.table" :key="i">
               <td class="text-center">{{ item.playerName }}</td>
               <td class="text-center">{{ item.teamName }}</td>
               <td class="text-center">{{ item.goals }}</td>
@@ -89,12 +89,12 @@ export default defineComponent({
     const route = useRoute()
     const router = useRouter()
     const { isLoadingStandings, isLoadingScorers, isLoadingMatches, setUp } = useShow()
-    const { databases } = useStore()
+    const { league } = useStore()
     const { openSnackbar } = useSnackbar()
     const competitionId = route.value.params.id as string
 
     const setUpPage = async () => {
-      if (databases.competitionId !== competitionId) {
+      if (league.competitionId !== competitionId) {
         const result = await setUp(competitionId)
         if (result === 'failure') {
           openSnackbar(result, 'データの取得に失敗しました。')
@@ -107,7 +107,7 @@ export default defineComponent({
       router.push(`/databases/${path}`)
     }
 
-    return { isLoadingStandings, isLoadingScorers, isLoadingMatches, databases, pushToTeamShow }
+    return { isLoadingStandings, isLoadingScorers, isLoadingMatches, league, pushToTeamShow }
   }
 })
 </script>

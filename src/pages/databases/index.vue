@@ -26,7 +26,7 @@ export default defineComponent({
 
   setup() {
     const router = useRouter()
-    const { resetDatabases } = useStore()
+    const { resetLeague } = useStore()
 
     const cards = [
       { title: 'J. League', src: require('@/assets/JJL.jpg'), to: '/databases/leagues/J-League' },
@@ -41,7 +41,7 @@ export default defineComponent({
     ]
 
     const pushToCompetitionShow = (to: string): void => {
-      resetDatabases()
+      resetLeague()
       router.push(to)
     }
 

@@ -4,7 +4,7 @@ import { getMonthMatches } from '@/db/matches'
 import useStore from '@/utils/useStore'
 
 const useShow = () => {
-  const { databases } = useStore()
+  const { league } = useStore()
 
   const isLoadingStandings = ref(false)
   const isLoadingScorers = ref(false)
@@ -12,23 +12,23 @@ const useShow = () => {
   const setUp = async (competitionId: string) => {
     try {
       isLoadingStandings.value = true
-      databases.competitionId = competitionId
-      databases.season =
+      league.competitionId = competitionId
+      league.season =
         competitionId === 'J-League'
           ? String(new Date().getFullYear())
           : String(new Date().getFullYear() - 1)
-      await getStandings(databases)
+      await getStandings(league)
       isLoadingStandings.value = false
 
       isLoadingScorers.value = true
-      await getScores(databases)
+      await getScores(league)
       isLoadingScorers.value = false
 
       isLoadingMatches.value = true
       const today = new Date()
       const thisMonth = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`
-      databases.yearMonth = thisMonth
-      await getMonthMatches(databases)
+      league.yearMonth = thisMonth
+      await getMonthMatches(league)
       isLoadingMatches.value = false
 
       return 'success'

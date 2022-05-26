@@ -20,7 +20,7 @@ export default defineNuxtPlugin((_, inject) => {
       lastVisible: QueryDocumentSnapshot<Report> | null
       searchOption: SearchOption
     }
-    databases: {
+    league: {
       competitionId: string
       standings: Standings | null
       scorers: Scorers | null
@@ -39,7 +39,7 @@ export default defineNuxtPlugin((_, inject) => {
       lastVisible: null,
       searchOption: { status: '', competitionId: '', teamId: '', jstDate: '' }
     },
-    databases: {
+    league: {
       competitionId: '',
       standings: null,
       scorers: null,
@@ -62,7 +62,7 @@ export default defineNuxtPlugin((_, inject) => {
       lastVisible: null,
       searchOption: { status: '', competitionId: '', teamId: '', jstDate: '' }
     }
-    store.databases = {
+    store.league = {
       competitionId: '',
       standings: null,
       scorers: null,

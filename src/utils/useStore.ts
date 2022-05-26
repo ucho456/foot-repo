@@ -12,7 +12,7 @@ export const StoreKey: InjectionKey<{
     lastVisible: QueryDocumentSnapshot<Report> | null
     searchOption: SearchOption
   }
-  databases: {
+  league: {
     competitionId: string
     standings: Standings | null
     scorers: Scorers | null
@@ -26,8 +26,8 @@ const useStore = () => {
   const store = inject(StoreKey)
   if (store === undefined) throw new Error('store is no provided')
 
-  const resetDatabases = (): void => {
-    store.databases = {
+  const resetLeague = (): void => {
+    store.league = {
       competitionId: '',
       standings: null,
       scorers: null,
@@ -40,8 +40,8 @@ const useStore = () => {
   return {
     matches: store.matches,
     reports: store.reports,
-    databases: store.databases,
-    resetDatabases
+    league: store.league,
+    resetLeague
   }
 }
 
