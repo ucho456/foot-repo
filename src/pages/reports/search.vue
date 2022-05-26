@@ -61,7 +61,9 @@ export default defineComponent({
     } = useSearch()
     const { matches } = useStore()
 
-    if (matches.data.length === 0) setUp()
+    if (matches.data.length === 0) {
+      setUp()
+    }
 
     return {
       isLoadingSetUp,

@@ -21,6 +21,7 @@ export default defineNuxtPlugin((_, inject) => {
       searchOption: SearchOption
     }
     databases: {
+      competitionId: string
       standings: Standings | null
       scorers: Scorers | null
       matches: Match[]
@@ -39,6 +40,7 @@ export default defineNuxtPlugin((_, inject) => {
       searchOption: { status: '', competitionId: '', teamId: '', jstDate: '' }
     },
     databases: {
+      competitionId: '',
       standings: null,
       scorers: null,
       matches: [],
@@ -61,6 +63,7 @@ export default defineNuxtPlugin((_, inject) => {
       searchOption: { status: '', competitionId: '', teamId: '', jstDate: '' }
     }
     store.databases = {
+      competitionId: '',
       standings: null,
       scorers: null,
       matches: [],

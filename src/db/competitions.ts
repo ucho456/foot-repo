@@ -1,29 +1,42 @@
-import { Ref } from '@nuxtjs/composition-api'
 import { doc, getDoc, getFirestore } from 'firebase/firestore'
 import { scorersConverter, standingsConverter } from '@/utils/converters'
 
-export const getScores = async (
-  competitionId: string,
-  season: string,
-  scorers: Ref<Scorers | null>
-): Promise<void> => {
+export const getScores = async (databases: {
+  competitionId: string
+  standings: Standings | null
+  scorers: Scorers | null
+  matches: Match[]
+  season: string
+  yearMonth: string
+}): Promise<void> => {
   const db = getFirestore()
-  const sRef = doc(db, 'competitions', competitionId, 'scorers', season).withConverter(
-    scorersConverter
-  )
+  const sRef = doc(
+    db,
+    'competitions',
+    databases.competitionId,
+    'scorers',
+    databases.season
+  ).withConverter(scorersConverter)
   const sSnapshot = await getDoc(sRef)
-  scorers.value = sSnapshot.exists() ? sSnapshot.data() : null
+  databases.scorers = sSnapshot.exists() ? sSnapshot.data() : null
 }
 
-export const getStandings = async (
-  competitionId: string,
-  season: string,
-  standings: Ref<Standings | null>
-): Promise<void> => {
+export const getStandings = async (databases: {
+  competitionId: string
+  standings: Standings | null
+  scorers: Scorers | null
+  matches: Match[]
+  season: string
+  yearMonth: string
+}): Promise<void> => {
   const db = getFirestore()
-  const sRef = doc(db, 'competitions', competitionId, 'standings', season).withConverter(
-    standingsConverter
-  )
+  const sRef = doc(
+    db,
+    'competitions',
+    databases.competitionId,
+    'standings',
+    databases.season
+  ).withConverter(standingsConverter)
   const sSnapshot = await getDoc(sRef)
-  standings.value = sSnapshot.exists() ? sSnapshot.data() : null
+  databases.standings = sSnapshot.exists() ? sSnapshot.data() : null
 }

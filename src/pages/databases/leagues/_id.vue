@@ -1,6 +1,6 @@
 <template>
   <v-card outlined>
-    <v-container v-if="isLoadingStandings && !standings" class="pb-10 pt-10">
+    <v-container v-if="isLoadingStandings && !databases.standings" class="pb-10 pt-10">
       <v-row justify="center">
         <v-progress-circular color="primary" indeterminate />
       </v-row>
@@ -25,7 +25,7 @@
           </thead>
           <tbody>
             <tr
-              v-for="item in standings.table"
+              v-for="item in databases.standings.table"
               :key="item.team.ref.path"
               @click="pushToTeamShow(item.team.ref.path)"
             >
@@ -44,12 +44,12 @@
         </template>
       </v-simple-table>
     </v-container>
-    <v-container v-if="isLoadingScorers && !scorers" class="pb-10 pt-10">
+    <v-container v-if="isLoadingScorers && !databases.scorers" class="pb-10 pt-10">
       <v-row justify="center">
         <v-progress-circular color="primary" indeterminate />
       </v-row>
     </v-container>
-    <v-container v-else-if="!scorers" />
+    <v-container v-else-if="!databases.scorers" />
     <v-container v-else>
       <div>得点ランキング</div>
       <v-simple-table>
@@ -62,7 +62,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, i) in scorers.table" :key="i">
+            <tr v-for="(item, i) in databases.scorers.table" :key="i">
               <td class="text-center">{{ item.playerName }}</td>
               <td class="text-center">{{ item.teamName }}</td>
               <td class="text-center">{{ item.goals }}</td>
@@ -77,6 +77,7 @@
 <script lang="ts">
 import { defineComponent, useRoute, useRouter } from '@nuxtjs/composition-api'
 import useShow from '@/composables/databases/leagues/useShow'
+import useStore from '@/utils/useStore'
 import useSnackbar from '@/utils/useSnackbar'
 
 export default defineComponent({
@@ -87,14 +88,17 @@ export default defineComponent({
   setup() {
     const route = useRoute()
     const router = useRouter()
-    const { standings, scorers, season, isLoadingStandings, isLoadingScorers, setUp } = useShow()
+    const { isLoadingStandings, isLoadingScorers, isLoadingMatches, setUp } = useShow()
+    const { databases } = useStore()
     const { openSnackbar } = useSnackbar()
     const competitionId = route.value.params.id as string
 
     const setUpPage = async () => {
-      const result = await setUp(competitionId)
-      if (result === 'failure') {
-        openSnackbar(result, 'データの取得に失敗しました。')
+      if (databases.competitionId !== competitionId) {
+        const result = await setUp(competitionId)
+        if (result === 'failure') {
+          openSnackbar(result, 'データの取得に失敗しました。')
+        }
       }
     }
     setUpPage()
@@ -103,7 +107,7 @@ export default defineComponent({
       router.push(`/databases/${path}`)
     }
 
-    return { standings, scorers, season, isLoadingStandings, isLoadingScorers, pushToTeamShow }
+    return { isLoadingStandings, isLoadingScorers, isLoadingMatches, databases, pushToTeamShow }
   }
 })
 </script>

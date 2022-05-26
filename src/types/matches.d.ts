@@ -1,3 +1,4 @@
+// yearMonthのカラムを加える
 type Match = {
   id: string
   season: string

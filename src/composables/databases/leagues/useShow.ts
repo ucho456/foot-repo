@@ -1,35 +1,47 @@
-import { ref, Ref } from '@nuxtjs/composition-api'
+import { ref } from '@nuxtjs/composition-api'
 import { getScores, getStandings } from '@/db/competitions'
+import { getMonthMatches } from '@/db/matches'
+import useStore from '@/utils/useStore'
 
 const useShow = () => {
-  const standings: Ref<Standings | null> = ref(null)
-  const scorers: Ref<Scorers | null> = ref(null)
-  const season = ref('')
+  const { databases } = useStore()
 
   const isLoadingStandings = ref(false)
   const isLoadingScorers = ref(false)
+  const isLoadingMatches = ref(false)
   const setUp = async (competitionId: string) => {
     try {
       isLoadingStandings.value = true
-      season.value =
+      databases.competitionId = competitionId
+      databases.season =
         competitionId === 'J-League'
           ? String(new Date().getFullYear())
           : String(new Date().getFullYear() - 1)
-      await getStandings(competitionId, season.value, standings)
+      await getStandings(databases)
       isLoadingStandings.value = false
+
       isLoadingScorers.value = true
-      await getScores(competitionId, season.value, scorers)
+      await getScores(databases)
       isLoadingScorers.value = false
+
+      isLoadingMatches.value = true
+      const today = new Date()
+      const thisMonth = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`
+      databases.yearMonth = thisMonth
+      await getMonthMatches(databases)
+      isLoadingMatches.value = false
+
       return 'success'
     } catch {
       return 'failure'
     } finally {
       isLoadingStandings.value = false
       isLoadingScorers.value = false
+      isLoadingMatches.value = false
     }
   }
 
-  return { standings, scorers, season, isLoadingStandings, isLoadingScorers, setUp }
+  return { isLoadingStandings, isLoadingScorers, isLoadingMatches, setUp }
 }
 
 export default useShow

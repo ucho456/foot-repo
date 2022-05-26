@@ -8,7 +8,8 @@ import {
   limit,
   orderBy,
   query,
-  startAfter
+  startAfter,
+  where
 } from 'firebase/firestore'
 import type {
   DocumentData,
@@ -106,4 +107,28 @@ export const getMatchByRef = async (
   const mRef = matchRef.withConverter(matchConverter)
   const mSnapshot = await getDoc(mRef)
   match.value = mSnapshot.exists() ? mSnapshot.data() : null
+}
+
+export const getMonthMatches = async (databases: {
+  competitionId: string
+  standings: Standings | null
+  scorers: Scorers | null
+  matches: Match[]
+  season: string
+  yearMonth: string
+}) => {
+  const db = getFirestore()
+  const mRef = collection(db, 'matches').withConverter(matchConverter)
+  // yearMonthも加える
+  const q = query(
+    mRef,
+    where('competition.id', '==', databases.competitionId),
+    orderBy('jstDate', 'desc')
+  )
+  const mSnapshot = await getDocs(q)
+  mSnapshot.forEach((doc) => {
+    if (doc.exists()) {
+      databases.matches.push(doc.data())
+    }
+  })
 }
