@@ -1,34 +1,6 @@
 import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore'
-import type {
-  DocumentData,
-  FirestoreDataConverter,
-  SnapshotOptions,
-  QueryDocumentSnapshot
-} from 'firebase/firestore'
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
-
-const userConverter: FirestoreDataConverter<User> = {
-  toFirestore(user: User): DocumentData {
-    return {
-      name: user.name,
-      imageUrl: user.imageUrl,
-      greet: user.greet,
-      competitionId: user.competitionId,
-      teamId: user.teamId
-    }
-  },
-  fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions): User {
-    const data = snapshot.data(options)
-    return {
-      id: snapshot.id,
-      name: data.name,
-      imageUrl: data.imageUrl,
-      greet: data.greet,
-      competitionId: data.competitionId,
-      teamId: data.teamId
-    }
-  }
-}
+import { userConverter } from '@/utils/converters'
 
 export const getUser = async (uid: string | undefined): Promise<User | null> => {
   if (!uid) return null

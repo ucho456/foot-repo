@@ -10,6 +10,7 @@ import useCurrentUser from '@/utils/useCurrentUser'
 
 const useLogin = () => {
   const { setUpCurrentUser } = useCurrentUser()
+
   const user = reactive({ email: '', password: '' })
   const isLoading = ref(false)
 

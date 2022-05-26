@@ -84,14 +84,6 @@ export default defineComponent({
     const { user, isLoading, loginEmail, loginTwitter, loginGoogle } = useLogin()
     const { openSnackbar } = useSnackbar()
 
-    const next = (result: 'success' | 'failure'): void => {
-      const message = result === 'success' ? 'ログインしました。' : 'ログインに失敗しました。'
-      openSnackbar(result, message)
-      if (result === 'success') {
-        router.push('/')
-      }
-    }
-
     const submitEmail = async (): Promise<void> => {
       const result = await loginEmail()
       next(result)
@@ -105,6 +97,14 @@ export default defineComponent({
     const submitGoogle = async (): Promise<void> => {
       const result = await loginGoogle()
       next(result)
+    }
+
+    const next = (result: 'success' | 'failure'): void => {
+      const message = result === 'success' ? 'ログインしました。' : 'ログインに失敗しました。'
+      openSnackbar(result, message)
+      if (result === 'success') {
+        router.push('/')
+      }
     }
 
     const back = (): void => {

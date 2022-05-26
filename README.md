@@ -133,6 +133,7 @@ https://qiita.com/nemutas/items/a2ccfb807cb00dcdeabe
 - functions で team や competition の imageUrl を作成する。image の為の id カラムを作成しない。
 - 基本は ref に統一する。
 - 一旦、データベースまでのフロントを作ったらデータの洗い出しを再度実施して、functions を完成させる。(v4 に対応させる。チームのショートネームなども採用したい。)
+- アイコンが全部ロードすることになって重いのでそれを改善する。
 
 1. データベースまでのフロントを完成させる。
 2. データの洗い出しを実施して functions を完成させる。

@@ -7,7 +7,7 @@ import {
   signInWithPopup,
   TwitterAuthProvider
 } from 'firebase/auth'
-import { getUser } from '@/db/usersCollection'
+import { getUser } from '@/db/users'
 import useCurrentUser from '@/utils/useCurrentUser'
 
 const useSignup = () => {

@@ -3,7 +3,12 @@
     <v-card-title>
       <v-row justify="center">プロフィール登録</v-row>
     </v-card-title>
-    <v-container>
+    <v-container v-if="isLoadingSetUp" class="pb-10 pt-10">
+      <v-row justify="center">
+        <v-progress-circular color="primary" indeterminate />
+      </v-row>
+    </v-container>
+    <v-container v-else>
       <ValidationObserver v-slot="{ invalid }">
         <v-row justify="center">
           <v-col cols="3" sm="2">
@@ -84,13 +89,13 @@ export default defineComponent({
 
   setup() {
     const router = useRouter()
-    const { isNormalAccess, user, setUp, changeImageUrl, clearImageUrl, isLoading, create } =
+    const { user, isLoadingSetUp, setUp, changeImageUrl, clearImageUrl, isLoading, create } =
       useNew()
     const { openSnackbar } = useSnackbar()
 
     const setUpPage = async () => {
-      await setUp()
-      if (!isNormalAccess.value) {
+      const result = await setUp()
+      if (result === 'failure') {
         openSnackbar('alert', '不正なアクセスです。')
         router.push('/')
       }
@@ -108,6 +113,7 @@ export default defineComponent({
 
     return {
       user,
+      isLoadingSetUp,
       changeImageUrl,
       clearImageUrl,
       isLoading,

@@ -1,6 +1,6 @@
 import { inject, InjectionKey, Ref } from '@nuxtjs/composition-api'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
-import { getUser } from '@/db/usersCollection'
+import { getUser } from '@/db/users'
 
 export const CurrentUserKey: InjectionKey<Ref<CurrentUser | null>> = Symbol('currentUser')
 

@@ -1,7 +1,7 @@
 import { defineNuxtPlugin, onGlobalSetup, onUnmounted, provide, ref } from '@nuxtjs/composition-api'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { CurrentUserKey } from '@/utils/useCurrentUser'
-import { getUser } from '@/db/usersCollection'
+import { getUser } from '@/db/users'
 
 export default defineNuxtPlugin(async (_, inject) => {
   const currentUser = ref(null)
