@@ -20,6 +20,13 @@ export default defineNuxtPlugin((_, inject) => {
       lastVisible: QueryDocumentSnapshot<Report> | null
       searchOption: SearchOption
     }
+    databases: {
+      standings: Standings | null
+      scorers: Scorers | null
+      matches: Match[]
+      season: string
+      yearMonth: string
+    }
   } = reactive({
     matches: {
       data: [],
@@ -30,6 +37,13 @@ export default defineNuxtPlugin((_, inject) => {
       data: [],
       lastVisible: null,
       searchOption: { status: '', competitionId: '', teamId: '', jstDate: '' }
+    },
+    databases: {
+      standings: null,
+      scorers: null,
+      matches: [],
+      season: '',
+      yearMonth: ''
     }
   })
 
@@ -45,6 +59,13 @@ export default defineNuxtPlugin((_, inject) => {
       data: [],
       lastVisible: null,
       searchOption: { status: '', competitionId: '', teamId: '', jstDate: '' }
+    }
+    store.databases = {
+      standings: null,
+      scorers: null,
+      matches: [],
+      season: '',
+      yearMonth: ''
     }
   }
 

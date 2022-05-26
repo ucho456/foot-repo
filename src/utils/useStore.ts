@@ -12,13 +12,20 @@ export const StoreKey: InjectionKey<{
     lastVisible: QueryDocumentSnapshot<Report> | null
     searchOption: SearchOption
   }
+  databases: {
+    standings: Standings | null
+    scorers: Scorers | null
+    matches: Match[]
+    season: string
+    yearMonth: string
+  }
 }> = Symbol('matches')
 
 const useStore = () => {
   const store = inject(StoreKey)
   if (store === undefined) throw new Error('store is no provided')
 
-  return { matches: store.matches, reports: store.reports }
+  return { matches: store.matches, reports: store.reports, databases: store.databases }
 }
 
 export default useStore
