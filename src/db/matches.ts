@@ -12,7 +12,7 @@ import {
   where
 } from 'firebase/firestore'
 import type { DocumentReference, QueryDocumentSnapshot } from 'firebase/firestore'
-import { matchConverter } from '@/utils/converters'
+import { forReportConverter, matchConverter } from '@/utils/converters'
 import { makeSearchOption } from '@/utils/searchOption'
 
 export const getFirstMatches = async (matches: {
@@ -58,11 +58,22 @@ export const getNextMatches = async (matches: {
   matches.lastVisible = mSnapshot.docs[mSnapshot.docs.length - 1]
 }
 
-export const getMatch = async (matchId: string): Promise<Match | null> => {
+export const getMatch = async (match: Ref<Match | null>, matchId: string): Promise<void> => {
   const db = getFirestore()
   const mRef = doc(db, 'matches', matchId).withConverter(matchConverter)
   const mSnapshot = await getDoc(mRef)
-  return mSnapshot.exists() ? mSnapshot.data() : null
+  match.value = mSnapshot.exists() ? mSnapshot.data() : null
+}
+
+export const getForReport = async (inputReport: InputReport, matchId: string): Promise<void> => {
+  const db = getFirestore()
+  const frRef = doc(db, 'matches', matchId, 'for-report', matchId).withConverter(forReportConverter)
+  const frSnapshot = await getDoc(frRef)
+  const forReport = frSnapshot.exists() ? frSnapshot.data() : null
+  if (forReport) {
+    inputReport.homeTeamReportItems = forReport.homeTeamReportItems
+    inputReport.awayTeamReportItems = forReport.awayTeamReportItems
+  }
 }
 
 export const getMatchByRef = async (

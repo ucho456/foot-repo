@@ -58,18 +58,21 @@ type MatchDetail = {
   awayBench: Player[]
   awayCoachName: string
   goals: {
+    keyId: string
     minute: number
     teamName: string
     goalPlayerName: string
     assistPlayerName: string | null
   }[]
   bookings: {
+    keyId: string
     minute: number
     teamName: string
     playerName: string
     card: 'red' | 'yellow'
   }[]
   substitutions: {
+    keyId: string
     minute: number
     teamName: string
     outPlayerName: string

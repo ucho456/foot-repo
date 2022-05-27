@@ -9,7 +9,7 @@
           class="center rounded-circle"
           max-height="60"
           max-width="60"
-          :src="`https://crests.football-data.org/${homeTeam.id}.svg`"
+          :src="homeTeam.imageUrl"
         />
       </v-col>
       <v-col cols="2"></v-col>
@@ -18,7 +18,7 @@
           class="center rounded-circle"
           max-height="60"
           max-width="60"
-          :src="`https://crests.football-data.org/${awayTeam.id}.svg`"
+          :src="awayTeam.imageUrl"
         />
       </v-col>
     </v-row>
@@ -41,13 +41,13 @@
     </v-row>
     <v-row>
       <v-col class="text-truncate" cols="5">
-        <v-row v-for="goalDatum in homeTeam.goalPlayers" :key="goalDatum.id">
+        <v-row v-for="goalDatum in homeTeam.goalPlayers" :key="goalDatum.keyId">
           <v-col>{{ goalDatum.minute }}. {{ goalDatum.name }}</v-col>
         </v-row>
       </v-col>
       <v-col cols="2"></v-col>
       <v-col class="text-truncate" cols="5">
-        <v-row v-for="goalDatum in awayTeam.goalPlayers" :key="goalDatum.id">
+        <v-row v-for="goalDatum in awayTeam.goalPlayers" :key="goalDatum.keyId">
           <v-col>{{ goalDatum.minute }}. {{ goalDatum.name }}</v-col>
         </v-row>
       </v-col>
@@ -78,6 +78,7 @@ export default defineComponent({
       type: Object as () => {
         id: string
         name: string
+        imageUrl: string
         score: number | null
         penalty: number | null
         goalPlayers: {
@@ -90,6 +91,7 @@ export default defineComponent({
         return {
           id: '',
           name: '',
+          imageUrl: '',
           score: 0,
           penalty: 0,
           goalPlayers: []
@@ -100,6 +102,7 @@ export default defineComponent({
       type: Object as () => {
         id: string
         name: string
+        imageUrl: string
         score: number | null
         penalty: number | null
         goalPlayers: {
@@ -112,6 +115,7 @@ export default defineComponent({
         return {
           id: '',
           name: '',
+          imageUrl: '',
           score: 0,
           penalty: 0,
           goalPlayers: []

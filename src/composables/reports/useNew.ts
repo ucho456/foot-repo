@@ -1,6 +1,5 @@
 import { reactive, ref, Ref, watch } from '@nuxtjs/composition-api'
-import { getMatch } from '@/db/matches'
-import { getForReport } from '@/db/forReportCollection'
+import { getForReport, getMatch } from '@/db/matches'
 import { createReport } from '@/db/reports'
 import useCurrentUser from '@/utils/useCurrentUser'
 
@@ -21,12 +20,8 @@ const useNew = () => {
   const setUp = async (matchId: string): Promise<'success' | 'failure'> => {
     try {
       isLoadingSetUp.value = true
-      match.value = await getMatch(matchId)
-      const forReport = await getForReport(matchId)
-      if (forReport) {
-        inputReport.homeTeamReportItems = forReport.homeTeamReportItems
-        inputReport.awayTeamReportItems = forReport.awayTeamReportItems
-      }
+      await getMatch(match, matchId)
+      await getForReport(inputReport, matchId)
       return 'success'
     } catch {
       return 'failure'

@@ -51,7 +51,7 @@ const makeMatchDetail = (fbMatch: FbMatch): MatchDetail => {
   })
   const goals = fbMatch.goals.map((g, i) => {
     return {
-      id: String(i),
+      keyId: String(i),
       minute: g.minute,
       teamName: g.team.name,
       goalPlayerName: g.scorer.name,
@@ -61,7 +61,7 @@ const makeMatchDetail = (fbMatch: FbMatch): MatchDetail => {
   const bookings = fbMatch.bookings.map((b, i) => {
     const card: 'red' | 'yellow' = b.card === 'RED_CARD' ? 'red' : 'yellow'
     return {
-      id: String(i),
+      keyId: String(i),
       minute: b.minute,
       teamName: b.team.name,
       playerName: b.player.name,
@@ -70,7 +70,7 @@ const makeMatchDetail = (fbMatch: FbMatch): MatchDetail => {
   })
   const substitutions = fbMatch.substitutions.map((s, i) => {
     return {
-      id: String(i),
+      keyId: String(i),
       minute: s.minute,
       teamName: s.team.name,
       outPlayerName: s.playerOut.name,
