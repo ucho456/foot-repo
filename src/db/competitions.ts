@@ -1,7 +1,7 @@
 import { doc, getDoc, getFirestore } from 'firebase/firestore'
 import { scorersConverter, standingsConverter } from '@/utils/converters'
 
-export const getScores = async (league: {
+export const setScores = async (league: {
   competitionId: string
   standings: Standings | null
   scorers: Scorers | null
@@ -21,7 +21,7 @@ export const getScores = async (league: {
   league.scorers = sSnapshot.exists() ? sSnapshot.data() : null
 }
 
-export const getStandings = async (league: {
+export const setStandings = async (league: {
   competitionId: string
   standings: Standings | null
   scorers: Scorers | null

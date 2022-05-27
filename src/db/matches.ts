@@ -71,7 +71,7 @@ export const getForReport = async (matchId: string): Promise<ForReport | null> =
   return frSnapshot.exists() ? frSnapshot.data() : null
 }
 
-export const getMatchSchedule = async (league: {
+export const setMatchSchedule = async (league: {
   competitionId: string
   standings: Standings | null
   scorers: Scorers | null
@@ -81,12 +81,11 @@ export const getMatchSchedule = async (league: {
 }) => {
   const db = getFirestore()
   const mRef = collection(db, 'matches').withConverter(matchConverter)
-  // yearMonthも加える
   const q = query(
     mRef,
-    where('competition.id', '==', '2021'), // league.competitionId
-    orderBy('jstDate', 'desc'),
-    limit(20)
+    where('competition.id', '==', league.competitionId),
+    where('yearMonth', '==', league.yearMonth),
+    orderBy('jstDate', 'desc')
   )
   const mSnapshot = await getDocs(q)
   mSnapshot.forEach((doc) => {
