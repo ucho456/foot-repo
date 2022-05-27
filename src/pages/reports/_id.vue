@@ -104,7 +104,7 @@ export default defineComponent({
       const reportId = route.value.params.id as string
       const result = await setUp(reportId)
       if (result === 'failure') {
-        openSnackbar(result, '選手採点データの取得に失敗しました。')
+        openSnackbar(result, 'データの取得に失敗しました。')
       }
     }
     setUpPage()

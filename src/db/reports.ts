@@ -42,20 +42,26 @@ export const createReport = async (
         },
     homeTeam: {
       id: match.homeTeam.id,
+      ref: doc(db, `teams/${match.homeTeam.id}`),
       name: match.homeTeam.name,
+      imageUrl: match.homeTeam.imageUrl,
       score: match.homeTeam.score!
     },
     awayTeam: {
       id: match.awayTeam.id,
+      ref: doc(db, `teams/${match.awayTeam.id}`),
       name: match.awayTeam.name,
+      imageUrl: match.awayTeam.imageUrl,
       score: match.awayTeam.score!
     },
     competition: {
       id: match.competition.id,
+      ref: doc(db, `competitions/${match.competition.id}`),
       name: match.competition.name
     },
     jstDate: match.jstDate,
     match: {
+      id: match.id,
       ref: doc(db, `matches/${match.id}`)
     },
     selectTeam: inputReport.selectTeam,

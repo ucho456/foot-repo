@@ -8,20 +8,26 @@ type Report = {
   }
   homeTeam: {
     id: string
+    ref: import('firebase/firestore').DocumentReference
     name: string
+    imageUrl: string
     score: number
   }
   awayTeam: {
     id: string
+    ref: import('firebase/firestore').DocumentReference
     name: string
+    imageUrl: string
     score: number
   }
   competition: {
     id: string
+    ref: import('firebase/firestore').DocumentReference
     name: string
   }
   jstDate: string
   match: {
+    id: string
     ref: import('firebase/firestore').DocumentReference
   }
   selectTeam: HomeAway
