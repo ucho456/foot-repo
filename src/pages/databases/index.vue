@@ -39,28 +39,28 @@ export default defineComponent({
       {
         id: 'Premier-League',
         title: 'Premier League',
-        src: require('@/assets/PL.png'),
+        src: 'https://crests.football-data.org/PL.png',
         to: '/databases/leagues/Premier-League',
         type: 'league'
       },
       {
         id: 'La-Liga',
         title: 'La Liga',
-        src: require('@/assets/PD.png'),
+        src: 'https://crests.football-data.org/PD.png',
         to: '/databases/leagues/La-Liga',
         type: 'league'
       },
       {
         id: 'Serie-A',
         title: 'Serie A',
-        src: require('@/assets/SA.png'),
+        src: 'https://crests.football-data.org/SA.png',
         to: '/databases/leagues/Serie-A',
         type: 'league'
       },
       {
         id: 'Bundesliga',
         title: 'Bundesliga',
-        src: require('@/assets/BL1.png'),
+        src: 'https://crests.football-data.org/BL1.png',
         to: '/databases/leagues/Bundesliga',
         type: 'league'
       }
