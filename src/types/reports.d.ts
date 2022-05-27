@@ -44,7 +44,7 @@ type ReportItem = {
     name: string
   }
   position: Position
-  shirtNumber: number
+  shirtNumber: number | null
   point: Point
   text: string
   order: number

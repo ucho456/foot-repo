@@ -1,3 +1,7 @@
+type Card = 'red' | 'yellow'
+
+type CompetitionType = 'league' | 'cup' | 'japan'
+
 type CurrentUser = {
   uid: string
   name: string | null
@@ -11,8 +15,6 @@ type CurrentUser = {
 
 type HomeAway = 'home' | 'away' | 'both'
 
-type CompetitionType = 'league' | 'cup' | 'japan'
-
 type InputReport = {
   title: string
   selectTeam: HomeAway
@@ -21,6 +23,8 @@ type InputReport = {
   summary: string
   momId: string
 }
+
+type MatchStatus = 'SCHEDULED' | 'FINISHED'
 
 type Point =
   | '0.0'

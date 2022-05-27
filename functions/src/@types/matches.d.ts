@@ -15,6 +15,7 @@ type Match = {
     id: string
     ref: import('firebase-admin/firestore').DocumentReference
     name: string
+    // shortName: string
     imageUrl: string
     score: number | null
     penalty: number | null
@@ -28,6 +29,7 @@ type Match = {
     id: string
     ref: import('firebase-admin/firestore').DocumentReference
     name: string
+    // shortName: string
     imageUrl: string
     score: number | null
     penalty: number | null
