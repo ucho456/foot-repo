@@ -6,15 +6,20 @@ import { config, footballUrl, leagueCompetitions } from '../utils'
 
 const getScorers = async (competition: { id: number; collectionId: string }): Promise<Scorers> => {
   const res: AxiosResponse<any, any> = await axios.get(
-    footballUrl + `competitions/${competition.id}/scorers?limit=30`,
+    footballUrl + `competitions/${competition.id}/scorers`,
     config
   )
   const fbScorers = res.data as FbScorers
+  const goals = fbScorers.scorers.map((s) => s.numberOfGoals)
+  const sorted = goals.slice().sort((a, b) => b - a)
+  const ranks = goals.map((g) => sorted.indexOf(g) + 1)
   return {
     id: fbScorers.season.startDate.substring(0, 4),
     season: fbScorers.season.startDate.substring(0, 4),
-    table: fbScorers.scorers.map((s) => {
+    table: fbScorers.scorers.map((s, i) => {
       return {
+        keyId: String(i),
+        rank: ranks[i],
         playerName: s.player.name,
         teamName: s.team.name,
         goals: s.numberOfGoals

@@ -56,13 +56,15 @@
         <template #default>
           <thead>
             <tr>
+              <th class="text-center">順位</th>
               <th class="text-center">選手</th>
               <th class="text-center">所属</th>
               <th class="text-center">得点</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, i) in league.scorers.table" :key="i">
+            <tr v-for="item in league.scorers.table" :key="item.keyId">
+              <td class="text-center">{{ item.rank }}</td>
               <td class="text-center">{{ item.playerName }}</td>
               <td class="text-center">{{ item.teamName }}</td>
               <td class="text-center">{{ item.goals }}</td>

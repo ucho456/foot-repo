@@ -9,6 +9,8 @@ type Scorers = {
   id: string
   season: string
   table: {
+    keyId: string
+    rank: number
     playerName: string
     teamName: string
     goals: number
