@@ -52,7 +52,6 @@ export default defineComponent({
       type: Object as () => SearchOption,
       default: () => {
         return {
-          status: '',
           competitionId: '',
           teamId: '',
           jstDate: ''

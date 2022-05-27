@@ -151,3 +151,4 @@ https://qiita.com/nemutas/items/a2ccfb807cb00dcdeabe
 report に省略チーム名を追加したい。
 v4 に対応したい。
 バーチャルスクロールを使用したい。
+databases の方には lastUpdated を表示する。

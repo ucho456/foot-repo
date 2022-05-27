@@ -5,6 +5,7 @@
         <v-progress-circular color="primary" indeterminate />
       </v-row>
     </v-container>
+    <v-container v-else-if="!league.standings" />
     <v-container v-else>
       <h3>順位表</h3>
       <v-simple-table>

@@ -10,7 +10,7 @@
       <v-container v-for="match in matchSchedule" :key="match.id">
         <v-list-item :exact="true" :router="true" :to="{ path: `/databases/matches/${match.id}` }">
           <v-list-item-avatar>
-            <v-img :src="`https://crests.football-data.org/${match.homeTeam.id}.svg`" />
+            <v-img :src="match.homeTeam.imageUrl" />
           </v-list-item-avatar>
           <v-list-item-content>
             <v-row>
@@ -25,11 +25,11 @@
               {{ match.homeTeam.score }} - {{ match.awayTeam.score }}
             </v-list-item-subtitle>
             <v-list-item-subtitle class="text-center">
-              {{ match.jstDate }} - {{ match.competition.name }}{{ match.matchday }}節
+              {{ match.jstDate }} / {{ match.competition.name }} / {{ match.matchday }}節
             </v-list-item-subtitle>
           </v-list-item-content>
           <v-list-item-avatar>
-            <v-img :src="`https://crests.football-data.org/${match.awayTeam.id}.svg`" />
+            <v-img :src="match.awayTeam.imageUrl" />
           </v-list-item-avatar>
         </v-list-item>
       </v-container>
@@ -53,8 +53,8 @@ export default defineComponent({
           jstDate: '',
           matchday: 0,
           competition: { name: '' },
-          homeTeam: { id: '', name: '', score: 0 },
-          awayTeam: { id: '', name: '', score: 0 }
+          homeTeam: { id: '', name: '', imageUrl: '', score: 0 },
+          awayTeam: { id: '', name: '', imageUrl: '', score: 0 }
         }
       ]
     }

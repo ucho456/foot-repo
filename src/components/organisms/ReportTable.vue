@@ -27,7 +27,7 @@
                 class="rounded-circle"
                 :max-height="16"
                 :max-width="16"
-                :src="`https://crests.football-data.org/${1}.svg`"
+                :src="report.homeTeam.imageUrl"
               />
               {{ report.homeTeam.score }}
               vs
@@ -36,7 +36,7 @@
                 class="rounded-circle"
                 :max-height="16"
                 :max-width="16"
-                :src="`https://crests.football-data.org/${1}.svg`"
+                :src="report.awayTeam.imageUrl"
               />
             </v-list-item-subtitle>
             <v-list-item-subtitle>
@@ -64,8 +64,8 @@ export default defineComponent({
           id: '',
           title: '',
           user: { name: '', imageUrl: '' },
-          homeTeam: { name: '', score: 0 },
-          awayTeam: { name: '', score: 0 },
+          homeTeam: { name: '', imageUrl: '', score: 0 }, // shortName
+          awayTeam: { name: '', imageUrl: '', score: 0 }, // shortName
           competition: { name: '' },
           jstDate: ''
         }

@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row class="text-center">
-      <v-col class="text-center"> {{ jstDate }} {{ competition.name }} {{ matchday }}節</v-col>
+      <v-col class="text-center"> {{ jstDate }} / {{ competition.name }} / {{ matchday }}節</v-col>
     </v-row>
     <v-row class="mt-n4">
       <v-col cols="5">
@@ -62,34 +62,48 @@ export default defineComponent({
   name: 'ReportsHeader',
 
   props: {
-    id: { type: String, default: '' },
-    season: { type: String, default: '' },
-    jstDate: { type: String, default: '' },
-    matchday: { type: Number, default: 0 },
-    status: { type: String as () => 'SCHEDULED' | 'FINISHED', default: 'FINISHED' },
-    teamIds: { type: Array as () => string[], default: () => [''] },
-    competition: {
-      type: Object as () => { id: string; name: string },
+    awayTeam: {
+      type: Object as () => {
+        name: string
+        imageUrl: string
+        score: number | null
+        penalty: number | null
+        goalPlayers: {
+          keyId: string
+          minute: number
+          name: string
+        }[]
+      },
       default: () => {
-        return { id: '', name: '' }
+        return {
+          name: '',
+          imageUrl: '',
+          score: 0,
+          penalty: 0,
+          goalPlayers: []
+        }
+      }
+    },
+    competition: {
+      type: Object as () => { name: string },
+      default: () => {
+        return { name: '' }
       }
     },
     homeTeam: {
       type: Object as () => {
-        id: string
         name: string
         imageUrl: string
         score: number | null
         penalty: number | null
         goalPlayers: {
-          id: string
+          keyId: string
           minute: number
           name: string
         }[]
       },
       default: () => {
         return {
-          id: '',
           name: '',
           imageUrl: '',
           score: 0,
@@ -98,31 +112,8 @@ export default defineComponent({
         }
       }
     },
-    awayTeam: {
-      type: Object as () => {
-        id: string
-        name: string
-        imageUrl: string
-        score: number | null
-        penalty: number | null
-        goalPlayers: {
-          id: string
-          minute: number
-          name: string
-        }[]
-      },
-      default: () => {
-        return {
-          id: '',
-          name: '',
-          imageUrl: '',
-          score: 0,
-          penalty: 0,
-          goalPlayers: []
-        }
-      }
-    },
-    lastUpdated: { type: String, default: '' }
+    jstDate: { type: String, default: '' },
+    matchday: { type: Number, default: 0 }
   },
 
   setup(props) {
