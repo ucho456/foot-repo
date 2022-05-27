@@ -34,7 +34,7 @@
               class="rounded-circle"
               max-height="30"
               max-width="30"
-              :src="`https://crests.football-data.org/${match.homeTeam.id}.svg`"
+              :src="match.homeTeam.imageUrl"
             />
           </v-col>
         </v-row>
@@ -56,7 +56,7 @@
               class="rounded-circle"
               max-height="30"
               max-width="30"
-              :src="`https://crests.football-data.org/${match.awayTeam.id}.svg`"
+              :src="match.awayTeam.imageUrl"
             />
           </v-col>
         </v-row>

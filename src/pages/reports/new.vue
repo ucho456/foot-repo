@@ -31,8 +31,8 @@
           <v-col>
             <v-img
               class="rounded-circle"
-              max-height="60"
-              max-width="60"
+              max-height="30"
+              max-width="30"
               :src="match.homeTeam.imageUrl"
             />
           </v-col>
@@ -53,8 +53,8 @@
           <v-col>
             <v-img
               class="rounded-circle"
-              max-height="60"
-              max-width="60"
+              max-height="30"
+              max-width="30"
               :src="match.awayTeam.imageUrl"
             />
           </v-col>
