@@ -8,8 +8,7 @@ type Match = {
   status: 'SCHEDULED' | 'FINISHED'
   teamIds: string[]
   competition: {
-    // J-Leagueなどにする。
-    id: string
+    id: string // J-Leagueなどにする。databasesでmatchScheduleを取得する時に必要。
     ref: import('firebase/firestore').DocumentReference
     name: string
   }
@@ -21,7 +20,7 @@ type Match = {
     score: number | null
     penalty: number | null
     goalPlayers: {
-      id: string
+      id: string // v-for.key
       minute: number
       name: string
     }[]
@@ -33,7 +32,7 @@ type Match = {
     score: number | null
     penalty: number | null
     goalPlayers: {
-      id: string
+      id: string // v-for.key
       minute: number
       name: string
     }[]

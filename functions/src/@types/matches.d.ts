@@ -2,6 +2,7 @@ type Match = {
   id: string
   season: string
   jstDate: string
+  yearMonth: string
   matchday: number
   status: 'SCHEDULED' | 'FINISHED'
   teamIds: string[]
@@ -11,9 +12,9 @@ type Match = {
     name: string
   }
   homeTeam: {
-    id: string
     ref: import('firebase-admin/firestore').DocumentReference
     name: string
+    imageUrl: string
     score: number | null
     penalty: number | null
     goalPlayers: {
@@ -23,9 +24,9 @@ type Match = {
     }[]
   }
   awayTeam: {
-    id: string
     ref: import('firebase-admin/firestore').DocumentReference
     name: string
+    imageUrl: string
     score: number | null
     penalty: number | null
     goalPlayers: {

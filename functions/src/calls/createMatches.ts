@@ -2,7 +2,7 @@ import * as functions from 'firebase-functions'
 import * as admin from 'firebase-admin'
 import axios, { AxiosResponse } from 'axios'
 import { matchConverter } from '../converters'
-import { config, convertJST, env, footballUrl } from '../utils'
+import { config, convertJST, convertYearMonth, env, footballUrl } from '../utils'
 
 type Competition = { id: number; collectionId: string; name: string }
 
@@ -20,18 +20,19 @@ export const makeMatch = (fbMatch: FbMatch, competition: Competition): Match => 
     id: String(fbMatch.id),
     season: fbMatch.season.startDate.substring(0, 4),
     jstDate: convertJST(fbMatch.utcDate),
+    yearMonth: convertYearMonth(fbMatch.utcDate),
     matchday: fbMatch.matchday,
     status: fbMatch.status,
     teamIds: [String(fbMatch.homeTeam.id), String(fbMatch.awayTeam.id)],
     competition: {
-      id: String(competition.id),
+      id: competition.collectionId,
       ref: admin.firestore().doc(`competitions/${competition.collectionId}`),
       name: competition.name
     },
     homeTeam: {
-      id: String(fbMatch.homeTeam.id),
       ref: admin.firestore().doc(`teams/${fbMatch.homeTeam.id}`),
       name: fbMatch.homeTeam.name,
+      imageUrl: `https://crests.football-data.org/${fbMatch.homeTeam.id}.svg`,
       score: fbMatch.score.fullTime.homeTeam,
       penalty: fbMatch.score.penalties.homeTeam,
       goalPlayers: fbMatch.goals.flatMap((g, i) => {
@@ -40,9 +41,9 @@ export const makeMatch = (fbMatch: FbMatch, competition: Competition): Match => 
       })
     },
     awayTeam: {
-      id: String(fbMatch.awayTeam.id),
       ref: admin.firestore().doc(`teams/${fbMatch.awayTeam.id}`),
       name: fbMatch.awayTeam.name,
+      imageUrl: `https://crests.football-data.org/${fbMatch.awayTeam.id}.svg`,
       score: fbMatch.score.fullTime.awayTeam,
       penalty: fbMatch.score.penalties.awayTeam,
       goalPlayers: fbMatch.goals.flatMap((g, i) => {
