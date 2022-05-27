@@ -30,6 +30,7 @@ export const makeMatch = (fbMatch: FbMatch, competition: Competition): Match => 
       name: competition.name
     },
     homeTeam: {
+      id: String(fbMatch.homeTeam.id),
       ref: admin.firestore().doc(`teams/${fbMatch.homeTeam.id}`),
       name: fbMatch.homeTeam.name,
       imageUrl: `https://crests.football-data.org/${fbMatch.homeTeam.id}.svg`,
@@ -37,10 +38,11 @@ export const makeMatch = (fbMatch: FbMatch, competition: Competition): Match => 
       penalty: fbMatch.score.penalties.homeTeam,
       goalPlayers: fbMatch.goals.flatMap((g, i) => {
         if (g.team.id !== fbMatch.homeTeam.id) return []
-        return { id: String(i), minute: g.minute, name: g.scorer.name }
+        return { keyId: String(i), minute: g.minute, name: g.scorer.name }
       })
     },
     awayTeam: {
+      id: String(fbMatch.awayTeam.id),
       ref: admin.firestore().doc(`teams/${fbMatch.awayTeam.id}`),
       name: fbMatch.awayTeam.name,
       imageUrl: `https://crests.football-data.org/${fbMatch.awayTeam.id}.svg`,
@@ -48,7 +50,7 @@ export const makeMatch = (fbMatch: FbMatch, competition: Competition): Match => 
       penalty: fbMatch.score.penalties.awayTeam,
       goalPlayers: fbMatch.goals.flatMap((g, i) => {
         if (g.team.id !== fbMatch.awayTeam.id) return []
-        return { id: String(i), minute: g.minute, name: g.scorer.name }
+        return { keyId: String(i), minute: g.minute, name: g.scorer.name }
       })
     },
     lastUpdated: fbMatch.lastUpdated

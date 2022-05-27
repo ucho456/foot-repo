@@ -50,6 +50,7 @@ export const matchConverter: FirestoreDataConverter<Match> = {
     return {
       season: match.season,
       jstDate: match.jstDate,
+      yearMonth: match.yearMonth,
       matchday: match.matchday,
       status: match.status,
       teamIds: match.teamIds,
@@ -64,6 +65,7 @@ export const matchConverter: FirestoreDataConverter<Match> = {
       id: snapshot.id,
       season: data.season,
       jstDate: data.jstDate,
+      yearMonth: data.yearMonth,
       matchday: data.matchday,
       status: data.status,
       teamIds: data.teamIds,

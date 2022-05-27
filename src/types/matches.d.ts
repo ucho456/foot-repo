@@ -1,26 +1,25 @@
-// yearMonthのカラムを加える
 type Match = {
   id: string
   season: string
   jstDate: string
-  // yearMonthも設定する
+  yearMonth: string
   matchday: number
   status: 'SCHEDULED' | 'FINISHED'
   teamIds: string[]
   competition: {
-    id: string // J-Leagueなどにする。databasesでmatchScheduleを取得する時に必要。
+    id: string
     ref: import('firebase/firestore').DocumentReference
     name: string
   }
   homeTeam: {
-    id: string // imageUrlにする。
+    id: string
     ref: import('firebase/firestore').DocumentReference
-    // imageUrl: string
     name: string
+    imageUrl: string
     score: number | null
     penalty: number | null
     goalPlayers: {
-      id: string // v-for.key
+      keyId: string
       minute: number
       name: string
     }[]
@@ -29,10 +28,11 @@ type Match = {
     id: string
     ref: import('firebase/firestore').DocumentReference
     name: string
+    imageUrl: string
     score: number | null
     penalty: number | null
     goalPlayers: {
-      id: string // v-for.key
+      keyId: string
       minute: number
       name: string
     }[]

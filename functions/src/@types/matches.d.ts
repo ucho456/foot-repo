@@ -12,25 +12,27 @@ type Match = {
     name: string
   }
   homeTeam: {
+    id: string
     ref: import('firebase-admin/firestore').DocumentReference
     name: string
     imageUrl: string
     score: number | null
     penalty: number | null
     goalPlayers: {
-      id: string
+      keyId: string
       minute: number
       name: string
     }[]
   }
   awayTeam: {
+    id: string
     ref: import('firebase-admin/firestore').DocumentReference
     name: string
     imageUrl: string
     score: number | null
     penalty: number | null
     goalPlayers: {
-      id: string
+      keyId: string
       minute: number
       name: string
     }[]
