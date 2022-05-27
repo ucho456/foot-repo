@@ -1,5 +1,5 @@
 import { ref } from '@nuxtjs/composition-api'
-import { getFirstMatches, getNextMatches } from '@/db/matches'
+import { setFirstMatches, setNextMatches } from '@/db/matches'
 import useCurrentUser from '@/utils/useCurrentUser'
 import useStore from '@/utils/useStore'
 
@@ -16,7 +16,7 @@ const useSearch = () => {
         matches.searchOption.teamId = currentUser.value.teamId
       }
       matches.searchOption.status = 'FINISHED'
-      await getFirstMatches(matches)
+      await setFirstMatches(matches)
       return 'success'
     } catch {
       return 'failure'
@@ -29,7 +29,7 @@ const useSearch = () => {
   const getNextPage = async (): Promise<'success' | 'failure'> => {
     try {
       isLoading.value = true
-      await getNextMatches(matches)
+      await setNextMatches(matches)
       return 'success'
     } catch {
       return 'failure'
@@ -42,7 +42,7 @@ const useSearch = () => {
     try {
       dialog.value = false
       isLoading.value = true
-      await getFirstMatches(matches)
+      await setFirstMatches(matches)
       return 'success'
     } catch {
       return 'failure'

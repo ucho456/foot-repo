@@ -20,8 +20,12 @@ const useNew = () => {
   const setUp = async (matchId: string): Promise<'success' | 'failure'> => {
     try {
       isLoadingSetUp.value = true
-      await getMatch(match, matchId)
-      await getForReport(inputReport, matchId)
+      match.value = await getMatch(matchId)
+      const forReport = await getForReport(matchId)
+      if (forReport) {
+        inputReport.homeTeamReportItems = forReport.homeTeamReportItems
+        inputReport.awayTeamReportItems = forReport.awayTeamReportItems
+      }
       return 'success'
     } catch {
       return 'failure'
@@ -56,7 +60,6 @@ const useNew = () => {
   const save = () => {
     try {
       isLoading.value = true
-      console.log('save')
       return 'success'
     } catch {
       return 'failure'
