@@ -20,5 +20,6 @@
   "workbench.colorCustomizations": {
     "titleBar.activeBackground": "#006eff",
     "titleBar.activeForeground": "#000000"
-  }
+  },
+  "vetur.experimental.templateInterpolationService": true
 }
