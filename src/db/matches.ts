@@ -11,44 +11,9 @@ import {
   startAfter,
   where
 } from 'firebase/firestore'
-import type {
-  DocumentData,
-  DocumentReference,
-  FirestoreDataConverter,
-  SnapshotOptions,
-  QueryDocumentSnapshot
-} from 'firebase/firestore'
+import type { DocumentReference, QueryDocumentSnapshot } from 'firebase/firestore'
+import { matchConverter } from '@/utils/converters'
 import { makeSearchOption } from '@/utils/searchOption'
-
-const matchConverter: FirestoreDataConverter<Match> = {
-  toFirestore(match: Match): DocumentData {
-    return {
-      season: match.season,
-      jstDate: match.jstDate,
-      matchday: match.matchday,
-      status: match.status,
-      teamIds: match.teamIds,
-      homeTeam: match.homeTeam,
-      awayTeam: match.awayTeam,
-      lastUpdated: match.lastUpdated
-    }
-  },
-  fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions): Match {
-    const data = snapshot.data(options)
-    return {
-      id: snapshot.id,
-      season: data.season,
-      jstDate: data.jstDate,
-      matchday: data.matchday,
-      status: data.status,
-      teamIds: data.teamIds,
-      competition: data.competition,
-      homeTeam: data.homeTeam,
-      awayTeam: data.awayTeam,
-      lastUpdated: data.lastUpdated
-    }
-  }
-}
 
 export const getFirstMatches = async (matches: {
   data: Match[]

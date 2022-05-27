@@ -158,7 +158,7 @@ export default defineComponent({
       const matchId = route.value.query.matchId as string
       const result = await setUp(matchId)
       if (result === 'failure') {
-        openSnackbar(result, '試合データの取得に失敗しました。')
+        openSnackbar(result, 'データの取得に失敗しました。')
       }
     }
     setUpPage()

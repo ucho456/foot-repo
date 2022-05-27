@@ -14,8 +14,9 @@ type Match = {
     name: string
   }
   homeTeam: {
-    id: string
+    id: string // imageUrlにする。
     ref: import('firebase/firestore').DocumentReference
+    // imageUrl: string
     name: string
     score: number | null
     penalty: number | null

@@ -1,7 +1,8 @@
 import { reactive, ref } from '@nuxtjs/composition-api'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
-import { createUser, uploadAndGetImageUrl } from '@/db/users'
+import { createUser } from '@/db/users'
 import useCurrentUser from '@/utils/useCurrentUser'
+import uploadAndGetImageUrl from '@/utils/uploadAndGetImageUrl'
 
 const useNew = () => {
   const { setUpCurrentUser } = useCurrentUser()
@@ -58,7 +59,9 @@ const useNew = () => {
   const create = async (): Promise<'success' | 'failure'> => {
     try {
       isLoading.value = true
-      const imageUrl = userImageFile.value ? await uploadAndGetImageUrl(userImageFile.value) : null
+      const imageUrl = userImageFile.value
+        ? await uploadAndGetImageUrl(`users/${user.id}`, userImageFile.value)
+        : null
       if (imageUrl) user.imageUrl = imageUrl
       await createUser(user)
       setUpCurrentUser()

@@ -1,5 +1,4 @@
 import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore'
-import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 import { userConverter } from '@/utils/converters'
 
 export const getUser = async (uid: string | undefined): Promise<User | null> => {
@@ -21,12 +20,4 @@ export const createUser = async (user: User): Promise<void> => {
     competitionId: user.competitionId,
     teamId: user.teamId
   })
-}
-
-export const uploadAndGetImageUrl = async (userImageFile: File): Promise<string> => {
-  const storage = getStorage()
-  const storageRef = ref(storage, `users/${new Date().getTime()}`)
-  await uploadBytes(storageRef, userImageFile)
-  const imageUrl = await getDownloadURL(storageRef)
-  return imageUrl
 }

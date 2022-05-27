@@ -31,6 +31,7 @@
 import { defineComponent } from '@nuxtjs/composition-api'
 import useSearch from '@/composables/reports/useSearch'
 import useStore from '@/utils/useStore'
+import useSnackbar from '@/utils/useSnackbar'
 import MatchTable from '@/components/organisms/MatchTable.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
 import DialogSearch from '@/components/organisms/DialogSearch.vue'
@@ -60,10 +61,17 @@ export default defineComponent({
       clearDate
     } = useSearch()
     const { matches } = useStore()
+    const { openSnackbar } = useSnackbar()
 
-    if (matches.data.length === 0) {
-      setUp()
+    const setUpPage = async (): Promise<void> => {
+      if (matches.data.length === 0) {
+        const result = await setUp()
+        if (result === 'failure') {
+          openSnackbar(result, 'データの取得に失敗しました。')
+        }
+      }
     }
+    setUpPage()
 
     return {
       isLoadingSetUp,
