@@ -1,4 +1,3 @@
-import { Ref } from '@nuxtjs/composition-api'
 import {
   collection,
   doc,
@@ -110,17 +109,21 @@ export const getFirstReports = async (reports: {
   reports.lastVisible = rSnapshot.docs[rSnapshot.docs.length - 1]
 }
 
-export const getReportById = async (
-  reportId: string,
-  report: Ref<Report | null>,
-  homeTeamReportItems: Ref<ReportItem[]>,
-  awayTeamReportItems: Ref<ReportItem[]>
-): Promise<void> => {
+export const getReportAndItems = async (
+  reportId: string
+): Promise<{
+  resReport: Report
+  resHomeTeamReportItems: ReportItem[]
+  resAwayTeamReportItems: ReportItem[]
+}> => {
   const db = getFirestore()
   const rRef = doc(db, 'reports', reportId).withConverter(reportConverter)
   const rShapshot = await getDoc(rRef)
+
   if (rShapshot.exists()) {
-    report.value = rShapshot.data()
+    const resReport = rShapshot.data()
+    const resHomeTeamReportItems: ReportItem[] = []
+    const resAwayTeamReportItems: ReportItem[] = []
     const htriRef = collection(db, 'reports', reportId, 'home-team-report-items').withConverter(
       reportItemConverter
     )
@@ -129,34 +132,35 @@ export const getReportById = async (
       reportItemConverter
     )
     const atriQ = query(atriRef, orderBy('order', 'asc'))
-    if (report.value.selectTeam === 'home') {
+    if (resReport.selectTeam === 'home') {
       const htriSnapshot = await getDocs(htriQ)
       htriSnapshot.forEach((doc) => {
         if (doc.exists()) {
-          homeTeamReportItems.value.push(doc.data())
+          resHomeTeamReportItems.push(doc.data())
         }
       })
-    } else if (report.value.selectTeam === 'away') {
+    } else if (resReport.selectTeam === 'away') {
       const atriSnapshot = await getDocs(atriQ)
       atriSnapshot.forEach((doc) => {
         if (doc.exists()) {
-          awayTeamReportItems.value.push(doc.data())
+          resAwayTeamReportItems.push(doc.data())
         }
       })
     } else {
       const htriSnapshot = await getDocs(htriQ)
       htriSnapshot.forEach((doc) => {
         if (doc.exists()) {
-          homeTeamReportItems.value.push(doc.data())
+          resHomeTeamReportItems.push(doc.data())
         }
       })
       const atriSnapshot = await getDocs(atriQ)
       atriSnapshot.forEach((doc) => {
         if (doc.exists()) {
-          awayTeamReportItems.value.push(doc.data())
+          resAwayTeamReportItems.push(doc.data())
         }
       })
     }
+    return { resReport, resHomeTeamReportItems, resAwayTeamReportItems }
   } else {
     throw new Error('Not Found')
   }

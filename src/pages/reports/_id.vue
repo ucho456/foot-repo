@@ -1,12 +1,11 @@
 <template>
   <v-card outlined>
-    <v-container v-if="isLoadingSetUp" class="pb-10 pt-10">
+    <v-container v-if="isLoadingReport" class="pb-10 pt-10">
       <v-row justify="center">
         <v-progress-circular color="primary" indeterminate />
       </v-row>
     </v-container>
     <v-container v-else>
-      <ReportsHeader v-bind="match" />
       <v-container>
         <v-row>
           <v-col>
@@ -27,6 +26,7 @@
           <v-col class="ml-n4 user-name" cols="10">{{ report.user.name }}</v-col>
         </v-row>
       </v-container>
+      <ReportsHeader v-bind="match" />
       <v-container v-if="report.selectTeam !== 'away'">
         <v-row>
           <v-col>
@@ -95,7 +95,7 @@ export default defineComponent({
 
   setup() {
     const route = useRoute()
-    const { report, homeTeamReportItems, awayTeamReportItems, match, isLoadingSetUp, setUp } =
+    const { report, homeTeamReportItems, awayTeamReportItems, match, isLoadingReport, setUp } =
       useShow()
     const { openSnackbar } = useSnackbar()
     const noAvatarImage = require('@/assets/no_avatar.png')
@@ -114,7 +114,7 @@ export default defineComponent({
       homeTeamReportItems,
       awayTeamReportItems,
       match,
-      isLoadingSetUp,
+      isLoadingReport,
       noAvatarImage
     }
   }

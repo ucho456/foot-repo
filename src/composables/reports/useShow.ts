@@ -1,6 +1,6 @@
 import { ref, Ref } from '@nuxtjs/composition-api'
-import { getReportById } from '@/db/reports'
-import { getMatchByRef } from '@/db/matches'
+import { getReportAndItems } from '@/db/reports'
+import { getMatch } from '@/db/matches'
 
 const useShow = () => {
   const report: Ref<Report | null> = ref(null)
@@ -8,21 +8,28 @@ const useShow = () => {
   const awayTeamReportItems: Ref<ReportItem[]> = ref([])
   const match: Ref<Match | null> = ref(null)
 
-  const isLoadingSetUp = ref(false)
+  const isLoadingReport = ref(false)
   const setUp = async (reportId: string): Promise<'success' | 'failure'> => {
     try {
-      isLoadingSetUp.value = true
-      await getReportById(reportId, report, homeTeamReportItems, awayTeamReportItems)
-      await getMatchByRef(report.value?.match.ref!, match)
+      isLoadingReport.value = true
+      const { resReport, resHomeTeamReportItems, resAwayTeamReportItems } = await getReportAndItems(
+        reportId
+      )
+      report.value = resReport
+      homeTeamReportItems.value = resHomeTeamReportItems
+      awayTeamReportItems.value = resAwayTeamReportItems
+      match.value = await getMatch(report.value?.match.id!)
+      isLoadingReport.value = false
+
       return 'success'
     } catch {
       return 'failure'
     } finally {
-      isLoadingSetUp.value = false
+      isLoadingReport.value = false
     }
   }
 
-  return { report, homeTeamReportItems, awayTeamReportItems, match, isLoadingSetUp, setUp }
+  return { report, homeTeamReportItems, awayTeamReportItems, match, isLoadingReport, setUp }
 }
 
 export default useShow

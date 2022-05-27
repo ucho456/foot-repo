@@ -1,4 +1,3 @@
-import { Ref } from '@nuxtjs/composition-api'
 import {
   collection,
   doc,
@@ -11,7 +10,7 @@ import {
   startAfter,
   where
 } from 'firebase/firestore'
-import type { DocumentReference, QueryDocumentSnapshot } from 'firebase/firestore'
+import type { QueryDocumentSnapshot } from 'firebase/firestore'
 import { forReportConverter, matchConverter } from '@/utils/converters'
 import { makeSearchOption } from '@/utils/searchOption'
 
@@ -70,15 +69,6 @@ export const getForReport = async (matchId: string): Promise<ForReport | null> =
   const frRef = doc(db, 'matches', matchId, 'for-report', matchId).withConverter(forReportConverter)
   const frSnapshot = await getDoc(frRef)
   return frSnapshot.exists() ? frSnapshot.data() : null
-}
-
-export const getMatchByRef = async (
-  matchRef: DocumentReference,
-  match: Ref<Match | null>
-): Promise<void> => {
-  const mRef = matchRef.withConverter(matchConverter)
-  const mSnapshot = await getDoc(mRef)
-  match.value = mSnapshot.exists() ? mSnapshot.data() : null
 }
 
 export const getMatchSchedule = async (league: {
