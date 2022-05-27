@@ -7,8 +7,8 @@
         <v-btn class="white--text" color="accent" elevation="0" to="/reports/search"> 投稿 </v-btn>
         <v-list-item-avatar class="hover" @click.stop="showDrawer">
           <client-only>
-            <v-img v-if="currentUser && currentUser.imageUrl" :src="currentUser.imageUrl"></v-img>
-            <v-img v-else :src="noAvatarImage"></v-img>
+            <v-img v-if="currentUser && currentUser.imageUrl" :src="currentUser.imageUrl" />
+            <v-img v-else :src="noAvatarImage" />
           </client-only>
         </v-list-item-avatar>
       </v-container>

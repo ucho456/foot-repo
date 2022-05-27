@@ -12,6 +12,7 @@
           <thead>
             <tr>
               <th class="text-center">順位</th>
+              <th class="text-center"></th>
               <th class="text-center">チーム</th>
               <th class="text-center">試合数</th>
               <th class="text-center">勝</th>
@@ -29,7 +30,16 @@
               :key="item.team.ref.path"
               @click="pushToTeamShow(item.team.ref.path)"
             >
-              <td class="text-center">{{ item.position }}</td>
+              <td class="text-center">{{ item.rank }}</td>
+              <td class="text-center">
+                <v-img
+                  v-if="item.team.imageUrl"
+                  class="rounded-circle"
+                  :height="30"
+                  :width="30"
+                  :src="item.team.imageUrl"
+                />
+              </td>
               <td class="text-center">{{ item.team.name }}</td>
               <td class="text-center">{{ item.playedGames }}</td>
               <td class="text-center">{{ item.won }}</td>

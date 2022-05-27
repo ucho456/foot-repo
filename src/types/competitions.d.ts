@@ -17,13 +17,13 @@ type Scorers = {
   }[]
 }
 
-// teamIdが無い
 type Standings = {
   id: string
   season: string
   table: {
-    position: number
+    rank: number
     team: {
+      id: string
       ref: import('firebase-admin/firestore').DocumentReference
       name: string
       imageUrl: string

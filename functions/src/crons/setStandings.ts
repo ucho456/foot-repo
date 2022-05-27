@@ -18,8 +18,9 @@ const getStandings = async (competition: {
     season: fbStandings.season.startDate.substring(0, 4),
     table: fbStandings.standings[0].table.map((t) => {
       return {
-        position: t.position,
+        rank: t.position,
         team: {
+          id: String(t.team.id),
           ref: admin.firestore().doc(`teams/${t.team.id}`),
           name: t.team.name,
           imageUrl: t.team.crestUrl
