@@ -31,6 +31,7 @@ type Standings = {
       imageUrl: string
     }
     playedGames: number
+    form: string
     won: number
     draw: number
     lost: number

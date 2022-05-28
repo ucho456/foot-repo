@@ -126,9 +126,6 @@ type FbMatch = {
 }
 
 type FbScorers = {
-  competition: {
-    id: number
-  }
   season: {
     startDate: string
   }
@@ -146,9 +143,6 @@ type FbScorers = {
 }
 
 type FbStandings = {
-  competition: {
-    id: number
-  }
   season: {
     startDate: string
   }
@@ -158,9 +152,10 @@ type FbStandings = {
       team: {
         id: number
         name: string
-        crestUrl: string
+        crest: string
       }
       playedGames: number
+      form: string
       won: number
       draw: number
       lost: number

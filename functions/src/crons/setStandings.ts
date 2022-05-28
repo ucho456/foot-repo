@@ -23,9 +23,10 @@ const getStandings = async (competition: {
           id: String(t.team.id),
           ref: admin.firestore().doc(`teams/${t.team.id}`),
           name: t.team.name,
-          imageUrl: t.team.crestUrl
+          imageUrl: t.team.crest
         },
         playedGames: t.playedGames,
+        form: t.form,
         won: t.won,
         draw: t.draw,
         lost: t.lost,
