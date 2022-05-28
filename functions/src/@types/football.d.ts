@@ -139,7 +139,9 @@ type FbScorers = {
     team: {
       name: string
     }
-    numberOfGoals: number
+    goals: number | null
+    assists: number | null
+    penalties: number | null
   }[]
 }
 

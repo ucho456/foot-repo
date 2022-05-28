@@ -14,6 +14,8 @@ type Scorers = {
     playerName: string
     teamName: string
     goals: number
+    assists: number
+    penalties: number
   }[]
 }
 

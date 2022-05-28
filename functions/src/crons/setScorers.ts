@@ -10,7 +10,7 @@ const getScorers = async (competition: { id: number; collectionId: string }): Pr
     config
   )
   const fbScorers = res.data as FbScorers
-  const goals = fbScorers.scorers.map((s) => s.numberOfGoals)
+  const goals = fbScorers.scorers.map((s) => s.goals || 0)
   const sorted = goals.slice().sort((a, b) => b - a)
   const ranks = goals.map((g) => sorted.indexOf(g) + 1)
   return {
@@ -22,7 +22,9 @@ const getScorers = async (competition: { id: number; collectionId: string }): Pr
         rank: ranks[i],
         playerName: s.player.name,
         teamName: s.team.name,
-        goals: s.numberOfGoals
+        goals: s.goals || 0,
+        assists: s.assists || 0,
+        penalties: s.penalties || 0
       }
     })
   }
