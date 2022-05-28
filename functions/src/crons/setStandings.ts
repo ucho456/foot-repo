@@ -43,21 +43,17 @@ const setStandings = functions
   .region('asia-northeast1')
   .pubsub.schedule('0 6 * * *')
   .onRun(async () => {
-    try {
-      const batch = admin.firestore().batch()
-      for (const competition of leagueCompetitions) {
-        const standings = await getStandings(competition)
-        const sRef = admin
-          .firestore()
-          .doc(`competitions/${competition.collectionId}/standings/${standings.season}`)
-          .withConverter(standingsConverter)
-        batch.set(sRef, standings)
-      }
-      await batch.commit()
-      return `success setStandings ${new Date()}`
-    } catch {
-      return `error setStandings ${new Date()}`
+    const batch = admin.firestore().batch()
+    for (const competition of leagueCompetitions) {
+      const standings = await getStandings(competition)
+      const sRef = admin
+        .firestore()
+        .doc(`competitions/${competition.collectionId}/standings/${standings.season}`)
+        .withConverter(standingsConverter)
+      batch.set(sRef, standings)
     }
+    await batch.commit()
+    return null
   })
 
 export default setStandings

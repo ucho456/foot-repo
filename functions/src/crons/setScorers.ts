@@ -34,21 +34,17 @@ const setScorers = functions
   .region('asia-northeast1')
   .pubsub.schedule('0 5 * * *')
   .onRun(async () => {
-    try {
-      const batch = admin.firestore().batch()
-      for (const competition of leagueCompetitions) {
-        const scorers = await getScorers(competition)
-        const sRef = admin
-          .firestore()
-          .doc(`competitions/${competition.collectionId}/scorers/${scorers.season}`)
-          .withConverter(scorersConverter)
-        batch.set(sRef, scorers)
-      }
-      await batch.commit()
-      return `success setScorers ${new Date()}`
-    } catch {
-      return `error setScorers ${new Date()}`
+    const batch = admin.firestore().batch()
+    for (const competition of leagueCompetitions) {
+      const scorers = await getScorers(competition)
+      const sRef = admin
+        .firestore()
+        .doc(`competitions/${competition.collectionId}/scorers/${scorers.season}`)
+        .withConverter(scorersConverter)
+      batch.set(sRef, scorers)
     }
+    await batch.commit()
+    return null
   })
 
 export default setScorers

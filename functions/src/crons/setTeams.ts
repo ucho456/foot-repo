@@ -2,7 +2,7 @@ import * as functions from 'firebase-functions'
 import * as admin from 'firebase-admin'
 import axios, { AxiosResponse } from 'axios'
 import { teamConverter } from '../converters'
-import { config, convertPosition, footballUrl } from '../utils'
+import { config, convertPosition, footballUrl, leagueCompetitions } from '../utils'
 
 const getTeamIds = async (competitionId: number): Promise<number[]> => {
   const res: AxiosResponse<any, any> = await axios.get(
@@ -60,63 +60,38 @@ export const setJLeagueTeams = functions
   .region('asia-northeast1')
   .pubsub.schedule('0 7 * * *')
   .onRun(async () => {
-    try {
-      const competition = { id: 2119, collectionId: 'J-League' }
-      await setTeams(competition)
-      return `success setJLeagueTeams ${new Date()}`
-    } catch {
-      return `error setJLeagueTeams ${new Date()}`
-    }
+    await setTeams(leagueCompetitions[0])
+    return null
   })
 
 export const setPremierLeagueTeams = functions
   .region('asia-northeast1')
   .pubsub.schedule('0 8 * * *')
   .onRun(async () => {
-    try {
-      const competition = { id: 2021, collectionId: 'Premier-League' }
-      await setTeams(competition)
-      return `success setPremierLeagueTeams ${new Date()}`
-    } catch {
-      return `error setPremierLeagueTeams ${new Date()}`
-    }
+    await setTeams(leagueCompetitions[1])
+    return null
   })
 
 export const setLaLigaTeams = functions
   .region('asia-northeast1')
   .pubsub.schedule('0 9 * * *')
   .onRun(async () => {
-    try {
-      const competition = { id: 2014, collectionId: 'La-Liga' }
-      await setTeams(competition)
-      return `success setLaLigaTeams ${new Date()}`
-    } catch {
-      return `error setLaLigaTeams ${new Date()}`
-    }
+    await setTeams(leagueCompetitions[2])
+    return null
   })
 
 export const setSerieATeams = functions
   .region('asia-northeast1')
   .pubsub.schedule('0 10 * * *')
   .onRun(async () => {
-    try {
-      const competition = { id: 2019, collectionId: 'Serie-A' }
-      await setTeams(competition)
-      return `success setSerieATeams ${new Date()}`
-    } catch {
-      return `error setSerieATeams ${new Date()}`
-    }
+    await setTeams(leagueCompetitions[3])
+    return null
   })
 
 export const setBundesligaTeams = functions
   .region('asia-northeast1')
   .pubsub.schedule('0 11 * * *')
   .onRun(async () => {
-    try {
-      const competition = { id: 2002, collectionId: 'Bundesliga' }
-      await setTeams(competition)
-      return `success setBundesligaTeams ${new Date()}`
-    } catch {
-      return `error setBundesligaTeams ${new Date()}`
-    }
+    await setTeams(leagueCompetitions[4])
+    return null
   })
