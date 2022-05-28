@@ -5,7 +5,9 @@ import { makeMatch } from '../calls/createMatches'
 import { forReportConverter, matchConverter, matchDetailConverter } from '../converters'
 import { config, convertPosition, footballUrl, leagueCompetitions } from '../utils'
 
-const getFbMatches = async (competitionId: number): Promise<FbMatch[]> => {
+const getMatchInfos = async (
+  competitionId: number
+): Promise<{ id: string; status: string; lastUpdated: string }[]> => {
   const utcDate =
     process.env.NODE_ENV === 'production' ? new Date().toISOString().substring(0, 10) : '2022-05-22'
   const res: AxiosResponse<any, any> = await axios.get(
@@ -13,7 +15,16 @@ const getFbMatches = async (competitionId: number): Promise<FbMatch[]> => {
     config
   )
   const matches = res.data.matches as FbMatch[]
-  return matches
+  const matchInfos = matches.map((m) => {
+    return { id: String(m.id), status: m.status, lastUpdated: m.lastUpdated }
+  })
+  return matchInfos
+}
+
+const getFbMatch = async (matchId: string): Promise<FbMatch> => {
+  const res: AxiosResponse<any, any> = await axios.get(footballUrl + `matches/${matchId}`, config)
+  const fbMatch = res.data as FbMatch
+  return fbMatch
 }
 
 const makeMatchDetail = (fbMatch: FbMatch): MatchDetail => {
@@ -197,53 +208,79 @@ const makeForReport = (fbMatch: FbMatch): ForReport => {
   }
 }
 
-const setMatches = functions
-  .region('asia-northeast1')
-  .pubsub.schedule('every 60 minutes')
-  .onRun(async () => {
-    try {
-      const batch = admin.firestore().batch()
-      for (const competition of leagueCompetitions) {
-        const fbMatches = await getFbMatches(competition.id)
-        for (const fbMatch of fbMatches) {
-          if (fbMatch.status === 'FINISHED') {
-            const mRef = admin
-              .firestore()
-              .doc(`matches/${fbMatch.id}`)
-              .withConverter(matchConverter)
-            const mSnapshot = await mRef.get()
-            if (mSnapshot.data()?.lastUpdated !== fbMatch.lastUpdated) {
-              const match = makeMatch(fbMatch, competition)
-              batch.set(mRef, match)
-            }
-
-            const mdRef = admin
-              .firestore()
-              .doc(`matches/${fbMatch.id}/match-detail/${fbMatch.id}`)
-              .withConverter(matchDetailConverter)
-            const mdSnapshot = await mdRef.get()
-            if (!mdSnapshot.exists || mdSnapshot.data()?.lastUpdated !== fbMatch.lastUpdated) {
-              const matchDetail = makeMatchDetail(fbMatch)
-              batch.set(mdRef, matchDetail)
-            }
-
-            const frRef = admin
-              .firestore()
-              .doc(`matches/${fbMatch.id}/for-report/${fbMatch.id}`)
-              .withConverter(forReportConverter)
-            const frSnapshot = await frRef.get()
-            if (!frSnapshot.exists || frSnapshot.data()?.lastUpdated !== fbMatch.lastUpdated) {
-              const forReport = makeForReport(fbMatch)
-              batch.set(frRef, forReport)
-            }
-          }
-        }
+const setMatches = async (competition: { id: number; collectionId: string; name: string }) => {
+  const batch = admin.firestore().batch()
+  const fbMatchInfos = await getMatchInfos(competition.id)
+  for (const fbMatchInfo of fbMatchInfos) {
+    if (fbMatchInfo.status === 'FINISHED') {
+      const fbMatch = await getFbMatch(fbMatchInfo.id)
+      const mRef = admin.firestore().doc(`matches/${fbMatchInfo.id}`).withConverter(matchConverter)
+      const mSnapshot = await mRef.get()
+      if (mSnapshot.data()?.lastUpdated !== fbMatchInfo.lastUpdated) {
+        const match = makeMatch(fbMatch, competition)
+        batch.set(mRef, match)
       }
-      await batch.commit()
-      return `success setMatches ${new Date()}`
-    } catch {
-      return `error setMatches ${new Date()}`
+
+      const mdRef = admin
+        .firestore()
+        .doc(`matches/${fbMatchInfo.id}/match-detail/${fbMatchInfo.id}`)
+        .withConverter(matchDetailConverter)
+      const mdSnapshot = await mdRef.get()
+      if (!mdSnapshot.exists || mdSnapshot.data()?.lastUpdated !== fbMatchInfo.lastUpdated) {
+        const matchDetail = makeMatchDetail(fbMatch)
+        batch.set(mdRef, matchDetail)
+      }
+
+      const frRef = admin
+        .firestore()
+        .doc(`matches/${fbMatchInfo.id}/for-report/${fbMatchInfo.id}`)
+        .withConverter(forReportConverter)
+      const frSnapshot = await frRef.get()
+      if (!frSnapshot.exists || frSnapshot.data()?.lastUpdated !== fbMatchInfo.lastUpdated) {
+        const forReport = makeForReport(fbMatch)
+        batch.set(frRef, forReport)
+      }
     }
+  }
+  await batch.commit()
+}
+
+export const setJLeagueMatches = functions
+  .region('asia-northeast1')
+  .pubsub.schedule('3 */1 * * *')
+  .onRun(async () => {
+    await setMatches(leagueCompetitions[0])
+    return null
   })
 
-export default setMatches
+export const setPremierLeagueMatches = functions
+  .region('asia-northeast1')
+  .pubsub.schedule('6 */1 * * *')
+  .onRun(async () => {
+    await setMatches(leagueCompetitions[1])
+    return null
+  })
+
+export const setLaLigaMatches = functions
+  .region('asia-northeast1')
+  .pubsub.schedule('9 */1 * * *')
+  .onRun(async () => {
+    await setMatches(leagueCompetitions[2])
+    return null
+  })
+
+export const setSerieAMatches = functions
+  .region('asia-northeast1')
+  .pubsub.schedule('12 */1 * * *')
+  .onRun(async () => {
+    await setMatches(leagueCompetitions[3])
+    return null
+  })
+
+export const setBundesligaMatches = functions
+  .region('asia-northeast1')
+  .pubsub.schedule('15 */1 * * *')
+  .onRun(async () => {
+    await setMatches(leagueCompetitions[4])
+    return null
+  })
