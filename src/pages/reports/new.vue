@@ -5,7 +5,7 @@
         <v-progress-circular color="primary" indeterminate />
       </v-row>
     </v-container>
-    <v-container v-else>
+    <v-container v-else-if="match">
       <ReportsHeader v-bind="match" />
       <v-container>
         <v-row>

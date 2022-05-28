@@ -65,6 +65,8 @@ export default defineComponent({
 
     const setUpPage = async (): Promise<void> => {
       if (matches.data.length === 0) {
+        matches.lastVisible = null
+        matches.searchOption.jstDate = ''
         const result = await setUp()
         if (result === 'failure') {
           openSnackbar(result, 'データの取得に失敗しました。')

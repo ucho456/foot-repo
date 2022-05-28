@@ -1,7 +1,10 @@
 <template>
   <v-container>
     <v-row class="text-center">
-      <v-col class="text-center"> {{ jstDate }} / {{ competition.name }} / {{ matchday }}節</v-col>
+      <v-col class="text-center" cols="12">
+        {{ jstDate }} / {{ competition.name }} / {{ matchday }}節
+      </v-col>
+      <v-col class="text-center mt-n7" cols="12"> {{ venue }}</v-col>
     </v-row>
     <v-row class="mt-n4">
       <v-col cols="5">
@@ -23,33 +26,20 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col class="text-center text-truncate" cols="5">
+      <v-col class="text-center text-truncate mt-n5" cols="5">
         <div>{{ homeTeam.name }}</div>
         <div>{{ homeTeam.score }}</div>
         <div v-if="isPK">{{ homeTeam.penalty }}</div>
       </v-col>
-      <v-col class="text-center text-truncate" cols="2">
+      <v-col class="text-center text-truncate mt-n5" cols="2">
         <div>vs</div>
         <div>-</div>
         <div v-if="isPK">PK</div>
       </v-col>
-      <v-col class="text-center text-truncate" cols="5">
+      <v-col class="text-center text-truncate mt-n5" cols="5">
         <div>{{ awayTeam.name }}</div>
         <div>{{ awayTeam.score }}</div>
         <div v-if="isPK">{{ awayTeam.penalty }}</div>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col class="text-truncate" cols="5">
-        <v-row v-for="goalDatum in homeTeam.goalPlayers" :key="goalDatum.keyId">
-          <v-col>{{ goalDatum.minute }}. {{ goalDatum.name }}</v-col>
-        </v-row>
-      </v-col>
-      <v-col cols="2"></v-col>
-      <v-col class="text-truncate" cols="5">
-        <v-row v-for="goalDatum in awayTeam.goalPlayers" :key="goalDatum.keyId">
-          <v-col>{{ goalDatum.minute }}. {{ goalDatum.name }}</v-col>
-        </v-row>
       </v-col>
     </v-row>
   </v-container>
@@ -68,19 +58,13 @@ export default defineComponent({
         imageUrl: string
         score: number | null
         penalty: number | null
-        goalPlayers: {
-          keyId: string
-          minute: number
-          name: string
-        }[]
       },
       default: () => {
         return {
           name: '',
           imageUrl: '',
           score: 0,
-          penalty: 0,
-          goalPlayers: []
+          penalty: 0
         }
       }
     },
@@ -96,24 +80,19 @@ export default defineComponent({
         imageUrl: string
         score: number | null
         penalty: number | null
-        goalPlayers: {
-          keyId: string
-          minute: number
-          name: string
-        }[]
       },
       default: () => {
         return {
           name: '',
           imageUrl: '',
           score: 0,
-          penalty: 0,
-          goalPlayers: []
+          penalty: 0
         }
       }
     },
     jstDate: { type: String, default: '' },
-    matchday: { type: Number, default: 0 }
+    matchday: { type: Number, default: 0 },
+    venue: { type: String, default: '' }
   },
 
   setup(props) {

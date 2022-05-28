@@ -28,11 +28,17 @@ export default defineComponent({
     const router = useRouter()
     const { league, resetLeague } = useStore()
 
-    const competitions = [
+    const competitions: {
+      id: string
+      title: string
+      src: string
+      to: string
+      type: CompetitionType
+    }[] = [
       {
         id: 'J-League',
         title: 'J. League',
-        src: require('@/assets/JJL.jpg'),
+        src: require('@/assets/JJL.jpg') as string,
         to: '/databases/leagues/J-League',
         type: 'league'
       },

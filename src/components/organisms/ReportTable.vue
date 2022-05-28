@@ -25,22 +25,24 @@
             <v-list-item-subtitle style="display: flex">
               <v-img
                 class="rounded-circle"
-                :max-height="16"
-                :max-width="16"
+                :max-height="14"
+                :max-width="14"
                 :src="report.homeTeam.imageUrl"
               />
-              {{ report.homeTeam.score }}
-              vs
-              {{ report.awayTeam.score }}
+              <span class="ml-2 mr-2">{{ report.homeTeam.shortName }}</span>
+              <span>{{ report.homeTeam.score }}</span>
+              <span class="ml-2 mr-2">vs</span>
+              <span>{{ report.awayTeam.score }}</span>
+              <span class="ml-2 mr-2">{{ report.awayTeam.shortName }}</span>
               <v-img
                 class="rounded-circle"
-                :max-height="16"
-                :max-width="16"
+                :max-height="14"
+                :max-width="14"
                 :src="report.awayTeam.imageUrl"
               />
             </v-list-item-subtitle>
             <v-list-item-subtitle>
-              {{ report.competition.name }} {{ report.jstDate }}
+              {{ report.competition.name }} / {{ report.jstDate }}
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>

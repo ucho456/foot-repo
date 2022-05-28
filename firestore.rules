@@ -31,7 +31,7 @@ service cloud.firestore {
     }
 
     function isValidPosition (v) {
-      return v == 'GK' || v == 'DF' || v == 'MF' || v == 'FW' || v == 'HC'
+      return v == 'GK' || v == 'DF' || v == 'MF' || v == 'FW' || v == 'HC' || v == null
     }
 
     function isValidPoint (v) {
@@ -79,11 +79,13 @@ service cloud.firestore {
       && isValidString(report.homeTeam.id, 1, 20)
       && exists(report.homeTeam.ref)
       && isValidString(report.homeTeam.name, 1, 100)
+      && isValidString(report.homeTeam.shortName, 1, 3)
       && isValidImage(report.homeTeam.imageUrl)
       && isValidInt(report.homeTeam.score, 0, 100)
       && isValidString(report.awayTeam.id, 1, 20)
       && exists(report.awayTeam.ref)
       && isValidString(report.awayTeam.name, 1, 100)
+      && isValidString(report.awayTeam.shortName, 1, 3)
       && isValidImage(report.awayTeam.imageUrl)
       && isValidInt(report.awayTeam.score, 0, 100)
       && isValidString(report.competition.id, 1, 20)
@@ -100,7 +102,7 @@ service cloud.firestore {
     function isValidReportItem(reportItem) {
       return reportItem.size() == 6
       && 'player' in reportItem && reportItem.player is map
-      && 'position' in reportItem && reportItem.position is string
+      && 'position' in reportItem && (reportItem.position is string || reportItem.position == null)
       && 'shirtNumber' in reportItem && (reportItem.shirtNumber is int || reportItem.shirtNumber == null)
       && 'point' in reportItem && reportItem.point is string
       && 'text' in reportItem && reportItem.text is string

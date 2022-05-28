@@ -43,6 +43,7 @@ export const createReport = async (
       id: match.homeTeam.id,
       ref: doc(db, `teams/${match.homeTeam.id}`),
       name: match.homeTeam.name,
+      shortName: match.homeTeam.shortName,
       imageUrl: match.homeTeam.imageUrl,
       score: match.homeTeam.score!
     },
@@ -50,6 +51,7 @@ export const createReport = async (
       id: match.awayTeam.id,
       ref: doc(db, `teams/${match.awayTeam.id}`),
       name: match.awayTeam.name,
+      shortName: match.awayTeam.shortName,
       imageUrl: match.awayTeam.imageUrl,
       score: match.awayTeam.score!
     },

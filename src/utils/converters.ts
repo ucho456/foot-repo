@@ -53,6 +53,7 @@ export const matchConverter: FirestoreDataConverter<Match> = {
       yearMonth: match.yearMonth,
       matchday: match.matchday,
       status: match.status,
+      venue: match.venue,
       teamIds: match.teamIds,
       homeTeam: match.homeTeam,
       awayTeam: match.awayTeam,
@@ -68,6 +69,7 @@ export const matchConverter: FirestoreDataConverter<Match> = {
       yearMonth: data.yearMonth,
       matchday: data.matchday,
       status: data.status,
+      venue: data.venue,
       teamIds: data.teamIds,
       competition: data.competition,
       homeTeam: data.homeTeam,
@@ -204,6 +206,7 @@ export const teamConverter: FirestoreDataConverter<Team> = {
       imageUrl: team.imageUrl,
       venue: team.venue,
       website: team.website,
+      competitions: team.competitions,
       squad: team.squad,
       lastUpdated: team.lastUpdated
     }
@@ -216,6 +219,7 @@ export const teamConverter: FirestoreDataConverter<Team> = {
       imageUrl: data.imageUrl,
       venue: data.venue,
       website: data.website,
+      competitions: data.competitions,
       squad: data.squad,
       lastUpdated: data.lastUpdated
     }

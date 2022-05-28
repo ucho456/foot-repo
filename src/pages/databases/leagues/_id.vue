@@ -5,8 +5,7 @@
         <v-progress-circular color="primary" indeterminate />
       </v-row>
     </v-container>
-    <v-container v-else-if="!league.standings" />
-    <v-container v-else>
+    <v-container v-else-if="league.standings">
       <h3>順位表</h3>
       <v-simple-table>
         <template #default>
@@ -55,13 +54,12 @@
         </template>
       </v-simple-table>
     </v-container>
-    <v-container v-if="isLoadingScorers && !league.scorers" class="pb-10 pt-10">
+    <v-container v-if="isLoadingScorers" class="pb-10 pt-10">
       <v-row justify="center">
         <v-progress-circular color="primary" indeterminate />
       </v-row>
     </v-container>
-    <v-container v-else-if="!league.scorers" />
-    <v-container v-else>
+    <v-container v-else-if="league.scorers">
       <h3>得点ランキング</h3>
       <v-simple-table>
         <template #default>
