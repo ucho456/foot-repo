@@ -21,11 +21,6 @@ type Match = {
     imageUrl: string
     score: number | null
     penalty: number | null
-    goalPlayers: {
-      keyId: string
-      minute: number
-      name: string
-    }[]
   }
   awayTeam: {
     id: string
@@ -35,11 +30,6 @@ type Match = {
     imageUrl: string
     score: number | null
     penalty: number | null
-    goalPlayers: {
-      keyId: string
-      minute: number
-      name: string
-    }[]
   }
   lastUpdated: string
 }

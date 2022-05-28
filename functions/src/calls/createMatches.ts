@@ -2,7 +2,14 @@ import * as functions from 'firebase-functions'
 import * as admin from 'firebase-admin'
 import axios, { AxiosResponse } from 'axios'
 import { matchConverter } from '../converters'
-import { config, convertJST, convertYearMonth, env, footballUrl } from '../utils'
+import {
+  config,
+  convertJST,
+  convertYearMonth,
+  env,
+  footballUrl,
+  leagueCompetitions
+} from '../utils'
 
 type Competition = { id: number; collectionId: string; name: string }
 
@@ -38,11 +45,7 @@ export const makeMatch = (fbMatch: FbMatch, competition: Competition): Match => 
       shortName: fbMatch.homeTeam.tla,
       imageUrl: fbMatch.homeTeam.crest,
       score: fbMatch.score.fullTime.home,
-      penalty: fbMatch.score.penalties ? fbMatch.score.penalties.home : null,
-      goalPlayers: fbMatch.goals.flatMap((g, i) => {
-        if (g.team.id !== fbMatch.homeTeam.id) return []
-        return { keyId: String(i), minute: g.minute, name: g.scorer.name }
-      })
+      penalty: fbMatch.score.penalties ? fbMatch.score.penalties.home : null
     },
     awayTeam: {
       id: String(fbMatch.awayTeam.id),
@@ -51,11 +54,7 @@ export const makeMatch = (fbMatch: FbMatch, competition: Competition): Match => 
       shortName: fbMatch.awayTeam.tla,
       imageUrl: fbMatch.awayTeam.crest,
       score: fbMatch.score.fullTime.away,
-      penalty: fbMatch.score.penalties ? fbMatch.score.penalties.away : null,
-      goalPlayers: fbMatch.goals.flatMap((g, i) => {
-        if (g.team.id !== fbMatch.awayTeam.id) return []
-        return { keyId: String(i), minute: g.minute, name: g.scorer.name }
-      })
+      penalty: fbMatch.score.penalties ? fbMatch.score.penalties.away : null
     },
     lastUpdated: fbMatch.lastUpdated
   }
@@ -88,60 +87,30 @@ const setMatches = async (
 
 export const createJLeagueMatches = functions
   .region('asia-northeast1')
-  .https.onRequest(async (req, res) => {
-    try {
-      const competition = { id: 2119, collectionId: 'J-League', name: 'J. League' }
-      await setMatches(competition, req)
-      res.send(`success createJLeagueMatches ${new Date()}`)
-    } catch {
-      res.send(`error createJLeagueMatches ${new Date()}`)
-    }
+  .https.onRequest(async (req) => {
+    await setMatches(leagueCompetitions[0], req)
   })
 
 export const createPremierLeagueMatches = functions
   .region('asia-northeast1')
-  .https.onRequest(async (req, res) => {
-    try {
-      const competition = { id: 2021, collectionId: 'Premier-League', name: 'Premier League' }
-      await setMatches(competition, req)
-      res.send(`success createPremierLeagueMatches ${new Date()}`)
-    } catch {
-      res.send(`error createPremierLeagueMatches ${new Date()}`)
-    }
+  .https.onRequest(async (req) => {
+    await setMatches(leagueCompetitions[1], req)
   })
 
 export const createLaLigaMatches = functions
   .region('asia-northeast1')
-  .https.onRequest(async (req, res) => {
-    try {
-      const competition = { id: 2014, collectionId: 'La-Liga', name: 'La Liga' }
-      await setMatches(competition, req)
-      res.send(`success createLaLigaMatches ${new Date()}`)
-    } catch {
-      res.send(`error createLaLigaMatches ${new Date()}`)
-    }
+  .https.onRequest(async (req) => {
+    await setMatches(leagueCompetitions[2], req)
   })
 
 export const createSerieAMatches = functions
   .region('asia-northeast1')
-  .https.onRequest(async (req, res) => {
-    try {
-      const competition = { id: 2019, collectionId: 'Serie-A', name: 'Seria A' }
-      await setMatches(competition, req)
-      res.send(`success createSerieAMatches ${new Date()}`)
-    } catch {
-      res.send(`error createSerieAMatches ${new Date()}`)
-    }
+  .https.onRequest(async (req) => {
+    await setMatches(leagueCompetitions[3], req)
   })
 
 export const createBundesligaMatches = functions
   .region('asia-northeast1')
-  .https.onRequest(async (req, res) => {
-    try {
-      const competition = { id: 2002, collectionId: 'Bundesliga', name: 'Bundesliga' }
-      await setMatches(competition, req)
-      res.send(`success createBundesligaMatches ${new Date()}`)
-    } catch {
-      res.send(`error createBundesligaMatches ${new Date()}`)
-    }
+  .https.onRequest(async (req) => {
+    await setMatches(leagueCompetitions[4], req)
   })
