@@ -4,7 +4,7 @@ type ReportItem = {
     id: string
     name: string
   }
-  position: 'GK' | 'DF' | 'MF' | 'FW' | 'HC'
+  position: Position
   shirtNumber: number | null
   point: '6.5'
   text: string

@@ -1,4 +1,21 @@
-type FbPosition = 'Goalkeeper' | 'Defence' | 'Midfield' | 'Offence' | null
+type FbPosition =
+  | 'Goalkeeper'
+  | 'Defence'
+  | 'Right-Back'
+  | 'Centre-Back'
+  | 'Left-Back'
+  | 'Midfield'
+  | 'Defensive Midfield'
+  | 'Central Midfield'
+  | 'Attacking Midfield'
+  | 'Left Midfield'
+  | 'Right Midfield'
+  | 'Left Winger'
+  | 'Right Winger'
+  | 'Centre-Forward'
+  | 'Offence'
+  | 'Attacker'
+  | null
 
 type FbMatch = {
   id: number

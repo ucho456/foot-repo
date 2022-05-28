@@ -6,7 +6,7 @@ type Team = {
   website: string
   squad: {
     playerName: string
-    position: 'GK' | 'DF' | 'MF' | 'FW'
+    position: Position
     dateOfBirth: string
     nationality: string
   }[]

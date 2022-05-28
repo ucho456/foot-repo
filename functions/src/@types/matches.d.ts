@@ -34,7 +34,7 @@ type Match = {
   lastUpdated: string
 }
 
-type Position = 'GK' | 'DF' | 'MF' | 'FW' | 'HC'
+type Position = 'GK' | 'DF' | 'MF' | 'FW' | 'HC' | null
 
 type Player = {
   id: string

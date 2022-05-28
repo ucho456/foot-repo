@@ -29,12 +29,17 @@ export const convertYearMonth = (utcDate: string): string => {
   return `${time.getFullYear()}-${String(time.getMonth() + 1).padStart(2, '0')}`
 }
 
-export const convertPosition = (position: FbPosition): 'GK' | 'DF' | 'MF' | 'FW' => {
+export const convertPosition = (position: FbPosition): 'GK' | 'DF' | 'MF' | 'FW' | null => {
   return position === 'Goalkeeper'
     ? 'GK'
-    : position === 'Defence'
+    : position === 'Defence' || position?.includes('Back')
     ? 'DF'
-    : position === 'Midfield'
+    : position?.includes('Midfield')
     ? 'MF'
-    : 'FW'
+    : position === 'Attacker' ||
+      position === 'Offence' ||
+      position?.includes('Forward') ||
+      position?.includes('Winger')
+    ? 'FW'
+    : null
 }
