@@ -10,6 +10,7 @@ type Report = {
     id: string
     ref: import('firebase/firestore').DocumentReference
     name: string
+    shortName: string
     imageUrl: string
     score: number
   }
@@ -17,6 +18,7 @@ type Report = {
     id: string
     ref: import('firebase/firestore').DocumentReference
     name: string
+    shortName: string
     imageUrl: string
     score: number
   }

@@ -4,11 +4,16 @@ type Team = {
   imageUrl: string
   venue: string
   website: string
+  competitions: {
+    name: string
+    imageUrl: string
+  }
   squad: {
     playerName: string
-    position: 'GK' | 'DF' | 'MF' | 'FW'
+    position: Position
     dateOfBirth: string
     nationality: string
+    shirtNumber: number
   }[]
   lastUpdated: string
 }
