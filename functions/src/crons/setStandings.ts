@@ -40,7 +40,7 @@ const getStandings = async (competition: {
 
 const setStandings = functions
   .region('asia-northeast1')
-  .pubsub.schedule('0 5 * * *')
+  .pubsub.schedule('0 6 * * *')
   .onRun(async () => {
     try {
       const batch = admin.firestore().batch()

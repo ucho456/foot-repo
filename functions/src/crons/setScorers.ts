@@ -30,7 +30,7 @@ const getScorers = async (competition: { id: number; collectionId: string }): Pr
 
 const setScorers = functions
   .region('asia-northeast1')
-  .pubsub.schedule('5 5 * * *')
+  .pubsub.schedule('0 5 * * *')
   .onRun(async () => {
     try {
       const batch = admin.firestore().batch()

@@ -54,7 +54,7 @@ const setTeams = async (competition: { id: number; collectionId: string }): Prom
 
 export const setJLeagueTeams = functions
   .region('asia-northeast1')
-  .pubsub.schedule('0 4 * * *')
+  .pubsub.schedule('0 7 * * *')
   .onRun(async () => {
     try {
       const competition = { id: 2119, collectionId: 'J-League' }
@@ -67,7 +67,7 @@ export const setJLeagueTeams = functions
 
 export const setPremierLeagueTeams = functions
   .region('asia-northeast1')
-  .pubsub.schedule('5 4 * * *')
+  .pubsub.schedule('0 8 * * *')
   .onRun(async () => {
     try {
       const competition = { id: 2021, collectionId: 'Premier-League' }
@@ -80,7 +80,7 @@ export const setPremierLeagueTeams = functions
 
 export const setLaLigaTeams = functions
   .region('asia-northeast1')
-  .pubsub.schedule('10 4 * * *')
+  .pubsub.schedule('0 9 * * *')
   .onRun(async () => {
     try {
       const competition = { id: 2014, collectionId: 'La-Liga' }
@@ -93,7 +93,7 @@ export const setLaLigaTeams = functions
 
 export const setSerieATeams = functions
   .region('asia-northeast1')
-  .pubsub.schedule('15 4 * * *')
+  .pubsub.schedule('0 10 * * *')
   .onRun(async () => {
     try {
       const competition = { id: 2019, collectionId: 'Serie-A' }
@@ -106,7 +106,7 @@ export const setSerieATeams = functions
 
 export const setBundesligaTeams = functions
   .region('asia-northeast1')
-  .pubsub.schedule('20 4 * * *')
+  .pubsub.schedule('0 11 * * *')
   .onRun(async () => {
     try {
       const competition = { id: 2002, collectionId: 'Bundesliga' }
