@@ -2,25 +2,31 @@ type FbPosition = 'Goalkeeper' | 'Defence' | 'Midfield' | 'Offence' | null
 
 type FbMatch = {
   id: number
+  competition: {
+    emblem: string
+  }
   season: {
     startDate: string
   }
   utcDate: string
   status: 'SCHEDULED' | 'FINISHED'
   matchday: number
+  venue: string
   score: {
     fullTime: {
-      homeTeam: null | number
-      awayTeam: null | number
+      home: null | number
+      away: null | number
     }
-    penalties: {
-      homeTeam: null | number
-      awayTeam: null | number
+    penalties?: {
+      home: null | number
+      away: null | number
     }
   }
   homeTeam: {
     id: number
     name: string
+    tla: string
+    crest: string
     coach: {
       id: number
       name: string
@@ -41,6 +47,8 @@ type FbMatch = {
   awayTeam: {
     id: number
     name: string
+    tla: string
+    crest: string
     coach: {
       id: number
       name: string

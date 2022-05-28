@@ -5,17 +5,19 @@ type Match = {
   yearMonth: string
   matchday: number
   status: 'SCHEDULED' | 'FINISHED'
+  venue: string
   teamIds: string[]
   competition: {
     id: string
     ref: import('firebase-admin/firestore').DocumentReference
     name: string
+    imageUrl: string
   }
   homeTeam: {
     id: string
     ref: import('firebase-admin/firestore').DocumentReference
     name: string
-    // shortName: string
+    shortName: string
     imageUrl: string
     score: number | null
     penalty: number | null
@@ -29,7 +31,7 @@ type Match = {
     id: string
     ref: import('firebase-admin/firestore').DocumentReference
     name: string
-    // shortName: string
+    shortName: string
     imageUrl: string
     score: number | null
     penalty: number | null

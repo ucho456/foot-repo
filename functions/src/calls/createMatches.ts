@@ -23,19 +23,22 @@ export const makeMatch = (fbMatch: FbMatch, competition: Competition): Match => 
     yearMonth: convertYearMonth(fbMatch.utcDate),
     matchday: fbMatch.matchday,
     status: fbMatch.status,
+    venue: fbMatch.venue,
     teamIds: [String(fbMatch.homeTeam.id), String(fbMatch.awayTeam.id)],
     competition: {
       id: competition.collectionId,
       ref: admin.firestore().doc(`competitions/${competition.collectionId}`),
-      name: competition.name
+      name: competition.name,
+      imageUrl: fbMatch.competition.emblem
     },
     homeTeam: {
       id: String(fbMatch.homeTeam.id),
       ref: admin.firestore().doc(`teams/${fbMatch.homeTeam.id}`),
       name: fbMatch.homeTeam.name,
-      imageUrl: `https://crests.football-data.org/${fbMatch.homeTeam.id}.svg`,
-      score: fbMatch.score.fullTime.homeTeam,
-      penalty: fbMatch.score.penalties.homeTeam,
+      shortName: fbMatch.homeTeam.tla,
+      imageUrl: fbMatch.homeTeam.crest,
+      score: fbMatch.score.fullTime.home,
+      penalty: fbMatch.score.penalties ? fbMatch.score.penalties.home : null,
       goalPlayers: fbMatch.goals.flatMap((g, i) => {
         if (g.team.id !== fbMatch.homeTeam.id) return []
         return { keyId: String(i), minute: g.minute, name: g.scorer.name }
@@ -45,9 +48,10 @@ export const makeMatch = (fbMatch: FbMatch, competition: Competition): Match => 
       id: String(fbMatch.awayTeam.id),
       ref: admin.firestore().doc(`teams/${fbMatch.awayTeam.id}`),
       name: fbMatch.awayTeam.name,
-      imageUrl: `https://crests.football-data.org/${fbMatch.awayTeam.id}.svg`,
-      score: fbMatch.score.fullTime.awayTeam,
-      penalty: fbMatch.score.penalties.awayTeam,
+      shortName: fbMatch.awayTeam.tla,
+      imageUrl: fbMatch.awayTeam.crest,
+      score: fbMatch.score.fullTime.away,
+      penalty: fbMatch.score.penalties ? fbMatch.score.penalties.away : null,
       goalPlayers: fbMatch.goals.flatMap((g, i) => {
         if (g.team.id !== fbMatch.awayTeam.id) return []
         return { keyId: String(i), minute: g.minute, name: g.scorer.name }
