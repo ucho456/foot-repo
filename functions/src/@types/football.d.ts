@@ -170,14 +170,19 @@ type FbStandings = {
 type FbTeam = {
   id: number
   name: string
-  crestUrl: string
-  website: string
+  crest: string
   venue: string
+  website: string
+  runningCompetitions: {
+    name: string
+    emblem: string
+  }[]
   squad: {
     name: string
     position: FbPosition
     dateOfBirth: string
     nationality: string
+    shirtNumber: number
   }[]
   lastUpdated: string
 }

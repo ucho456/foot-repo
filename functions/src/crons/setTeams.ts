@@ -20,15 +20,19 @@ const getTeam = async (teamId: number): Promise<Team> => {
   return {
     id: String(fbTeam.id),
     name: fbTeam.name,
-    imageUrl: fbTeam.crestUrl,
+    imageUrl: fbTeam.crest,
     venue: fbTeam.venue,
     website: fbTeam.website,
+    competitions: fbTeam.runningCompetitions.map((c) => {
+      return { name: c.name, imageUrl: c.emblem }
+    }),
     squad: fbTeam.squad.map((s) => {
       return {
         playerName: s.name,
         position: convertPosition(s.position),
         dateOfBirth: s.dateOfBirth,
-        nationality: s.nationality
+        nationality: s.nationality,
+        shirtNumber: s.shirtNumber
       }
     }),
     lastUpdated: fbTeam.lastUpdated
