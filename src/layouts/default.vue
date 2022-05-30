@@ -2,7 +2,7 @@
   <v-app class="light-grey">
     <v-app-bar class="white--text" app color="primary" fixed>
       <v-container class="align-center d-flex">
-        <v-toolbar-title class="hover" @click="pushToHome" v-text="'Foot-Repo'" />
+        <v-toolbar-title><v-img :src="headerLogo" /></v-toolbar-title>
         <v-spacer />
         <v-btn class="white--text" color="accent" elevation="0" to="/reports/search"> 投稿 </v-btn>
         <v-list-item-avatar class="hover" @click.stop="showDrawer">
@@ -80,6 +80,7 @@ export default defineComponent({
     const { currentUser } = useCurrentUser()
     const { snackbar, openSnackbar } = useSnackbar()
 
+    const headerLogo = require('@/assets/header_logo.png')
     const noAvatarImage = require('@/assets/no_avatar.png')
     const pushToHome = (): void => {
       router.push('/')
@@ -137,6 +138,7 @@ export default defineComponent({
     return {
       currentUser,
       snackbar,
+      headerLogo,
       noAvatarImage,
       pushToHome,
       navigationDrawerItems,

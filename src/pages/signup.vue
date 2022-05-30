@@ -1,12 +1,12 @@
 <template>
   <v-card class="mx-auto" max-width="400" outlined>
     <v-card-title>
-      <v-row justify="center">Foot-Repo(ロゴ予定)</v-row>
+      <v-row justify="center"><v-img max-width="240" :src="logo" /></v-row>
     </v-card-title>
     <v-container>
       <ValidationObserver v-slot="{ invalid }">
         <v-row justify="center">
-          <v-col cols="10" class="mb-n4 mt-4">
+          <v-col cols="10" class="mt-n4 mb-n4 mt-4">
             <TextFieldEmail v-model="user.email" />
           </v-col>
         </v-row>
@@ -89,6 +89,8 @@ export default defineComponent({
     const { user, isLoading, signupEmail, signupTwitter, signupGoogle } = useSignup()
     const { openSnackbar } = useSnackbar()
 
+    const logo = require('@/assets/signup_logo.png')
+
     const submitEmail = async (): Promise<void> => {
       const result = await signupEmail()
       const message =
@@ -128,6 +130,7 @@ export default defineComponent({
     return {
       user,
       isLoading,
+      logo,
       submitEmail,
       submitTwitter,
       submitGoogle,
