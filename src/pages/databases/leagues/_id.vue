@@ -97,6 +97,7 @@
       </v-simple-table>
     </v-container>
     <MatchSchedule
+      v-if="!isLoadingScorers && !isLoadingStandings"
       v-model="league.yearMonth"
       :loading="isLoadingMatches"
       :match-schedule="league.matchSchedule"
@@ -127,7 +128,7 @@ export default defineComponent({
     const { openSnackbar } = useSnackbar()
     const competitionId = route.value.params.id as string
 
-    const setUpPage = async () => {
+    const setUpPage = async (): Promise<void> => {
       if (league.competitionId !== competitionId) {
         const result = await setUp(competitionId)
         if (result === 'failure') {
@@ -141,7 +142,7 @@ export default defineComponent({
       router.push(`/databases/${path}`)
     }
 
-    const searchMatchSchedule = async (): void => {
+    const searchMatchSchedule = async (): Promise<void> => {
       const result = await search()
       if (result === 'failure') {
         openSnackbar(result, 'データの取得に失敗しました。')

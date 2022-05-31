@@ -1,17 +1,19 @@
 <template>
   <v-card>
-    <v-container v-if="loading" class="pb-10">
-      <v-row justify="center">
-        <v-progress-circular color="primary" indeterminate />
-      </v-row>
-    </v-container>
-    <v-container v-else-if="matchSchedule.length > 0">
+    <v-container>
       <v-row>
         <v-col cols="9" sm="9" align-self="center"><h3>試合日程</h3></v-col>
         <v-col cols="3" sm="3">
           <DialogYearMonth :year-month="value" @input="inputYearMonth" @click="handleClick" />
         </v-col>
       </v-row>
+    </v-container>
+    <v-container v-if="loading" class="pb-10">
+      <v-row justify="center">
+        <v-progress-circular color="primary" indeterminate />
+      </v-row>
+    </v-container>
+    <v-container v-else>
       <v-list three-line>
         <v-container v-for="match in matchSchedule" :key="match.id">
           <v-list-item
