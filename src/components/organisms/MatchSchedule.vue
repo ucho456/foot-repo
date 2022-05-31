@@ -6,7 +6,12 @@
       </v-row>
     </v-container>
     <v-container v-else-if="matchSchedule.length > 0">
-      <h3>試合日程</h3>
+      <v-row>
+        <v-col cols="9" sm="10" align-self="center"><h3>試合日程</h3></v-col>
+        <v-col cols="3" sm="2">
+          <DialogYearMonth :year-month="value" @input="inputYearMonth" />
+        </v-col>
+      </v-row>
       <v-list three-line>
         <v-container v-for="match in matchSchedule" :key="match.id">
           <v-list-item
@@ -49,9 +54,14 @@
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
+import DialogYearMonth from '@/components/molecules/DialogYearMonth.vue'
 
 export default defineComponent({
   name: 'MatchTable',
+
+  components: {
+    DialogYearMonth
+  },
 
   props: {
     loading: { type: Boolean, default: false },
@@ -67,15 +77,16 @@ export default defineComponent({
           awayTeam: { id: '', name: '', imageUrl: '', score: 0 }
         }
       ]
-    }
+    },
+    value: { type: String, default: '' }
   },
 
   setup(_, ctx) {
-    const handleClick = (): void => {
-      ctx.emit('click')
+    const inputYearMonth = (yearMonth: string): void => {
+      ctx.emit('input', yearMonth)
     }
 
-    return { handleClick }
+    return { inputYearMonth }
   }
 })
 </script>

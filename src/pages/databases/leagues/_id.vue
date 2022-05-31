@@ -96,7 +96,11 @@
         </template>
       </v-simple-table>
     </v-container>
-    <MatchSchedule :loading="isLoadingMatches" :match-schedule="league.matchSchedule" />
+    <MatchSchedule
+      v-model="league.yearMonth"
+      :loading="isLoadingMatches"
+      :match-schedule="league.matchSchedule"
+    />
   </v-card>
 </template>
 

@@ -2,7 +2,9 @@
   <v-app class="light-grey">
     <v-app-bar class="white--text" app color="primary" fixed>
       <v-container class="align-center d-flex">
-        <v-toolbar-title><v-img :src="headerLogo" /></v-toolbar-title>
+        <v-toolbar-title>
+          <v-img class="hover" :src="headerLogo" @click="pushToHome" />
+        </v-toolbar-title>
         <v-spacer />
         <v-btn class="white--text" color="accent" elevation="0" to="/reports/search"> 投稿 </v-btn>
         <v-list-item-avatar class="hover" @click.stop="showDrawer">

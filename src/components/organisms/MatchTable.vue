@@ -1,8 +1,8 @@
 <template>
   <v-sheet>
     <v-toolbar flat>
-      <v-toolbar-title>試合一覧</v-toolbar-title>
-      <v-spacer></v-spacer>
+      <h3>試合一覧</h3>
+      <v-spacer />
       <v-btn icon @click="handleClick">
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
