@@ -1,5 +1,12 @@
 <template>
   <v-card outlined>
+    <v-container>
+      <v-row>
+        <v-col>
+          <h1>{{ league.name }}</h1>
+        </v-col>
+      </v-row>
+    </v-container>
     <v-container v-if="isLoadingStandings && !league.standings" class="pb-10 pt-10">
       <v-row justify="center">
         <v-progress-circular color="primary" indeterminate />
@@ -7,7 +14,7 @@
     </v-container>
     <v-container v-else-if="league.standings">
       <h3>順位表</h3>
-      <v-simple-table>
+      <v-simple-table dence>
         <template #default>
           <thead>
             <tr>
@@ -15,10 +22,11 @@
               <th class="text-center"></th>
               <th class="text-center">チーム</th>
               <th class="text-center">試合数</th>
-              <th class="text-center">勝</th>
-              <th class="text-center">負</th>
-              <th class="text-center">分</th>
+              <th class="text-center">勝ち</th>
+              <th class="text-center">負け</th>
+              <th class="text-center">分け</th>
               <th class="text-center">勝点</th>
+              <th class="text-center">直近</th>
               <th class="text-center">得点</th>
               <th class="text-center">失点</th>
               <th class="text-center">得失差</th>
@@ -28,6 +36,7 @@
             <tr
               v-for="item in league.standings.table"
               :key="item.team.ref.path"
+              class="standings"
               @click="pushToTeamShow(item.team.ref.path)"
             >
               <td class="text-center">{{ item.rank }}</td>
@@ -46,6 +55,7 @@
               <td class="text-center">{{ item.lost }}</td>
               <td class="text-center">{{ item.draw }}</td>
               <td class="text-center">{{ item.points }}</td>
+              <td class="text-center">{{ item.form }}</td>
               <td class="text-center">{{ item.goalsFor }}</td>
               <td class="text-center">{{ item.goalsAgainst }}</td>
               <td class="text-center">{{ item.goalsDifference }}</td>
@@ -61,7 +71,7 @@
     </v-container>
     <v-container v-else-if="league.scorers">
       <h3>得点ランキング</h3>
-      <v-simple-table>
+      <v-simple-table class="scorers">
         <template #default>
           <thead>
             <tr>
@@ -69,6 +79,8 @@
               <th class="text-center">選手</th>
               <th class="text-center">所属</th>
               <th class="text-center">得点</th>
+              <!-- <th class="text-center">アシスト</th>
+              <th class="text-center">PK</th> -->
             </tr>
           </thead>
           <tbody>
@@ -77,12 +89,14 @@
               <td class="text-center">{{ item.playerName }}</td>
               <td class="text-center">{{ item.teamName }}</td>
               <td class="text-center">{{ item.goals }}</td>
+              <!-- <td class="text-center">{{ item.assists }}</td>
+              <td class="text-center">{{ item.penalties }}</td> -->
             </tr>
           </tbody>
         </template>
       </v-simple-table>
-      <MatchSchedule :loading="isLoadingMatches" :match-schedule="league.matchSchedule" />
     </v-container>
+    <MatchSchedule :loading="isLoadingMatches" :match-schedule="league.matchSchedule" />
   </v-card>
 </template>
 
@@ -128,16 +142,13 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-tr {
+.standings {
   &:hover {
     opacity: 0.8;
     cursor: pointer;
   }
 }
-@media (max-width: $tableBreakPoints) {
-  th {
-    writing-mode: vertical-rl;
-    letter-spacing: 1px;
-  }
+.scorers {
+  pointer-events: none;
 }
 </style>

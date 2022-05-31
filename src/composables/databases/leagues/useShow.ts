@@ -1,5 +1,5 @@
 import { ref } from '@nuxtjs/composition-api'
-import { setScores, setStandings } from '@/db/competitions'
+import { competitionMap, setScores, setStandings } from '@/db/competitions'
 import { setMatchSchedule } from '@/db/matches'
 import useStore from '@/utils/useStore'
 
@@ -12,6 +12,7 @@ const useShow = () => {
   const setUp = async (competitionId: string) => {
     try {
       isLoadingStandings.value = true
+      league.name = competitionMap.get(competitionId)?.name!
       league.competitionId = competitionId
       league.season =
         competitionId === 'J-League'

@@ -21,6 +21,7 @@ export default defineNuxtPlugin((_, inject) => {
       searchOption: SearchOption
     }
     league: {
+      name: string
       competitionId: string
       standings: Standings | null
       scorers: Scorers | null
@@ -40,6 +41,7 @@ export default defineNuxtPlugin((_, inject) => {
       searchOption: { status: '', competitionId: '', teamId: '', jstDate: '' }
     },
     league: {
+      name: '',
       competitionId: '',
       standings: null,
       scorers: null,
@@ -63,6 +65,7 @@ export default defineNuxtPlugin((_, inject) => {
       searchOption: { status: '', competitionId: '', teamId: '', jstDate: '' }
     }
     store.league = {
+      name: '',
       competitionId: '',
       standings: null,
       scorers: null,

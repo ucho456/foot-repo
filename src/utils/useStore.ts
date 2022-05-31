@@ -13,6 +13,7 @@ export const StoreKey: InjectionKey<{
     searchOption: SearchOption
   }
   league: {
+    name: string
     competitionId: string
     standings: Standings | null
     scorers: Scorers | null
@@ -28,6 +29,7 @@ const useStore = () => {
 
   const resetLeague = (): void => {
     store.league = {
+      name: '',
       competitionId: '',
       standings: null,
       scorers: null,

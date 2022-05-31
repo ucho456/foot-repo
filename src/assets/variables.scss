@@ -8,3 +8,17 @@ $container-max-widths: (
   'xl': 1140px
 );
 $tableBreakPoints: 767px;
+
+h1 {
+  border-bottom: double 5px #1a237e;
+}
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+  padding: 0.4em 0.5em;
+  background: #f4f4f4;
+  border-left: solid 5px #1a237e;
+}
