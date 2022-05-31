@@ -100,6 +100,7 @@
       v-model="league.yearMonth"
       :loading="isLoadingMatches"
       :match-schedule="league.matchSchedule"
+      @click="searchMatchSchedule"
     />
   </v-card>
 </template>
@@ -121,7 +122,7 @@ export default defineComponent({
   setup() {
     const route = useRoute()
     const router = useRouter()
-    const { isLoadingStandings, isLoadingScorers, isLoadingMatches, setUp } = useShow()
+    const { isLoadingStandings, isLoadingScorers, isLoadingMatches, setUp, search } = useShow()
     const { league } = useStore()
     const { openSnackbar } = useSnackbar()
     const competitionId = route.value.params.id as string
@@ -140,7 +141,21 @@ export default defineComponent({
       router.push(`/databases/${path}`)
     }
 
-    return { isLoadingStandings, isLoadingScorers, isLoadingMatches, league, pushToTeamShow }
+    const searchMatchSchedule = async (): void => {
+      const result = await search()
+      if (result === 'failure') {
+        openSnackbar(result, 'データの取得に失敗しました。')
+      }
+    }
+
+    return {
+      isLoadingStandings,
+      isLoadingScorers,
+      isLoadingMatches,
+      league,
+      searchMatchSchedule,
+      pushToTeamShow
+    }
   }
 })
 </script>

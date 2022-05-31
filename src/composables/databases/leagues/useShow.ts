@@ -9,7 +9,7 @@ const useShow = () => {
   const isLoadingStandings = ref(false)
   const isLoadingScorers = ref(false)
   const isLoadingMatches = ref(false)
-  const setUp = async (competitionId: string) => {
+  const setUp = async (competitionId: string): Promise<'success' | 'failure'> => {
     try {
       isLoadingStandings.value = true
       league.name = competitionMap.get(competitionId)?.name!
@@ -42,7 +42,19 @@ const useShow = () => {
     }
   }
 
-  return { isLoadingStandings, isLoadingScorers, isLoadingMatches, setUp }
+  const search = async (): Promise<'success' | 'failure'> => {
+    try {
+      isLoadingMatches.value = true
+      await setMatchSchedule(league)
+      return 'success'
+    } catch {
+      return 'failure'
+    } finally {
+      isLoadingMatches.value = false
+    }
+  }
+
+  return { isLoadingStandings, isLoadingScorers, isLoadingMatches, setUp, search }
 }
 
 export default useShow

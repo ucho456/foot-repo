@@ -20,7 +20,7 @@
     </template>
     <v-date-picker v-model="tmpDate" :no-title="true" :scrollable="true" @input="inputDate">
       <v-spacer />
-      <v-btn :color="'primary'" :text="true" @click="$refs.dialog.save(date)"> 決定 </v-btn>
+      <v-btn :color="'primary'" :text="true" @click="handleClick"> 決定 </v-btn>
     </v-date-picker>
   </v-dialog>
 </template>
@@ -38,14 +38,17 @@ export default defineComponent({
   setup(props, ctx) {
     const tmpDate = props.date
     const datePicker = ref(false)
-    const inputDate = (date: string) => {
+    const inputDate = (date: string): void => {
       ctx.emit('input', date)
     }
     const clearDate = (): void => {
       ctx.emit('clear')
     }
+    const handleClick = (): void => {
+      ctx.refs.dialog.save(props.date)
+    }
 
-    return { tmpDate, datePicker, inputDate, clearDate }
+    return { tmpDate, datePicker, inputDate, clearDate, handleClick }
   }
 })
 </script>

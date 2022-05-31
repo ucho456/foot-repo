@@ -79,6 +79,7 @@ export const setMatchSchedule = async (league: {
   season: string
   yearMonth: string
 }) => {
+  league.matchSchedule = []
   const db = getFirestore()
   const mRef = collection(db, 'matches').withConverter(matchConverter)
   const q = query(

@@ -17,7 +17,7 @@
       @input="inputYearMonth"
     >
       <v-spacer />
-      <v-btn :color="'primary'" :text="true" @click="$refs.dialog.save(yearMonth)"> 決定 </v-btn>
+      <v-btn :color="'primary'" :text="true" @click="handleClick"> 決定 </v-btn>
     </v-date-picker>
   </v-dialog>
 </template>
@@ -38,8 +38,12 @@ export default defineComponent({
     const inputYearMonth = (yearMonth: string): void => {
       ctx.emit('input', yearMonth)
     }
+    const handleClick = (): void => {
+      ctx.refs.dialog.save(props.yearMonth)
+      ctx.emit('click')
+    }
 
-    return { tmpYearMonth, datePicker, inputYearMonth }
+    return { tmpYearMonth, datePicker, inputYearMonth, handleClick }
   }
 })
 </script>
