@@ -22,7 +22,7 @@
   </v-dialog>
 </template>
 
-<script lang="ts">
+<script>
 import { defineComponent, ref } from '@nuxtjs/composition-api'
 
 export default defineComponent({
@@ -35,10 +35,10 @@ export default defineComponent({
   setup(props, ctx) {
     const tmpYearMonth = props.yearMonth
     const datePicker = ref(false)
-    const inputYearMonth = (yearMonth: string): void => {
+    const inputYearMonth = (yearMonth) => {
       ctx.emit('input', yearMonth)
     }
-    const handleClick = (): void => {
+    const handleClick = () => {
       ctx.refs.dialog.save(props.yearMonth)
       ctx.emit('click')
     }

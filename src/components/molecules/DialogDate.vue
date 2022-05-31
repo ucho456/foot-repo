@@ -25,7 +25,7 @@
   </v-dialog>
 </template>
 
-<script lang="ts">
+<script>
 import { defineComponent, ref } from '@nuxtjs/composition-api'
 
 export default defineComponent({
@@ -38,13 +38,13 @@ export default defineComponent({
   setup(props, ctx) {
     const tmpDate = props.date
     const datePicker = ref(false)
-    const inputDate = (date: string): void => {
+    const inputDate = (date) => {
       ctx.emit('input', date)
     }
-    const clearDate = (): void => {
+    const clearDate = () => {
       ctx.emit('clear')
     }
-    const handleClick = (): void => {
+    const handleClick = () => {
       ctx.refs.dialog.save(props.date)
     }
 
