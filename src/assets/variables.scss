@@ -7,7 +7,7 @@ $container-max-widths: (
   'lg': 960px,
   'xl': 1140px
 );
-$tableBreakPoints: 767px;
+$tabletBreakPoints: 767px;
 
 h1 {
   border-bottom: double 5px #1a237e;
@@ -20,4 +20,10 @@ h5,
 h6 {
   padding: 0.4em 0.5em;
   border-left: solid 5px #1a237e;
+}
+
+@media (max-width: $tabletBreakPoints) {
+  h1 {
+    font-size: 24px;
+  }
 }

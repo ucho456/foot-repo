@@ -15,7 +15,20 @@ const useShow = () => {
     }
   }
 
-  return { isLoading, setUp }
+  const getAge = (birthday: string) => {
+    const today = new Date()
+    const birthYear = Number(birthday.substring(0, 4))
+    const birthMonth = Number(birthday.substring(5, 7))
+    const birthDate = Number(birthday.substring(8, 10))
+    const thisYearsBirthday = new Date(today.getFullYear(), birthMonth - 1, birthDate)
+    let age = today.getFullYear() - birthYear
+    if (today < thisYearsBirthday) {
+      age--
+    }
+    return `${age}歳`
+  }
+
+  return { isLoading, setUp, getAge }
 }
 
 export default useShow

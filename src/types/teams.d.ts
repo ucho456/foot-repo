@@ -7,7 +7,7 @@ type Team = {
   competitions: {
     name: string
     imageUrl: string
-  }
+  }[]
   squad: {
     playerName: string
     position: Position

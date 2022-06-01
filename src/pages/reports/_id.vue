@@ -128,9 +128,4 @@ export default defineComponent({
 .mom {
   background: linear-gradient(transparent 70%, yellow 70%);
 }
-@media (max-width: $tableBreakPoints) {
-  h1 {
-    font-size: 20px;
-  }
-}
 </style>
