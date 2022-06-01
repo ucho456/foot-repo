@@ -21,6 +21,9 @@ export const StoreKey: InjectionKey<{
     season: string
     yearMonth: string
   }
+  team: {
+    data: Team | null
+  }
 }> = Symbol('store')
 
 const useStore = () => {
@@ -43,6 +46,7 @@ const useStore = () => {
     matches: store.matches,
     reports: store.reports,
     league: store.league,
+    team: store.team,
     resetLeague
   }
 }

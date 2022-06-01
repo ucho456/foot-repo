@@ -109,8 +109,8 @@
 <script lang="ts">
 import { defineComponent, useRoute, useRouter } from '@nuxtjs/composition-api'
 import useShow from '@/composables/databases/leagues/useShow'
-import useStore from '@/utils/useStore'
 import useSnackbar from '@/utils/useSnackbar'
+import useStore from '@/utils/useStore'
 import MatchSchedule from '@/components/organisms/MatchSchedule.vue'
 
 export default defineComponent({
@@ -124,11 +124,11 @@ export default defineComponent({
     const route = useRoute()
     const router = useRouter()
     const { isLoadingStandings, isLoadingScorers, isLoadingMatches, setUp, search } = useShow()
-    const { league } = useStore()
     const { openSnackbar } = useSnackbar()
-    const competitionId = route.value.params.id as string
+    const { league } = useStore()
 
     const setUpPage = async (): Promise<void> => {
+      const competitionId = route.value.params.id as string
       if (league.competitionId !== competitionId) {
         const result = await setUp(competitionId)
         if (result === 'failure') {

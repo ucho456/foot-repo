@@ -129,6 +129,10 @@ service cloud.firestore {
       }
     }
 
+    match /teams/{teamId} {
+      allow read;
+    }
+
     // users
     function isValidUser(user) {
       return user.size() == 5

@@ -29,6 +29,9 @@ export default defineNuxtPlugin((_, inject) => {
       season: string
       yearMonth: string
     }
+    team: {
+      data: Team | null
+    }
   } = reactive({
     matches: {
       data: [],
@@ -48,6 +51,9 @@ export default defineNuxtPlugin((_, inject) => {
       matchSchedule: [],
       season: '',
       yearMonth: ''
+    },
+    team: {
+      data: null
     }
   })
 
@@ -72,6 +78,9 @@ export default defineNuxtPlugin((_, inject) => {
       matchSchedule: [],
       season: '',
       yearMonth: ''
+    }
+    store.team = {
+      data: null
     }
   }
 
