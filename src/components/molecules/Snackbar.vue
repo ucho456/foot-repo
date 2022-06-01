@@ -1,5 +1,11 @@
 <template>
-  <BaseSnackbar :color="color" :message="message" :show="show" :timeout="-1" />
+  <BaseSnackbar
+    :color="color"
+    :message="message"
+    :show="show"
+    :text-color="textColor"
+    :timeout="-1"
+  />
 </template>
 
 <script lang="ts">
@@ -16,7 +22,8 @@ export default defineComponent({
   props: {
     color: { type: String, default: '' },
     message: { type: String, default: '' },
-    show: { type: Boolean, default: false }
+    show: { type: Boolean, default: false },
+    textColor: { type: String, default: '' }
   }
 })
 </script>

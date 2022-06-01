@@ -8,10 +8,11 @@ import {
 import { SnackbarKey } from '@/utils/useSnackbar'
 
 export default defineNuxtPlugin((_, inject) => {
-  const snackbar = reactive({
+  const snackbar: Snackbar = reactive({
     color: '',
     message: '',
-    show: false
+    show: false,
+    textColor: ''
   })
 
   inject('snackbar', snackbar)
@@ -20,6 +21,7 @@ export default defineNuxtPlugin((_, inject) => {
     snackbar.color = ''
     snackbar.message = ''
     snackbar.show = false
+    snackbar.textColor = ''
   }
 
   onGlobalSetup(() => {

@@ -65,8 +65,13 @@ type SearchOption = {
   jstDate: string
 }
 
+type SnackbarColor = '' | 'success' | 'failure' | 'alert'
+
+type SnackbarTextColor = '' | 'black' | 'white'
+
 type Snackbar = {
-  color: '' | 'success' | 'failure'
+  color: SnackbarColor
   message: string
   show: boolean
+  textColor: SnackbarTextColor
 }

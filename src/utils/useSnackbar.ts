@@ -7,15 +7,19 @@ const useSnackbar = () => {
   if (snackbar === undefined) throw new Error('snackbar is no provided')
 
   const openSnackbar = (result: string, message: string): void => {
-    const color = result === 'success' ? 'success' : 'failure'
+    const color = result === 'success' ? 'success' : result === 'alert' ? 'alert' : 'failure'
     snackbar.color = color
     snackbar.message = message
     snackbar.show = true
-    setTimeout(() => {
+    snackbar.textColor = result === 'alert' ? 'black' : 'white'
+    const seconds = result === 'success' ? 2 : 5
+    const id = setTimeout(() => {
       snackbar.color = ''
       snackbar.message = ''
       snackbar.show = false
-    }, 2 * 1000)
+      snackbar.textColor = ''
+      clearTimeout(id)
+    }, seconds * 1000)
   }
 
   return { snackbar, openSnackbar }

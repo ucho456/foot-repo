@@ -62,6 +62,7 @@ export default {
           accent: colors.indigo.accent4,
           fotter: colors.blueGrey.darken4,
           success: colors.green,
+          alert: colors.yellow,
           failure: colors.pink
         }
       }
