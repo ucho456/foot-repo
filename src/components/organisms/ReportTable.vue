@@ -1,7 +1,7 @@
 <template>
   <v-sheet>
     <v-toolbar flat>
-      <h3>選手採点一覧</h3>
+      <h2>選手採点一覧</h2>
       <v-spacer />
       <v-btn icon @click="handleClick">
         <v-icon>mdi-magnify</v-icon>

@@ -1,6 +1,6 @@
 <template>
   <v-card outlined>
-    <ReportTable :loading="isLoadingSetUp" :reports="reports.data" />
+    <ReportTable :loading="isLoadingReports" :reports="reports.data" />
   </v-card>
 </template>
 
@@ -18,12 +18,12 @@ export default defineComponent({
   },
 
   setup() {
-    const { isLoadingSetUp, setUp } = useIndex()
+    const { isLoadingReports, setUp } = useIndex()
     const { reports } = useStore()
 
     setUp()
 
-    return { isLoadingSetUp, reports }
+    return { isLoadingReports, reports }
   }
 })
 </script>

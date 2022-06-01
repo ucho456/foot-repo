@@ -2,7 +2,7 @@
   <v-card>
     <v-container>
       <v-row>
-        <v-col cols="9" sm="9" align-self="center"><h3>試合日程</h3></v-col>
+        <v-col cols="9" sm="9" align-self="center"><h2>試合日程</h2></v-col>
         <v-col cols="3" sm="3">
           <DialogYearMonth :year-month="value" @input="inputYearMonth" @click="handleClick" />
         </v-col>

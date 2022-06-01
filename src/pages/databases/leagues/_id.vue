@@ -13,7 +13,7 @@
       </v-row>
     </v-container>
     <v-container v-else-if="league.standings">
-      <h3>順位表</h3>
+      <h2>順位表</h2>
       <v-simple-table dence>
         <template #default>
           <thead>
@@ -70,7 +70,7 @@
       </v-row>
     </v-container>
     <v-container v-else-if="league.scorers">
-      <h3>得点ランキング</h3>
+      <h2>得点ランキング</h2>
       <v-simple-table class="scorers">
         <template #default>
           <thead>

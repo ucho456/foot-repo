@@ -21,7 +21,7 @@
       <v-row></v-row>
     </v-container>
     <v-container v-if="team.data">
-      <h3>コンペティション</h3>
+      <h2>コンペティション</h2>
       <v-simple-table class="table" dence>
         <template #default>
           <tbody>
@@ -42,7 +42,7 @@
       </v-simple-table>
     </v-container>
     <v-container v-if="team.data">
-      <h3>選手一覧</h3>
+      <h2>選手一覧</h2>
       <v-simple-table class="table" dence>
         <template #default>
           <tbody>

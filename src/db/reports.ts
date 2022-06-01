@@ -10,9 +10,9 @@ import {
   serverTimestamp,
   writeBatch
 } from 'firebase/firestore'
-import type { QueryDocumentSnapshot } from 'firebase/firestore'
 import { reportItemConverter, reportConverter } from '@/utils/converters'
 import { makeSearchOption } from '@/utils/searchOption'
+import useStore from '@/utils/useStore'
 
 export const createReport = async (
   currentUser: CurrentUser | null,
@@ -92,13 +92,10 @@ export const createReport = async (
   await batch.commit()
 }
 
-export const getFirstReports = async (reports: {
-  data: Report[]
-  lastVisible: QueryDocumentSnapshot<Report> | null
-  searchOption: SearchOption
-}) => {
-  const db = getFirestore()
+export const toStoreFirstReports = async (): Promise<void> => {
+  const { reports } = useStore()
   reports.data = []
+  const db = getFirestore()
   const rRef = collection(db, 'reports').withConverter(reportConverter)
   const options = makeSearchOption(reports.searchOption)
   const q = query(rRef, ...options, orderBy('createdAt', 'desc'), limit(10))
