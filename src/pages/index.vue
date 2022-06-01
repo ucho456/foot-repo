@@ -1,12 +1,13 @@
 <template>
   <v-card outlined>
-    <ReportTable :loading="isLoadingReports" :reports="reports.data" />
+    <ReportTable :is-loading="isLoadingReports" :reports="reports.data" />
   </v-card>
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
 import useIndex from '@/composables/useIndex'
+import useSnackbar from '@/utils/useSnackbar'
 import useStore from '@/utils/useStore'
 import ReportTable from '@/components/organisms/ReportTable.vue'
 
@@ -19,9 +20,16 @@ export default defineComponent({
 
   setup() {
     const { isLoadingReports, setUp } = useIndex()
+    const { openSnackbar } = useSnackbar()
     const { reports } = useStore()
 
-    setUp()
+    const setUpPage = async () => {
+      const result = await setUp()
+      if (result === 'failure') {
+        openSnackbar(result, 'データの取得に失敗しました。')
+      }
+    }
+    setUpPage()
 
     return { isLoadingReports, reports }
   }

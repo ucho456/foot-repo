@@ -152,3 +152,23 @@ report に省略チーム名を追加したい。
 v4 に対応したい。
 バーチャルスクロールを使用したい。
 databases の方には lastUpdated を表示する。
+
+# vue ファイルコード規約
+
+1. import 順
+
+- composition-api defineComponent 以外 a-z 順
+- composables
+- utils a-z 順
+- component 使用順
+
+2. defineComponent
+
+- name, components, layout, props, setup
+
+3. setup
+
+- import した使用するやつを順番に定義,画像があればその次
+- setUpPage
+- その他メソッド
+- return

@@ -1,5 +1,5 @@
 <template>
-  <v-sheet>
+  <v-container>
     <v-toolbar flat>
       <h2>選手採点一覧</h2>
       <v-spacer />
@@ -7,12 +7,8 @@
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
     </v-toolbar>
-    <v-container v-if="loading" class="pb-10">
-      <v-row justify="center">
-        <v-progress-circular color="primary" indeterminate />
-      </v-row>
-    </v-container>
-    <v-list v-else class="mt-n4" three-line>
+    <ContainerLoading :is-loading="isLoading" />
+    <v-list class="mt-n4" three-line>
       <v-container v-for="report in reports" :key="report.id">
         <v-list-item :exact="true" :router="true" :to="{ path: `reports/${report.id}` }">
           <v-list-item-avatar class="avatar">
@@ -48,17 +44,22 @@
         </v-list-item>
       </v-container>
     </v-list>
-  </v-sheet>
+  </v-container>
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
+import ContainerLoading from '@/components/molecules/ContainerLoading.vue'
 
 export default defineComponent({
   name: 'MatchTable',
 
+  components: {
+    ContainerLoading
+  },
+
   props: {
-    loading: { type: Boolean, default: false },
+    isLoading: { type: Boolean, default: false },
     reports: {
       type: Array as () => Report[],
       default: () => [
@@ -66,8 +67,8 @@ export default defineComponent({
           id: '',
           title: '',
           user: { name: '', imageUrl: '' },
-          homeTeam: { name: '', imageUrl: '', score: 0 }, // shortName
-          awayTeam: { name: '', imageUrl: '', score: 0 }, // shortName
+          homeTeam: { shortName: '', imageUrl: '', score: 0 },
+          awayTeam: { shortName: '', imageUrl: '', score: 0 },
           competition: { name: '' },
           jstDate: ''
         }
