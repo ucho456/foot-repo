@@ -7,19 +7,14 @@
         </v-toolbar-title>
         <v-spacer />
         <v-btn class="white--text" color="accent" elevation="0" to="/reports/search"> 投稿 </v-btn>
-        <v-list-item-avatar class="hover" @click.stop="showDrawer">
-          <client-only>
-            <v-img v-if="currentUser && currentUser.imageUrl" :src="currentUser.imageUrl" />
-            <v-img v-else :src="noAvatarImage" />
-          </client-only>
-        </v-list-item-avatar>
+        <v-btn icon @click.stop="showDrawer"><v-icon color="white">mdi-menu</v-icon></v-btn>
       </v-container>
     </v-app-bar>
     <v-main>
       <v-container>
         <v-row>
-          <v-col cols="12" sm="8" md="8"><Nuxt /></v-col>
-          <v-col cols="12" sm="4" md="4"><SideContainer /></v-col>
+          <v-col cols="12" sm="8"><Nuxt /></v-col>
+          <v-col cols="12" sm="4"><SideContainer /></v-col>
         </v-row>
       </v-container>
     </v-main>
@@ -28,8 +23,17 @@
         <span>&copy; {{ new Date().getFullYear() }}</span>
       </v-container>
     </v-footer>
-    <v-navigation-drawer v-model="drawer" fixed right temporary>
+    <v-navigation-drawer v-model="isDrawer" fixed right temporary>
       <client-only>
+        <v-list-item v-if="currentUser" to="/my-page">
+          <v-list-item-avatar>
+            <v-img v-if="currentUser.imageUrl" :src="currentUser.imageUrl" />
+            <v-img v-else :src="noAvatarImage" />
+          </v-list-item-avatar>
+          <v-list-item-content>
+            <v-list-item-title v-text="currentUser.name" />
+          </v-list-item-content>
+        </v-list-item>
         <v-list>
           <v-list-item
             v-for="item in navigationDrawerItems"
@@ -90,7 +94,6 @@ export default defineComponent({
 
     const navigationDrawerItems = computed(() => {
       const home = { icon: 'mdi-home', title: 'ホーム', to: '/' }
-      const myPage = { icon: 'mdi-account', title: 'マイページ', to: '/my-page' }
       const reportNew = { icon: 'mdi-pencil-plus', title: '選手採点投稿', to: '/reports/search' }
       const database = { icon: 'mdi-chart-bar', title: 'データベース', to: '/databases/' }
       const chatRoom = { icon: 'mdi-chat-processing', title: 'チャットルーム', to: '/rooms/' }
@@ -101,12 +104,11 @@ export default defineComponent({
       return currentUser && currentUser.value
         ? [
             { id: 1, ...home },
-            { id: 2, ...myPage },
-            { id: 3, ...reportNew },
-            { id: 4, ...database },
-            { id: 5, ...chatRoom },
-            { id: 6, ...about },
-            { id: 7, ...contact }
+            { id: 2, ...reportNew },
+            { id: 3, ...database },
+            { id: 4, ...chatRoom },
+            { id: 5, ...about },
+            { id: 6, ...contact }
           ]
         : [
             { id: 1, ...home },
@@ -119,12 +121,12 @@ export default defineComponent({
             { id: 8, ...contact }
           ]
     })
-    const drawer = ref(false)
+    const isDrawer = ref(false)
     const showDrawer = (): void => {
-      drawer.value = true
+      isDrawer.value = true
     }
     const hideDrawer = (): void => {
-      drawer.value = false
+      isDrawer.value = false
     }
 
     const logout = (): void => {
@@ -144,7 +146,7 @@ export default defineComponent({
       noAvatarImage,
       pushToHome,
       navigationDrawerItems,
-      drawer,
+      isDrawer,
       showDrawer,
       logout
     }
