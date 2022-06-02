@@ -4,6 +4,7 @@ import { connectAuthEmulator, getAuth } from 'firebase/auth'
 import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore'
 import { connectStorageEmulator, getStorage } from 'firebase/storage'
 import { connectFunctionsEmulator, getFunctions } from 'firebase/functions'
+import { getAnalytics, logEvent } from 'firebase/analytics'
 
 export default defineNuxtPlugin(() => {
   if (getApps().length !== 0) return
@@ -17,6 +18,8 @@ export default defineNuxtPlugin(() => {
     measurementId: 'G-FFB7N3Q6LY'
   }
   initializeApp(config)
+  const analytics = getAnalytics()
+  logEvent(analytics, 'notification_received')
 
   // Emulator setting
   if (process.env.NODE_ENV === 'development') {
