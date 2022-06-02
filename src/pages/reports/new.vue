@@ -6,7 +6,7 @@
       </v-row>
     </v-container>
     <v-container v-else-if="match">
-      <ReportsHeader v-bind="match" />
+      <RowMatchHeader v-bind="match" />
       <v-container>
         <v-row>
           <v-col cols="12">
@@ -125,7 +125,7 @@
 import { defineComponent, useRoute, useRouter } from '@nuxtjs/composition-api'
 import useNew from '@/composables/reports/useNew'
 import useSnackbar from '@/utils/useSnackbar'
-import ReportsHeader from '@/components/organisms/ReportsHeader.vue'
+import RowMatchHeader from '@/components/organisms/RowMatchHeader.vue'
 import TextField from '@/components/molecules/TextField.vue'
 import SelectHomeAway from '@/components/molecules/SelectHomeAway.vue'
 import TextFieldPoint from '@/components/molecules/TextFieldPoint.vue'
@@ -138,7 +138,7 @@ export default defineComponent({
   name: 'ReportNew',
 
   components: {
-    ReportsHeader,
+    RowMatchHeader,
     TextField,
     SelectHomeAway,
     TextFieldPoint,
