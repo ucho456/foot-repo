@@ -8,19 +8,7 @@
             <h1 class="h1">{{ report.title }}</h1>
           </v-col>
         </v-row>
-        <v-row>
-          <v-col cols="2">
-            <v-img
-              v-if="report.user.imageUrl"
-              class="rounded-circle"
-              :height="30"
-              :width="30"
-              :src="report.user.imageUrl"
-            />
-            <v-img v-else class="rounded-circle" :height="30" :width="30" :src="noAvatarImage" />
-          </v-col>
-          <v-col class="ml-n4 user-name" cols="10">{{ report.user.name }}</v-col>
-        </v-row>
+        <RowUserImageName :image-url="report.user.imageUrl" :name="report.user.name" />
       </v-container>
       <ReportsHeader v-bind="match" />
       <v-container v-if="report.selectTeam !== 'away'">
@@ -75,38 +63,43 @@
     </v-container>
     <ContainerLoading :is-loading="isLoadingUser && !user" />
     <v-container v-if="user" class="mt-10">
-      <v-row>
-        <v-col cols="2">
-          <v-img
-            v-if="user.imageUrl"
-            class="rounded-circle"
-            :height="30"
-            :width="30"
-            :src="user.imageUrl"
-          />
-          <v-img v-else class="rounded-circle" :height="30" :width="30" :src="noAvatarImage" />
-        </v-col>
-        <v-col class="ml-n4 user-name" cols="10">
-          {{ user.name }}<br />{{ user.teamId }}<br />{{ user.greet }}
-        </v-col>
-      </v-row>
+      <RowUserImageName :image-url="user.imageUrl" :name="user.name" />
+      <v-col class="ml-7">{{ user.teamId }}<br />{{ user.greet }}</v-col>
     </v-container>
+    <client-only>
+      <v-container v-if="currentUser && !isLoadingReport && !isLoadingUser">
+        <RowUserImageName :image-url="currentUser.imageUrl" :name="currentUser.name" />
+        <v-row>
+          <v-col cols="12"><Textarea /></v-col>
+          <v-col cols="6" class="mt-n10">
+            <ButtonSubmit :loading="false" :icon="'mdi-home'" :text="'コメントを投稿'" />
+          </v-col>
+        </v-row>
+      </v-container>
+    </client-only>
   </v-card>
 </template>
 
 <script lang="ts">
 import { defineComponent, useRoute } from '@nuxtjs/composition-api'
 import useShow from '@/composables/reports/useShow'
+import useCurrentUser from '@/utils/useCurrentUser'
 import useSnackbar from '@/utils/useSnackbar'
 import ContainerLoading from '@/components/molecules/ContainerLoading.vue'
+import RowUserImageName from '@/components/organisms/RowUserImageName.vue'
 import ReportsHeader from '@/components/organisms/ReportsHeader.vue'
+import Textarea from '@/components/molecules/Textarea.vue'
+import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
 
 export default defineComponent({
   name: 'ReportShow',
 
   components: {
     ContainerLoading,
-    ReportsHeader
+    RowUserImageName,
+    ReportsHeader,
+    Textarea,
+    ButtonSubmit
   },
 
   setup() {
@@ -121,6 +114,7 @@ export default defineComponent({
       isLoadingUser,
       setUp
     } = useShow()
+    const { currentUser } = useCurrentUser()
     const { openSnackbar } = useSnackbar()
     const noAvatarImage = require('@/assets/no_avatar.png')
 
@@ -141,6 +135,7 @@ export default defineComponent({
       user,
       isLoadingReport,
       isLoadingUser,
+      currentUser,
       noAvatarImage
     }
   }

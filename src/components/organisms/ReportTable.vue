@@ -18,7 +18,7 @@
           <div class="name">{{ report.user.name }}</div>
           <v-list-item-content class="ml-n3">
             <v-list-item-title>{{ report.title }}</v-list-item-title>
-            <v-list-item-subtitle style="display: flex">
+            <v-list-item-subtitle class="d-flex">
               <v-img
                 class="rounded-circle"
                 :max-height="14"
