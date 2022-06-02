@@ -26,11 +26,11 @@ export default defineComponent({
   setup(_, ctx) {
     const competitions = [
       { id: '', text: '未選択' },
-      { id: '2119', text: 'J. League' },
-      { id: '2021', text: 'Premier League' },
-      { id: '2014', text: 'La Liga' },
-      { id: '2019', text: 'Serie A' },
-      { id: '2002', text: 'Bundesliga' }
+      { id: 'J-League', text: 'J. League' },
+      { id: 'Premier-League', text: 'Premier League' },
+      { id: 'La-Liga', text: 'La Liga' },
+      { id: 'Serie-A', text: 'Serie A' },
+      { id: 'Bundesliga', text: 'Bundesliga' }
     ]
     const handleInput = (competitionId: string): void => {
       ctx.emit('input', competitionId)
