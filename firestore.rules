@@ -144,8 +144,8 @@ service cloud.firestore {
       && isValidString(user.name, 1, 20)
       && isValidImage(user.imageUrl)
       && isValidString(user.greet, 0, 140)
-      && isValidString(user.competitionId, 0, 10)
-      && isValidString(user.teamId, 0, 10);
+      && isValidString(user.competitionId, 1, 20)
+      && isValidString(user.teamId, 1, 20);
     }
 
     match /users/{userId} {
