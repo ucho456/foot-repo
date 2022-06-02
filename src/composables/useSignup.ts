@@ -14,6 +14,15 @@ const useSignup = () => {
   const { setUpCurrentUser } = useCurrentUser()
 
   const user = reactive({ email: '', password: '' })
+
+  const isDialog = ref(false)
+  const openDialog = (): void => {
+    isDialog.value = true
+  }
+  const closeDialog = (): void => {
+    isDialog.value = false
+  }
+
   const isLoading = ref(false)
 
   const signupEmail = async (): Promise<'success' | 'already used' | 'failure'> => {
@@ -74,7 +83,16 @@ const useSignup = () => {
     }
   }
 
-  return { user, isLoading, signupEmail, signupTwitter, signupGoogle }
+  return {
+    user,
+    isDialog,
+    openDialog,
+    closeDialog,
+    isLoading,
+    signupEmail,
+    signupTwitter,
+    signupGoogle
+  }
 }
 
 export default useSignup

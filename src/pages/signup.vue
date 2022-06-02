@@ -15,6 +15,7 @@
             <TextFieldPassword v-model="user.password" />
           </v-col>
         </v-row>
+        <v-row class="hover terms" justify="center" @click="openDialog"> 利用規約を表示する </v-row>
         <v-row justify="center">
           <v-col cols="10">
             <ButtonSubmit
@@ -56,6 +57,7 @@
         </v-row>
       </ValidationObserver>
     </v-container>
+    <DialogTerms :is-dialog="isDialog" @click="closeDialog" />
   </v-card>
 </template>
 
@@ -69,6 +71,7 @@ import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
 import ButtonTwitter from '@/components/molecules/ButtonTwitter.vue'
 import ButtonGoogle from '@/components/molecules/ButtonGoogle.vue'
 import ButtonBack from '@/components/molecules/ButtonBack.vue'
+import DialogTerms from '@/components/molecules/DialogTerms.vue'
 
 export default defineComponent({
   name: 'Signup',
@@ -79,14 +82,24 @@ export default defineComponent({
     ButtonSubmit,
     ButtonTwitter,
     ButtonGoogle,
-    ButtonBack
+    ButtonBack,
+    DialogTerms
   },
 
   layout: 'grey',
 
   setup() {
     const router = useRouter()
-    const { user, isLoading, signupEmail, signupTwitter, signupGoogle } = useSignup()
+    const {
+      user,
+      isDialog,
+      openDialog,
+      closeDialog,
+      isLoading,
+      signupEmail,
+      signupTwitter,
+      signupGoogle
+    } = useSignup()
     const { openSnackbar } = useSnackbar()
 
     const logo = require('@/assets/signup_logo.png')
@@ -129,6 +142,9 @@ export default defineComponent({
 
     return {
       user,
+      isDialog,
+      openDialog,
+      closeDialog,
       isLoading,
       logo,
       submitEmail,
@@ -141,8 +157,14 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+.terms {
+  font-size: 12px;
+  color: #1a237e;
+  text-decoration: underline;
+}
 .hover {
   &:hover {
+    cursor: pointer;
     opacity: 0.8;
   }
 }
