@@ -49,7 +49,7 @@
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
-import ContainerLoading from '@/components/molecules/ContainerLoading.vue'
+import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 
 export default defineComponent({
   name: 'MatchTable',

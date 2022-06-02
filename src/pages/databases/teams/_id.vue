@@ -69,7 +69,7 @@ import { defineComponent, useRoute } from '@nuxtjs/composition-api'
 import useShow from '@/composables/databases/teams/useShow'
 import useSnackbar from '@/utils/useSnackbar'
 import useStore from '@/utils/useStore'
-import ContainerLoading from '@/components/molecules/ContainerLoading.vue'
+import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 import ContainerLastUpdated from '@/components/molecules/ContainerLastUpdated.vue'
 
 export default defineComponent({
