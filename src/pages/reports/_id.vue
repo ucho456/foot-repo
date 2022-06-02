@@ -1,11 +1,7 @@
 <template>
   <v-card outlined>
-    <v-container v-if="isLoadingReport" class="pb-10 pt-10">
-      <v-row justify="center">
-        <v-progress-circular color="primary" indeterminate />
-      </v-row>
-    </v-container>
-    <v-container v-else-if="report && match">
+    <ContainerLoading :is-loading="isLoadingReport" />
+    <v-container v-if="report && match">
       <v-container>
         <v-row>
           <v-col>
@@ -77,6 +73,24 @@
         </v-row>
       </v-container>
     </v-container>
+    <ContainerLoading :is-loading="isLoadingUser && !user" />
+    <v-container v-if="user" class="mt-10">
+      <v-row>
+        <v-col cols="2">
+          <v-img
+            v-if="user.imageUrl"
+            class="rounded-circle"
+            :height="30"
+            :width="30"
+            :src="user.imageUrl"
+          />
+          <v-img v-else class="rounded-circle" :height="30" :width="30" :src="noAvatarImage" />
+        </v-col>
+        <v-col class="ml-n4 user-name" cols="10">
+          {{ user.name }}<br />{{ user.teamId }}<br />{{ user.greet }}
+        </v-col>
+      </v-row>
+    </v-container>
   </v-card>
 </template>
 
@@ -84,19 +98,29 @@
 import { defineComponent, useRoute } from '@nuxtjs/composition-api'
 import useShow from '@/composables/reports/useShow'
 import useSnackbar from '@/utils/useSnackbar'
+import ContainerLoading from '@/components/molecules/ContainerLoading.vue'
 import ReportsHeader from '@/components/organisms/ReportsHeader.vue'
 
 export default defineComponent({
   name: 'ReportShow',
 
   components: {
+    ContainerLoading,
     ReportsHeader
   },
 
   setup() {
     const route = useRoute()
-    const { report, homeTeamReportItems, awayTeamReportItems, match, isLoadingReport, setUp } =
-      useShow()
+    const {
+      report,
+      homeTeamReportItems,
+      awayTeamReportItems,
+      match,
+      user,
+      isLoadingReport,
+      isLoadingUser,
+      setUp
+    } = useShow()
     const { openSnackbar } = useSnackbar()
     const noAvatarImage = require('@/assets/no_avatar.png')
 
@@ -114,7 +138,9 @@ export default defineComponent({
       homeTeamReportItems,
       awayTeamReportItems,
       match,
+      user,
       isLoadingReport,
+      isLoadingUser,
       noAvatarImage
     }
   }

@@ -1,7 +1,7 @@
 import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore'
 import { userConverter } from '@/utils/converters'
 
-export const getUser = async (uid: string | undefined): Promise<User | null> => {
+export const fetchUser = async (uid: string | undefined): Promise<User | null> => {
   if (!uid) return null
   const db = getFirestore()
   const uRef = doc(db, 'users', uid).withConverter(userConverter)

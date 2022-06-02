@@ -7,7 +7,7 @@ import {
   signInWithPopup,
   TwitterAuthProvider
 } from 'firebase/auth'
-import { getUser } from '@/db/users'
+import { fetchUser } from '@/db/users'
 import useCurrentUser from '@/utils/useCurrentUser'
 
 const useSignup = () => {
@@ -48,7 +48,7 @@ const useSignup = () => {
       const provider = new TwitterAuthProvider()
       const userCredential = await signInWithPopup(auth, provider)
       const uid = userCredential.user.uid
-      const user = await getUser(uid)
+      const user = await fetchUser(uid)
       if (!user) {
         return 'success'
       } else {
@@ -69,7 +69,7 @@ const useSignup = () => {
       const provider = new GoogleAuthProvider()
       const userCredential = await signInWithPopup(auth, provider)
       const uid = userCredential.user.uid
-      const user = await getUser(uid)
+      const user = await fetchUser(uid)
       if (!user) {
         return 'success'
       } else {
