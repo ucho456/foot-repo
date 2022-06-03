@@ -56,22 +56,45 @@ const useNew = () => {
   }
 
   const isLoading = ref(false)
-  const create = async (): Promise<'success' | 'failure'> => {
+  const create = async (): Promise<'success' | 'failure' | 'no currentUser'> => {
     try {
       isLoading.value = true
-      const imageUrl = userImageFile.value
-        ? await uploadAndGetImageUrl(`users/${user.id}`, userImageFile.value)
-        : null
-      if (imageUrl) user.imageUrl = imageUrl
-      await createUser(user)
-      setUpCurrentUser()
+      const auth = getAuth()
+      if (auth.currentUser) {
+        const imageUrl = userImageFile.value
+          ? await uploadAndGetImageUrl(`users/${user.id}`, userImageFile.value)
+          : null
+        if (imageUrl) user.imageUrl = imageUrl
+        await createUser(user)
+        setUpCurrentUser()
+      } else {
+        throw new Error('no currentUser')
+      }
       return 'success'
-    } catch {
-      return 'failure'
+    } catch (error) {
+      return error instanceof Error && error.message === 'no currentUser'
+        ? 'no currentUser'
+        : 'failure'
     } finally {
       isLoading.value = false
     }
   }
+  // const create = async (): Promise<'success' | 'failure'> => {
+  //   try {
+  //     isLoading.value = true
+  //     const imageUrl = userImageFile.value
+  //       ? await uploadAndGetImageUrl(`users/${user.id}`, userImageFile.value)
+  //       : null
+  //     if (imageUrl) user.imageUrl = imageUrl
+  //     await createUser(user)
+  //     setUpCurrentUser()
+  //     return 'success'
+  //   } catch {
+  //     return 'failure'
+  //   } finally {
+  //     isLoading.value = false
+  //   }
+  // }
 
   return {
     user,

@@ -104,7 +104,12 @@ export default defineComponent({
 
     const submit = async (): Promise<void> => {
       const result = await create()
-      const message = result === 'success' ? '作成しました。' : '失敗しました。'
+      const message =
+        result === 'success'
+          ? '作成しました。'
+          : result === 'failure'
+          ? '失敗しました。'
+          : 'エラーが発生しました。リロードでページを更新して下さい。'
       openSnackbar(result, message)
       if (result === 'success') {
         router.push('/')
