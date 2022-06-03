@@ -68,28 +68,41 @@
         </v-row>
       </v-container>
     </v-card>
-    <client-only>
-      <v-card v-if="currentUser && !isLoadingReport && !isLoadingUser" class="mt-4" outlined>
-        <v-container>
-          <RowUserImageName :image-url="currentUser.imageUrl" :name="currentUser.name" />
-          <ValidationObserver v-slot="{ invalid }">
+    <v-card v-if="!isLoadingReport && !isLoadingUser" class="mt-4" outlined>
+      <v-container>
+        <v-row>
+          <v-col>
+            <h3>コメント</h3>
+          </v-col>
+        </v-row>
+        <v-row v-for="comment in comments" :key="comment.id">
+          <v-container class="comment ml-6 mr-6">
+            <RowUserImageName :image-url="comment.user.imageUrl" :name="comment.user.name" />
             <v-row>
-              <v-col cols="12"
-                ><Textarea v-model="inputComment" :maxlength="140" :rules="'required'"
-              /></v-col>
-              <v-col cols="6" class="mt-n8">
-                <ButtonSubmit
-                  :disabled="invalid"
-                  :loading="isLoadingNewComment"
-                  :text="'コメントを投稿'"
-                  @click="submitCreate"
-                />
-              </v-col>
+              <v-col class="ml-10 mt-n5">{{ comment.text }}</v-col>
             </v-row>
-          </ValidationObserver>
-        </v-container>
-      </v-card>
-    </client-only>
+          </v-container>
+        </v-row>
+        <client-only>
+          <RowUserImageName
+            v-if="currentUser"
+            :image-url="currentUser.imageUrl"
+            :name="currentUser.name"
+          />
+          <v-row>
+            <v-col cols="12"><Textarea v-model="inputComment" :maxlength="140" /></v-col>
+            <v-col cols="6" class="mt-n8">
+              <ButtonSubmit
+                :disabled="inputComment.length === 0"
+                :loading="isLoadingNewComment"
+                :text="'コメントを投稿'"
+                @click="submitCreate"
+              />
+            </v-col>
+          </v-row>
+        </client-only>
+      </v-container>
+    </v-card>
   </v-container>
 </template>
 
@@ -178,5 +191,8 @@ export default defineComponent({
 <style lang="scss" scoped>
 .mom {
   background: linear-gradient(transparent 70%, yellow 70%);
+}
+.comment {
+  border-bottom: 1px solid #{$light-indigo};
 }
 </style>

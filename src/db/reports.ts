@@ -171,11 +171,11 @@ export const getReportAndItems = async (
 export const subscribeComments = (reportId: string, comments: ReportComment[]): Unsubscribe => {
   const db = getFirestore()
   const cColRef = collection(db, 'reports', reportId, 'comments').withConverter(commentConverter)
-  const q = query(cColRef, orderBy('createdAt', 'desc'), limit(100))
+  const q = query(cColRef, orderBy('createdAt', 'asc'), limit(100))
   const unsubscribe = onSnapshot(q, (snapshot) => {
     snapshot.docChanges().forEach((change) => {
       if (change.type === 'added') {
-        comments.push(change.doc.data())
+        comments.unshift(change.doc.data())
       }
     })
   })

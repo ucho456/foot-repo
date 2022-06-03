@@ -156,7 +156,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .light-indigo {
-  background: #e8eaf6;
+  background: #{$light-indigo};
 }
 .hover {
   &:hover {
