@@ -72,17 +72,21 @@
       <v-card v-if="currentUser && !isLoadingReport && !isLoadingUser" class="mt-4" outlined>
         <v-container>
           <RowUserImageName :image-url="currentUser.imageUrl" :name="currentUser.name" />
-          <v-row>
-            <v-col cols="12"><Textarea v-model="inputComment" :maxlength="140" /></v-col>
-            <v-col cols="6" class="mt-n10">
-              <ButtonSubmit
-                :loading="isLoadingNewComment"
-                :icon="'mdi-home'"
-                :text="'コメントを投稿'"
-                @click="submitCreate"
-              />
-            </v-col>
-          </v-row>
+          <ValidationObserver v-slot="{ invalid }">
+            <v-row>
+              <v-col cols="12"
+                ><Textarea v-model="inputComment" :maxlength="140" :rules="'required'"
+              /></v-col>
+              <v-col cols="6" class="mt-n8">
+                <ButtonSubmit
+                  :disabled="invalid"
+                  :loading="isLoadingNewComment"
+                  :text="'コメントを投稿'"
+                  @click="submitCreate"
+                />
+              </v-col>
+            </v-row>
+          </ValidationObserver>
         </v-container>
       </v-card>
     </client-only>

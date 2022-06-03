@@ -1,5 +1,5 @@
 <template>
-  <ValidationProvider v-slot="{ errors }" rules="characterLimit">
+  <ValidationProvider v-slot="{ errors }" :rules="rules">
     <BaseTextarea
       :counter-flg="true"
       :err-message="errors[0]"
@@ -27,6 +27,7 @@ export default defineComponent({
     icon: { type: String, default: '' },
     label: { type: String, default: '' },
     maxlength: { type: Number, default: 0 },
+    rules: { type: String, default: '' },
     value: { type: String, default: '' }
   },
 
