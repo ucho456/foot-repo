@@ -1,9 +1,12 @@
 import { ref, Ref } from '@nuxtjs/composition-api'
 import { getMatch } from '@/db/matches'
-import { getReportAndItems } from '@/db/reports'
+import { createComment, getReportAndItems } from '@/db/reports'
 import { fetchUser } from '@/db/users'
+import useCurrentUser from '@/utils/useCurrentUser'
 
 const useShow = () => {
+  const { currentUser } = useCurrentUser()
+
   const report: Ref<Report | null> = ref(null)
   const homeTeamReportItems: Ref<ReportItem[]> = ref([])
   const awayTeamReportItems: Ref<ReportItem[]> = ref([])
@@ -37,6 +40,24 @@ const useShow = () => {
     }
   }
 
+  const inputComment = ref('')
+  const isLoadingNewComment = ref(false)
+  const create = async (): Promise<'success' | 'failure'> => {
+    try {
+      isLoadingNewComment.value = true
+      if (report.value && currentUser.value) {
+        await createComment(report.value.id, currentUser!.value, inputComment.value)
+        return 'success'
+      } else {
+        return 'failure'
+      }
+    } catch {
+      return 'failure'
+    } finally {
+      isLoadingNewComment.value = false
+    }
+  }
+
   return {
     report,
     homeTeamReportItems,
@@ -45,7 +66,10 @@ const useShow = () => {
     user,
     isLoadingReport,
     isLoadingUser,
-    setUp
+    setUp,
+    inputComment,
+    isLoadingNewComment,
+    create
   }
 }
 

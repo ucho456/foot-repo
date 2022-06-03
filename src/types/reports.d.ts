@@ -51,3 +51,14 @@ type ReportItem = {
   text: string
   order: number
 }
+
+type ReportComment = {
+  id: string
+  user: {
+    ref: import('firebase/firestore').DocumentReference
+    name: string
+    imageUrl: string | null
+  }
+  text: string
+  createdAt: import('firebase/firestore').FieldValue
+}

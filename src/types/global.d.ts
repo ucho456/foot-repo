@@ -4,7 +4,7 @@ type CompetitionType = 'league' | 'cup' | 'japan'
 
 type CurrentUser = {
   uid: string
-  name: string | null
+  name: string
   imageUrl: string | null
   competitionId: string
   teamId: string

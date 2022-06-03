@@ -8,9 +8,10 @@ import {
   orderBy,
   query,
   serverTimestamp,
+  setDoc,
   writeBatch
 } from 'firebase/firestore'
-import { reportItemConverter, reportConverter } from '@/utils/converters'
+import { commentConverter, reportConverter, reportItemConverter } from '@/utils/converters'
 import { makeSearchOption } from '@/utils/searchOption'
 import useStore from '@/utils/useStore'
 
@@ -163,4 +164,21 @@ export const getReportAndItems = async (
   } else {
     throw new Error('Not Found')
   }
+}
+
+export const createComment = async (reportId: string, currentUser: CurrentUser, text: string) => {
+  const db = getFirestore()
+  const cColRef = collection(db, 'reports', reportId, 'comments')
+  const cId = doc(cColRef).id
+  const cRef = doc(db, 'reports', reportId, 'comments', cId).withConverter(commentConverter)
+  await setDoc(cRef, {
+    id: cId,
+    user: {
+      ref: doc(db, 'users', currentUser.uid),
+      name: currentUser.name,
+      imageUrl: currentUser.imageUrl
+    },
+    text,
+    createdAt: serverTimestamp()
+  })
 }

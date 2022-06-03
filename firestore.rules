@@ -116,6 +116,17 @@ service cloud.firestore {
       && isValidInt(reportItem.order, 1, 30);
     }
 
+    function isValidComment(comment) {
+      return comment.size() == 3
+      && 'user' in comment && comment.user is map
+      && 'text' in comment && comment.text is string
+      && 'createdAt' in comment && comment.createdAt is timestamp
+      && comment.user.ref == userRef(request.auth.uid)
+      && isValidString(comment.user.name, 1, 20)
+      && isValidImage(comment.user.imageUrl)
+      && isValidString(comment.text, 1, 140);
+    }
+
     match /reports/{reportId} {
       allow read;
       allow create: if isValidReport(request.resource.data);
@@ -126,6 +137,11 @@ service cloud.firestore {
       match /away-team-report-items/{awayTeamReportItemId} {
         allow read;
         allow create: if isValidReportItem(request.resource.data)
+      }
+      match /comments/{commentId} {
+        allow read;
+        allow create: if request.auth != null
+        && isValidComment(request.resource.data);
       }
     }
 

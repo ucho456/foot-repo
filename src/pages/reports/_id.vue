@@ -73,9 +73,14 @@
         <v-container>
           <RowUserImageName :image-url="currentUser.imageUrl" :name="currentUser.name" />
           <v-row>
-            <v-col cols="12"><Textarea /></v-col>
+            <v-col cols="12"><Textarea v-model="inputComment" :maxlength="140" /></v-col>
             <v-col cols="6" class="mt-n10">
-              <ButtonSubmit :loading="false" :icon="'mdi-home'" :text="'コメントを投稿'" />
+              <ButtonSubmit
+                :loading="isLoadingNewComment"
+                :icon="'mdi-home'"
+                :text="'コメントを投稿'"
+                @click="submitCreate"
+              />
             </v-col>
           </v-row>
         </v-container>
@@ -116,7 +121,10 @@ export default defineComponent({
       user,
       isLoadingReport,
       isLoadingUser,
-      setUp
+      setUp,
+      inputComment,
+      isLoadingNewComment,
+      create
     } = useShow()
     const { currentUser } = useCurrentUser()
     const { openSnackbar } = useSnackbar()
@@ -130,6 +138,13 @@ export default defineComponent({
     }
     setUpPage()
 
+    const submitCreate = async () => {
+      const result = await create()
+      const message =
+        result === 'success' ? 'コメントを作成しました。' : 'コメントの作成に失敗しました。'
+      openSnackbar(result, message)
+    }
+
     return {
       report,
       homeTeamReportItems,
@@ -138,7 +153,10 @@ export default defineComponent({
       user,
       isLoadingReport,
       isLoadingUser,
-      currentUser
+      inputComment,
+      isLoadingNewComment,
+      currentUser,
+      submitCreate
     }
   }
 })

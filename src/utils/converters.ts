@@ -196,6 +196,25 @@ export const reportItemConverter: FirestoreDataConverter<ReportItem> = {
   }
 }
 
+export const commentConverter: FirestoreDataConverter<ReportComment> = {
+  toFirestore(comment: ReportComment): DocumentData {
+    return {
+      user: comment.user,
+      text: comment.text,
+      createdAt: comment.createdAt
+    }
+  },
+  fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions): ReportComment {
+    const data = snapshot.data(options)
+    return {
+      id: snapshot.id,
+      user: data.user,
+      text: data.text,
+      createdAt: data.createdAt
+    }
+  }
+}
+
 /*
   teams
 */
