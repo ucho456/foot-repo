@@ -1,6 +1,7 @@
 import { ref, Ref } from '@nuxtjs/composition-api'
+import type { Unsubscribe } from 'firebase/firestore'
 import { getMatch } from '@/db/matches'
-import { createComment, getReportAndItems } from '@/db/reports'
+import { createComment, getReportAndItems, subscribeComments } from '@/db/reports'
 import { fetchUser } from '@/db/users'
 import useCurrentUser from '@/utils/useCurrentUser'
 
@@ -12,6 +13,8 @@ const useShow = () => {
   const awayTeamReportItems: Ref<ReportItem[]> = ref([])
   const match: Ref<Match | null> = ref(null)
   const user: Ref<User | null> = ref(null)
+  const comments: Ref<ReportComment[]> = ref([])
+  const unsubscribe: Ref<Unsubscribe | null> = ref(null)
 
   const isLoadingReport = ref(false)
   const isLoadingUser = ref(false)
@@ -31,6 +34,8 @@ const useShow = () => {
       user.value = await fetchUser(report.value.user.ref.id)
       isLoadingUser.value = false
 
+      unsubscribe.value = subscribeComments(reportId, comments.value)
+
       return 'success'
     } catch {
       return 'failure'
@@ -47,6 +52,7 @@ const useShow = () => {
       isLoadingNewComment.value = true
       if (report.value && currentUser.value) {
         await createComment(report.value.id, currentUser!.value, inputComment.value)
+        inputComment.value = ''
         return 'success'
       } else {
         return 'failure'
@@ -64,6 +70,8 @@ const useShow = () => {
     awayTeamReportItems,
     match,
     user,
+    comments,
+    unsubscribe,
     isLoadingReport,
     isLoadingUser,
     setUp,

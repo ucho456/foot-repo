@@ -94,7 +94,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useRoute } from '@nuxtjs/composition-api'
+import { defineComponent, onBeforeUnmount, useRoute } from '@nuxtjs/composition-api'
 import useShow from '@/composables/reports/useShow'
 import useCurrentUser from '@/utils/useCurrentUser'
 import useSnackbar from '@/utils/useSnackbar'
@@ -123,6 +123,8 @@ export default defineComponent({
       awayTeamReportItems,
       match,
       user,
+      comments,
+      unsubscribe,
       isLoadingReport,
       isLoadingUser,
       setUp,
@@ -149,12 +151,19 @@ export default defineComponent({
       openSnackbar(result, message)
     }
 
+    onBeforeUnmount(() => {
+      if (unsubscribe.value) {
+        unsubscribe.value()
+      }
+    })
+
     return {
       report,
       homeTeamReportItems,
       awayTeamReportItems,
       match,
       user,
+      comments,
       isLoadingReport,
       isLoadingUser,
       inputComment,

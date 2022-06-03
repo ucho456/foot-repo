@@ -5,12 +5,14 @@ import {
   getDocs,
   getFirestore,
   limit,
+  onSnapshot,
   orderBy,
   query,
   serverTimestamp,
   setDoc,
   writeBatch
 } from 'firebase/firestore'
+import type { Unsubscribe } from 'firebase/firestore'
 import { commentConverter, reportConverter, reportItemConverter } from '@/utils/converters'
 import { makeSearchOption } from '@/utils/searchOption'
 import useStore from '@/utils/useStore'
@@ -164,6 +166,20 @@ export const getReportAndItems = async (
   } else {
     throw new Error('Not Found')
   }
+}
+
+export const subscribeComments = (reportId: string, comments: ReportComment[]): Unsubscribe => {
+  const db = getFirestore()
+  const cColRef = collection(db, 'reports', reportId, 'comments').withConverter(commentConverter)
+  const q = query(cColRef, orderBy('createdAt', 'desc'), limit(100))
+  const unsubscribe = onSnapshot(q, (snapshot) => {
+    snapshot.docChanges().forEach((change) => {
+      if (change.type === 'added') {
+        comments.push(change.doc.data())
+      }
+    })
+  })
+  return unsubscribe
 }
 
 export const createComment = async (reportId: string, currentUser: CurrentUser, text: string) => {
