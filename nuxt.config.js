@@ -2,8 +2,8 @@ import colors from 'vuetify/es5/util/colors'
 
 export default {
   head: {
-    titleTemplate: '%s - foot-repo',
-    title: 'foot-repo',
+    titleTemplate: 'Foot-Repo',
+    title: 'Foot-Repo',
     htmlAttrs: {
       lang: 'ja'
     },

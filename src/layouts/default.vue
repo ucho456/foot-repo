@@ -1,5 +1,5 @@
 <template>
-  <v-app class="light-grey">
+  <v-app class="light-indigo">
     <v-app-bar class="white--text" app color="primary" fixed>
       <v-container class="align-center d-flex">
         <v-toolbar-title>
@@ -155,8 +155,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.light-grey {
-  background: #eceff1;
+.light-indigo {
+  background: #e8eaf6;
 }
 .hover {
   &:hover {

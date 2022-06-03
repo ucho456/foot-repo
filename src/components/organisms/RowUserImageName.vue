@@ -19,7 +19,7 @@ export default defineComponent({
   name: 'RowUserImageName',
 
   props: {
-    imageUrl: { type: [String, null], default: null },
+    imageUrl: { type: String, required: false, default: null },
     name: { type: String, default: '' }
   },
 

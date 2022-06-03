@@ -18,10 +18,7 @@ export default defineNuxtPlugin(() => {
     measurementId: 'G-FFB7N3Q6LY'
   }
   initializeApp(config)
-  const analytics = getAnalytics()
-  logEvent(analytics, 'notification_received')
 
-  // Emulator setting
   if (process.env.NODE_ENV === 'development') {
     const auth = getAuth()
     connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true })
@@ -31,5 +28,8 @@ export default defineNuxtPlugin(() => {
     connectStorageEmulator(storage, 'localhost', 9199)
     const functions = getFunctions(getApp())
     connectFunctionsEmulator(functions, 'localhost', 5001)
+  } else if (process.env.NODE_ENV === 'production') {
+    const analytics = getAnalytics()
+    logEvent(analytics, 'notification_received')
   }
 })
