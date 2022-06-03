@@ -60,8 +60,13 @@
       </v-container>
     </v-card>
     <v-card v-if="!isLoadingReport" class="mt-4" outlined>
-      <ContainerLoading :is-loading="isLoadingUser && !user" />
+      <ContainerLoading :is-loading="isLoadingUser" />
       <v-container v-if="user">
+        <v-row>
+          <v-col>
+            <h2>投稿者</h2>
+          </v-col>
+        </v-row>
         <RowUserImageName :image-url="user.imageUrl" :name="user.name" />
         <v-row>
           <v-col class="ml-10 mt-n5">{{ user.teamId }}<br />{{ user.greet }}</v-col>
@@ -69,11 +74,15 @@
       </v-container>
     </v-card>
     <v-card v-if="!isLoadingReport && !isLoadingUser" class="mt-4" outlined>
-      <v-container>
+      <ContainerLoading :is-loading="isLoadingComment" />
+      <v-container v-if="!isLoadingComment">
         <v-row>
           <v-col>
-            <h3>コメント</h3>
+            <h2>コメント</h2>
           </v-col>
+        </v-row>
+        <v-row v-if="comments.length === 0">
+          <v-col>コメントはまだありません。 </v-col>
         </v-row>
         <v-row v-for="comment in comments" :key="comment.id">
           <v-container class="comment ml-6 mr-6">
@@ -140,6 +149,7 @@ export default defineComponent({
       unsubscribe,
       isLoadingReport,
       isLoadingUser,
+      isLoadingComment,
       setUp,
       inputComment,
       isLoadingNewComment,
@@ -179,6 +189,7 @@ export default defineComponent({
       comments,
       isLoadingReport,
       isLoadingUser,
+      isLoadingComment,
       inputComment,
       isLoadingNewComment,
       currentUser,

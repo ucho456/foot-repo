@@ -18,6 +18,7 @@ const useShow = () => {
 
   const isLoadingReport = ref(false)
   const isLoadingUser = ref(false)
+  const isLoadingComment = ref(false)
   const setUp = async (reportId: string): Promise<'success' | 'failure'> => {
     try {
       isLoadingReport.value = true
@@ -34,7 +35,9 @@ const useShow = () => {
       user.value = await fetchUser(report.value.user.ref.id)
       isLoadingUser.value = false
 
-      unsubscribe.value = subscribeComments(reportId, comments.value)
+      isLoadingComment.value = true
+      unsubscribe.value = await subscribeComments(reportId, comments.value)
+      isLoadingComment.value = false
 
       return 'success'
     } catch {
@@ -42,6 +45,7 @@ const useShow = () => {
     } finally {
       isLoadingReport.value = false
       isLoadingUser.value = false
+      isLoadingComment.value = false
     }
   }
 
@@ -74,6 +78,7 @@ const useShow = () => {
     unsubscribe,
     isLoadingReport,
     isLoadingUser,
+    isLoadingComment,
     setUp,
     inputComment,
     isLoadingNewComment,

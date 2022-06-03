@@ -1,6 +1,7 @@
 import {
   collection,
   doc,
+  endBefore,
   getDoc,
   getDocs,
   getFirestore,
@@ -168,14 +169,26 @@ export const getReportAndItems = async (
   }
 }
 
-export const subscribeComments = (reportId: string, comments: ReportComment[]): Unsubscribe => {
+export const subscribeComments = async (
+  reportId: string,
+  comments: ReportComment[]
+): Promise<Unsubscribe> => {
   const db = getFirestore()
   const cColRef = collection(db, 'reports', reportId, 'comments').withConverter(commentConverter)
-  const q = query(cColRef, orderBy('createdAt', 'asc'), limit(100))
-  const unsubscribe = onSnapshot(q, (snapshot) => {
+  const firstQuery = query(cColRef, orderBy('createdAt', 'desc'), limit(100))
+  const cShanpshot = await getDocs(firstQuery)
+  cShanpshot.forEach((doc) => {
+    if (doc.exists()) {
+      comments.unshift(doc.data())
+    }
+  })
+
+  const latestData = comments[comments.length - 1]
+  const addQuery = query(cColRef, orderBy('createdAt', 'desc'), endBefore(latestData.createdAt))
+  const unsubscribe = onSnapshot(addQuery, (snapshot) => {
     snapshot.docChanges().forEach((change) => {
-      if (change.type === 'added') {
-        comments.unshift(change.doc.data())
+      if (change.type === 'modified') {
+        comments.push(change.doc.data())
       }
     })
   })
