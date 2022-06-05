@@ -85,7 +85,7 @@
           <v-col>コメントはまだありません。 </v-col>
         </v-row>
         <v-row v-for="comment in comments" :key="comment.id">
-          <v-container class="comment ml-6 mr-6">
+          <v-container class="comment">
             <RowUserImageName :image-url="comment.user.imageUrl" :name="comment.user.name" />
             <v-row>
               <v-col class="ml-10 mt-n5">{{ comment.text }}</v-col>
