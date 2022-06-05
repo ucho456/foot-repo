@@ -183,30 +183,52 @@ export const subscribeComments = async (
     }
   })
 
-  const latestData = comments[comments.length - 1]
-  const addQuery = query(cColRef, orderBy('createdAt', 'desc'), endBefore(latestData.createdAt))
-  const unsubscribe = onSnapshot(addQuery, (snapshot) => {
-    snapshot.docChanges().forEach((change) => {
-      if (change.type === 'modified') {
-        comments.push(change.doc.data())
-      }
+  let unsubscribe: Unsubscribe
+  if (comments.length === 0) {
+    unsubscribe = onSnapshot(firstQuery, (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        if (change.type === 'modified') {
+          comments.push(change.doc.data())
+        }
+      })
     })
-  })
+  } else {
+    const latestData = comments[comments.length - 1]
+    const addQuery = query(cColRef, orderBy('createdAt', 'desc'), endBefore(latestData.createdAt))
+    unsubscribe = onSnapshot(addQuery, (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        if (change.type === 'modified') {
+          comments.push(change.doc.data())
+        }
+      })
+    })
+  }
+
   return unsubscribe
 }
 
-export const createComment = async (reportId: string, currentUser: CurrentUser, text: string) => {
+export const createComment = async (
+  reportId: string,
+  currentUser: CurrentUser | null,
+  text: string
+) => {
   const db = getFirestore()
   const cColRef = collection(db, 'reports', reportId, 'comments')
   const cId = doc(cColRef).id
   const cRef = doc(db, 'reports', reportId, 'comments', cId).withConverter(commentConverter)
   await setDoc(cRef, {
     id: cId,
-    user: {
-      ref: doc(db, 'users', currentUser.uid),
-      name: currentUser.name,
-      imageUrl: currentUser.imageUrl
-    },
+    user: currentUser
+      ? {
+          ref: doc(db, 'users', currentUser.uid),
+          name: currentUser.name,
+          imageUrl: currentUser.imageUrl
+        }
+      : {
+          ref: doc(db, 'users', 'guest'),
+          name: 'ゲスト',
+          imageUrl: null
+        },
     text,
     createdAt: serverTimestamp()
   })

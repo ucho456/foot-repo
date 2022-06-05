@@ -121,7 +121,7 @@ service cloud.firestore {
       && 'user' in comment && comment.user is map
       && 'text' in comment && comment.text is string
       && 'createdAt' in comment && comment.createdAt is timestamp
-      && comment.user.ref == userRef(request.auth.uid)
+      && (comment.user.ref == userRef(request.auth.uid) || comment.user.ref == userRef('guest'))
       && isValidString(comment.user.name, 1, 20)
       && isValidImage(comment.user.imageUrl)
       && isValidString(comment.text, 1, 140);
@@ -140,8 +140,9 @@ service cloud.firestore {
       }
       match /comments/{commentId} {
         allow read;
-        allow create: if request.auth != null
-        && isValidComment(request.resource.data);
+        allow create: if isValidComment(request.resource.data);
+        // allow create: if request.auth != null
+        // && isValidComment(request.resource.data);
       }
     }
 

@@ -54,8 +54,8 @@ const useShow = () => {
   const create = async (): Promise<'success' | 'failure'> => {
     try {
       isLoadingNewComment.value = true
-      if (report.value && currentUser.value) {
-        await createComment(report.value.id, currentUser!.value, inputComment.value)
+      if (report.value) {
+        await createComment(report.value.id, currentUser.value, inputComment.value)
         inputComment.value = ''
         return 'success'
       } else {
