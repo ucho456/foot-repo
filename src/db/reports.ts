@@ -113,7 +113,7 @@ export const toStoreFirstReports = async (): Promise<void> => {
   reports.lastVisible = rSnapshot.docs[rSnapshot.docs.length - 1]
 }
 
-export const getReportAndItems = async (
+export const fetchReportAndItems = async (
   reportId: string
 ): Promise<{
   resReport: Report

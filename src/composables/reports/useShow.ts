@@ -4,7 +4,7 @@ import { fetchMatch } from '@/db/matches'
 import {
   createComment,
   fetchSameMatchReports,
-  getReportAndItems,
+  fetchReportAndItems,
   subscribeComments
 } from '@/db/reports'
 import { fetchUser } from '@/db/users'
@@ -29,9 +29,8 @@ const useShow = () => {
   const setUp = async (reportId: string): Promise<'success' | 'failure'> => {
     try {
       isLoadingReport.value = true
-      const { resReport, resHomeTeamReportItems, resAwayTeamReportItems } = await getReportAndItems(
-        reportId
-      )
+      const { resReport, resHomeTeamReportItems, resAwayTeamReportItems } =
+        await fetchReportAndItems(reportId)
       report.value = resReport
       homeTeamReportItems.value = resHomeTeamReportItems
       awayTeamReportItems.value = resAwayTeamReportItems
