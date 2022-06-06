@@ -23,7 +23,7 @@ export default defineNuxtPlugin(() => {
     const auth = getAuth()
     connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true })
     const db = getFirestore()
-    connectFirestoreEmulator(db, 'localhost', 8081)
+    connectFirestoreEmulator(db, 'localhost', 8083)
     const storage = getStorage()
     connectStorageEmulator(storage, 'localhost', 9199)
     const functions = getFunctions(getApp())
