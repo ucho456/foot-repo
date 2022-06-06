@@ -156,7 +156,7 @@ export default defineComponent({
       user,
       sameMatchReports,
       comments,
-      unsubscribe,
+      unsubscribeComments,
       isLoadingReport,
       isLoadingUser,
       isLoadingSameMatchReports,
@@ -186,8 +186,8 @@ export default defineComponent({
     }
 
     onBeforeUnmount(() => {
-      if (unsubscribe.value) {
-        unsubscribe.value()
+      if (unsubscribeComments.value) {
+        unsubscribeComments.value()
       }
     })
 

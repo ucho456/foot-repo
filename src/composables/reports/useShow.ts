@@ -20,7 +20,7 @@ const useShow = () => {
   const user: Ref<User | null> = ref(null)
   const sameMatchReports: Ref<Report[]> = ref([])
   const comments: Ref<ReportComment[]> = ref([])
-  const unsubscribe: Ref<Unsubscribe | null> = ref(null)
+  const unsubscribeComments: Ref<Unsubscribe | null> = ref(null)
 
   const isLoadingReport = ref(false)
   const isLoadingUser = ref(false)
@@ -38,7 +38,7 @@ const useShow = () => {
       isLoadingReport.value = false
 
       isLoadingUser.value = true
-      user.value = await fetchUser(report.value.user.ref.id)
+      user.value = await fetchUser(resReport.user.ref.id)
       isLoadingUser.value = false
 
       isLoadingSameMatchReports.value = true
@@ -46,7 +46,7 @@ const useShow = () => {
       isLoadingSameMatchReports.value = false
 
       isLoadingComments.value = true
-      unsubscribe.value = await subscribeComments(reportId, comments.value)
+      unsubscribeComments.value = await subscribeComments(reportId, comments.value)
       isLoadingComments.value = false
 
       return 'success'
@@ -87,7 +87,7 @@ const useShow = () => {
     user,
     sameMatchReports,
     comments,
-    unsubscribe,
+    unsubscribeComments,
     isLoadingReport,
     isLoadingUser,
     isLoadingSameMatchReports,
