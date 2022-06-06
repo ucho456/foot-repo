@@ -1,5 +1,5 @@
 <template>
-  <v-dialog :max-width="330" :persistent="true" :value="dialog" :width="'90%'">
+  <v-dialog max-width="330" persistent :value="isDialog" :width="'90%'">
     <v-card>
       <v-container>
         <v-row justify="center">
@@ -23,9 +23,9 @@
         </v-row>
       </v-container>
       <v-card-actions>
-        <v-btn :color="'primary'" :text="true" @click="handleClose"> 閉じる </v-btn>
+        <v-btn color="'primary'" text @click="handleClose"> 閉じる </v-btn>
         <v-spacer></v-spacer>
-        <v-btn :color="'primary'" :text="true" @click="handleSearch"> 検索 </v-btn>
+        <v-btn color="'primary'" text @click="handleSearch"> 検索 </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -47,7 +47,7 @@ export default defineComponent({
   },
 
   props: {
-    dialog: { type: Boolean, default: false },
+    isDialog: { type: Boolean, default: false },
     searchOption: {
       type: Object as () => SearchOption,
       default: () => {

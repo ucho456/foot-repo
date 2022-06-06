@@ -2,7 +2,7 @@
   <v-container>
     <v-card outlined>
       <ContainerLoading :is-loading="isLoadingReports" />
-      <ContainerReportTable v-if="!isLoadingReports" :reports="reports.data" />
+      <ContainerReportTable v-if="!isLoadingReports" :h2="'最新選手採点'" :reports="reports.data" />
     </v-card>
   </v-container>
 </template>

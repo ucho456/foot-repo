@@ -14,7 +14,7 @@ import type { QueryDocumentSnapshot } from 'firebase/firestore'
 import { forReportConverter, matchConverter } from '@/utils/converters'
 import { makeSearchOption } from '@/utils/searchOption'
 
-export const setFirstMatches = async (matches: {
+export const toStoreFirstMatches = async (matches: {
   data: Match[]
   lastVisible: QueryDocumentSnapshot<Match> | null
   searchOption: SearchOption
@@ -33,7 +33,7 @@ export const setFirstMatches = async (matches: {
   matches.lastVisible = mSnapshot.docs[mSnapshot.docs.length - 1]
 }
 
-export const setNextMatches = async (matches: {
+export const toStoreNextMatches = async (matches: {
   data: Match[]
   lastVisible: QueryDocumentSnapshot<Match> | null
   searchOption: SearchOption

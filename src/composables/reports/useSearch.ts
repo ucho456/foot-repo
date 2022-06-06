@@ -1,5 +1,5 @@
 import { ref } from '@nuxtjs/composition-api'
-import { setFirstMatches, setNextMatches } from '@/db/matches'
+import { toStoreFirstMatches, toStoreNextMatches } from '@/db/matches'
 import useCurrentUser from '@/utils/useCurrentUser'
 import useStore from '@/utils/useStore'
 
@@ -7,56 +7,57 @@ const useSearch = () => {
   const { currentUser } = useCurrentUser()
   const { matches } = useStore()
 
-  const isLoadingSetUp = ref(false)
+  const isLoadingFirst = ref(false)
   const setUp = async (): Promise<'success' | 'failure'> => {
     try {
-      isLoadingSetUp.value = true
+      isLoadingFirst.value = true
+      matches.lastVisible = null
+      matches.searchOption.jstDate = ''
       if (currentUser.value) {
         matches.searchOption.competitionId = currentUser.value.competitionId
         matches.searchOption.teamId = currentUser.value.teamId
       }
-      matches.searchOption.status = 'FINISHED'
-      await setFirstMatches(matches)
+      await toStoreFirstMatches(matches)
       return 'success'
     } catch {
       return 'failure'
     } finally {
-      isLoadingSetUp.value = false
+      isLoadingFirst.value = false
     }
   }
 
-  const isLoading = ref(false)
-  const getNextPage = async (): Promise<'success' | 'failure'> => {
+  const isLoadingNext = ref(false)
+  const readMore = async (): Promise<'success' | 'failure'> => {
     try {
-      isLoading.value = true
-      await setNextMatches(matches)
+      isLoadingNext.value = true
+      await toStoreNextMatches(matches)
       return 'success'
     } catch {
       return 'failure'
     } finally {
-      isLoading.value = false
+      isLoadingNext.value = false
     }
   }
 
   const search = async (): Promise<'success' | 'failure'> => {
     try {
-      dialog.value = false
-      isLoading.value = true
-      await setFirstMatches(matches)
+      hideDialog()
+      isLoadingFirst.value = true
+      await toStoreFirstMatches(matches)
       return 'success'
     } catch {
       return 'failure'
     } finally {
-      isLoading.value = false
+      isLoadingFirst.value = false
     }
   }
 
-  const dialog = ref(false)
+  const isDialog = ref(false)
   const showDialog = (): void => {
-    dialog.value = true
+    isDialog.value = true
   }
   const hideDialog = (): void => {
-    dialog.value = false
+    isDialog.value = false
   }
 
   const inputCompetitionId = (competitionId: string): void => {
@@ -74,12 +75,12 @@ const useSearch = () => {
   }
 
   return {
-    isLoadingSetUp,
+    isLoadingFirst,
     setUp,
-    isLoading,
-    getNextPage,
+    isLoadingNext,
+    readMore,
     search,
-    dialog,
+    isDialog,
     showDialog,
     hideDialog,
     inputCompetitionId,

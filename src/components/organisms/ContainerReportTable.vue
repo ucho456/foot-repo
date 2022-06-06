@@ -59,7 +59,7 @@ export default defineComponent({
   name: 'ContainerReportTable',
 
   props: {
-    h2: { type: String, default: '選手採点' },
+    h2: { type: String, default: '' },
     reports: { type: Array as () => Report[], default: () => [] },
     searchButtonFlg: { type: Boolean, default: false }
   },

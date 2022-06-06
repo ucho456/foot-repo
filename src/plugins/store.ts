@@ -36,7 +36,7 @@ export default defineNuxtPlugin((_, inject) => {
     matches: {
       data: [],
       lastVisible: null,
-      searchOption: { status: '', competitionId: '', teamId: '', jstDate: '' }
+      searchOption: { status: 'FINISHED', competitionId: '', teamId: '', jstDate: '' }
     },
     reports: {
       data: [],
@@ -63,7 +63,7 @@ export default defineNuxtPlugin((_, inject) => {
     store.matches = {
       data: [],
       lastVisible: null,
-      searchOption: { status: '', competitionId: '', teamId: '', jstDate: '' }
+      searchOption: { status: 'FINISHED', competitionId: '', teamId: '', jstDate: '' }
     }
     store.reports = {
       data: [],
