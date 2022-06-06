@@ -57,7 +57,7 @@ export const setNextMatches = async (matches: {
   matches.lastVisible = mSnapshot.docs[mSnapshot.docs.length - 1]
 }
 
-export const getMatch = async (matchId: string): Promise<Match | null> => {
+export const fetchMatch = async (matchId: string): Promise<Match | null> => {
   const db = getFirestore()
   const mRef = doc(db, 'matches', matchId).withConverter(matchConverter)
   const mSnapshot = await getDoc(mRef)

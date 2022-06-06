@@ -1,6 +1,6 @@
 import { ref, Ref } from '@nuxtjs/composition-api'
 import type { Unsubscribe } from 'firebase/firestore'
-import { getMatch } from '@/db/matches'
+import { fetchMatch } from '@/db/matches'
 import {
   createComment,
   fetchSameMatchReports,
@@ -35,7 +35,7 @@ const useShow = () => {
       report.value = resReport
       homeTeamReportItems.value = resHomeTeamReportItems
       awayTeamReportItems.value = resAwayTeamReportItems
-      match.value = await getMatch(report.value?.match.id!)
+      match.value = await fetchMatch(report.value?.match.id!)
       isLoadingReport.value = false
 
       isLoadingUser.value = true
