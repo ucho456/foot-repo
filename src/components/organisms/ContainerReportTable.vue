@@ -1,10 +1,10 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="8">
-        <h2>{{ h2 }}</h2>
-      </v-col>
-      <v-col v-if="searchButtonFlg" cols="4" class="text-right">
+      <v-col cols="9"
+        ><h2>{{ h2 }}</h2></v-col
+      >
+      <v-col v-if="searchButtonFlg" cols="3" class="text-right">
         <v-btn icon @click="handleClick">
           <v-icon>mdi-magnify</v-icon>
         </v-btn>
@@ -14,8 +14,8 @@
       <v-col>選手採点はまだありません。</v-col>
     </v-row>
     <v-list class="mt-n4" three-line>
-      <v-container v-for="report in reports" :key="report.id">
-        <v-list-item :exact="true" :router="true" :to="{ path: `reports/${report.id}` }">
+      <div v-for="report in reports" :key="report.id">
+        <v-list-item exact router :to="{ path: `/reports/${report.id}` }">
           <v-list-item-avatar class="avatar">
             <v-img v-if="report.user.imageUrl" :src="report.user.imageUrl" />
             <v-img v-else :src="noAvatarImage" />
@@ -43,11 +43,11 @@
               />
             </v-list-item-subtitle>
             <v-list-item-subtitle>
-              {{ report.competition.name }} / {{ report.jstDate }}
+              {{ report.jstDate }} / {{ report.competition.name }} / 何節かも表示
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
-      </v-container>
+      </div>
     </v-list>
   </v-container>
 </template>

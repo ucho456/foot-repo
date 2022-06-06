@@ -28,7 +28,7 @@
                 <span v-if="report && report.momId === htrItem.player.id" class="mom">☆MOM</span>
               </v-col>
               <v-col class="mt-n6" cols="12"> {{ htrItem.point }} </v-col>
-              <v-col class="caption mb-5 mt-n6" cols="12">{{ htrItem.text }}</v-col>
+              <v-col class="mb-5 mt-n6" cols="12">{{ htrItem.text }}</v-col>
             </v-row>
           </v-container>
         </v-row>
@@ -50,7 +50,7 @@
                 <span v-if="report && report.momId === atrItem.player.id" class="mom">☆MOM</span>
               </v-col>
               <v-col class="mt-n6" cols="12"> {{ atrItem.point }} </v-col>
-              <v-col class="caption mb-5 mt-n6" cols="12">{{ atrItem.text }}</v-col>
+              <v-col class="mb-5 mt-n6" cols="12">{{ atrItem.text }}</v-col>
             </v-row>
           </v-container>
         </v-row>
@@ -64,7 +64,7 @@
       <v-container v-if="user">
         <v-row>
           <v-col>
-            <h2>投稿者</h2>
+            <h2>投稿者 / ツイートシェアボタン・いいねボタン・チーム名</h2>
           </v-col>
         </v-row>
         <RowUserImageName :image-url="user.imageUrl" :name="user.name" />
