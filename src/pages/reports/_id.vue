@@ -100,24 +100,23 @@
             </v-row>
           </v-container>
         </v-row>
-        <client-only>
-          <RowUserImageName
-            v-if="currentUser"
-            :image-url="currentUser.imageUrl"
-            :name="currentUser.name"
-          />
-          <v-row>
-            <v-col cols="12"><Textarea v-model="inputComment" :maxlength="140" /></v-col>
-            <v-col cols="6" class="mt-n8">
-              <ButtonSubmit
-                :disabled="inputComment.length === 0"
-                :loading="isLoadingNewComment"
-                :text="'コメントを投稿'"
-                @click="submitCreate"
-              />
-            </v-col>
-          </v-row>
-        </client-only>
+        <RowUserImageName
+          v-if="currentUser"
+          :image-url="currentUser.imageUrl"
+          :name="currentUser.name"
+        />
+        <RowUserImageName v-else :name="'ゲスト'" />
+        <v-row>
+          <v-col cols="12"> <Textarea v-model="inputComment" :maxlength="140" /></v-col>
+          <v-col cols="6" class="mt-n8">
+            <ButtonSubmit
+              :disabled="inputComment.length === 0"
+              :loading="isLoadingNewComment"
+              :text="'コメントを投稿'"
+              @click="submitCreate"
+            />
+          </v-col>
+        </v-row>
       </v-container>
     </v-card>
   </v-container>
