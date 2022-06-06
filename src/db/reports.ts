@@ -14,10 +14,9 @@ import {
   where,
   writeBatch
 } from 'firebase/firestore'
-import type { Unsubscribe } from 'firebase/firestore'
+import type { QueryDocumentSnapshot, Unsubscribe } from 'firebase/firestore'
 import { commentConverter, reportConverter, reportItemConverter } from '@/utils/converters'
 import { makeSearchOption } from '@/utils/searchOption'
-import useStore from '@/utils/useStore'
 
 export const createReport = async (
   currentUser: CurrentUser | null,
@@ -97,8 +96,11 @@ export const createReport = async (
   await batch.commit()
 }
 
-export const toStoreFirstReports = async (): Promise<void> => {
-  const { reports } = useStore()
+export const toStoreFirstReports = async (reports: {
+  data: Report[]
+  lastVisible: QueryDocumentSnapshot<Report> | null
+  searchOption: SearchOption
+}): Promise<void> => {
   reports.data = []
   const db = getFirestore()
   const rRef = collection(db, 'reports').withConverter(reportConverter)

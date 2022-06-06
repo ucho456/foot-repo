@@ -1,12 +1,15 @@
 import { ref } from '@nuxtjs/composition-api'
 import { toStoreFirstReports } from '@/db/reports'
+import useStore from '@/utils/useStore'
 
 const useIndex = () => {
+  const { reports } = useStore()
+
   const isLoadingReports = ref(false)
   const setUp = async () => {
     try {
       isLoadingReports.value = true
-      await toStoreFirstReports()
+      await toStoreFirstReports(reports)
       isLoadingReports.value = false
 
       return 'success'
