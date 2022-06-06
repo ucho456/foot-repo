@@ -1,44 +1,42 @@
 <template>
-  <v-row>
+  <v-row class="text-center text-truncate">
     <v-container>
-      <v-row class="text-center">
-        <v-col class="text-center" cols="12">
-          {{ jstDate }} / {{ competition.name }} / {{ matchday }}節
-        </v-col>
-        <v-col class="text-center mt-n7" cols="12"> {{ venue }}</v-col>
+      <v-row>
+        <v-col cols="12"> {{ jstDate }} / {{ competition.name }} / {{ matchday }}節 </v-col>
+        <v-col class="mt-n7" cols="12"> {{ venue }}</v-col>
       </v-row>
       <v-row class="mt-n4">
         <v-col cols="5">
           <v-img
-            class="center rounded-circle"
+            class="ml-auto mr-auto rounded-circle"
             max-height="60"
             max-width="60"
             :src="homeTeam.imageUrl"
           />
         </v-col>
-        <v-col cols="2"></v-col>
+        <v-spacer />
         <v-col cols="5">
           <v-img
-            class="center rounded-circle"
+            class="ml-auto mr-auto rounded-circle"
             max-height="60"
             max-width="60"
             :src="awayTeam.imageUrl"
           />
         </v-col>
       </v-row>
-      <v-row>
-        <v-col class="text-center text-truncate mt-n5" cols="5">
-          <div>{{ homeTeam.name }}</div>
+      <v-row class="mt-n5">
+        <v-col cols="5">
+          <div class="text-truncate">{{ homeTeam.name }}</div>
           <div>{{ homeTeam.score }}</div>
           <div v-if="isPK">{{ homeTeam.penalty }}</div>
         </v-col>
-        <v-col class="text-center text-truncate mt-n5" cols="2">
+        <v-col cols="2">
           <div>vs</div>
           <div>-</div>
           <div v-if="isPK">PK</div>
         </v-col>
-        <v-col class="text-center text-truncate mt-n5" cols="5">
-          <div>{{ awayTeam.name }}</div>
+        <v-col cols="5">
+          <div class="text-truncate">{{ awayTeam.name }}</div>
           <div>{{ awayTeam.score }}</div>
           <div v-if="isPK">{{ awayTeam.penalty }}</div>
         </v-col>
@@ -107,9 +105,3 @@ export default defineComponent({
   }
 })
 </script>
-
-<style scoped>
-.center {
-  margin: 0 auto;
-}
-</style>
