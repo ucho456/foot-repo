@@ -1,13 +1,18 @@
 <template>
   <v-container>
-    <v-toolbar flat>
-      <h2>選手採点一覧</h2>
-      <v-spacer />
-      <v-btn icon @click="handleClick">
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
-    </v-toolbar>
-    <ContainerLoading :is-loading="isLoading" />
+    <v-row>
+      <v-col cols="8">
+        <h2>{{ h2 }}</h2>
+      </v-col>
+      <v-col v-if="searchButtonFlg" cols="4" class="text-right">
+        <v-btn icon @click="handleClick">
+          <v-icon>mdi-magnify</v-icon>
+        </v-btn>
+      </v-col>
+    </v-row>
+    <v-row v-if="reports.length === 0">
+      <v-col>選手採点はまだありません。</v-col>
+    </v-row>
     <v-list class="mt-n4" three-line>
       <v-container v-for="report in reports" :key="report.id">
         <v-list-item :exact="true" :router="true" :to="{ path: `reports/${report.id}` }">
@@ -49,31 +54,14 @@
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
-import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 
 export default defineComponent({
-  name: 'MatchTable',
-
-  components: {
-    ContainerLoading
-  },
+  name: 'ContainerReportTable',
 
   props: {
-    isLoading: { type: Boolean, default: false },
-    reports: {
-      type: Array as () => Report[],
-      default: () => [
-        {
-          id: '',
-          title: '',
-          user: { name: '', imageUrl: '' },
-          homeTeam: { shortName: '', imageUrl: '', score: 0 },
-          awayTeam: { shortName: '', imageUrl: '', score: 0 },
-          competition: { name: '' },
-          jstDate: ''
-        }
-      ]
-    }
+    h2: { type: String, default: '選手採点' },
+    reports: { type: Array as () => Report[], default: () => [] },
+    searchButtonFlg: { type: Boolean, default: false }
   },
 
   setup(_, ctx) {

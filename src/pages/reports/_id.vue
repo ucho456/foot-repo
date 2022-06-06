@@ -74,8 +74,16 @@
       </v-container>
     </v-card>
     <v-card v-if="!isLoadingReport && !isLoadingUser" class="mt-4" outlined>
-      <ContainerLoading :is-loading="isLoadingComment" />
-      <v-container v-if="!isLoadingComment">
+      <ContainerLoading :is-loading="isLoadingSameMatchReports" />
+      <ContainerReportTable :h2="'同試合の選手採点'" :reports="sameMatchReports" />
+    </v-card>
+    <v-card
+      v-if="!isLoadingReport && !isLoadingUser && !isLoadingSameMatchReports"
+      class="mt-4"
+      outlined
+    >
+      <ContainerLoading :is-loading="isLoadingComments" />
+      <v-container v-if="!isLoadingComments">
         <v-row>
           <v-col>
             <h2>コメント</h2>
@@ -123,6 +131,7 @@ import useSnackbar from '@/utils/useSnackbar'
 import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 import RowUserImageName from '@/components/organisms/RowUserImageName.vue'
 import RowMatchHeader from '@/components/organisms/RowMatchHeader.vue'
+import ContainerReportTable from '@/components/organisms/ContainerReportTable.vue'
 import Textarea from '@/components/molecules/Textarea.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
 
@@ -133,6 +142,7 @@ export default defineComponent({
     ContainerLoading,
     RowUserImageName,
     RowMatchHeader,
+    ContainerReportTable,
     Textarea,
     ButtonSubmit
   },
@@ -145,11 +155,13 @@ export default defineComponent({
       awayTeamReportItems,
       match,
       user,
+      sameMatchReports,
       comments,
       unsubscribe,
       isLoadingReport,
       isLoadingUser,
-      isLoadingComment,
+      isLoadingSameMatchReports,
+      isLoadingComments,
       setUp,
       inputComment,
       isLoadingNewComment,
@@ -186,10 +198,12 @@ export default defineComponent({
       awayTeamReportItems,
       match,
       user,
+      sameMatchReports,
       comments,
       isLoadingReport,
       isLoadingUser,
-      isLoadingComment,
+      isLoadingSameMatchReports,
+      isLoadingComments,
       inputComment,
       isLoadingNewComment,
       currentUser,

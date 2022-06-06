@@ -1,7 +1,6 @@
 // Ref: https://github.com/nuxt-community/vuetify-module#customvariables
 //
 // The variables you want to modify
-// $font-size-root: 20px;
 $container-max-widths: (
   'md': 720px,
   'lg': 960px,
@@ -18,10 +17,10 @@ h1 {
 
 h2 {
   font-size: 21px;
-  border-bottom: solid 3px #1a237e;
 }
 
 h3 {
   font-size: 18px;
-  border-bottom: solid 1px #1a237e;
 }
+
+$font-size-root: 15px;

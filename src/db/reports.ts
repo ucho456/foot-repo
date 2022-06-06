@@ -11,6 +11,7 @@ import {
   query,
   serverTimestamp,
   setDoc,
+  where,
   writeBatch
 } from 'firebase/firestore'
 import type { Unsubscribe } from 'firebase/firestore'
@@ -167,6 +168,24 @@ export const getReportAndItems = async (
   } else {
     throw new Error('Not Found')
   }
+}
+
+// query で doc.id != reportId をしたい
+export const fetchSameMatchReports = async (
+  matchId: string,
+  reportId: string
+): Promise<Report[]> => {
+  const db = getFirestore()
+  const rRef = collection(db, 'reports').withConverter(reportConverter)
+  const q = query(rRef, where('match.id', '==', matchId), orderBy('createdAt', 'desc'), limit(5))
+  const rShapshot = await getDocs(q)
+  const reports: Report[] = []
+  rShapshot.forEach((doc) => {
+    if (doc.exists() && doc.id !== reportId) {
+      reports.push(doc.data())
+    }
+  })
+  return reports
 }
 
 export const subscribeComments = async (

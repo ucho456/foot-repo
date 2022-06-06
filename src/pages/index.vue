@@ -1,6 +1,6 @@
 <template>
   <v-card outlined>
-    <ReportTable :is-loading="isLoadingReports" :reports="reports.data" />
+    <ContainerReportTable :reports="reports.data" />
   </v-card>
 </template>
 
@@ -9,13 +9,13 @@ import { defineComponent } from '@nuxtjs/composition-api'
 import useIndex from '@/composables/useIndex'
 import useSnackbar from '@/utils/useSnackbar'
 import useStore from '@/utils/useStore'
-import ReportTable from '@/components/organisms/ReportTable.vue'
+import ContainerReportTable from '@/components/organisms/ContainerReportTable.vue'
 
 export default defineComponent({
   name: 'Index',
 
   components: {
-    ReportTable
+    ContainerReportTable
   },
 
   setup() {
