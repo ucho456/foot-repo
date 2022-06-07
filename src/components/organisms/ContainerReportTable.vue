@@ -43,7 +43,7 @@
               />
             </v-list-item-subtitle>
             <v-list-item-subtitle>
-              {{ report.jstDate }} / {{ report.competition.name }} / 何節かも表示
+              {{ report.jstDate }} / {{ report.competition.name }} / {{ report.matchday }}節
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>

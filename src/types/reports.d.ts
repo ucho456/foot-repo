@@ -32,6 +32,7 @@ type Report = {
     id: string
     ref: import('firebase/firestore').DocumentReference
   }
+  matchday: number
   selectTeam: HomeAway
   momId: string
   summary: string

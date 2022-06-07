@@ -65,6 +65,7 @@ export const createReport = async (
       name: match.competition.name
     },
     jstDate: match.jstDate,
+    matchday: match.matchday,
     match: {
       id: match.id,
       ref: doc(db, `matches/${match.id}`)

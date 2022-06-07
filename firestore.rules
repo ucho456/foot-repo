@@ -59,7 +59,7 @@ service cloud.firestore {
 
     // reports
     function isValidReport(report) {
-      return report.size() == 12
+      return report.size() == 13
       && 'title' in report && report.title is string
       && 'user' in report && report.user is map
       && 'homeTeam' in report && report.homeTeam is map
@@ -67,6 +67,7 @@ service cloud.firestore {
       && 'competition' in report && report.competition is map
       && 'jstDate' in report && report.jstDate is string
       && 'match' in report && report.match is map
+      && 'matchday' in report && report.matchday is int
       && 'selectTeam' in report && report.selectTeam is string
       && 'momId' in report && report.momId is string
       && 'summary' in report && report.summary is string
@@ -94,6 +95,7 @@ service cloud.firestore {
       && isValidString(report.jstDate, 10, 10)
       && isValidString(report.match.id, 1, 20)
       && exists(report.match.ref)
+      && isValidInt(report.matchday, 1, 100)
       && isValidSelectTeam(report.selectTeam)
       && isValidString(report.momId, 0, 10)
       && isValidString(report.summary, 0, 300);
