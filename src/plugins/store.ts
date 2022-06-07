@@ -10,11 +10,13 @@ import { StoreKey } from '@/utils/useStore'
 
 export default defineNuxtPlugin((_, inject) => {
   const store: {
+    confirmation: {
+      isLogin: boolean
+    }
     matches: {
       data: Match[]
       lastVisible: QueryDocumentSnapshot<Match> | null
       searchOption: SearchOption
-      isConfirmLogin: boolean
     }
     reports: {
       data: Report[]
@@ -34,11 +36,13 @@ export default defineNuxtPlugin((_, inject) => {
       data: Team | null
     }
   } = reactive({
+    confirmation: {
+      isLogin: false
+    },
     matches: {
       data: [],
       lastVisible: null,
-      searchOption: { status: 'FINISHED', competitionId: '', teamId: '', jstDate: '' },
-      isConfirmLogin: false
+      searchOption: { status: 'FINISHED', competitionId: '', teamId: '', jstDate: '' }
     },
     reports: {
       data: [],
@@ -62,11 +66,11 @@ export default defineNuxtPlugin((_, inject) => {
   inject('store', store)
 
   const unsubscribe = () => {
+    store.confirmation = { isLogin: false }
     store.matches = {
       data: [],
       lastVisible: null,
-      searchOption: { status: 'FINISHED', competitionId: '', teamId: '', jstDate: '' },
-      isConfirmLogin: false
+      searchOption: { status: 'FINISHED', competitionId: '', teamId: '', jstDate: '' }
     }
     store.reports = {
       data: [],
@@ -82,9 +86,7 @@ export default defineNuxtPlugin((_, inject) => {
       season: '',
       yearMonth: ''
     }
-    store.team = {
-      data: null
-    }
+    store.team = { data: null }
   }
 
   onGlobalSetup(() => {

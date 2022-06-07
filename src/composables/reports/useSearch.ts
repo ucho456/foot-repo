@@ -5,18 +5,18 @@ import useStore from '@/utils/useStore'
 
 const useSearch = () => {
   const { currentUser } = useCurrentUser()
-  const { matches } = useStore()
+  const { matches, confirmation } = useStore()
 
   const isDialogConfirmLogin = ref(false)
   const confirmLogin = (): void => {
-    if (!matches.isConfirmLogin && !currentUser.value) {
+    if (!confirmation.isLogin && !currentUser.value) {
       isDialogConfirmLogin.value = true
     } else {
-      matches.isConfirmLogin = true
+      confirmation.isLogin = true
     }
   }
   const continueGuest = (): void => {
-    matches.isConfirmLogin = true
+    confirmation.isLogin = true
     isDialogConfirmLogin.value = false
   }
 

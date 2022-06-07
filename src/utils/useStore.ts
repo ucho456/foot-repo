@@ -2,11 +2,13 @@ import { inject, InjectionKey } from '@nuxtjs/composition-api'
 import type { QueryDocumentSnapshot } from 'firebase/firestore'
 
 export const StoreKey: InjectionKey<{
+  confirmation: {
+    isLogin: boolean
+  }
   matches: {
     data: Match[]
     lastVisible: QueryDocumentSnapshot<Match> | null
     searchOption: SearchOption
-    isConfirmLogin: boolean
   }
   reports: {
     data: Report[]
@@ -44,6 +46,7 @@ const useStore = () => {
   }
 
   return {
+    confirmation: store.confirmation,
     matches: store.matches,
     reports: store.reports,
     league: store.league,
