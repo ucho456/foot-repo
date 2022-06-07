@@ -1,15 +1,11 @@
 <template>
-  <v-card outlined>
-    <v-container v-if="isLoadingSetUp" class="pb-10 pt-10">
-      <v-row justify="center">
-        <v-progress-circular color="primary" indeterminate />
-      </v-row>
-    </v-container>
-    <v-container v-else-if="match">
-      <RowMatchHeader v-bind="match" />
-      <v-container>
+  <v-container>
+    <v-card outlined>
+      <ContainerLoading :is-loading="isLoadingSetUp" />
+      <v-container v-if="!isLoadingSetUp && match">
+        <RowMatchHeader v-bind="match" />
         <v-row>
-          <v-col cols="12">
+          <v-col>
             <TextField
               v-model="inputReport.title"
               :icon="'mdi-format-title'"
@@ -18,16 +14,12 @@
             />
           </v-col>
         </v-row>
-      </v-container>
-      <v-container>
         <v-row>
-          <v-col cols="8" md="5" sm="5">
+          <v-col cols="8" sm="5">
             <SelectHomeAway v-model="inputReport.selectTeam" />
           </v-col>
         </v-row>
-      </v-container>
-      <v-container v-if="inputReport.selectTeam !== 'away'">
-        <v-row>
+        <v-row v-if="inputReport.selectTeam !== 'away'">
           <v-col>
             <v-img
               class="rounded-circle"
@@ -37,19 +29,17 @@
             />
           </v-col>
         </v-row>
-      </v-container>
-      <v-container v-if="inputReport.selectTeam !== 'away'">
-        <v-row v-for="reportItem in inputReport.homeTeamReportItems" :key="reportItem.id">
-          <v-col cols="3"> {{ reportItem.position }}. {{ reportItem.shirtNumber }} </v-col>
-          <v-col cols="9">{{ reportItem.player.name }}</v-col>
-          <v-col class="mt-n3" cols="3"><TextFieldPoint v-model="reportItem.point" /></v-col>
-          <v-col class="mt-n5" cols="9">
-            <Textarea v-model="reportItem.text" :maxlength="140" />
-          </v-col>
-        </v-row>
-      </v-container>
-      <v-container v-if="inputReport.selectTeam !== 'home'">
-        <v-row>
+        <div v-if="inputReport.selectTeam !== 'away'">
+          <v-row v-for="reportItem in inputReport.homeTeamReportItems" :key="reportItem.id">
+            <v-col cols="3"> {{ reportItem.position }}. {{ reportItem.shirtNumber }} </v-col>
+            <v-col cols="9">{{ reportItem.player.name }}</v-col>
+            <v-col class="mt-n3" cols="3"><TextFieldPoint v-model="reportItem.point" /></v-col>
+            <v-col class="mt-n5" cols="9">
+              <Textarea v-model="reportItem.text" :maxlength="140" />
+            </v-col>
+          </v-row>
+        </div>
+        <v-row v-if="inputReport.selectTeam !== 'home'">
           <v-col>
             <v-img
               class="rounded-circle"
@@ -59,18 +49,16 @@
             />
           </v-col>
         </v-row>
-      </v-container>
-      <v-container v-if="inputReport.selectTeam !== 'home'">
-        <v-row v-for="reportItem in inputReport.awayTeamReportItems" :key="reportItem.id">
-          <v-col cols="3"> {{ reportItem.position }}. {{ reportItem.shirtNumber }} </v-col>
-          <v-col cols="9">{{ reportItem.player.name }}</v-col>
-          <v-col class="mt-n3" cols="3"><TextFieldPoint v-model="reportItem.point" /></v-col>
-          <v-col class="mt-n5" cols="9">
-            <Textarea v-model="reportItem.text" :maxlength="140" />
-          </v-col>
-        </v-row>
-      </v-container>
-      <v-container>
+        <div v-if="inputReport.selectTeam !== 'home'">
+          <v-row v-for="reportItem in inputReport.awayTeamReportItems" :key="reportItem.id">
+            <v-col cols="3"> {{ reportItem.position }}. {{ reportItem.shirtNumber }} </v-col>
+            <v-col cols="9">{{ reportItem.player.name }}</v-col>
+            <v-col class="mt-n3" cols="3"><TextFieldPoint v-model="reportItem.point" /></v-col>
+            <v-col class="mt-n5" cols="9">
+              <Textarea v-model="reportItem.text" :maxlength="140" />
+            </v-col>
+          </v-row>
+        </div>
         <v-row>
           <v-col cols="10" sm="7">
             <SelectIdMom
@@ -81,8 +69,6 @@
             />
           </v-col>
         </v-row>
-      </v-container>
-      <v-container>
         <v-row>
           <v-col>
             <Textarea
@@ -93,38 +79,34 @@
             />
           </v-col>
         </v-row>
-      </v-container>
-      <v-container>
         <v-row justify="center">
-          <v-col cols="10" sm="4">
+          <v-col cols="10" sm="6">
             <ButtonSubmit
               :icon="'mdi-pencil-plus'"
               :text="'投稿'"
-              :loading="isLoading"
+              :loading="isLoadingSend"
               @click="submitCreate"
             />
           </v-col>
-          <v-col cols="10" sm="4">
+          <v-col cols="10" sm="6">
             <ButtonSubmit
               :icon="'mdi-content-save'"
               :text="'一時保存'"
-              :loading="isLoading"
+              :loading="isLoadingSend"
               @click="submitSave"
             />
           </v-col>
-          <v-col cols="10" sm="4">
-            <ButtonBack @click="back" />
-          </v-col>
         </v-row>
       </v-container>
-    </v-container>
-  </v-card>
+    </v-card>
+  </v-container>
 </template>
 
 <script lang="ts">
 import { defineComponent, useRoute, useRouter } from '@nuxtjs/composition-api'
 import useNew from '@/composables/reports/useNew'
 import useSnackbar from '@/utils/useSnackbar'
+import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 import RowMatchHeader from '@/components/organisms/RowMatchHeader.vue'
 import TextField from '@/components/molecules/TextField.vue'
 import SelectHomeAway from '@/components/molecules/SelectHomeAway.vue'
@@ -132,26 +114,25 @@ import TextFieldPoint from '@/components/molecules/TextFieldPoint.vue'
 import Textarea from '@/components/molecules/Textarea.vue'
 import SelectIdMom from '@/components/molecules/SelectIdMom.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
-import ButtonBack from '@/components/molecules/ButtonBack.vue'
 
 export default defineComponent({
   name: 'ReportNew',
 
   components: {
+    ContainerLoading,
     RowMatchHeader,
     TextField,
     SelectHomeAway,
     TextFieldPoint,
     Textarea,
     SelectIdMom,
-    ButtonSubmit,
-    ButtonBack
+    ButtonSubmit
   },
 
   setup() {
     const route = useRoute()
     const router = useRouter()
-    const { inputReport, match, isLoadingSetUp, setUp, isLoading, save, create } = useNew()
+    const { inputReport, match, isLoadingSetUp, setUp, isLoadingSend, create, save } = useNew()
     const { openSnackbar } = useSnackbar()
 
     const setUpPage = async () => {
@@ -183,11 +164,7 @@ export default defineComponent({
       next(result, message)
     }
 
-    const back = (): void => {
-      router.back()
-    }
-
-    return { inputReport, match, isLoadingSetUp, back, isLoading, submitSave, submitCreate }
+    return { inputReport, match, isLoadingSetUp, isLoadingSend, submitSave, submitCreate }
   }
 })
 </script>

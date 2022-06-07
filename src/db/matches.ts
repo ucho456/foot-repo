@@ -64,7 +64,7 @@ export const fetchMatch = async (matchId: string): Promise<Match | null> => {
   return mSnapshot.exists() ? mSnapshot.data() : null
 }
 
-export const getForReport = async (matchId: string): Promise<ForReport | null> => {
+export const fetchForReport = async (matchId: string): Promise<ForReport | null> => {
   const db = getFirestore()
   const frRef = doc(db, 'matches', matchId, 'for-report', matchId).withConverter(forReportConverter)
   const frSnapshot = await getDoc(frRef)
