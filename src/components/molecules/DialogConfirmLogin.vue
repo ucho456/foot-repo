@@ -13,10 +13,10 @@
               >
             </v-col>
             <v-col cols="10">
-              <v-btn block color="primary" outlined @click="handleLogin">ログインに進む</v-btn>
+              <v-btn block color="primary" outlined @click="pushToLogin">ログインに進む</v-btn>
             </v-col>
             <v-col cols="10">
-              <v-btn block color="primary" outlined @click="handleSignup">新規登録に進む</v-btn>
+              <v-btn block color="primary" outlined @click="pushToSignup">新規登録に進む</v-btn>
             </v-col>
           </v-row>
         </v-container>
@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, useRouter } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   name: 'DialogConfirmLogin',
@@ -37,17 +37,19 @@ export default defineComponent({
   },
 
   setup(_, ctx) {
+    const router = useRouter()
+
     const handleGuest = (): void => {
       ctx.emit('guest')
     }
-    const handleLogin = (): void => {
-      ctx.emit('login')
+    const pushToLogin = (): void => {
+      router.push('/login')
     }
-    const handleSignup = (): void => {
-      ctx.emit('signup')
+    const pushToSignup = (): void => {
+      router.push('/signup')
     }
 
-    return { handleGuest, handleLogin, handleSignup }
+    return { handleGuest, pushToLogin, pushToSignup }
   }
 })
 </script>

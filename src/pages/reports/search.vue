@@ -73,14 +73,12 @@
       :is-dialog="isDialogConfirmLogin"
       :text="'ログインが完了していません。\nゲストとして選手採点を投稿しますか？'"
       @guest="continueGuest"
-      @login="pushToLogin"
-      @signup="pushToSignup"
     />
   </v-container>
 </template>
 
 <script lang="ts">
-import { defineComponent, useRouter } from '@nuxtjs/composition-api'
+import { defineComponent } from '@nuxtjs/composition-api'
 import useSearch from '@/composables/reports/useSearch'
 import useSnackbar from '@/utils/useSnackbar'
 import useStore from '@/utils/useStore'
@@ -100,7 +98,6 @@ export default defineComponent({
   },
 
   setup() {
-    const router = useRouter()
     const {
       isDialogConfirmLogin,
       confirmLogin,
@@ -122,12 +119,6 @@ export default defineComponent({
     const { matches } = useStore()
 
     confirmLogin()
-    const pushToLogin = (): void => {
-      router.push('/login')
-    }
-    const pushToSignup = (): void => {
-      router.push('/signup')
-    }
 
     const setUpPage = async (): Promise<void> => {
       if (matches.data.length === 0) {
@@ -153,9 +144,7 @@ export default defineComponent({
       inputTeamId,
       inputDate,
       clearDate,
-      matches,
-      pushToLogin,
-      pushToSignup
+      matches
     }
   }
 })
