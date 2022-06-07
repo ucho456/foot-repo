@@ -62,6 +62,7 @@ const useShow = () => {
 
   const inputComment = ref('')
   const isLoadingNewComment = ref(false)
+  const isDialog = ref(false)
   const create = async (): Promise<'success' | 'failure'> => {
     try {
       isLoadingNewComment.value = true
@@ -95,6 +96,7 @@ const useShow = () => {
     setUp,
     inputComment,
     isLoadingNewComment,
+    isDialog,
     create
   }
 }

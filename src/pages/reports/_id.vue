@@ -103,12 +103,17 @@
               :disabled="inputComment.length === 0"
               :loading="isLoadingNewComment"
               :text="'コメントを投稿'"
-              @click="submitCreate"
+              @click="confirmLogin"
             />
           </v-col>
         </v-row>
       </v-container>
     </v-card>
+    <DialogConfirmLogin
+      :is-dialog="isDialog"
+      :text="'ログインが完了していません。\nゲストとしてコメントを投稿しますか？'"
+      @guest="submitCreate"
+    />
   </v-container>
 </template>
 
@@ -117,12 +122,14 @@ import { defineComponent, onBeforeUnmount, useRoute } from '@nuxtjs/composition-
 import useShow from '@/composables/reports/useShow'
 import useCurrentUser from '@/utils/useCurrentUser'
 import useSnackbar from '@/utils/useSnackbar'
+import useStore from '@/utils/useStore'
 import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 import RowUserImageName from '@/components/organisms/RowUserImageName.vue'
 import RowMatchHeader from '@/components/organisms/RowMatchHeader.vue'
 import ContainerReportTable from '@/components/organisms/ContainerReportTable.vue'
 import Textarea from '@/components/molecules/Textarea.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
+import DialogConfirmLogin from '@/components/molecules/DialogConfirmLogin.vue'
 
 export default defineComponent({
   name: 'ReportShow',
@@ -133,7 +140,8 @@ export default defineComponent({
     RowMatchHeader,
     ContainerReportTable,
     Textarea,
-    ButtonSubmit
+    ButtonSubmit,
+    DialogConfirmLogin
   },
 
   setup() {
@@ -154,10 +162,12 @@ export default defineComponent({
       setUp,
       inputComment,
       isLoadingNewComment,
+      isDialog,
       create
     } = useShow()
     const { currentUser } = useCurrentUser()
     const { openSnackbar } = useSnackbar()
+    const { confirmation } = useStore()
 
     const setUpPage = async () => {
       const reportId = route.value.params.id as string
@@ -168,7 +178,18 @@ export default defineComponent({
     }
     setUpPage()
 
+    const confirmLogin = () => {
+      if (!confirmation.isLogin && !currentUser.value) {
+        isDialog.value = true
+      } else {
+        confirmation.isLogin = true
+        submitCreate()
+      }
+    }
+
     const submitCreate = async () => {
+      confirmation.isLogin = true
+      isDialog.value = false
       const result = await create()
       const message =
         result === 'success' ? 'コメントを作成しました。' : 'コメントの作成に失敗しました。'
@@ -195,7 +216,9 @@ export default defineComponent({
       isLoadingComments,
       inputComment,
       isLoadingNewComment,
+      isDialog,
       currentUser,
+      confirmLogin,
       submitCreate
     }
   }
