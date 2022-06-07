@@ -84,6 +84,8 @@ export default defineComponent({
     const { user, isLoading, loginEmail, loginTwitter, loginGoogle } = useLogin()
     const { openSnackbar } = useSnackbar()
 
+    const logo = require('@/assets/signup_logo.png')
+
     const submitEmail = async (): Promise<void> => {
       const result = await loginEmail()
       next(result)
@@ -114,6 +116,7 @@ export default defineComponent({
     return {
       user,
       isLoading,
+      logo,
       submitEmail,
       submitTwitter,
       submitGoogle,
