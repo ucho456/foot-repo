@@ -65,7 +65,7 @@
     </v-card>
     <v-card v-if="!isLoadingReport && !isLoadingUser" class="mt-4" outlined>
       <ContainerLoading :is-loading="isLoadingSameMatchReports" />
-      <ContainerReportTable :h2="'同試合の選手採点'" :reports="sameMatchReports" />
+      <ContainerReportTable :h2="'同じ試合の選手採点'" :reports="sameMatchReports" />
     </v-card>
     <v-card
       v-if="!isLoadingReport && !isLoadingUser && !isLoadingSameMatchReports"

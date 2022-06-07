@@ -11,7 +11,7 @@
       </v-col>
     </v-row>
     <v-row v-if="reports.length === 0">
-      <v-col>選手採点はまだありません。</v-col>
+      <v-col>対象の選手採点はありません。</v-col>
     </v-row>
     <v-list class="mt-n4" three-line>
       <div v-for="report in reports" :key="report.id">
