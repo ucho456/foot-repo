@@ -7,14 +7,16 @@
       <v-card-actions>
         <v-container>
           <v-row justify="center">
-            <v-col cols="4">
-              <v-btn block color="primary" @click="handleGuest">ゲスト</v-btn>
+            <v-col cols="10">
+              <v-btn block color="primary" outlined @click="handleGuest"
+                >ゲストユーザーで続ける</v-btn
+              >
             </v-col>
-            <v-col cols="4">
-              <v-btn block color="primary" @click="handleLogin">ログイン</v-btn>
+            <v-col cols="10">
+              <v-btn block color="primary" outlined @click="handleLogin">ログインに進む</v-btn>
             </v-col>
-            <v-col cols="4">
-              <v-btn block color="primary" @click="handleSignup">新規登録</v-btn>
+            <v-col cols="10">
+              <v-btn block color="primary" outlined @click="handleSignup">新規登録に進む</v-btn>
             </v-col>
           </v-row>
         </v-container>
