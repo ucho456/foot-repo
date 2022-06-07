@@ -7,6 +7,19 @@ const useSearch = () => {
   const { currentUser } = useCurrentUser()
   const { matches } = useStore()
 
+  const isDialogConfirmLogin = ref(false)
+  const confirmLogin = (): void => {
+    if (!matches.isConfirmLogin && !currentUser.value) {
+      isDialogConfirmLogin.value = true
+    } else {
+      matches.isConfirmLogin = true
+    }
+  }
+  const continueGuest = (): void => {
+    matches.isConfirmLogin = true
+    isDialogConfirmLogin.value = false
+  }
+
   const isLoadingFirst = ref(false)
   const setUp = async (): Promise<'success' | 'failure'> => {
     try {
@@ -52,12 +65,12 @@ const useSearch = () => {
     }
   }
 
-  const isDialog = ref(false)
+  const isDialogDate = ref(false)
   const showDialog = (): void => {
-    isDialog.value = true
+    isDialogDate.value = true
   }
   const hideDialog = (): void => {
-    isDialog.value = false
+    isDialogDate.value = false
   }
 
   const inputCompetitionId = (competitionId: string): void => {
@@ -75,12 +88,15 @@ const useSearch = () => {
   }
 
   return {
+    isDialogConfirmLogin,
+    confirmLogin,
+    continueGuest,
     isLoadingFirst,
     setUp,
     isLoadingNext,
     readMore,
     search,
-    isDialog,
+    isDialogDate,
     showDialog,
     hideDialog,
     inputCompetitionId,

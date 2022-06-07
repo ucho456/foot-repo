@@ -6,6 +6,7 @@ export const StoreKey: InjectionKey<{
     data: Match[]
     lastVisible: QueryDocumentSnapshot<Match> | null
     searchOption: SearchOption
+    isConfirmLogin: boolean
   }
   reports: {
     data: Report[]

@@ -60,7 +60,7 @@
       </v-container>
     </v-card>
     <DialogSearch
-      :is-dialog="isDialog"
+      :is-dialog="isDialogDate"
       :search-option="matches.searchOption"
       @input-competition-id="inputCompetitionId"
       @input-team-id="inputTeamId"
@@ -69,35 +69,48 @@
       @close="hideDialog"
       @search="search"
     />
+    <DialogConfirmLogin
+      :is-dialog="isDialogConfirmLogin"
+      :text="'ログインが完了していません。\nゲストとして選手採点を投稿しますか？'"
+      @guest="continueGuest"
+      @login="pushToLogin"
+      @signup="pushToSignup"
+    />
   </v-container>
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, useRouter } from '@nuxtjs/composition-api'
 import useSearch from '@/composables/reports/useSearch'
 import useSnackbar from '@/utils/useSnackbar'
 import useStore from '@/utils/useStore'
 import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
 import DialogSearch from '@/components/organisms/DialogSearch.vue'
+import DialogConfirmLogin from '@/components/molecules/DialogConfirmLogin.vue'
 
 export default defineComponent({
-  name: 'Search',
+  name: 'ReportSearch',
 
   components: {
     ContainerLoading,
     ButtonSubmit,
-    DialogSearch
+    DialogSearch,
+    DialogConfirmLogin
   },
 
   setup() {
+    const router = useRouter()
     const {
+      isDialogConfirmLogin,
+      confirmLogin,
+      continueGuest,
       isLoadingFirst,
       setUp,
       isLoadingNext,
       readMore,
       search,
-      isDialog,
+      isDialogDate,
       showDialog,
       hideDialog,
       inputCompetitionId,
@@ -107,6 +120,14 @@ export default defineComponent({
     } = useSearch()
     const { openSnackbar } = useSnackbar()
     const { matches } = useStore()
+
+    confirmLogin()
+    const pushToLogin = (): void => {
+      router.push('/login')
+    }
+    const pushToSignup = (): void => {
+      router.push('/signup')
+    }
 
     const setUpPage = async (): Promise<void> => {
       if (matches.data.length === 0) {
@@ -119,18 +140,22 @@ export default defineComponent({
     setUpPage()
 
     return {
+      isDialogConfirmLogin,
+      continueGuest,
       isLoadingFirst,
       isLoadingNext,
       readMore,
       search,
-      isDialog,
+      isDialogDate,
       showDialog,
       hideDialog,
       inputCompetitionId,
       inputTeamId,
       inputDate,
       clearDate,
-      matches
+      matches,
+      pushToLogin,
+      pushToSignup
     }
   }
 })
