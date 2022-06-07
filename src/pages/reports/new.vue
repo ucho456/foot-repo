@@ -144,24 +144,18 @@ export default defineComponent({
     }
     setUpPage()
 
-    const next = (result: 'success' | 'failure', message: string): void => {
-      openSnackbar(result, message)
-      if (result === 'success') {
-        router.push('/')
+    const submitCreate = async (): Promise<void> => {
+      const res = await create()
+      const message =
+        res.result === 'success' ? '選手採点を作成しました。' : '選手採点の作成に失敗しました。'
+      openSnackbar(res.result, message)
+      if (res.result === 'success') {
+        router.push(`/reports/${res.reportId}`)
       }
     }
 
-    const submitCreate = async (): Promise<void> => {
-      const result = await create()
-      const message =
-        result === 'success' ? '選手採点を作成しました。' : '選手採点の作成に失敗しました。'
-      next(result, message)
-    }
-
     const submitSave = async (): Promise<void> => {
-      const result = await save()
-      const message = result === 'success' ? '一時保存しました。' : '一時保存に失敗しました。'
-      next(result, message)
+      await save()
     }
 
     return { inputReport, match, isLoadingSetUp, isLoadingSend, submitSave, submitCreate }

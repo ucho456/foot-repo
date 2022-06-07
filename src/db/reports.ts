@@ -22,7 +22,7 @@ export const createReport = async (
   currentUser: CurrentUser | null,
   inputReport: InputReport,
   match: Match
-): Promise<void> => {
+): Promise<string> => {
   const db = getFirestore()
   const batch = writeBatch(db)
 
@@ -95,6 +95,7 @@ export const createReport = async (
     batch.set(atriRef, atri)
   })
   await batch.commit()
+  return rId
 }
 
 export const toStoreFirstReports = async (reports: {

@@ -44,13 +44,13 @@ const useNew = () => {
   )
 
   const isLoadingSend = ref(false)
-  const create = async () => {
+  const create = async (): Promise<{ result: string; reportId: string }> => {
     try {
       isLoadingSend.value = true
-      await createReport(currentUser.value, inputReport, match.value!)
-      return 'success'
+      const reportId = await createReport(currentUser.value, inputReport, match.value!)
+      return { result: 'success', reportId }
     } catch {
-      return 'failure'
+      return { result: 'failure', reportId: '' }
     } finally {
       isLoadingSend.value = false
     }
