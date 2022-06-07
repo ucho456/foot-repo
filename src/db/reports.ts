@@ -179,7 +179,7 @@ export const fetchSameMatchReports = async (
 ): Promise<Report[]> => {
   const db = getFirestore()
   const rRef = collection(db, 'reports').withConverter(reportConverter)
-  const q = query(rRef, where('match.id', '==', matchId), orderBy('createdAt', 'desc'), limit(5))
+  const q = query(rRef, where('match.id', '==', matchId), orderBy('createdAt', 'desc'), limit(4))
   const rShapshot = await getDocs(q)
   const reports: Report[] = []
   rShapshot.forEach((doc) => {
