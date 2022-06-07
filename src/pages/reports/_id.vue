@@ -12,12 +12,7 @@
         <RowMatchHeader v-bind="match" />
         <v-row v-if="report.selectTeam !== 'away'">
           <v-col>
-            <v-img
-              class="rounded-circle"
-              max-height="30"
-              max-width="30"
-              :src="match.homeTeam.imageUrl"
-            />
+            <v-img max-height="30" max-width="30" :src="match.homeTeam.imageUrl" />
           </v-col>
         </v-row>
         <v-row v-if="report.selectTeam !== 'away'">
@@ -34,12 +29,7 @@
         </v-row>
         <v-row v-if="report.selectTeam !== 'home'">
           <v-col>
-            <v-img
-              class="rounded-circle"
-              max-height="30"
-              max-width="30"
-              :src="match.awayTeam.imageUrl"
-            />
+            <v-img max-height="30" max-width="30" :src="match.awayTeam.imageUrl" />
           </v-col>
         </v-row>
         <v-row v-if="report.selectTeam !== 'home'">

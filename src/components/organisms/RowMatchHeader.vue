@@ -7,21 +7,11 @@
       </v-row>
       <v-row class="mt-n4">
         <v-col cols="5">
-          <v-img
-            class="ml-auto mr-auto rounded-circle"
-            max-height="60"
-            max-width="60"
-            :src="homeTeam.imageUrl"
-          />
+          <v-img class="ml-auto mr-auto" max-height="60" max-width="60" :src="homeTeam.imageUrl" />
         </v-col>
         <v-spacer />
         <v-col cols="5">
-          <v-img
-            class="ml-auto mr-auto rounded-circle"
-            max-height="60"
-            max-width="60"
-            :src="awayTeam.imageUrl"
-          />
+          <v-img class="ml-auto mr-auto" max-height="60" max-width="60" :src="awayTeam.imageUrl" />
         </v-col>
       </v-row>
       <v-row class="mt-n5">

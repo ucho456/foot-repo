@@ -43,7 +43,6 @@
               <td class="text-center">
                 <v-img
                   v-if="item.team.imageUrl"
-                  class="rounded-circle"
                   :height="30"
                   :width="30"
                   :src="item.team.imageUrl"

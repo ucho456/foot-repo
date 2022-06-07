@@ -21,12 +21,7 @@
         </v-row>
         <v-row v-if="inputReport.selectTeam !== 'away'">
           <v-col>
-            <v-img
-              class="rounded-circle"
-              max-height="30"
-              max-width="30"
-              :src="match.homeTeam.imageUrl"
-            />
+            <v-img max-height="30" max-width="30" :src="match.homeTeam.imageUrl" />
           </v-col>
         </v-row>
         <div v-if="inputReport.selectTeam !== 'away'">
@@ -41,12 +36,7 @@
         </div>
         <v-row v-if="inputReport.selectTeam !== 'home'">
           <v-col>
-            <v-img
-              class="rounded-circle"
-              max-height="30"
-              max-width="30"
-              :src="match.awayTeam.imageUrl"
-            />
+            <v-img max-height="30" max-width="30" :src="match.awayTeam.imageUrl" />
           </v-col>
         </v-row>
         <div v-if="inputReport.selectTeam !== 'home'">

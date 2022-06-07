@@ -4,7 +4,7 @@
     <v-container v-if="team.data">
       <v-row>
         <v-col cols="2">
-          <v-img class="rounded-circle logo" :src="team.data.imageUrl" />
+          <v-img class="emblem" :src="team.data.imageUrl" />
         </v-col>
         <v-col cols="10">
           <h1>{{ team.data.name }}</h1>
@@ -29,7 +29,6 @@
               <td class="text-center">
                 <v-img
                   v-if="competition.imageUrl"
-                  class="rounded-circle"
                   :height="40"
                   :width="40"
                   :src="competition.imageUrl"
@@ -106,13 +105,13 @@ export default defineComponent({
 .table {
   pointer-events: none;
 }
-.logo {
+.emblem {
   width: 53px;
   height: 53px;
   margin: 0 auto;
 }
 @media (max-width: $tabletBreakPoints) {
-  .logo {
+  .emblem {
     top: 5px;
     width: 35px;
     height: 35px;
