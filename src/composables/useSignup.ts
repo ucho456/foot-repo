@@ -8,21 +8,9 @@ import {
   TwitterAuthProvider
 } from 'firebase/auth'
 import { fetchUser } from '@/db/users'
-import useCurrentUser from '@/utils/useCurrentUser'
 
 const useSignup = () => {
-  const { setUpCurrentUser } = useCurrentUser()
-
   const user = reactive({ email: '', password: '' })
-
-  const isDialog = ref(false)
-  const openDialog = (): void => {
-    isDialog.value = true
-  }
-  const closeDialog = (): void => {
-    isDialog.value = false
-  }
-
   const isLoading = ref(false)
 
   const signupEmail = async (): Promise<'success' | 'already used' | 'failure'> => {
@@ -52,7 +40,6 @@ const useSignup = () => {
       if (!user) {
         return 'success'
       } else {
-        setUpCurrentUser()
         return 'already exist'
       }
     } catch {
@@ -73,7 +60,6 @@ const useSignup = () => {
       if (!user) {
         return 'success'
       } else {
-        setUpCurrentUser()
         return 'already exist'
       }
     } catch {
@@ -83,15 +69,23 @@ const useSignup = () => {
     }
   }
 
+  const isDialog = ref(false)
+  const openDialog = (): void => {
+    isDialog.value = true
+  }
+  const closeDialog = (): void => {
+    isDialog.value = false
+  }
+
   return {
     user,
-    isDialog,
-    openDialog,
-    closeDialog,
     isLoading,
     signupEmail,
     signupTwitter,
-    signupGoogle
+    signupGoogle,
+    isDialog,
+    openDialog,
+    closeDialog
   }
 }
 
