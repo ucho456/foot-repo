@@ -1,57 +1,48 @@
 <template>
-  <v-card class="mx-auto" max-width="400" outlined>
-    <v-card-title>
-      <v-row justify="center"><v-img max-width="240" :src="logo" /></v-row>
-    </v-card-title>
-    <v-container>
-      <ValidationObserver v-slot="{ invalid }">
-        <v-row justify="center">
-          <v-col cols="10" class="mt-n4 mb-n4 mt-4">
-            <TextFieldEmail v-model="user.email" />
-          </v-col>
-        </v-row>
-        <v-row justify="center">
-          <v-col cols="10">
-            <TextFieldPassword v-model="user.password" />
-          </v-col>
-        </v-row>
-        <v-row justify="center">
-          <v-col cols="10">
-            <ButtonSubmit
-              :disabled="invalid"
-              :icon="'mdi-send'"
-              :loading="isLoading"
-              :text="'ログイン'"
-              @click="submitEmail"
-            />
-          </v-col>
-        </v-row>
-        <v-row justify="center">
-          <v-col cols="10">
-            <ButtonTwitter
-              :loading="isLoading"
-              :text="'Twitterアカウントでログイン'"
-              @click="submitTwitter"
-            />
-          </v-col>
-        </v-row>
-        <v-row justify="center">
-          <v-col cols="10">
-            <ButtonGoogle
-              :loading="isLoading"
-              :text="'Googleアカウントでログイン'"
-              @click="submitGoogle"
-            />
-          </v-col>
-        </v-row>
-        <v-row justify="center">
-          <v-col cols="10">
-            <ButtonBack @click="back" />
-          </v-col>
-        </v-row>
-      </ValidationObserver>
-    </v-container>
-  </v-card>
+  <v-container>
+    <v-card class="mx-auto" max-width="400" outlined>
+      <v-container>
+        <v-row justify="center"><v-img max-width="240" :src="logo" /></v-row>
+        <ValidationObserver v-slot="{ invalid }">
+          <v-row class="mt-4" justify="center">
+            <v-col cols="10">
+              <TextFieldEmail v-model="user.email" />
+            </v-col>
+            <v-col cols="10">
+              <TextFieldPassword v-model="user.password" />
+            </v-col>
+            <v-col cols="10">
+              <ButtonSubmit
+                :disabled="invalid"
+                :icon="'mdi-send'"
+                :loading="isLoading"
+                :text="'ログイン'"
+                @click="submitEmail"
+              />
+            </v-col>
+            <v-col cols="10">
+              <ButtonTwitter
+                :loading="isLoading"
+                :text="'Twitterアカウントでログイン'"
+                @click="submitTwitter"
+              />
+            </v-col>
+            <v-col cols="10">
+              <ButtonGoogle
+                :loading="isLoading"
+                :text="'Googleアカウントでログイン'"
+                @click="submitGoogle"
+              />
+            </v-col>
+            <v-col cols="10">
+              <ButtonBack @click="back" />
+            </v-col>
+            <NuxtLink class="text-caption hover mb-4" to="/signup"> 新規登録はこちらから </NuxtLink>
+          </v-row>
+        </ValidationObserver>
+      </v-container>
+    </v-card>
+  </v-container>
 </template>
 
 <script lang="ts">
@@ -125,3 +116,12 @@ export default defineComponent({
   }
 })
 </script>
+
+<style lang="scss" scoped>
+.hover {
+  &:hover {
+    cursor: pointer;
+    opacity: 0.8;
+  }
+}
+</style>

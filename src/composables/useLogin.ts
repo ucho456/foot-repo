@@ -6,11 +6,8 @@ import {
   signInWithPopup,
   TwitterAuthProvider
 } from 'firebase/auth'
-import useCurrentUser from '@/utils/useCurrentUser'
 
 const useLogin = () => {
-  const { setUpCurrentUser } = useCurrentUser()
-
   const user = reactive({ email: '', password: '' })
   const isLoading = ref(false)
 
@@ -19,7 +16,6 @@ const useLogin = () => {
       isLoading.value = true
       const auth = getAuth()
       await signInWithEmailAndPassword(auth, user.email, user.password)
-      setUpCurrentUser()
       return 'success'
     } catch {
       return 'failure'
@@ -34,7 +30,6 @@ const useLogin = () => {
       const auth = getAuth()
       const provider = new TwitterAuthProvider()
       await signInWithPopup(auth, provider)
-      setUpCurrentUser()
       return 'success'
     } catch {
       return 'failure'
@@ -49,7 +44,6 @@ const useLogin = () => {
       const auth = getAuth()
       const provider = new GoogleAuthProvider()
       await signInWithPopup(auth, provider)
-      setUpCurrentUser()
       return 'success'
     } catch {
       return 'failure'
