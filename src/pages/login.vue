@@ -79,7 +79,16 @@ export default defineComponent({
 
     const submitEmail = async (): Promise<void> => {
       const result = await loginEmail()
-      next(result)
+      const message =
+        result === 'success'
+          ? 'ログインしました。'
+          : result === 'no user'
+          ? 'メールアドレス又はパスワードが間違っています。'
+          : 'エラーが発生しました。'
+      openSnackbar(result, message)
+      if (result === 'success') {
+        router.push('/')
+      }
     }
 
     const submitTwitter = async (): Promise<void> => {
@@ -92,8 +101,8 @@ export default defineComponent({
       next(result)
     }
 
-    const next = (result: 'success' | 'failure' | 'not exist'): void => {
-      if (result === 'success' || result === 'not exist') {
+    const next = (result: 'success' | 'failure' | 'no user'): void => {
+      if (result === 'success' || result === 'no user') {
         const message = result === 'success' ? 'ログインしました。' : '認証が完了しました。'
         openSnackbar('success', message)
         result === 'success' ? router.push('/') : router.push({ name: 'users-new' })

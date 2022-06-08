@@ -12,20 +12,22 @@ const useLogin = () => {
   const user = reactive({ email: '', password: '' })
   const isLoading = ref(false)
 
-  const loginEmail = async (): Promise<'success' | 'failure'> => {
+  const loginEmail = async (): Promise<'success' | 'failure' | 'no user'> => {
     try {
       isLoading.value = true
       const auth = getAuth()
       await signInWithEmailAndPassword(auth, user.email, user.password)
       return 'success'
-    } catch {
-      return 'failure'
+    } catch (error) {
+      return error instanceof Error && error.message.includes('auth/user-not-found')
+        ? 'no user'
+        : 'failure'
     } finally {
       isLoading.value = false
     }
   }
 
-  const loginTwitter = async (): Promise<'success' | 'failure' | 'not exist'> => {
+  const loginTwitter = async (): Promise<'success' | 'failure' | 'no user'> => {
     try {
       isLoading.value = true
       const auth = getAuth()
@@ -33,7 +35,7 @@ const useLogin = () => {
       const userCredential = await signInWithPopup(auth, provider)
       const uid = userCredential.user.uid
       const user = await fetchUser(uid)
-      return user ? 'success' : 'not exist'
+      return user ? 'success' : 'no user'
     } catch {
       return 'failure'
     } finally {
@@ -41,7 +43,7 @@ const useLogin = () => {
     }
   }
 
-  const loginGoogle = async (): Promise<'success' | 'failure' | 'not exist'> => {
+  const loginGoogle = async (): Promise<'success' | 'failure' | 'no user'> => {
     try {
       isLoading.value = true
       const auth = getAuth()
@@ -49,7 +51,7 @@ const useLogin = () => {
       const userCredential = await signInWithPopup(auth, provider)
       const uid = userCredential.user.uid
       const user = await fetchUser(uid)
-      return user ? 'success' : 'not exist'
+      return user ? 'success' : 'no user'
     } catch {
       return 'failure'
     } finally {
