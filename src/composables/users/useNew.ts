@@ -1,5 +1,5 @@
 import { reactive, ref } from '@nuxtjs/composition-api'
-import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import { getAuth, getIdTokenResult } from 'firebase/auth'
 import { createUser } from '@/db/users'
 import useCurrentUser from '@/utils/useCurrentUser'
 import uploadAndGetImageUrl from '@/utils/uploadAndGetImageUrl'
@@ -21,22 +21,17 @@ const useNew = () => {
   const setUp = async (): Promise<'success' | 'failure'> => {
     try {
       isLoadingSetUp.value = true
-      await new Promise((resolve) => {
-        const auth = getAuth()
-        const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
-          if (authUser) {
-            const idTokenResult = await authUser.getIdTokenResult(true)
-            if (idTokenResult.claims.initSetting) {
-              throw new Error('unauthorized access')
-            } else {
-              user.id = authUser.uid
-              user.name = authUser.displayName ? authUser.displayName.substring(0, 20) : ''
-              user.imageUrl = authUser.photoURL
-            }
-          }
-        })
-        resolve(unsubscribe)
-      })
+      const auth = getAuth()
+      const currentUser = auth.currentUser
+      if (currentUser) {
+        const idTokenResult = await getIdTokenResult(currentUser)
+        const initSetting = idTokenResult.claims.initSetting as unknown as boolean
+        if (!initSetting) {
+          user.id = currentUser.uid
+          user.name = currentUser.displayName ? currentUser.displayName.substring(0, 20) : ''
+          user.imageUrl = currentUser.photoURL
+        }
+      }
       return 'success'
     } catch {
       return 'failure'
@@ -59,19 +54,17 @@ const useNew = () => {
   const create = async (): Promise<'success' | 'failure' | 'no currentUser'> => {
     try {
       isLoading.value = true
-      const auth = getAuth()
-      if (auth.currentUser) {
-        const imageUrl = userImageFile.value
-          ? await uploadAndGetImageUrl(`users/${user.id}`, userImageFile.value)
-          : null
-        if (imageUrl) user.imageUrl = imageUrl
-        await createUser(user)
-        setUpCurrentUser()
-      } else {
-        throw new Error('no currentUser')
+      const imageUrl = userImageFile.value
+        ? await uploadAndGetImageUrl(`users/${user.id}`, userImageFile.value)
+        : null
+      if (imageUrl) {
+        user.imageUrl = imageUrl
       }
+      await createUser(user)
+      setUpCurrentUser(user)
       return 'success'
     } catch (error) {
+      console.log(error)
       return error instanceof Error && error.message === 'no currentUser'
         ? 'no currentUser'
         : 'failure'
@@ -79,22 +72,6 @@ const useNew = () => {
       isLoading.value = false
     }
   }
-  // const create = async (): Promise<'success' | 'failure'> => {
-  //   try {
-  //     isLoading.value = true
-  //     const imageUrl = userImageFile.value
-  //       ? await uploadAndGetImageUrl(`users/${user.id}`, userImageFile.value)
-  //       : null
-  //     if (imageUrl) user.imageUrl = imageUrl
-  //     await createUser(user)
-  //     setUpCurrentUser()
-  //     return 'success'
-  //   } catch {
-  //     return 'failure'
-  //   } finally {
-  //     isLoading.value = false
-  //   }
-  // }
 
   return {
     user,
