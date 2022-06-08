@@ -6,6 +6,7 @@ import {
   signInWithPopup,
   TwitterAuthProvider
 } from 'firebase/auth'
+import { fetchUser } from '@/db/users'
 
 const useLogin = () => {
   const user = reactive({ email: '', password: '' })
@@ -24,13 +25,15 @@ const useLogin = () => {
     }
   }
 
-  const loginTwitter = async (): Promise<'success' | 'failure'> => {
+  const loginTwitter = async (): Promise<'success' | 'failure' | 'not exist'> => {
     try {
       isLoading.value = true
       const auth = getAuth()
       const provider = new TwitterAuthProvider()
-      await signInWithPopup(auth, provider)
-      return 'success'
+      const userCredential = await signInWithPopup(auth, provider)
+      const uid = userCredential.user.uid
+      const user = await fetchUser(uid)
+      return user ? 'success' : 'not exist'
     } catch {
       return 'failure'
     } finally {
@@ -38,13 +41,15 @@ const useLogin = () => {
     }
   }
 
-  const loginGoogle = async (): Promise<'success' | 'failure'> => {
+  const loginGoogle = async (): Promise<'success' | 'failure' | 'not exist'> => {
     try {
       isLoading.value = true
       const auth = getAuth()
       const provider = new GoogleAuthProvider()
-      await signInWithPopup(auth, provider)
-      return 'success'
+      const userCredential = await signInWithPopup(auth, provider)
+      const uid = userCredential.user.uid
+      const user = await fetchUser(uid)
+      return user ? 'success' : 'not exist'
     } catch {
       return 'failure'
     } finally {

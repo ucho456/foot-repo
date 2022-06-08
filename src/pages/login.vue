@@ -92,11 +92,13 @@ export default defineComponent({
       next(result)
     }
 
-    const next = (result: 'success' | 'failure'): void => {
-      const message = result === 'success' ? 'ログインしました。' : 'ログインに失敗しました。'
-      openSnackbar(result, message)
-      if (result === 'success') {
-        router.push('/')
+    const next = (result: 'success' | 'failure' | 'not exist'): void => {
+      if (result === 'success' || result === 'not exist') {
+        const message = result === 'success' ? 'ログインしました。' : '認証が完了しました。'
+        openSnackbar('success', message)
+        result === 'success' ? router.push('/') : router.push({ name: 'users-new' })
+      } else {
+        openSnackbar(result, 'エラーが発生しました。')
       }
     }
 

@@ -29,7 +29,7 @@ const useSignup = () => {
     }
   }
 
-  const signupTwitter = async (): Promise<'success' | 'already exist' | 'failure'> => {
+  const signupTwitter = async (): Promise<'success' | 'failure' | 'already exist'> => {
     try {
       isLoading.value = true
       const auth = getAuth()
@@ -37,11 +37,7 @@ const useSignup = () => {
       const userCredential = await signInWithPopup(auth, provider)
       const uid = userCredential.user.uid
       const user = await fetchUser(uid)
-      if (!user) {
-        return 'success'
-      } else {
-        return 'already exist'
-      }
+      return !user ? 'success' : 'already exist'
     } catch {
       return 'failure'
     } finally {
@@ -49,7 +45,7 @@ const useSignup = () => {
     }
   }
 
-  const signupGoogle = async (): Promise<'success' | 'already exist' | 'failure'> => {
+  const signupGoogle = async (): Promise<'success' | 'failure' | 'already exist'> => {
     try {
       isLoading.value = true
       const auth = getAuth()
@@ -57,11 +53,7 @@ const useSignup = () => {
       const userCredential = await signInWithPopup(auth, provider)
       const uid = userCredential.user.uid
       const user = await fetchUser(uid)
-      if (!user) {
-        return 'success'
-      } else {
-        return 'already exist'
-      }
+      return !user ? 'success' : 'already exist'
     } catch {
       return 'failure'
     } finally {
