@@ -93,6 +93,9 @@ export default defineComponent({
       const result = await setUp()
       if (result === 'failure') {
         openSnackbar(result, 'エラーが発生しました。')
+      } else if (result === 'unauthorized access') {
+        openSnackbar(result, '不正なアクセスが発生しました。')
+        router.push('/')
       }
     }
     setUpPage()

@@ -18,7 +18,7 @@ const useNew = () => {
   const userImageFile = ref<File | null>(null)
 
   const isLoadingSetUp = ref(false)
-  const setUp = async (): Promise<'success' | 'failure'> => {
+  const setUp = async (): Promise<'success' | 'failure' | 'unauthorized access'> => {
     try {
       isLoadingSetUp.value = true
       const auth = getAuth()
@@ -29,6 +29,8 @@ const useNew = () => {
         user.id = currentUser.uid
         user.name = currentUser.displayName ? currentUser.displayName.substring(0, 20) : ''
         user.imageUrl = currentUser.photoURL
+      } else {
+        return 'unauthorized access'
       }
       return 'success'
     } catch {
