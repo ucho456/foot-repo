@@ -1,47 +1,50 @@
 <template>
-  <v-card class="text-center wrap" outlined>
-    <v-container>
-      <v-row>
-        <v-col cols="12">{{ message }}</v-col>
-        <v-col cols="12">
-          <v-progress-circular color="primary" indeterminate />
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-card>
+  <v-container>
+    <v-card outlined>
+      <container-loading :is-loading="true" />
+    </v-card>
+  </v-container>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, useRoute, useRouter } from '@nuxtjs/composition-api'
+import { defineComponent, useRoute, useRouter } from '@nuxtjs/composition-api'
+import { getAuth } from 'firebase/auth'
+import { getFunctions, httpsCallable } from 'firebase/functions'
+import useSnackbar from '@/utils/useSnackbar'
+import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 
 export default defineComponent({
   name: 'EmailAction',
+
+  components: {
+    ContainerLoading
+  },
 
   layout: 'grey',
 
   setup() {
     const route = useRoute()
     const router = useRouter()
+    const functions = getFunctions(undefined, 'asia-northeast1')
+    const { openSnackbar } = useSnackbar()
 
-    const mode = route.value.query.mode
-    const message = ref('')
-    switch (mode) {
-      case 'verifyEmail': {
-        message.value = 'メール認証が完了しました。\n3秒後に登録画面に遷移します。'
-        setTimeout(() => {
-          router.push({ name: 'users-new' })
-        }, 3 * 1000)
-        break
+    const check = async () => {
+      const mode = route.value.query.mode
+      if (mode === 'verifyEmail') {
+        try {
+          const updateEmailVerified = httpsCallable(functions, 'updateEmailVerified')
+          await updateEmailVerified()
+          await getAuth().currentUser?.reload()
+          openSnackbar('success', 'メール認証が完了しました。')
+          router.push('/users/new')
+        } catch {
+          openSnackbar('failure', 'メール認証に失敗しました。')
+          router.push('/')
+        }
       }
     }
 
-    return { message }
+    check()
   }
 })
 </script>
-
-<style lang="scss" scoped>
-.wrap {
-  white-space: pre-wrap;
-}
-</style>
