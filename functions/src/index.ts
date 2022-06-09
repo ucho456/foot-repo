@@ -1,6 +1,5 @@
 import * as admin from 'firebase-admin'
 import createAuth from './calls/createAuth'
-import createUser from './calls/createUser'
 import {
   createJLeagueMatches,
   createPremierLeagueMatches,
@@ -8,6 +7,8 @@ import {
   createSerieAMatches,
   createBundesligaMatches
 } from './calls/createMatches'
+import createUser from './calls/createUser'
+import updateEmailVerified from './calls/updateEmailVerified'
 import {
   setJLeagueMatches,
   setPremierLeagueMatches,
@@ -29,12 +30,13 @@ admin.initializeApp()
 
 module.exports = {
   createAuth,
-  createUser,
   createJLeagueMatches,
   createPremierLeagueMatches,
   createLaLigaMatches,
   createSerieAMatches,
   createBundesligaMatches,
+  createUser,
+  updateEmailVerified,
   setJLeagueMatches,
   setPremierLeagueMatches,
   setLaLigaMatches,
