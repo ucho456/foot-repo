@@ -22,15 +22,13 @@ const useNew = () => {
     try {
       isLoadingSetUp.value = true
       const auth = getAuth()
-      const currentUser = auth.currentUser
-      if (currentUser) {
-        const idTokenResult = await getIdTokenResult(currentUser)
-        const initSetting = idTokenResult.claims.initSetting as unknown as boolean
-        if (!initSetting) {
-          user.id = currentUser.uid
-          user.name = currentUser.displayName ? currentUser.displayName.substring(0, 20) : ''
-          user.imageUrl = currentUser.photoURL
-        }
+      const currentUser = auth.currentUser!
+      const idTokenResult = await getIdTokenResult(currentUser)
+      const initSetting = idTokenResult.claims.initSetting as unknown as boolean
+      if (!initSetting) {
+        user.id = currentUser.uid
+        user.name = currentUser.displayName ? currentUser.displayName.substring(0, 20) : ''
+        user.imageUrl = currentUser.photoURL
       }
       return 'success'
     } catch {
@@ -51,7 +49,7 @@ const useNew = () => {
   }
 
   const isLoading = ref(false)
-  const create = async (): Promise<'success' | 'failure' | 'no currentUser'> => {
+  const create = async (): Promise<'success' | 'failure'> => {
     try {
       isLoading.value = true
       const imageUrl = userImageFile.value
@@ -64,10 +62,7 @@ const useNew = () => {
       setUpCurrentUser(user)
       return 'success'
     } catch (error) {
-      console.log(error)
-      return error instanceof Error && error.message === 'no currentUser'
-        ? 'no currentUser'
-        : 'failure'
+      return 'failure'
     } finally {
       isLoading.value = false
     }

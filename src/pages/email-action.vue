@@ -28,7 +28,7 @@ export default defineComponent({
     const functions = getFunctions(undefined, 'asia-northeast1')
     const { openSnackbar } = useSnackbar()
 
-    const check = async () => {
+    const doEmailAction = async () => {
       const mode = route.value.query.mode
       if (mode === 'verifyEmail') {
         try {
@@ -44,7 +44,7 @@ export default defineComponent({
       }
     }
 
-    check()
+    doEmailAction()
   }
 })
 </script>
