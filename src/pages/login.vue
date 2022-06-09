@@ -84,6 +84,8 @@ export default defineComponent({
           ? 'ログインしました。'
           : result === 'no user'
           ? 'メールアドレス又はパスワードが間違っています。'
+          : result === 'unverified'
+          ? 'メールアドレスの認証が完了していません。'
           : 'エラーが発生しました。'
       openSnackbar(result, message)
       if (result === 'success') {

@@ -4,6 +4,7 @@ import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
+  signOut,
   TwitterAuthProvider
 } from 'firebase/auth'
 import { fetchUser } from '@/db/users'
@@ -12,12 +13,17 @@ const useLogin = () => {
   const user = reactive({ email: '', password: '' })
   const isLoading = ref(false)
 
-  const loginEmail = async (): Promise<'success' | 'failure' | 'no user'> => {
+  const loginEmail = async (): Promise<'success' | 'failure' | 'no user' | 'unverified'> => {
     try {
       isLoading.value = true
       const auth = getAuth()
       await signInWithEmailAndPassword(auth, user.email, user.password)
-      return 'success'
+      if (!auth.currentUser?.emailVerified) {
+        await signOut(auth)
+        return 'unverified'
+      } else {
+        return 'success'
+      }
     } catch (error) {
       return error instanceof Error && error.message.includes('auth/user-not-found')
         ? 'no user'
