@@ -143,8 +143,6 @@ service cloud.firestore {
       match /comments/{commentId} {
         allow read;
         allow create: if isValidComment(request.resource.data);
-        // allow create: if request.auth != null
-        // && isValidComment(request.resource.data);
       }
     }
 
@@ -163,14 +161,13 @@ service cloud.firestore {
       && isValidString(user.name, 1, 20)
       && isValidImage(user.imageUrl)
       && isValidString(user.greet, 0, 140)
-      && isValidString(user.competitionId, 1, 20)
-      && isValidString(user.teamId, 1, 20);
+      && isValidString(user.competitionId, 0, 20)
+      && isValidString(user.teamId, 0, 20);
     }
 
     match /users/{userId} {
       allow read;
       allow create: if onlyMe(userId)
-      && request.auth.token.initSetting == false
       && isValidUser(request.resource.data);
     }
   }
