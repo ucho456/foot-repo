@@ -19,7 +19,7 @@ import { commentConverter, reportConverter, reportItemConverter } from '@/utils/
 import { makeSearchOption } from '@/utils/searchOption'
 
 export const createReport = async (
-  currentUser: CurrentUser | null,
+  loginUser: LoginUser | null,
   inputReport: InputReport,
   match: Match
 ): Promise<string> => {
@@ -32,11 +32,11 @@ export const createReport = async (
   batch.set(rRef, {
     id: rId,
     title: inputReport.title,
-    user: currentUser
+    user: loginUser
       ? {
-          ref: doc(db, `users/${currentUser.uid}`),
-          name: currentUser.name,
-          imageUrl: currentUser.imageUrl
+          ref: doc(db, `users/${loginUser.uid}`),
+          name: loginUser.name,
+          imageUrl: loginUser.imageUrl
         }
       : {
           ref: doc(db, 'users/guest'),
@@ -232,7 +232,7 @@ export const subscribeComments = async (
 
 export const createComment = async (
   reportId: string,
-  currentUser: CurrentUser | null,
+  loginUser: LoginUser | null,
   text: string
 ) => {
   const db = getFirestore()
@@ -241,11 +241,11 @@ export const createComment = async (
   const cRef = doc(db, 'reports', reportId, 'comments', cId).withConverter(commentConverter)
   await setDoc(cRef, {
     id: cId,
-    user: currentUser
+    user: loginUser
       ? {
-          ref: doc(db, 'users', currentUser.uid),
-          name: currentUser.name,
-          imageUrl: currentUser.imageUrl
+          ref: doc(db, 'users', loginUser.uid),
+          name: loginUser.name,
+          imageUrl: loginUser.imageUrl
         }
       : {
           ref: doc(db, 'users', 'guest'),

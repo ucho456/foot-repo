@@ -25,13 +25,13 @@
     </v-footer>
     <v-navigation-drawer v-model="isDrawer" fixed right temporary>
       <client-only>
-        <v-list-item v-if="currentUser" to="/my-page">
+        <v-list-item v-if="loginUser" to="/my-page">
           <v-list-item-avatar>
-            <v-img v-if="currentUser.imageUrl" :src="currentUser.imageUrl" />
+            <v-img v-if="loginUser.imageUrl" :src="loginUser.imageUrl" />
             <v-img v-else :src="noAvatarImage" />
           </v-list-item-avatar>
           <v-list-item-content>
-            <v-list-item-title v-text="currentUser.name" />
+            <v-list-item-title v-text="loginUser.name" />
           </v-list-item-content>
         </v-list-item>
         <v-list>
@@ -49,7 +49,7 @@
               <v-list-item-title v-text="item.title" />
             </v-list-item-content>
           </v-list-item>
-          <v-list-item v-if="currentUser" class="ml-2 px-2" @click="logout">
+          <v-list-item v-if="loginUser" class="ml-2 px-2" @click="logout">
             <v-list-item-action>
               <v-icon>mdi-logout</v-icon>
             </v-list-item-action>
@@ -67,7 +67,7 @@
 <script lang="ts">
 import { defineComponent, computed, ref, useRouter } from '@nuxtjs/composition-api'
 import { getAuth, signOut } from 'firebase/auth'
-import useCurrentUser from '@/utils/useCurrentUser'
+import useLoginUser from '@/utils/useLoginUser'
 import useSnackbar from '@/utils/useSnackbar'
 import SideContainer from '@/components/organisms/SideContainer.vue'
 import Snackbar from '@/components/molecules/Snackbar.vue'
@@ -83,7 +83,7 @@ export default defineComponent({
   setup() {
     const router = useRouter()
     const auth = getAuth()
-    const { currentUser } = useCurrentUser()
+    const { loginUser } = useLoginUser()
     const { snackbar, openSnackbar } = useSnackbar()
 
     const headerLogo = require('@/assets/header_logo.png')
@@ -101,7 +101,7 @@ export default defineComponent({
       const login = { icon: 'mdi-login', title: 'ログイン', to: '/login' }
       const about = { icon: 'mdi-information', title: '当サイトについて', to: '/about' }
       const signup = { icon: 'mdi-account-plus', title: '新規登録', to: '/signup' }
-      return currentUser && currentUser.value
+      return loginUser.value
         ? [
             { id: 1, ...home },
             { id: 2, ...reportNew },
@@ -140,7 +140,7 @@ export default defineComponent({
     }
 
     return {
-      currentUser,
+      loginUser,
       snackbar,
       headerLogo,
       noAvatarImage,

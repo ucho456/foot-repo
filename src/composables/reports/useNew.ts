@@ -1,10 +1,10 @@
 import { reactive, ref, Ref, watch } from '@nuxtjs/composition-api'
 import { fetchForReport, fetchMatch } from '@/db/matches'
 import { createReport } from '@/db/reports'
-import useCurrentUser from '@/utils/useCurrentUser'
+import useLoginUser from '@/utils/useLoginUser'
 
 const useNew = () => {
-  const { currentUser } = useCurrentUser()
+  const { loginUser } = useLoginUser()
 
   const inputReport: InputReport = reactive({
     title: '',
@@ -47,7 +47,7 @@ const useNew = () => {
   const create = async (): Promise<{ result: string; reportId: string }> => {
     try {
       isLoadingSend.value = true
-      const reportId = await createReport(currentUser.value, inputReport, match.value!)
+      const reportId = await createReport(loginUser.value, inputReport, match.value!)
       return { result: 'success', reportId }
     } catch {
       return { result: 'failure', reportId: '' }

@@ -2,15 +2,12 @@ type Card = 'red' | 'yellow'
 
 type CompetitionType = 'league' | 'cup' | 'japan'
 
-type CurrentUser = {
+type LoginUser = {
   uid: string
   name: string
   imageUrl: string | null
   competitionId: string
   teamId: string
-  initSetting: boolean
-  subscription: boolean
-  suspended: boolean
 }
 
 type HomeAway = 'home' | 'away' | 'both'

@@ -1,11 +1,11 @@
 import { reactive, ref } from '@nuxtjs/composition-api'
 import { getAuth, getIdTokenResult } from 'firebase/auth'
 import { createUser } from '@/db/users'
-import useCurrentUser from '@/utils/useCurrentUser'
+import useLoginUser from '@/utils/useLoginUser'
 import uploadAndGetImageUrl from '@/utils/uploadAndGetImageUrl'
 
 const useNew = () => {
-  const { setUpCurrentUser } = useCurrentUser()
+  const { setUpLoginUser } = useLoginUser()
 
   const user: User = reactive({
     id: '',
@@ -61,7 +61,7 @@ const useNew = () => {
         user.imageUrl = imageUrl
       }
       await createUser(user)
-      setUpCurrentUser(user)
+      setUpLoginUser(user)
       return 'success'
     } catch (error) {
       return 'failure'

@@ -1,41 +1,36 @@
 import { defineNuxtPlugin, onGlobalSetup, onUnmounted, provide, ref } from '@nuxtjs/composition-api'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
-import { CurrentUserKey } from '@/utils/useCurrentUser'
+import { LoginUserKey } from '@/utils/useLoginUser'
 import { fetchUser } from '@/db/users'
 
 export default defineNuxtPlugin(async (_, inject) => {
-  const currentUser = ref(null)
+  const loginUser = ref(null)
 
-  inject('currentUser', currentUser)
+  inject('loginUser', loginUser)
 
   const unsubscribe = await new Promise((resolve) => {
     const auth = getAuth()
     const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
       if (authUser) {
         const user = await fetchUser(authUser.uid)
-        const idTokenResult = await authUser.getIdTokenResult(true)
-        currentUser.value =
-          user && idTokenResult.claims.initSetting
-            ? {
-                uid: user.id,
-                name: user.name,
-                imageUrl: user.imageUrl,
-                competitionId: user.competitionId,
-                teamId: user.teamId,
-                initSetting: idTokenResult.claims.initSetting,
-                subscription: idTokenResult.claims.subscription,
-                suspended: idTokenResult.claims.suspended
-              }
-            : null
+        loginUser.value = user
+          ? {
+              uid: user.id,
+              name: user.name,
+              imageUrl: user.imageUrl,
+              competitionId: user.competitionId,
+              teamId: user.teamId
+            }
+          : null
       } else {
-        currentUser.value = null
+        loginUser.value = null
       }
       resolve(unsubscribe)
     })
   })
 
   onGlobalSetup(() => {
-    provide(CurrentUserKey, currentUser)
+    provide(LoginUserKey, loginUser)
     onUnmounted(unsubscribe)
   })
 })

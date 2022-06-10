@@ -1,15 +1,15 @@
 import { ref } from '@nuxtjs/composition-api'
 import { toStoreFirstMatches, toStoreNextMatches } from '@/db/matches'
-import useCurrentUser from '@/utils/useCurrentUser'
+import useLoginUser from '@/utils/useLoginUser'
 import useStore from '@/utils/useStore'
 
 const useSearch = () => {
-  const { currentUser } = useCurrentUser()
+  const { loginUser } = useLoginUser()
   const { matches, confirmation } = useStore()
 
   const isDialogConfirmLogin = ref(false)
   const confirmLogin = (): void => {
-    if (!confirmation.isLogin && !currentUser.value) {
+    if (!confirmation.isLogin && !loginUser.value) {
       isDialogConfirmLogin.value = true
     } else {
       confirmation.isLogin = true
@@ -26,9 +26,9 @@ const useSearch = () => {
       isLoadingFirst.value = true
       matches.lastVisible = null
       matches.searchOption.jstDate = ''
-      if (currentUser.value) {
-        matches.searchOption.competitionId = currentUser.value.competitionId
-        matches.searchOption.teamId = currentUser.value.teamId
+      if (loginUser.value) {
+        matches.searchOption.competitionId = loginUser.value.competitionId
+        matches.searchOption.teamId = loginUser.value.teamId
       }
       await toStoreFirstMatches(matches)
       return 'success'

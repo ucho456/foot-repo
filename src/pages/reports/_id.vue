@@ -90,11 +90,7 @@
             </v-row>
           </v-container>
         </v-row>
-        <RowUserImageName
-          v-if="currentUser"
-          :image-url="currentUser.imageUrl"
-          :name="currentUser.name"
-        />
+        <RowUserImageName v-if="loginUser" :image-url="loginUser.imageUrl" :name="loginUser.name" />
         <RowUserImageName v-else :name="'ゲスト'" />
         <v-row>
           <v-col cols="12"> <Textarea v-model="inputComment" :maxlength="140" /></v-col>
@@ -120,7 +116,7 @@
 <script lang="ts">
 import { defineComponent, onBeforeUnmount, useRoute } from '@nuxtjs/composition-api'
 import useShow from '@/composables/reports/useShow'
-import useCurrentUser from '@/utils/useCurrentUser'
+import useLoginUser from '@/utils/useLoginUser'
 import useSnackbar from '@/utils/useSnackbar'
 import useStore from '@/utils/useStore'
 import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
@@ -165,7 +161,7 @@ export default defineComponent({
       isDialog,
       create
     } = useShow()
-    const { currentUser } = useCurrentUser()
+    const { loginUser } = useLoginUser()
     const { openSnackbar } = useSnackbar()
     const { confirmation } = useStore()
 
@@ -179,7 +175,7 @@ export default defineComponent({
     setUpPage()
 
     const confirmLogin = () => {
-      if (!confirmation.isLogin && !currentUser.value) {
+      if (!confirmation.isLogin && !loginUser.value) {
         isDialog.value = true
       } else {
         confirmation.isLogin = true
@@ -217,7 +213,7 @@ export default defineComponent({
       inputComment,
       isLoadingNewComment,
       isDialog,
-      currentUser,
+      loginUser,
       confirmLogin,
       submitCreate
     }

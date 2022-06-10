@@ -8,10 +8,10 @@ import {
   subscribeComments
 } from '@/db/reports'
 import { fetchUser } from '@/db/users'
-import useCurrentUser from '@/utils/useCurrentUser'
+import useLoginUser from '@/utils/useLoginUser'
 
 const useShow = () => {
-  const { currentUser } = useCurrentUser()
+  const { loginUser } = useLoginUser()
 
   const report: Ref<Report | null> = ref(null)
   const homeTeamReportItems: Ref<ReportItem[]> = ref([])
@@ -67,7 +67,7 @@ const useShow = () => {
     try {
       isLoadingNewComment.value = true
       if (report.value) {
-        await createComment(report.value.id, currentUser.value, inputComment.value)
+        await createComment(report.value.id, loginUser.value, inputComment.value)
         inputComment.value = ''
         return 'success'
       } else {
