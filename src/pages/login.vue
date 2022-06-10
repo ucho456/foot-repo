@@ -79,17 +79,22 @@ export default defineComponent({
 
     const submitEmail = async (): Promise<void> => {
       const result = await loginEmail()
-      const message =
-        result === 'success'
-          ? 'ログインしました。'
-          : result === 'no user'
-          ? 'メールアドレス又はパスワードが間違っています。'
-          : result === 'unverified'
-          ? 'メールアドレスの認証が完了していません。'
-          : 'エラーが発生しました。'
-      openSnackbar(result, message)
       if (result === 'success') {
+        const message = 'ログインしました。'
+        openSnackbar(result, message)
         router.push('/')
+      } else if (result === 'no user') {
+        const message = 'ログインしました。ユーザープロフィールが未登録なので完了させて下さい。'
+        openSnackbar('alert', message)
+        router.push('users/new')
+      } else {
+        const message =
+          result === 'wrong email or password'
+            ? 'メールアドレス又はパスワードが間違っています。'
+            : result === 'unverified'
+            ? 'メールアドレスの認証が完了していません'
+            : 'エラーが発生しました。'
+        openSnackbar(result, message)
       }
     }
 
