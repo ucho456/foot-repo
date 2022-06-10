@@ -56,7 +56,7 @@ export default defineComponent({
             { id: '2', text: 'TSG 1899 Hoffenheim' },
             { id: '4', text: 'Borussia Dortmund' }
           ]
-        : [{ id: '', text: '未選択' }]
+        : [{ id: '', text: 'コンペティションを選択して下さい。' }]
     })
     const handleInput = (id: string): void => {
       ctx.emit('input', id)
