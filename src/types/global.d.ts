@@ -21,6 +21,15 @@ type InputReport = {
   momId: string
 }
 
+type InputUser = {
+  id: string
+  name: string
+  imageUrl: string | null
+  greet: string
+  competitionId: string
+  teamId: string
+}
+
 type MatchStatus = 'SCHEDULED' | 'FINISHED'
 
 type Point =

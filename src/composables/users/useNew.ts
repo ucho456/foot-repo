@@ -7,7 +7,7 @@ import uploadAndGetImageUrl from '@/utils/uploadAndGetImageUrl'
 const useNew = () => {
   const { setUpLoginUser } = useLoginUser()
 
-  const user: User = reactive({
+  const inputUser: InputUser = reactive({
     id: '',
     name: '',
     imageUrl: null,
@@ -26,9 +26,9 @@ const useNew = () => {
       const idTokenResult = await getIdTokenResult(currentUser)
       const initSetting = idTokenResult.claims.initSetting as unknown as boolean
       if (!initSetting) {
-        user.id = currentUser.uid
-        user.name = currentUser.displayName ? currentUser.displayName.substring(0, 20) : ''
-        user.imageUrl = currentUser.photoURL
+        inputUser.id = currentUser.uid
+        inputUser.name = currentUser.displayName ? currentUser.displayName.substring(0, 20) : ''
+        inputUser.imageUrl = currentUser.photoURL
       } else {
         return 'unauthorized access'
       }
@@ -41,12 +41,12 @@ const useNew = () => {
   }
 
   const changeImageUrl = (imageFile: File): void => {
-    user.imageUrl = URL.createObjectURL(imageFile)
+    inputUser.imageUrl = URL.createObjectURL(imageFile)
     userImageFile.value = imageFile
   }
 
   const clearImageUrl = (): void => {
-    user.imageUrl = null
+    inputUser.imageUrl = null
     userImageFile.value = null
   }
 
@@ -55,13 +55,13 @@ const useNew = () => {
     try {
       isLoading.value = true
       const imageUrl = userImageFile.value
-        ? await uploadAndGetImageUrl(`users/${user.id}`, userImageFile.value)
+        ? await uploadAndGetImageUrl(`users/${inputUser.id}`, userImageFile.value)
         : null
       if (imageUrl) {
-        user.imageUrl = imageUrl
+        inputUser.imageUrl = imageUrl
       }
-      await createUser(user)
-      setUpLoginUser(user)
+      await createUser(inputUser)
+      setUpLoginUser(inputUser)
       return 'success'
     } catch (error) {
       return 'failure'
@@ -71,7 +71,7 @@ const useNew = () => {
   }
 
   return {
-    user,
+    inputUser,
     isLoadingSetUp,
     setUp,
     changeImageUrl,

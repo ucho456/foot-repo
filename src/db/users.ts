@@ -9,15 +9,15 @@ export const fetchUser = async (uid: string | undefined): Promise<User | null> =
   return uSnapshot.exists() ? uSnapshot.data() : null
 }
 
-export const createUser = async (user: User): Promise<void> => {
+export const createUser = async (inputUser: InputUser): Promise<void> => {
   const db = getFirestore()
-  const uRef = doc(db, 'users', user.id).withConverter(userConverter)
+  const uRef = doc(db, 'users', inputUser.id).withConverter(userConverter)
   await setDoc(uRef, {
-    id: user.id,
-    name: user.name,
-    imageUrl: user.imageUrl,
-    greet: user.greet,
-    competitionId: user.competitionId,
-    teamId: user.teamId
+    id: inputUser.id,
+    name: inputUser.name,
+    imageUrl: inputUser.imageUrl,
+    greet: inputUser.greet,
+    competitionId: inputUser.competitionId,
+    teamId: inputUser.teamId
   })
 }

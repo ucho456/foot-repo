@@ -7,15 +7,15 @@ const useLoginUser = () => {
   const loginUser = inject(LoginUserKey)
   if (loginUser === undefined) throw new Error('loginUser is no provided')
 
-  const setUpLoginUser = (user: User): void => {
+  const setUpLoginUser = (inputUser: InputUser): void => {
     const auth = getAuth()
     if (auth.currentUser) {
       loginUser.value = {
-        uid: user.id,
-        name: user.name,
-        imageUrl: user.imageUrl,
-        competitionId: user.competitionId,
-        teamId: user.teamId
+        uid: inputUser.id,
+        name: inputUser.name,
+        imageUrl: inputUser.imageUrl,
+        competitionId: inputUser.competitionId,
+        teamId: inputUser.teamId
       }
     } else {
       loginUser.value = null

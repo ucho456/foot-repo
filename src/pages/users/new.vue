@@ -12,14 +12,14 @@
           <v-row class="mb-10" justify="center">
             <v-col cols="3" sm="2">
               <ImageUploaderUserImage
-                :value="user.imageUrl"
+                :value="inputUser.imageUrl"
                 @change="changeImageUrl"
                 @clear="clearImageUrl"
               />
             </v-col>
             <v-col class="mt-4" cols="7" sm="8">
               <TextField
-                v-model="user.name"
+                v-model="inputUser.name"
                 :label="'ニックネーム'"
                 :maxlength="20"
                 :rules="'required'"
@@ -27,7 +27,7 @@
             </v-col>
             <v-col cols="10">
               <Textarea
-                v-model="user.greet"
+                v-model="inputUser.greet"
                 :icon="'mdi-human-greeting-variant'"
                 :label="'自己紹介文'"
                 :maxlength="140"
@@ -35,10 +35,10 @@
             </v-col>
             <v-col cols="10"> マイチーム </v-col>
             <v-col cols="10" sm="5">
-              <SelectIdCompetition v-model="user.competitionId" />
+              <SelectIdCompetition v-model="inputUser.competitionId" />
             </v-col>
             <v-col cols="10" sm="5">
-              <SelectIdTeam v-model="user.teamId" :competition-id="user.competitionId" />
+              <SelectIdTeam v-model="inputUser.teamId" :competition-id="inputUser.competitionId" />
             </v-col>
             <v-col cols="10" sm="6">
               <ButtonSubmit
@@ -85,7 +85,7 @@ export default defineComponent({
 
   setup() {
     const router = useRouter()
-    const { user, isLoadingSetUp, setUp, changeImageUrl, clearImageUrl, isLoading, create } =
+    const { inputUser, isLoadingSetUp, setUp, changeImageUrl, clearImageUrl, isLoading, create } =
       useNew()
     const { openSnackbar } = useSnackbar()
 
@@ -111,7 +111,7 @@ export default defineComponent({
     }
 
     return {
-      user,
+      inputUser,
       isLoadingSetUp,
       changeImageUrl,
       clearImageUrl,
