@@ -71,12 +71,9 @@ export const fetchForReport = async (matchId: string): Promise<ForReport | null>
   return frSnapshot.exists() ? frSnapshot.data() : null
 }
 
-export const setMatchSchedule = async (league: {
+export const toStoreMatchSchedule = async (league: {
   competitionId: string
-  standings: Standings | null
-  scorers: Scorers | null
   matchSchedule: Match[]
-  season: string
   yearMonth: string
 }) => {
   league.matchSchedule = []

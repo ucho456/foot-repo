@@ -1,6 +1,6 @@
 import { ref } from '@nuxtjs/composition-api'
-import { competitionMap, setScores, setStandings } from '@/db/competitions'
-import { setMatchSchedule } from '@/db/matches'
+import { competitionMap, toStoreScores, toStoreStandings } from '@/db/competitions'
+import { toStoreMatchSchedule } from '@/db/matches'
 import useStore from '@/utils/useStore'
 
 const useShow = () => {
@@ -14,22 +14,22 @@ const useShow = () => {
       isLoadingStandings.value = true
       league.name = competitionMap.get(competitionId)?.name!
       league.competitionId = competitionId
+      const today = new Date()
       league.season =
-        competitionId === 'J-League'
-          ? String(new Date().getFullYear())
-          : String(new Date().getFullYear() - 1)
-      await setStandings(league)
+        competitionId === 'J-League' || today.getMonth() >= 7
+          ? String(today.getFullYear())
+          : String(today.getFullYear() - 1)
+      await toStoreStandings(league)
       isLoadingStandings.value = false
 
       isLoadingScorers.value = true
-      await setScores(league)
+      await toStoreScores(league)
       isLoadingScorers.value = false
 
       isLoadingMatches.value = true
-      const today = new Date()
       const thisMonth = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`
       league.yearMonth = thisMonth
-      await setMatchSchedule(league)
+      await toStoreMatchSchedule(league)
       isLoadingMatches.value = false
 
       return 'success'
@@ -45,7 +45,7 @@ const useShow = () => {
   const search = async (): Promise<'success' | 'failure'> => {
     try {
       isLoadingMatches.value = true
-      await setMatchSchedule(league)
+      await toStoreMatchSchedule(league)
       return 'success'
     } catch {
       return 'failure'

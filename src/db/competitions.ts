@@ -54,13 +54,10 @@ export const competitionMap = new Map([
   ]
 ])
 
-export const setScores = async (league: {
+export const toStoreScores = async (league: {
   competitionId: string
-  standings: Standings | null
   scorers: Scorers | null
-  matchSchedule: Match[]
   season: string
-  yearMonth: string
 }): Promise<void> => {
   const db = getFirestore()
   const sRef = doc(
@@ -74,13 +71,10 @@ export const setScores = async (league: {
   league.scorers = sSnapshot.exists() ? sSnapshot.data() : null
 }
 
-export const setStandings = async (league: {
+export const toStoreStandings = async (league: {
   competitionId: string
   standings: Standings | null
-  scorers: Scorers | null
-  matchSchedule: Match[]
   season: string
-  yearMonth: string
 }): Promise<void> => {
   const db = getFirestore()
   const sRef = doc(
