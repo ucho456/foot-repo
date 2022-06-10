@@ -1,20 +1,20 @@
 <template>
-  <v-card outlined>
-    <v-container fluid>
-      <v-row dense>
-        <v-col v-for="competition in competitions" :key="competition.title" cols="6" sm="4">
-          <v-card @click="pushToCompetitionShow(competition)">
-            <v-card-text>
+  <v-container>
+    <v-card outlined>
+      <v-container fluid>
+        <v-row dense>
+          <v-col v-for="competition in competitions" :key="competition.title" cols="6" sm="4">
+            <v-card @click="pushToCompetitionShow(competition)">
               <v-img :src="competition.src" />
-            </v-card-text>
-            <v-card-text class="font-weight-bold text-center">
-              {{ competition.title }}
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-card>
+              <v-card-text class="font-weight-bold text-center">
+                {{ competition.title }}
+              </v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-card>
+  </v-container>
 </template>
 
 <script lang="ts">
@@ -87,9 +87,3 @@ export default defineComponent({
   }
 })
 </script>
-
-<style lang="scss" scoped>
-.text-center {
-  text-align: center;
-}
-</style>
