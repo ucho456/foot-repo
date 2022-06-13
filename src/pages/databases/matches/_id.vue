@@ -15,7 +15,7 @@
                 <v-tab>ベンチ</v-tab>
               </v-tabs>
             </div>
-            <v-simple-table dence>
+            <v-simple-table class="table" dence>
               <template #default>
                 <tbody>
                   <tr v-for="player in homePlayers" :key="player.id">
@@ -35,7 +35,7 @@
                 <v-tab>ベンチ</v-tab>
               </v-tabs>
             </div>
-            <v-simple-table dence>
+            <v-simple-table class="table" dence>
               <template #default>
                 <tbody>
                   <tr v-for="player in awayPlayers" :key="player.id">
@@ -48,6 +48,88 @@
             </v-simple-table>
           </v-col>
         </v-row>
+      </v-container>
+    </v-card>
+    <v-card v-if="match.detail" class="mt-4" outlined>
+      <v-container>
+        <h3>ゴール</h3>
+        <v-simple-table class="table" dense>
+          <template #default>
+            <thead>
+              <tr>
+                <th class="text-center">min</th>
+                <th class="text-center">team</th>
+                <th class="text-center">scorer</th>
+                <th class="text-center">assist</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in match.detail.goals" :key="item.keyId">
+                <td class="text-center">{{ item.minute }}</td>
+                <td class="text-center">{{ item.teamName }}</td>
+                <td class="text-center">{{ item.goalPlayerName }}</td>
+                <td class="text-center">{{ item.assistPlayerName }}</td>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
+      </v-container>
+    </v-card>
+    <v-card v-if="match.detail" class="mt-4" outlined>
+      <v-container>
+        <h3>選手交代</h3>
+        <v-simple-table class="table" dense>
+          <template #default>
+            <thead>
+              <tr>
+                <th class="text-center">min</th>
+                <th class="text-center">team</th>
+                <th class="text-center">in</th>
+                <th class="text-center">out</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in match.detail.substitutions" :key="item.keyId">
+                <td class="text-center">{{ item.minute }}</td>
+                <td class="text-center">{{ item.teamName }}</td>
+                <td class="text-center">{{ item.inPlayerName }}</td>
+                <td class="text-center">{{ item.outPlayerName }}</td>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
+      </v-container>
+    </v-card>
+    <v-card v-if="match.detail" class="mt-4" outlined>
+      <v-container>
+        <h3>カード</h3>
+        <v-simple-table class="table" dense>
+          <template #default>
+            <thead>
+              <tr>
+                <th class="text-center">min</th>
+                <th class="text-center">team</th>
+                <th class="text-center">player</th>
+                <th class="text-center">card</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in match.detail.bookings" :key="item.keyId">
+                <td class="text-center">{{ item.minute }}</td>
+                <td class="text-center">{{ item.teamName }}</td>
+                <td class="text-center">{{ item.playerName }}</td>
+                <td class="text-center">
+                  <div
+                    :class="{
+                      'yellow-card': item.card === 'yellow',
+                      'red-card': item.card === 'red'
+                    }"
+                  ></div>
+                </td>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
       </v-container>
     </v-card>
   </v-container>
@@ -90,3 +172,23 @@ export default defineComponent({
   }
 })
 </script>
+
+<style lang="scss" scoped>
+.table {
+  pointer-events: none;
+}
+.yellow-card {
+  margin: 0 auto;
+  height: 30px;
+  width: 20px;
+  background: #ffd600;
+  border-radius: 3px;
+}
+.red-card {
+  margin: 0 auto;
+  height: 30px;
+  width: 20px;
+  background: red;
+  border-radius: 3px;
+}
+</style>
