@@ -15,18 +15,18 @@
           <template #default>
             <thead>
               <tr>
-                <th class="text-center">順位</th>
+                <th class="text-center">Rank</th>
                 <th></th>
-                <th class="text-center">チーム</th>
-                <th class="text-center">試合数</th>
-                <th class="text-center">勝ち</th>
-                <th class="text-center">負け</th>
-                <th class="text-center">分け</th>
-                <th class="text-center">勝点</th>
-                <th class="text-center">直近</th>
-                <th class="text-center">得点</th>
-                <th class="text-center">失点</th>
-                <th class="text-center">得失差</th>
+                <th class="text-center">Team</th>
+                <th class="text-center">Played</th>
+                <th class="text-center">Won</th>
+                <th class="text-center">Lost</th>
+                <th class="text-center">Draw</th>
+                <th class="text-center">Points</th>
+                <th class="text-center">Last 5</th>
+                <th class="text-center">Goals</th>
+                <th class="text-center">Conceded</th>
+                <th class="text-center">Goal diff</th>
               </tr>
             </thead>
             <tbody>
@@ -65,26 +65,26 @@
       <ContainerLoading :is-loading="isLoadingScorers" />
       <v-container v-if="league.scorers">
         <h2>得点ランキング</h2>
-        <v-simple-table class="scorers">
+        <v-simple-table dense>
           <template #default>
             <thead>
-              <tr>
-                <th class="text-center">順位</th>
-                <th class="text-center">選手</th>
-                <th class="text-center">所属</th>
-                <th class="text-center">得点</th>
-                <!-- <th class="text-center">アシスト</th>
-              <th class="text-center">PK</th> -->
+              <tr class="no-link">
+                <th class="text-center">Rank</th>
+                <th class="text-center">Player</th>
+                <th class="text-center">Team</th>
+                <th class="text-center">Goals</th>
+                <th class="text-center">Assists</th>
+                <th class="text-center">Penalties</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="item in league.scorers.table" :key="item.keyId">
+              <tr v-for="item in league.scorers.table" :key="item.keyId" class="no-link">
                 <td class="text-center">{{ item.rank }}</td>
                 <td class="text-center">{{ item.playerName }}</td>
                 <td class="text-center">{{ item.teamName }}</td>
                 <td class="text-center">{{ item.goals }}</td>
-                <!-- <td class="text-center">{{ item.assists }}</td>
-              <td class="text-center">{{ item.penalties }}</td> -->
+                <td class="text-center">{{ item.assists }}</td>
+                <td class="text-center">{{ item.penalties }}</td>
               </tr>
             </tbody>
           </template>
@@ -166,7 +166,9 @@ export default defineComponent({
     cursor: pointer;
   }
 }
-.scorers {
-  pointer-events: none;
+.no-link {
+  &:hover {
+    background-color: transparent !important;
+  }
 }
 </style>

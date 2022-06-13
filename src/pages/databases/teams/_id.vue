@@ -20,10 +20,14 @@
       </v-container>
       <v-container v-if="team.data">
         <h2>コンペティション</h2>
-        <v-simple-table class="table" dence>
+        <v-simple-table dence>
           <template #default>
             <tbody>
-              <tr v-for="competition in team.data.competitions" :key="competition.name">
+              <tr
+                v-for="competition in team.data.competitions"
+                :key="competition.name"
+                class="no-link"
+              >
                 <td class="text-center">
                   <v-img
                     v-if="competition.imageUrl"
@@ -40,10 +44,10 @@
       </v-container>
       <v-container v-if="team.data">
         <h2>選手一覧</h2>
-        <v-simple-table class="table" dence>
+        <v-simple-table dence>
           <template #default>
             <tbody>
-              <tr v-for="player in team.data.squad" :key="player.keyId">
+              <tr v-for="player in team.data.squad" :key="player.keyId" class="no-link">
                 <td class="text-center pl-1 pr-1">{{ player.position }}</td>
                 <td class="text-center pl-1 pr-1">{{ player.shirtNumber }}</td>
                 <td class="text-center">{{ player.playerName }}</td>
@@ -100,8 +104,10 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.table {
-  pointer-events: none;
+.no-link {
+  &:hover {
+    background-color: transparent !important;
+  }
 }
 .emblem {
   width: 53px;
