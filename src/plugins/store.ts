@@ -35,6 +35,10 @@ export default defineNuxtPlugin((_, inject) => {
     team: {
       data: Team | null
     }
+    match: {
+      data: Match | null
+      detail: MatchDetail | null
+    }
   } = reactive({
     confirmation: {
       isLogin: false
@@ -60,6 +64,10 @@ export default defineNuxtPlugin((_, inject) => {
     },
     team: {
       data: null
+    },
+    match: {
+      data: null,
+      detail: null
     }
   })
 

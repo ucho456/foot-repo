@@ -52,7 +52,10 @@ service cloud.firestore {
     // matches
     match /matches/{matchId} {
       allow read;
-      match /for-report/{matchId} {
+      match /for-report/{forReportId} {
+        allow read;
+      }
+      match /match-detail/{matchDetailId} {
         allow read;
       }
     }

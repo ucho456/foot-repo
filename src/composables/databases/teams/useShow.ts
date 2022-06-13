@@ -1,5 +1,5 @@
 import { ref } from '@nuxtjs/composition-api'
-import { setTeam } from '@/db/teams'
+import { toStoreTeam } from '@/db/teams'
 import useStore from '@/utils/useStore'
 const useShow = () => {
   const { team } = useStore()
@@ -9,7 +9,7 @@ const useShow = () => {
     try {
       isLoading.value = true
       team.data = null
-      await setTeam(teamId)
+      await toStoreTeam(teamId, team)
       return 'success'
     } catch {
       return 'failure'

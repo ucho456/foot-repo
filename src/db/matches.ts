@@ -11,7 +11,7 @@ import {
   where
 } from 'firebase/firestore'
 import type { QueryDocumentSnapshot } from 'firebase/firestore'
-import { forReportConverter, matchConverter } from '@/utils/converters'
+import { forReportConverter, matchConverter, matchDetailConverter } from '@/utils/converters'
 import { makeSearchOption } from '@/utils/searchOption'
 
 export const toStoreFirstMatches = async (matches: {
@@ -91,4 +91,21 @@ export const toStoreMatchSchedule = async (league: {
       league.matchSchedule.push(doc.data())
     }
   })
+}
+
+export const toStoreMatch = async (
+  matchId: string,
+  match: { data: Match | null; detail: MatchDetail | null }
+) => {
+  const db = getFirestore()
+  const mRef = doc(db, 'matches', matchId).withConverter(matchConverter)
+  const mSnapshot = await getDoc(mRef)
+  match.data = mSnapshot.exists() ? mSnapshot.data() : null
+  if (mSnapshot.exists()) {
+    const mdRef = doc(db, 'matches', matchId, 'match-detail', matchId).withConverter(
+      matchDetailConverter
+    )
+    const mdSnapshot = await getDoc(mdRef)
+    match.detail = mdSnapshot.exists() ? mdSnapshot.data() : null
+  }
 }
