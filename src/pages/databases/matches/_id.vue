@@ -23,6 +23,11 @@
                     <td class="text-center">{{ player.shirtNumber }}</td>
                     <td class="text-center">{{ player.name }}</td>
                   </tr>
+                  <tr>
+                    <td class="text-center">HC</td>
+                    <td></td>
+                    <td class="text-center">{{ match.detail.homeCoachName }}</td>
+                  </tr>
                 </tbody>
               </template>
             </v-simple-table>
@@ -42,6 +47,11 @@
                     <td class="text-center">{{ player.position }}</td>
                     <td class="text-center">{{ player.shirtNumber }}</td>
                     <td class="text-center">{{ player.name }}</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center">HC</td>
+                    <td></td>
+                    <td class="text-center">{{ match.detail.awayCoachName }}</td>
                   </tr>
                 </tbody>
               </template>
@@ -132,6 +142,10 @@
         </v-simple-table>
       </v-container>
     </v-card>
+    <v-card v-if="!isLoadingMatch && match.data && match.detail" class="mt-4" outlined>
+      <ContainerLoading :is-loading="isLoadingSameMatchReports" />
+      <ContainerReportTable :h2="'同じ試合の選手採点'" :reports="match.reports" />
+    </v-card>
   </v-container>
 </template>
 
@@ -142,18 +156,28 @@ import useSnackbar from '@/utils/useSnackbar'
 import useStore from '@/utils/useStore'
 import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 import RowMatchHeader from '@/components/organisms/RowMatchHeader.vue'
+import ContainerReportTable from '@/components/organisms/ContainerReportTable.vue'
 
 export default defineComponent({
   name: 'MatchShow',
 
   components: {
     ContainerLoading,
-    RowMatchHeader
+    RowMatchHeader,
+    ContainerReportTable
   },
 
   setup() {
     const route = useRoute()
-    const { isLoadingMatch, setUp, homeTab, homePlayers, awayTab, awayPlayers } = useShow()
+    const {
+      isLoadingMatch,
+      isLoadingSameMatchReports,
+      setUp,
+      homeTab,
+      homePlayers,
+      awayTab,
+      awayPlayers
+    } = useShow()
     const { openSnackbar } = useSnackbar()
     const { match } = useStore()
 
@@ -168,7 +192,15 @@ export default defineComponent({
     }
     setUpPage()
 
-    return { isLoadingMatch, match, homeTab, homePlayers, awayTab, awayPlayers }
+    return {
+      isLoadingMatch,
+      isLoadingSameMatchReports,
+      match,
+      homeTab,
+      homePlayers,
+      awayTab,
+      awayPlayers
+    }
   }
 })
 </script>

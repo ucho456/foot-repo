@@ -38,6 +38,7 @@ export default defineNuxtPlugin((_, inject) => {
     match: {
       data: Match | null
       detail: MatchDetail | null
+      reports: Report[]
     }
   } = reactive({
     confirmation: {
@@ -67,7 +68,8 @@ export default defineNuxtPlugin((_, inject) => {
     },
     match: {
       data: null,
-      detail: null
+      detail: null,
+      reports: []
     }
   })
 
@@ -95,6 +97,11 @@ export default defineNuxtPlugin((_, inject) => {
       yearMonth: ''
     }
     store.team = { data: null }
+    store.match = {
+      data: null,
+      detail: null,
+      reports: []
+    }
   }
 
   onGlobalSetup(() => {

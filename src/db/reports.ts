@@ -256,3 +256,18 @@ export const createComment = async (
     createdAt: serverTimestamp()
   })
 }
+
+export const toStoreSameMatchReports = async (
+  matchId: string,
+  match: { reports: Report[] }
+): Promise<void> => {
+  const db = getFirestore()
+  const rRef = collection(db, 'reports').withConverter(reportConverter)
+  const q = query(rRef, where('match.id', '==', matchId), orderBy('createdAt', 'desc'), limit(3))
+  const rSnaphot = await getDocs(q)
+  rSnaphot.forEach((doc) => {
+    if (doc.exists()) {
+      match.reports.push(doc.data())
+    }
+  })
+}

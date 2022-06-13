@@ -30,6 +30,7 @@ export const StoreKey: InjectionKey<{
   match: {
     data: Match | null
     detail: MatchDetail | null
+    reports: Report[]
   }
 }> = Symbol('store')
 
