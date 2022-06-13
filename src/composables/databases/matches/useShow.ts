@@ -1,4 +1,4 @@
-import { ref } from '@nuxtjs/composition-api'
+import { computed, ref } from '@nuxtjs/composition-api'
 import useStore from '@/utils/useStore'
 import { toStoreMatch } from '@/db/matches'
 
@@ -20,7 +20,22 @@ const useShow = () => {
     }
   }
 
-  return { setUp }
+  const homeTab = ref(0)
+  const homePlayers = computed(() => {
+    if (!match.detail) {
+      return []
+    }
+    return homeTab.value === 0 ? match.detail.homeLineup : match.detail.homeBench
+  })
+  const awayTab = ref(0)
+  const awayPlayers = computed(() => {
+    if (!match.detail) {
+      return []
+    }
+    return awayTab.value === 0 ? match.detail.awayLineup : match.detail.awayBench
+  })
+
+  return { isLoadingMatch, setUp, homeTab, homePlayers, awayTab, awayPlayers }
 }
 
 export default useShow
