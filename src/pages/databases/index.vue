@@ -4,7 +4,7 @@
       <v-container fluid>
         <v-row dense>
           <v-col v-for="competition in competitions" :key="competition.title" cols="6" sm="4">
-            <v-card @click="pushToCompetitionShow(competition)">
+            <v-card :to="competition.to">
               <v-img :src="competition.src" />
               <v-card-text class="font-weight-bold text-center">
                 {{ competition.title }}
@@ -18,16 +18,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useRouter } from '@nuxtjs/composition-api'
-import useStore from '@/utils/useStore'
+import { defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   name: 'Databases',
 
   setup() {
-    const router = useRouter()
-    const { league, resetLeague } = useStore()
-
     const competitions: {
       id: string
       title: string
@@ -72,18 +68,7 @@ export default defineComponent({
       }
     ]
 
-    const pushToCompetitionShow = (competition: {
-      id: string
-      to: string
-      type: CompetitionType
-    }): void => {
-      if (competition.type === 'league' && league.competitionId !== competition.id) {
-        resetLeague()
-      }
-      router.push(competition.to)
-    }
-
-    return { competitions, pushToCompetitionShow }
+    return { competitions }
   }
 })
 </script>

@@ -38,24 +38,11 @@ const useStore = () => {
   const store = inject(StoreKey)
   if (store === undefined) throw new Error('store is no provided')
 
-  const resetLeague = (): void => {
-    store.league = {
-      name: '',
-      competitionId: '',
-      standings: null,
-      scorers: null,
-      matchSchedule: [],
-      season: '',
-      yearMonth: ''
-    }
-  }
-
   return {
     confirmation: store.confirmation,
     matches: store.matches,
     reports: store.reports,
     league: store.league,
-    resetLeague,
     team: store.team,
     match: store.match
   }

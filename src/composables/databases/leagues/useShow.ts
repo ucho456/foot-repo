@@ -9,9 +9,19 @@ const useShow = () => {
   const isLoadingStandings = ref(false)
   const isLoadingScorers = ref(false)
   const isLoadingMatches = ref(false)
+  const resetLeague = (): void => {
+    league.name = ''
+    league.competitionId = ''
+    league.standings = null
+    league.scorers = null
+    league.matchSchedule = []
+    league.season = ''
+    league.yearMonth = ''
+  }
   const setUp = async (competitionId: string): Promise<'success' | 'failure'> => {
     try {
       isLoadingStandings.value = true
+      resetLeague()
       league.name = competitionMap.get(competitionId)?.name!
       league.competitionId = competitionId
       const today = new Date()

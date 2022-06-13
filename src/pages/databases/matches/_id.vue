@@ -2,10 +2,10 @@
   <v-container>
     <v-card outlined>
       <ContainerLoading :is-loading="isLoadingMatch" />
-      <v-container v-if="match.data">
+      <v-container v-if="match.data && !isLoadingMatch">
         <RowMatchHeader v-bind="match.data" />
       </v-container>
-      <v-container v-if="match.data && match.detail">
+      <v-container v-if="match.data && match.detail && !isLoadingMatch">
         <v-row>
           <v-col cols="12" sm="6">
             <div class="d-flex">

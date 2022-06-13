@@ -5,10 +5,13 @@ const useShow = () => {
   const { team } = useStore()
 
   const isLoading = ref(false)
+  const resetTeam = (): void => {
+    team.data = null
+  }
   const setUp = async (teamId: string): Promise<'success' | 'failure'> => {
     try {
       isLoading.value = true
-      team.data = null
+      resetTeam()
       await toStoreTeam(teamId, team)
       return 'success'
     } catch {

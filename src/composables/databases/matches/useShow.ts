@@ -8,9 +8,15 @@ const useShow = () => {
 
   const isLoadingMatch = ref(false)
   const isLoadingSameMatchReports = ref(false)
+  const resetMatch = (): void => {
+    match.data = null
+    match.detail = null
+    match.reports = []
+  }
   const setUp = async (matchId: string): Promise<'success' | 'failure'> => {
     try {
       isLoadingMatch.value = true
+      resetMatch()
       await toStoreMatch(matchId, match)
       isLoadingMatch.value = false
 
