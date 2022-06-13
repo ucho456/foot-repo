@@ -9,6 +9,7 @@ type Team = {
     imageUrl: string
   }[]
   squad: {
+    keyId: string
     playerName: string
     position: Position
     dateOfBirth: string

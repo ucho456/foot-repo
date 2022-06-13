@@ -23,6 +23,7 @@ type Standings = {
   id: string
   season: string
   table: {
+    keyId: string
     rank: number
     team: {
       id: string

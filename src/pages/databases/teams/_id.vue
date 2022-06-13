@@ -43,7 +43,7 @@
         <v-simple-table class="table" dence>
           <template #default>
             <tbody>
-              <tr v-for="player in team.data.squad" :key="player.shirtNumber">
+              <tr v-for="player in team.data.squad" :key="player.keyId">
                 <td class="text-center pl-1 pr-1">{{ player.position }}</td>
                 <td class="text-center pl-1 pr-1">{{ player.shirtNumber }}</td>
                 <td class="text-center">{{ player.playerName }}</td>
@@ -62,7 +62,6 @@
 </template>
 
 <script lang="ts">
-// squadにkeyId
 import { defineComponent, useRoute } from '@nuxtjs/composition-api'
 import useShow from '@/composables/databases/teams/useShow'
 import useSnackbar from '@/utils/useSnackbar'

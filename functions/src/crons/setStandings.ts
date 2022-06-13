@@ -16,8 +16,9 @@ const getStandings = async (competition: {
   return {
     id: fbStandings.season.startDate.substring(0, 4),
     season: fbStandings.season.startDate.substring(0, 4),
-    table: fbStandings.standings[0].table.map((t) => {
+    table: fbStandings.standings[0].table.map((t, i) => {
       return {
+        keyId: String(i),
         rank: t.position,
         team: {
           id: String(t.team.id),

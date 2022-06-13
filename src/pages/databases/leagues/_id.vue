@@ -32,7 +32,7 @@
             <tbody>
               <tr
                 v-for="item in league.standings.table"
-                :key="item.team.ref.path"
+                :key="item.keyId"
                 class="standings"
                 @click="pushToTeamShow(item.team.ref.path)"
               >

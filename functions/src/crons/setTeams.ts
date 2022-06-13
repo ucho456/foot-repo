@@ -26,8 +26,9 @@ const getTeam = async (teamId: number): Promise<Team> => {
     competitions: fbTeam.runningCompetitions.map((c) => {
       return { name: c.name, imageUrl: c.emblem }
     }),
-    squad: fbTeam.squad.map((s) => {
+    squad: fbTeam.squad.map((s, i) => {
       return {
+        keyId: String(i),
         playerName: s.name,
         position: convertPosition(s.position),
         dateOfBirth: s.dateOfBirth,
