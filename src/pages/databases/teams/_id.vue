@@ -1,65 +1,64 @@
 <template>
-  <v-card outlined>
-    <ContainerLoading v-if="isLoading" />
-    <v-container v-if="team.data">
-      <v-row>
-        <v-col cols="2">
-          <v-img class="emblem" :src="team.data.imageUrl" />
-        </v-col>
-        <v-col cols="10">
-          <h1>{{ team.data.name }}</h1>
-        </v-col>
-      </v-row>
-    </v-container>
-    <v-container v-if="team.data">
-      <v-row>
-        <v-col cols="8">スタジアム：{{ team.data.venue }}</v-col>
-        <v-col cols="4" class="text-right">
-          <a :href="team.data.website" target="_blank">公式サイト</a>
-        </v-col>
-      </v-row>
-      <v-row></v-row>
-    </v-container>
-    <v-container v-if="team.data">
-      <h2>コンペティション</h2>
-      <v-simple-table class="table" dence>
-        <template #default>
-          <tbody>
-            <tr v-for="competition in team.data.competitions" :key="competition.name">
-              <td class="text-center">
-                <v-img
-                  v-if="competition.imageUrl"
-                  :height="40"
-                  :width="40"
-                  :src="competition.imageUrl"
-                />
-              </td>
-              <td class="text-center">{{ competition.name }}</td>
-            </tr>
-          </tbody>
-        </template>
-      </v-simple-table>
-    </v-container>
-    <v-container v-if="team.data">
-      <h2>選手一覧</h2>
-      <v-simple-table class="table" dence>
-        <template #default>
-          <tbody>
-            <tr v-for="player in team.data.squad" :key="player.shirtNumber">
-              <td class="text-center pl-1 pr-1">{{ player.position }}</td>
-              <td class="text-center pl-1 pr-1">{{ player.shirtNumber }}</td>
-              <td class="text-center">{{ player.playerName }}</td>
-              <td class="text-center">{{ player.nationality }}</td>
-              <td class="text-center pl-1 pr-1" style="width: 50px">
-                {{ getAge(player.dateOfBirth) }}
-              </td>
-            </tr>
-          </tbody>
-        </template>
-      </v-simple-table>
-    </v-container>
-    <ContainerLastUpdated v-if="team.data" :last-updated="team.data.lastUpdated" />
-  </v-card>
+  <v-container>
+    <v-card outlined>
+      <ContainerLoading :is-loading="isLoading" />
+      <v-container v-if="team.data">
+        <v-row>
+          <v-col cols="3" sm="2">
+            <v-img class="emblem" :src="team.data.imageUrl" />
+          </v-col>
+          <v-col cols="9" sm="10">
+            <h1>{{ team.data.name }}</h1>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="8">スタジアム：{{ team.data.venue }}</v-col>
+          <v-col cols="4" class="text-right">
+            <a :href="team.data.website" target="_blank">公式サイト</a>
+          </v-col>
+        </v-row>
+      </v-container>
+      <v-container v-if="team.data">
+        <h2>コンペティション</h2>
+        <v-simple-table class="table" dence>
+          <template #default>
+            <tbody>
+              <tr v-for="competition in team.data.competitions" :key="competition.name">
+                <td class="text-center">
+                  <v-img
+                    v-if="competition.imageUrl"
+                    :height="40"
+                    :width="40"
+                    :src="competition.imageUrl"
+                  />
+                </td>
+                <td class="text-center">{{ competition.name }}</td>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
+      </v-container>
+      <v-container v-if="team.data">
+        <h2>選手一覧</h2>
+        <v-simple-table class="table" dence>
+          <template #default>
+            <tbody>
+              <tr v-for="player in team.data.squad" :key="player.shirtNumber">
+                <td class="text-center pl-1 pr-1">{{ player.position }}</td>
+                <td class="text-center pl-1 pr-1">{{ player.shirtNumber }}</td>
+                <td class="text-center">{{ player.playerName }}</td>
+                <td class="text-center">{{ player.nationality }}</td>
+                <td class="text-center pl-1 pr-1 td-w">
+                  {{ getAge(player.dateOfBirth) }}
+                </td>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
+      </v-container>
+      <ContainerLastUpdated v-if="team.data" :last-updated="team.data.lastUpdated" />
+    </v-card>
+  </v-container>
 </template>
 
 <script lang="ts">
@@ -109,6 +108,9 @@ export default defineComponent({
   width: 53px;
   height: 53px;
   margin: 0 auto;
+}
+.td-w {
+  width: 50px;
 }
 @media (max-width: $tabletBreakPoints) {
   .emblem {

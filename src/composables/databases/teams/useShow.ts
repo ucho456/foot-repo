@@ -1,11 +1,14 @@
 import { ref } from '@nuxtjs/composition-api'
 import { setTeam } from '@/db/teams'
-
+import useStore from '@/utils/useStore'
 const useShow = () => {
+  const { team } = useStore()
+
   const isLoading = ref(false)
   const setUp = async (teamId: string): Promise<'success' | 'failure'> => {
     try {
       isLoading.value = true
+      team.data = null
       await setTeam(teamId)
       return 'success'
     } catch {
