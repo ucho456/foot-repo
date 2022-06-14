@@ -12,6 +12,7 @@
     </v-card>
     <DialogSearch
       :is-dialog="isDialog"
+      :search-option="reports.searchOption"
       @input-competition-id="inputCompetitionId"
       @input-team-id="inputTeamId"
       @input-date="inputDate"
