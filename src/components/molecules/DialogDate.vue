@@ -10,7 +10,7 @@
       <v-text-field
         v-bind="attrs"
         :clearable="true"
-        :label="'日にち'"
+        :label="'試合日'"
         :prepend-inner-icon="'mdi-calendar'"
         :readonly="true"
         :value="date"

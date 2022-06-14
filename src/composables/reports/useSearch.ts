@@ -65,12 +65,12 @@ const useSearch = () => {
     }
   }
 
-  const isDialogDate = ref(false)
+  const isDialog = ref(false)
   const showDialog = (): void => {
-    isDialogDate.value = true
+    isDialog.value = true
   }
   const hideDialog = (): void => {
-    isDialogDate.value = false
+    isDialog.value = false
   }
 
   const inputCompetitionId = (competitionId: string): void => {
@@ -96,7 +96,7 @@ const useSearch = () => {
     isLoadingNext,
     readMore,
     search,
-    isDialogDate,
+    isDialog,
     showDialog,
     hideDialog,
     inputCompetitionId,

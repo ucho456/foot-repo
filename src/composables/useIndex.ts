@@ -20,7 +20,39 @@ const useIndex = () => {
     }
   }
 
-  return { isLoadingReports, setUp }
+  const isDialog = ref(false)
+  const showDialog = (): void => {
+    isDialog.value = true
+  }
+  const hideDialog = (): void => {
+    isDialog.value = false
+  }
+
+  const inputCompetitionId = (competitionId: string): void => {
+    reports.searchOption.teamId = ''
+    reports.searchOption.competitionId = competitionId
+  }
+  const inputTeamId = (teamId: string): void => {
+    reports.searchOption.teamId = teamId
+  }
+  const inputDate = (date: string): void => {
+    reports.searchOption.jstDate = date
+  }
+  const clearDate = (): void => {
+    reports.searchOption.jstDate = ''
+  }
+
+  return {
+    isLoadingReports,
+    setUp,
+    isDialog,
+    showDialog,
+    hideDialog,
+    inputCompetitionId,
+    inputTeamId,
+    inputDate,
+    clearDate
+  }
 }
 
 export default useIndex

@@ -60,7 +60,7 @@
       </v-container>
     </v-card>
     <DialogSearch
-      :is-dialog="isDialogDate"
+      :is-dialog="isDialog"
       :search-option="matches.searchOption"
       @input-competition-id="inputCompetitionId"
       @input-team-id="inputTeamId"
@@ -107,7 +107,7 @@ export default defineComponent({
       isLoadingNext,
       readMore,
       search,
-      isDialogDate,
+      isDialog,
       showDialog,
       hideDialog,
       inputCompetitionId,
@@ -137,7 +137,7 @@ export default defineComponent({
       isLoadingNext,
       readMore,
       search,
-      isDialogDate,
+      isDialog,
       showDialog,
       hideDialog,
       inputCompetitionId,
