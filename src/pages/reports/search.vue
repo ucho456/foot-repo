@@ -49,7 +49,7 @@
         <v-row justify="center">
           <v-col cols="10">
             <ButtonSubmit
-              :disabled="false"
+              :disabled="!hasNextPage"
               :icon="'mdi-page-next'"
               :loading="isLoadingNext"
               :text="'もっと読み込む'"
@@ -78,7 +78,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, watch } from '@nuxtjs/composition-api'
 import useSearch from '@/composables/reports/useSearch'
 import useSnackbar from '@/utils/useSnackbar'
 import useStore from '@/utils/useStore'
@@ -105,6 +105,7 @@ export default defineComponent({
       isLoadingFirst,
       setUp,
       isLoadingNext,
+      hasNextPage,
       readMore,
       search,
       isDialog,
@@ -130,11 +131,18 @@ export default defineComponent({
     }
     setUpPage()
 
+    watch(hasNextPage, (newVal, oldVal) => {
+      if (newVal === false && oldVal === true) {
+        openSnackbar('alert', '検索条件に合う全ての試合の取得を完了しています。')
+      }
+    })
+
     return {
       isDialogConfirmLogin,
       continueGuest,
       isLoadingFirst,
       isLoadingNext,
+      hasNextPage,
       readMore,
       search,
       isDialog,

@@ -1,20 +1,48 @@
 import { ref } from '@nuxtjs/composition-api'
-import { toStoreFirstReports } from '@/db/reports'
+import { toStoreFirstReports, toStoreNextReports } from '@/db/reports'
 import useStore from '@/utils/useStore'
 
 const useIndex = () => {
   const { reports } = useStore()
 
-  const isLoading = ref(false)
+  const isLoadingFirst = ref(false)
   const setUp = async () => {
     try {
-      isLoading.value = true
+      isLoadingFirst.value = true
       await toStoreFirstReports(reports)
       return 'success'
     } catch {
       return 'failure'
     } finally {
-      isLoading.value = false
+      isLoadingFirst.value = false
+    }
+  }
+
+  const isLoadingNext = ref(false)
+  const hasNextPage = ref(true)
+  const readMore = async (): Promise<'success' | 'failure'> => {
+    try {
+      isLoadingNext.value = true
+      await toStoreNextReports(reports, hasNextPage)
+      return 'success'
+    } catch {
+      return 'failure'
+    } finally {
+      isLoadingNext.value = false
+    }
+  }
+
+  const search = async (): Promise<'success' | 'failure'> => {
+    try {
+      hideDialog()
+      hasNextPage.value = true
+      isLoadingFirst.value = true
+      await toStoreFirstReports(reports)
+      return 'success'
+    } catch {
+      return 'failure'
+    } finally {
+      isLoadingFirst.value = false
     }
   }
 
@@ -41,8 +69,12 @@ const useIndex = () => {
   }
 
   return {
-    isLoading,
+    isLoadingFirst,
     setUp,
+    isLoadingNext,
+    hasNextPage,
+    readMore,
+    search,
     isDialog,
     showDialog,
     hideDialog,

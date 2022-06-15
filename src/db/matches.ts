@@ -1,3 +1,4 @@
+import { Ref } from '@nuxtjs/composition-api'
 import {
   collection,
   doc,
@@ -14,6 +15,7 @@ import type { QueryDocumentSnapshot } from 'firebase/firestore'
 import { forReportConverter, matchConverter, matchDetailConverter } from '@/utils/converters'
 import { makeSearchOption } from '@/utils/searchOption'
 
+const perPage = 10
 export const toStoreFirstMatches = async (matches: {
   data: Match[]
   lastVisible: QueryDocumentSnapshot<Match> | null
@@ -23,7 +25,7 @@ export const toStoreFirstMatches = async (matches: {
   const db = getFirestore()
   const mRef = collection(db, 'matches').withConverter(matchConverter)
   const options = makeSearchOption(matches.searchOption)
-  const q = query(mRef, ...options, orderBy('jstDate', 'desc'), limit(10))
+  const q = query(mRef, ...options, orderBy('jstDate', 'desc'), limit(perPage))
   const mSnapshot = await getDocs(q)
   mSnapshot.forEach((doc) => {
     if (doc.exists()) {
@@ -33,11 +35,14 @@ export const toStoreFirstMatches = async (matches: {
   matches.lastVisible = mSnapshot.docs[mSnapshot.docs.length - 1]
 }
 
-export const toStoreNextMatches = async (matches: {
-  data: Match[]
-  lastVisible: QueryDocumentSnapshot<Match> | null
-  searchOption: SearchOption
-}): Promise<void> => {
+export const toStoreNextMatches = async (
+  matches: {
+    data: Match[]
+    lastVisible: QueryDocumentSnapshot<Match> | null
+    searchOption: SearchOption
+  },
+  hasNextPage: Ref<boolean>
+): Promise<void> => {
   const db = getFirestore()
   const mRef = collection(db, 'matches').withConverter(matchConverter)
   const options = makeSearchOption(matches.searchOption)
@@ -46,7 +51,7 @@ export const toStoreNextMatches = async (matches: {
     ...options,
     orderBy('jstDate', 'desc'),
     startAfter(matches.lastVisible),
-    limit(10)
+    limit(perPage)
   )
   const mSnapshot = await getDocs(q)
   mSnapshot.forEach((doc) => {
@@ -54,6 +59,9 @@ export const toStoreNextMatches = async (matches: {
       matches.data.push(doc.data())
     }
   })
+  if (mSnapshot.size === 0) {
+    hasNextPage.value = false
+  }
   matches.lastVisible = mSnapshot.docs[mSnapshot.docs.length - 1]
 }
 

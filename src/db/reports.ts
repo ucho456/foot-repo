@@ -1,3 +1,4 @@
+import { Ref } from '@nuxtjs/composition-api'
 import {
   collection,
   doc,
@@ -11,6 +12,7 @@ import {
   query,
   serverTimestamp,
   setDoc,
+  startAfter,
   where,
   writeBatch
 } from 'firebase/firestore'
@@ -98,6 +100,7 @@ export const createReport = async (
   return rId
 }
 
+const perPage = 10
 export const toStoreFirstReports = async (reports: {
   data: Report[]
   lastVisible: QueryDocumentSnapshot<Report> | null
@@ -107,13 +110,43 @@ export const toStoreFirstReports = async (reports: {
   const db = getFirestore()
   const rRef = collection(db, 'reports').withConverter(reportConverter)
   const options = makeSearchOption(reports.searchOption)
-  const q = query(rRef, ...options, orderBy('createdAt', 'desc'), limit(10))
+  const q = query(rRef, ...options, orderBy('createdAt', 'desc'), limit(perPage))
   const rSnapshot = await getDocs(q)
   rSnapshot.forEach((doc) => {
     if (doc.exists()) {
       reports.data.push(doc.data())
     }
   })
+  reports.lastVisible = rSnapshot.docs[rSnapshot.docs.length - 1]
+}
+
+export const toStoreNextReports = async (
+  reports: {
+    data: Report[]
+    lastVisible: QueryDocumentSnapshot<Report> | null
+    searchOption: SearchOption
+  },
+  hasNextPage: Ref<boolean>
+): Promise<void> => {
+  const db = getFirestore()
+  const rRef = collection(db, 'reports').withConverter(reportConverter)
+  const options = makeSearchOption(reports.searchOption)
+  const q = query(
+    rRef,
+    ...options,
+    orderBy('createdAt', 'desc'),
+    startAfter(reports.lastVisible),
+    limit(perPage)
+  )
+  const rSnapshot = await getDocs(q)
+  rSnapshot.forEach((doc) => {
+    if (doc.exists()) {
+      reports.data.push(doc.data())
+    }
+  })
+  if (rSnapshot.size === 0) {
+    hasNextPage.value = false
+  }
   reports.lastVisible = rSnapshot.docs[rSnapshot.docs.length - 1]
 }
 

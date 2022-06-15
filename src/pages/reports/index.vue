@@ -1,9 +1,9 @@
 <template>
   <v-container>
     <v-card outlined>
-      <ContainerLoading :is-loading="isLoading" />
+      <ContainerLoading :is-loading="isLoadingFirst" />
       <ContainerReportTable
-        v-if="!isLoading"
+        v-if="!isLoadingFirst"
         :h2="'みんなの選手採点'"
         :reports="reports.data"
         :search-button-flg="true"
@@ -12,7 +12,13 @@
       <v-container>
         <v-row justify="center">
           <v-col cols="10">
-            <ButtonSubmit :icon="'mdi-page-next'" :text="'もっと読み込む'" />
+            <ButtonSubmit
+              :disabled="!hasNextPage"
+              :icon="'mdi-page-next'"
+              :loading="isLoadingNext"
+              :text="'もっと読み込む'"
+              @click="readMore"
+            />
           </v-col>
         </v-row>
       </v-container>
@@ -25,12 +31,13 @@
       @input-date="inputDate"
       @clear-date="clearDate"
       @close="hideDialog"
+      @search="search"
     />
   </v-container>
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, watch } from '@nuxtjs/composition-api'
 import useIndex from '@/composables/reports/useIndex'
 import useStore from '@/utils/useStore'
 import useSnackbar from '@/utils/useSnackbar'
@@ -51,8 +58,12 @@ export default defineComponent({
 
   setup() {
     const {
-      isLoading,
+      isLoadingFirst,
       setUp,
+      isLoadingNext,
+      hasNextPage,
+      readMore,
+      search,
       isDialog,
       showDialog,
       hideDialog,
@@ -72,8 +83,18 @@ export default defineComponent({
     }
     setUpPage()
 
+    watch(hasNextPage, (newVal, oldVal) => {
+      if (newVal === false && oldVal === true) {
+        openSnackbar('alert', '検索条件に合う全ての選手採点の取得を完了しています。')
+      }
+    })
+
     return {
-      isLoading,
+      isLoadingFirst,
+      isLoadingNext,
+      hasNextPage,
+      readMore,
+      search,
       isDialog,
       showDialog,
       hideDialog,

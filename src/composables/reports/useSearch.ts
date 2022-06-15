@@ -40,10 +40,11 @@ const useSearch = () => {
   }
 
   const isLoadingNext = ref(false)
+  const hasNextPage = ref(true)
   const readMore = async (): Promise<'success' | 'failure'> => {
     try {
       isLoadingNext.value = true
-      await toStoreNextMatches(matches)
+      await toStoreNextMatches(matches, hasNextPage)
       return 'success'
     } catch {
       return 'failure'
@@ -94,6 +95,7 @@ const useSearch = () => {
     isLoadingFirst,
     setUp,
     isLoadingNext,
+    hasNextPage,
     readMore,
     search,
     isDialog,
