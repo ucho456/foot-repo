@@ -46,7 +46,7 @@ jobs:
             --region asia-northeast1 \
             --set-env-vars=TZ=Asia/Tokyo \
             --platform managed \
-            --no-allow-unauthenticated \
+            --allow-unauthenticated \
             --quiet
 
       - name: Deploy to Firebase
