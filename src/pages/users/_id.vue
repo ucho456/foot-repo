@@ -45,8 +45,10 @@
         :action-flg="loginUser && loginUser.uid === user.id"
         :h2="`${user.name}の選手採点`"
         :reports="reports"
+        @delete="showDeletePopup"
       />
     </v-card>
+    <DialogDelete :is-dialog="isDialogDelete" :report="deleteReport" @close="hideDeletePopup" />
   </v-container>
 </template>
 
@@ -59,6 +61,7 @@ import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 import ButtonOutlined from '@/components/molecules/ButtonOutlined.vue'
 import RowUser from '@/components/organisms/RowUser.vue'
 import ContainerReportTable from '@/components/organisms/ContainerReportTable.vue'
+import DialogDelete from '@/components/molecules/DialogDelete.vue'
 
 export default defineComponent({
   name: 'UserShow',
@@ -67,12 +70,23 @@ export default defineComponent({
     ContainerLoading,
     ButtonOutlined,
     RowUser,
-    ContainerReportTable
+    ContainerReportTable,
+    DialogDelete
   },
 
   setup() {
     const route = useRoute()
-    const { user, reports, isLoadingUser, isLoadingReports, setUp } = useShow()
+    const {
+      user,
+      reports,
+      isLoadingUser,
+      isLoadingReports,
+      setUp,
+      isDialogDelete,
+      deleteReport,
+      showDeletePopup,
+      hideDeletePopup
+    } = useShow()
     const { loginUser } = useLoginUser()
     const { openSnackbar } = useSnackbar()
 
@@ -85,7 +99,17 @@ export default defineComponent({
     }
     setUpPage()
 
-    return { user, reports, isLoadingUser, isLoadingReports, loginUser }
+    return {
+      user,
+      reports,
+      isLoadingUser,
+      isLoadingReports,
+      isDialogDelete,
+      deleteReport,
+      showDeletePopup,
+      hideDeletePopup,
+      loginUser
+    }
   }
 })
 </script>

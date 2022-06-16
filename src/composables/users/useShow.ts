@@ -27,7 +27,28 @@ const useShow = () => {
     }
   }
 
-  return { user, reports, isLoadingUser, isLoadingReports, setUp }
+  const isDialogDelete = ref(false)
+  const deleteReport: Ref<Report | null> = ref(null)
+  const showDeletePopup = (report: Report): void => {
+    isDialogDelete.value = true
+    deleteReport.value = report
+  }
+  const hideDeletePopup = (): void => {
+    isDialogDelete.value = false
+    deleteReport.value = null
+  }
+
+  return {
+    user,
+    reports,
+    isLoadingUser,
+    isLoadingReports,
+    setUp,
+    isDialogDelete,
+    deleteReport,
+    showDeletePopup,
+    hideDeletePopup
+  }
 }
 
 export default useShow

@@ -41,7 +41,7 @@
             <v-icon color="primary" @click="handleEdit(report.id)">mdi-pencil</v-icon>
           </v-btn>
           <v-btn icon>
-            <v-icon color="failure" @click="handleDelete(report.id)">mdi-delete</v-icon>
+            <v-icon color="failure" @click="handleDelete(report)">mdi-delete</v-icon>
           </v-btn>
         </v-list-item-action>
       </div>
@@ -71,8 +71,8 @@ export default defineComponent({
     const handleEdit = (reportId: string): void => {
       ctx.emit('edit', reportId)
     }
-    const handleDelete = (reportId: string): void => {
-      ctx.emit('delete', reportId)
+    const handleDelete = (report: Report): void => {
+      ctx.emit('delete', report)
     }
 
     return { noAvatarImage, handleSearch, handleEdit, handleDelete }
