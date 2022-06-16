@@ -4,20 +4,20 @@ import { fetchUser } from '@/db/users'
 const useShow = () => {
   const user: Ref<User | null> = ref(null)
 
-  const isLoading = ref(false)
+  const isLoadingUser = ref(false)
   const setUp = async (userId: string): Promise<'success' | 'failure'> => {
     try {
-      isLoading.value = true
+      isLoadingUser.value = true
       user.value = await fetchUser(userId)
       return 'success'
     } catch {
       return 'failure'
     } finally {
-      isLoading.value = false
+      isLoadingUser.value = false
     }
   }
 
-  return { user, isLoading, setUp }
+  return { user, isLoadingUser, setUp }
 }
 
 export default useShow

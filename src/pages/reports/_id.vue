@@ -8,7 +8,7 @@
             <h1>{{ report.title }}</h1>
           </v-col>
         </v-row>
-        <RowUserImageName :image-url="report.user.imageUrl" :name="report.user.name" />
+        <RowUser :image-url="report.user.imageUrl" :name="report.user.name" />
         <RowMatchHeader v-bind="match" />
         <v-row v-if="report.selectTeam !== 'away'">
           <v-col>
@@ -57,10 +57,13 @@
             <h2>投稿者 / ツイートシェアボタン・いいねボタン・チーム名</h2>
           </v-col>
         </v-row>
-        <RowUserImageName :image-url="user.imageUrl" :name="user.name" />
-        <v-row>
-          <v-col class="ml-10 mt-n5">{{ user.teamId }}<br />{{ user.greet }}</v-col>
-        </v-row>
+        <RowUser
+          :image-url="user.imageUrl"
+          :image-size="60"
+          :name="user.name"
+          :team-name="user.teamId"
+          :greet="user.greet"
+        />
       </v-container>
     </v-card>
     <v-card v-if="!isLoadingReport && !isLoadingUser" class="mt-4" outlined>
@@ -84,14 +87,15 @@
         </v-row>
         <v-row v-for="comment in comments" :key="comment.id">
           <v-container class="comment">
-            <RowUserImageName :image-url="comment.user.imageUrl" :name="comment.user.name" />
-            <v-row>
-              <v-col class="ml-10 mt-n5">{{ comment.text }}</v-col>
-            </v-row>
+            <RowUser
+              :comment="comment.text"
+              :image-url="comment.user.imageUrl"
+              :name="comment.user.name"
+            />
           </v-container>
         </v-row>
-        <RowUserImageName v-if="loginUser" :image-url="loginUser.imageUrl" :name="loginUser.name" />
-        <RowUserImageName v-else :name="'ゲスト'" />
+        <RowUser v-if="loginUser" :image-url="loginUser.imageUrl" :name="loginUser.name" />
+        <RowUser v-else :name="'ゲスト'" />
         <v-row>
           <v-col cols="12"> <Textarea v-model="inputComment" :maxlength="140" /></v-col>
           <v-col cols="6" class="mt-n8">
@@ -120,7 +124,7 @@ import useLoginUser from '@/utils/useLoginUser'
 import useSnackbar from '@/utils/useSnackbar'
 import useStore from '@/utils/useStore'
 import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
-import RowUserImageName from '@/components/organisms/RowUserImageName.vue'
+import RowUser from '@/components/organisms/RowUser.vue'
 import RowMatchHeader from '@/components/organisms/RowMatchHeader.vue'
 import ContainerReportTable from '@/components/organisms/ContainerReportTable.vue'
 import Textarea from '@/components/molecules/Textarea.vue'
@@ -132,7 +136,7 @@ export default defineComponent({
 
   components: {
     ContainerLoading,
-    RowUserImageName,
+    RowUser,
     RowMatchHeader,
     ContainerReportTable,
     Textarea,

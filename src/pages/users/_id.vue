@@ -1,7 +1,42 @@
 <template>
   <v-container>
     <v-card outlined>
-      {{ user }}
+      <ContainerLoading :is-loading="isLoadingUser" />
+      <v-container v-if="user">
+        <v-row>
+          <v-col cols="8" />
+          <v-col v-if="loginUser && loginUser.uid === user.id" cols="4">
+            <ButtonOutlined :text="'編集'" />
+          </v-col>
+          <v-col v-else cols="4">
+            <ButtonOutlined :text="'フォロー'" />
+          </v-col>
+        </v-row>
+        <RowUser
+          :image-url="user.imageUrl"
+          :image-size="60"
+          :name="user.name"
+          :team-name="'team name'"
+          :greet="user.greet"
+        />
+        <v-row>
+          <v-col cols="4" class="text-center hover"
+            ><v-icon large>mdi-text-box-edit</v-icon>
+            <div>投稿</div>
+            <div>0 件</div></v-col
+          >
+          <v-col cols="4" class="text-center hover"
+            ><v-icon large>mdi-account-arrow-right</v-icon>
+            <div>フォロー</div>
+            <div>0 件</div></v-col
+          >
+          <v-col cols="4" class="text-center hover"
+            ><v-icon large>mdi-account-arrow-left</v-icon>
+            <div>フォロワー</div>
+            <div>0 件</div></v-col
+          >
+        </v-row>
+      </v-container>
     </v-card>
   </v-container>
 </template>
@@ -11,17 +46,22 @@ import { defineComponent, useRoute } from '@nuxtjs/composition-api'
 import useShow from '@/composables/users/useShow'
 import useLoginUser from '@/utils/useLoginUser'
 import useSnackbar from '@/utils/useSnackbar'
+import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
+import ButtonOutlined from '@/components/molecules/ButtonOutlined.vue'
+import RowUser from '@/components/organisms/RowUser.vue'
 
 export default defineComponent({
   name: 'UserShow',
 
-  components: {},
-
-  props: {},
+  components: {
+    ContainerLoading,
+    ButtonOutlined,
+    RowUser
+  },
 
   setup() {
     const route = useRoute()
-    const { user, isLoading, setUp } = useShow()
+    const { user, isLoadingUser, setUp } = useShow()
     const { loginUser } = useLoginUser()
     const { openSnackbar } = useSnackbar()
 
@@ -34,7 +74,17 @@ export default defineComponent({
     }
     setUpPage()
 
-    return { user, isLoading, loginUser }
+    return { user, isLoadingUser, loginUser }
   }
 })
 </script>
+
+<style lang="scss" scoped>
+.hover {
+  &:hover {
+    background: #eceff1;
+    opacity: 0.8;
+    cursor: pointer;
+  }
+}
+</style>
