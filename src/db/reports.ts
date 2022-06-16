@@ -1,6 +1,7 @@
 import { Ref } from '@nuxtjs/composition-api'
 import {
   collection,
+  deleteDoc,
   doc,
   endBefore,
   getDoc,
@@ -318,4 +319,10 @@ export const toStoreSameMatchReports = async (
       match.reports.push(doc.data())
     }
   })
+}
+
+export const deleteReport = async (reportId: string): Promise<void> => {
+  const db = getFirestore()
+  const rRef = doc(db, 'reports', reportId).withConverter(reportConverter)
+  await deleteDoc(rRef)
 }

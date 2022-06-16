@@ -48,7 +48,13 @@
         @delete="showDeletePopup"
       />
     </v-card>
-    <DialogDelete :is-dialog="isDialogDelete" :report="deleteReport" @close="hideDeletePopup" />
+    <DialogDelete
+      :is-dialog="isDialogDelete"
+      :is-loading="isLoadingDel"
+      :report="targetReport"
+      @close="hideDeletePopup"
+      @delete="deleteReport"
+    />
   </v-container>
 </template>
 
@@ -83,9 +89,11 @@ export default defineComponent({
       isLoadingReports,
       setUp,
       isDialogDelete,
-      deleteReport,
+      targetReport,
       showDeletePopup,
-      hideDeletePopup
+      hideDeletePopup,
+      isLoadingDel,
+      del
     } = useShow()
     const { loginUser } = useLoginUser()
     const { openSnackbar } = useSnackbar()
@@ -99,16 +107,24 @@ export default defineComponent({
     }
     setUpPage()
 
+    const deleteReport = async () => {
+      const result = await del()
+      const message = result === 'success' ? '削除に成功しました。' : '削除に失敗しました。'
+      openSnackbar(result, message)
+    }
+
     return {
       user,
       reports,
       isLoadingUser,
       isLoadingReports,
       isDialogDelete,
-      deleteReport,
+      targetReport,
       showDeletePopup,
       hideDeletePopup,
-      loginUser
+      isLoadingDel,
+      loginUser,
+      deleteReport
     }
   }
 })

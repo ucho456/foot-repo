@@ -13,7 +13,12 @@
         <v-container>
           <v-row justify="center">
             <v-col cols="10">
-              <v-btn block color="failure" class="white--text" @click="handleDelete"
+              <v-btn
+                block
+                color="failure"
+                class="white--text"
+                :loading="isLoading"
+                @click="handleDelete"
                 >削除する</v-btn
               >
             </v-col>
@@ -35,6 +40,7 @@ export default defineComponent({
 
   props: {
     isDialog: { type: Boolean, default: false },
+    isLoading: { type: Boolean, default: false },
     report: {
       type: Object as () => Report,
       required: false,

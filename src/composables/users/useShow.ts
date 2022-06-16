@@ -1,5 +1,5 @@
 import { ref, Ref } from '@nuxtjs/composition-api'
-import { fetchUserReports } from '@/db/reports'
+import { fetchUserReports, deleteReport } from '@/db/reports'
 import { fetchUser } from '@/db/users'
 
 const useShow = () => {
@@ -28,14 +28,28 @@ const useShow = () => {
   }
 
   const isDialogDelete = ref(false)
-  const deleteReport: Ref<Report | null> = ref(null)
+  const targetReport: Ref<Report | null> = ref(null)
   const showDeletePopup = (report: Report): void => {
     isDialogDelete.value = true
-    deleteReport.value = report
+    targetReport.value = report
   }
   const hideDeletePopup = (): void => {
     isDialogDelete.value = false
-    deleteReport.value = null
+    targetReport.value = null
+  }
+  const isLoadingDel = ref(false)
+  const del = async (): Promise<'success' | 'failure'> => {
+    try {
+      isLoadingDel.value = true
+      await deleteReport(targetReport.value?.id!)
+      reports.value = reports.value.filter((r) => r.id !== targetReport.value?.id!)
+      return 'success'
+    } catch {
+      return 'failure'
+    } finally {
+      hideDeletePopup()
+      isLoadingDel.value = false
+    }
   }
 
   return {
@@ -45,9 +59,11 @@ const useShow = () => {
     isLoadingReports,
     setUp,
     isDialogDelete,
-    deleteReport,
+    targetReport,
     showDeletePopup,
-    hideDeletePopup
+    hideDeletePopup,
+    isLoadingDel,
+    del
   }
 }
 

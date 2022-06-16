@@ -25,7 +25,7 @@
     </v-footer>
     <v-navigation-drawer v-model="isDrawer" fixed right temporary>
       <client-only>
-        <v-list-item v-if="loginUser" :to="`users/${loginUser.uid}`">
+        <v-list-item v-if="loginUser" :to="`/users/${loginUser.uid}`">
           <v-list-item-avatar>
             <v-img v-if="loginUser.imageUrl" :src="loginUser.imageUrl" />
             <v-img v-else :src="noAvatarImage" />

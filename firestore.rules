@@ -135,6 +135,7 @@ service cloud.firestore {
     match /reports/{reportId} {
       allow read;
       allow create: if isValidReport(request.resource.data);
+      allow delete;
       match /home-team-report-items/{homeTeamReportItemId} {
         allow read;
         allow create: if isValidReportItem(request.resource.data)
