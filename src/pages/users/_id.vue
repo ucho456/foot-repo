@@ -20,10 +20,10 @@
           :greet="user.greet"
         />
         <v-row>
-          <v-col cols="4" class="text-center hover"
+          <v-col cols="4" class="text-center"
             ><v-icon large>mdi-text-box-edit</v-icon>
             <div>投稿</div>
-            <div>0 件</div></v-col
+            <div>{{ reports.length }} 件</div></v-col
           >
           <v-col cols="4" class="text-center hover"
             ><v-icon large>mdi-account-arrow-right</v-icon>
@@ -38,6 +38,15 @@
         </v-row>
       </v-container>
     </v-card>
+    <v-card v-if="!isLoadingUser && user" class="mt-4" outlined>
+      <ContainerLoading :is-loading="isLoadingReports" />
+      <ContainerReportTable
+        v-if="!isLoadingReports"
+        :action-flg="loginUser && loginUser.uid === user.id"
+        :h2="`${user.name}の選手採点`"
+        :reports="reports"
+      />
+    </v-card>
   </v-container>
 </template>
 
@@ -49,6 +58,7 @@ import useSnackbar from '@/utils/useSnackbar'
 import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 import ButtonOutlined from '@/components/molecules/ButtonOutlined.vue'
 import RowUser from '@/components/organisms/RowUser.vue'
+import ContainerReportTable from '@/components/organisms/ContainerReportTable.vue'
 
 export default defineComponent({
   name: 'UserShow',
@@ -56,12 +66,13 @@ export default defineComponent({
   components: {
     ContainerLoading,
     ButtonOutlined,
-    RowUser
+    RowUser,
+    ContainerReportTable
   },
 
   setup() {
     const route = useRoute()
-    const { user, isLoadingUser, setUp } = useShow()
+    const { user, reports, isLoadingUser, isLoadingReports, setUp } = useShow()
     const { loginUser } = useLoginUser()
     const { openSnackbar } = useSnackbar()
 
@@ -74,7 +85,7 @@ export default defineComponent({
     }
     setUpPage()
 
-    return { user, isLoadingUser, loginUser }
+    return { user, reports, isLoadingUser, isLoadingReports, loginUser }
   }
 })
 </script>

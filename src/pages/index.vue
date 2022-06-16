@@ -7,7 +7,7 @@
         :h2="'みんなの選手採点'"
         :reports="reports.data"
         :search-button-flg="true"
-        @click="showDialog"
+        @search="showDialog"
       />
     </v-card>
     <DialogSearch

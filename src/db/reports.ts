@@ -225,6 +225,21 @@ export const fetchSameMatchReports = async (
   return reports
 }
 
+export const fetchUserReports = async (userId: string): Promise<Report[]> => {
+  const db = getFirestore()
+  const rRef = collection(db, 'reports').withConverter(reportConverter)
+  const uRef = doc(db, 'users', userId)
+  const q = query(rRef, where('user.ref', '==', uRef), orderBy('createdAt', 'desc'))
+  const rShapshot = await getDocs(q)
+  const reports: Report[] = []
+  rShapshot.forEach((doc) => {
+    if (doc.exists()) {
+      reports.push(doc.data())
+    }
+  })
+  return reports
+}
+
 export const subscribeComments = async (
   reportId: string,
   comments: ReportComment[]
