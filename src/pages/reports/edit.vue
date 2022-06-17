@@ -73,7 +73,7 @@
           <v-col cols="10" sm="6">
             <ButtonSubmit
               :icon="'mdi-pencil-plus'"
-              :text="'投稿'"
+              :text="'更新'"
               :loading="isLoadingSend"
               @click="submitUpdate"
             />

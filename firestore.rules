@@ -61,7 +61,7 @@ service cloud.firestore {
     }
 
     // reports
-    function isValidReport(report) {
+    function isValidCreateReport(report) {
       return report.size() == 13
       && 'title' in report && report.title is string
       && 'user' in report && report.user is map
@@ -104,7 +104,49 @@ service cloud.firestore {
       && isValidString(report.summary, 0, 300);
     }
 
-    function isValidReportItem(reportItem) {
+    function isValidUpdateReport(newReport, oldReport) {
+      return newReport.size() == 13
+      && 'title' in newReport && newReport.title is string
+      && 'user' in newReport && newReport.user is map
+      && 'homeTeam' in newReport && newReport.homeTeam is map
+      && 'awayTeam' in newReport && newReport.awayTeam is map
+      && 'competition' in newReport && newReport.competition is map
+      && 'jstDate' in newReport && newReport.jstDate is string
+      && 'match' in newReport && newReport.match is map
+      && 'matchday' in newReport && newReport.matchday is int
+      && 'selectTeam' in newReport && newReport.selectTeam is string
+      && 'momId' in newReport && newReport.momId is string
+      && 'summary' in newReport && newReport.summary is string
+      && 'teamIds' in newReport && newReport.teamIds is list
+      && 'createdAt' in newReport && newReport.createdAt is timestamp
+      && isValidString(newReport.title, 0, 32)
+      && newReport.user.ref == oldReport.user.ref
+      && newReport.user.name == oldReport.user.name
+      && newReport.homeTeam.id == oldReport.homeTeam.id
+      && newReport.homeTeam.ref == oldReport.homeTeam.ref
+      && newReport.homeTeam.name == oldReport.homeTeam.name
+      && newReport.homeTeam.shortName == oldReport.homeTeam.shortName
+      && newReport.homeTeam.imageUrl == oldReport.homeTeam.imageUrl
+      && newReport.homeTeam.score == oldReport.homeTeam.score
+      && newReport.awayTeam.id == oldReport.awayTeam.id
+      && newReport.awayTeam.ref == oldReport.awayTeam.ref
+      && newReport.awayTeam.name == oldReport.awayTeam.name
+      && newReport.awayTeam.shortName == oldReport.awayTeam.shortName
+      && newReport.awayTeam.imageUrl == oldReport.awayTeam.imageUrl
+      && newReport.awayTeam.score == oldReport.awayTeam.score
+      && newReport.competition.id == oldReport.competition.id
+      && newReport.competition.ref == oldReport.competition.ref
+      && newReport.competition.name == oldReport.competition.name
+      && newReport.jstDate == oldReport.jstDate
+      && newReport.match.id == oldReport.match.id
+      && newReport.match.ref == oldReport.match.ref
+      && newReport.matchday == oldReport.matchday
+      && isValidSelectTeam(newReport.selectTeam)
+      && isValidString(newReport.momId, 0, 30) // 後で10に戻す。
+      && isValidString(newReport.summary, 0, 300);
+    }
+
+    function isValidCreateReportItem(reportItem) {
       return reportItem.size() == 6
       && 'player' in reportItem && reportItem.player is map
       && 'position' in reportItem && (reportItem.position is string || reportItem.position == null)
@@ -121,6 +163,23 @@ service cloud.firestore {
       && isValidInt(reportItem.order, 1, 30);
     }
 
+    function isValidUpdateReportItem(newReportItem, oldReportItem) {
+      return newReportItem.size() == 6
+      && 'player' in newReportItem && newReportItem.player is map
+      && 'position' in newReportItem && (newReportItem.position is string || newReportItem.position == null)
+      && 'shirtNumber' in newReportItem && (newReportItem.shirtNumber is int || newReportItem.shirtNumber == null)
+      && 'point' in newReportItem && newReportItem.point is string
+      && 'text' in newReportItem && newReportItem.text is string
+      && 'order' in newReportItem && newReportItem.order is int
+      && newReportItem.player.id == oldReportItem.player.id
+      && newReportItem.player.name == oldReportItem.player.name
+      && newReportItem.position == oldReportItem.position
+      && newReportItem.shirtNumber == oldReportItem.shirtNumber
+      && isValidPoint(newReportItem.point)
+      && isValidString(newReportItem.text, 0, 140)
+      && newReportItem.order == oldReportItem.order;
+    }
+
     function isValidComment(comment) {
       return comment.size() == 3
       && 'user' in comment && comment.user is map
@@ -134,19 +193,21 @@ service cloud.firestore {
 
     match /reports/{reportId} {
       allow read;
-      allow create: if isValidReport(request.resource.data);
-      allow update;
+      allow create: if isValidCreateReport(request.resource.data);
+      allow update: if request.auth != null
+      && userRef(request.auth.uid) == resource.data.user.ref
+      && isValidUpdateReport(request.resource.data, resource.data);
       allow delete: if request.auth != null
       && userRef(request.auth.uid) == resource.data.user.ref;
       match /home-team-report-items/{homeTeamReportItemId} {
         allow read;
-        allow create: if isValidReportItem(request.resource.data)
-        allow update;
+        allow create: if isValidCreateReportItem(request.resource.data)
+        allow update: if isValidUpdateReportItem(request.resource.data, resource.data);
       }
       match /away-team-report-items/{awayTeamReportItemId} {
         allow read;
-        allow create: if isValidReportItem(request.resource.data)
-        allow update;
+        allow create: if isValidCreateReportItem(request.resource.data)
+        allow update: if isValidUpdateReportItem(request.resource.data, resource.data);
       }
       match /comments/{commentId} {
         allow read;
