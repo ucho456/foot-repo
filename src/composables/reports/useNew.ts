@@ -15,8 +15,8 @@ const useNew = () => {
     momId: ''
   })
   const match: Ref<Match | null> = ref(null)
-  const isLoadingSetUp = ref(false)
 
+  const isLoadingSetUp = ref(false)
   const setUp = async (matchId: string): Promise<'success' | 'failure'> => {
     try {
       isLoadingSetUp.value = true
