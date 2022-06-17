@@ -326,3 +326,40 @@ export const deleteReport = async (reportId: string): Promise<void> => {
   const rRef = doc(db, 'reports', reportId).withConverter(reportConverter)
   await deleteDoc(rRef)
 }
+
+export const updateReport = async (inputReport: InputReport, initReport: Report): Promise<void> => {
+  const db = getFirestore()
+  const batch = writeBatch(db)
+  const rRef = doc(db, 'reports', initReport.id).withConverter(reportConverter)
+  batch.update(rRef, {
+    ...initReport,
+    title: inputReport.title,
+    selectTeam: inputReport.selectTeam,
+    summary: inputReport.summary,
+    momId: inputReport.momId
+  })
+
+  inputReport.homeTeamReportItems.forEach((htri) => {
+    const htriRef = doc(
+      db,
+      'reports',
+      initReport.id,
+      'home-team-report-items',
+      htri.id
+    ).withConverter(reportItemConverter)
+    batch.update(htriRef, htri)
+  })
+
+  inputReport.awayTeamReportItems.forEach((atri) => {
+    const htriRef = doc(
+      db,
+      'reports',
+      initReport.id,
+      'away-team-report-items',
+      atri.id
+    ).withConverter(reportItemConverter)
+    batch.update(htriRef, atri)
+  })
+
+  await batch.commit()
+}

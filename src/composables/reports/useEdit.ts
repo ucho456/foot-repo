@@ -1,6 +1,6 @@
 import { reactive, ref, Ref, watch } from '@nuxtjs/composition-api'
 import { fetchMatch } from '@/db/matches'
-import { fetchReportAndItems } from '@/db/reports'
+import { fetchReportAndItems, updateReport } from '@/db/reports'
 
 const useEdit = () => {
   const initReport: Ref<Report | null> = ref(null)
@@ -20,13 +20,13 @@ const useEdit = () => {
   const setUp = async (
     reportId: string,
     uid: string
-  ): Promise<'success' | 'failure' | 'invalid access'> => {
+  ): Promise<'success' | 'failure' | 'unauthorized access'> => {
     try {
       isLoadingSetUp.value = true
       const { resReport, resHomeTeamReportItems, resAwayTeamReportItems } =
         await fetchReportAndItems(reportId)
       if (resReport.user.ref.id !== uid) {
-        return 'invalid access'
+        return 'unauthorized access'
       }
       initReport.value = resReport
       inputReport.title = resReport.title
@@ -53,7 +53,31 @@ const useEdit = () => {
     }
   )
 
-  return { inputReport, match, isLoadingSetUp, setUp }
+  const isLoadingSend = ref(false)
+  const update = async (): Promise<'success' | 'failure'> => {
+    try {
+      isLoadingSend.value = true
+      await updateReport(inputReport, initReport.value!)
+      return 'success'
+    } catch {
+      return 'failure'
+    } finally {
+      isLoadingSend.value = false
+    }
+  }
+
+  const save = () => {
+    try {
+      isLoadingSend.value = true
+      return 'success'
+    } catch {
+      return 'failure'
+    } finally {
+      isLoadingSend.value = false
+    }
+  }
+
+  return { inputReport, match, isLoadingSetUp, setUp, isLoadingSend, update, save }
 }
 
 export default useEdit

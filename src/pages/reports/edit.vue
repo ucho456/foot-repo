@@ -71,10 +71,20 @@
         </v-row>
         <v-row justify="center">
           <v-col cols="10" sm="6">
-            <ButtonSubmit :icon="'mdi-pencil-plus'" :text="'投稿'" />
+            <ButtonSubmit
+              :icon="'mdi-pencil-plus'"
+              :text="'投稿'"
+              :loading="isLoadingSend"
+              @click="submitUpdate"
+            />
           </v-col>
           <v-col cols="10" sm="6">
-            <ButtonSubmit :icon="'mdi-content-save'" :text="'一時保存'" />
+            <ButtonSubmit
+              :icon="'mdi-content-save'"
+              :text="'一時保存'"
+              :loading="isLoadingSend"
+              @click="submitSave"
+            />
           </v-col>
         </v-row>
       </v-container>
@@ -113,7 +123,7 @@ export default defineComponent({
   setup() {
     const route = useRoute()
     const router = useRouter()
-    const { inputReport, match, isLoadingSetUp, setUp } = useEdit()
+    const { inputReport, match, isLoadingSetUp, setUp, isLoadingSend, update, save } = useEdit()
     const { loginUser } = useLoginUser()
     const { openSnackbar } = useSnackbar()
 
@@ -122,11 +132,29 @@ export default defineComponent({
       const result = await setUp(reportId, loginUser.value?.uid!)
       if (result === 'failure') {
         openSnackbar(result, 'データの取得に失敗しました。')
+      } else if (result === 'unauthorized access') {
+        openSnackbar(result, '不正なアクセスが発生しました。')
+        router.push('/')
       }
     }
     setUpPage()
 
-    return { inputReport, match, isLoadingSetUp }
+    const submitUpdate = async (): Promise<void> => {
+      const result = await update()
+      const message =
+        result === 'success' ? '選手採点を編集しました。' : '選手採点の編集に失敗しました。'
+      openSnackbar(result, message)
+      if (result === 'success') {
+        const reportId = route.value.query.reportId as string
+        router.push(`/reports/${reportId}`)
+      }
+    }
+
+    const submitSave = async (): Promise<void> => {
+      await save()
+    }
+
+    return { inputReport, match, isLoadingSetUp, isLoadingSend, submitUpdate, submitSave }
   }
 })
 </script>
