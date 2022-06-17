@@ -38,7 +38,7 @@
         </v-list-item>
         <v-list-item-action v-if="actionFlg">
           <v-btn icon>
-            <v-icon color="primary" @click="handleEdit(report.id)">mdi-pencil</v-icon>
+            <v-icon color="primary" @click="pushToReportEdit(report.id)">mdi-pencil</v-icon>
           </v-btn>
           <v-btn icon>
             <v-icon color="failure" @click="handleDelete(report)">mdi-delete</v-icon>
@@ -50,7 +50,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
+import { defineComponent, useRouter } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   name: 'ContainerReportTable',
@@ -63,19 +63,20 @@ export default defineComponent({
   },
 
   setup(_, ctx) {
+    const router = useRouter()
     const noAvatarImage = require('@/assets/no_avatar.png')
 
     const handleSearch = (): void => {
       ctx.emit('search')
     }
-    const handleEdit = (reportId: string): void => {
-      ctx.emit('edit', reportId)
+    const pushToReportEdit = (reportId: string): void => {
+      router.push({ path: '/reports/edit', query: { reportId } })
     }
     const handleDelete = (report: Report): void => {
       ctx.emit('delete', report)
     }
 
-    return { noAvatarImage, handleSearch, handleEdit, handleDelete }
+    return { noAvatarImage, handleSearch, pushToReportEdit, handleDelete }
   }
 })
 </script>

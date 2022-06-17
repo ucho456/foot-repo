@@ -4,11 +4,11 @@
       <ContainerLoading :is-loading="isLoadingUser" />
       <v-container v-if="user">
         <v-row>
-          <v-col cols="8" />
-          <v-col v-if="loginUser && loginUser.uid === user.id" cols="4">
+          <v-col cols="8" sm="9" />
+          <v-col v-if="loginUser && loginUser.uid === user.id" cols="4" sm="3">
             <ButtonOutlined :text="'編集'" />
           </v-col>
-          <v-col v-else cols="4">
+          <v-col v-else cols="4" sm="3">
             <ButtonOutlined :text="'フォロー'" />
           </v-col>
         </v-row>
