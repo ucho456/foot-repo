@@ -25,10 +25,7 @@ const useEdit = () => {
     try {
       isLoadingSetUp.value = true
       const { resReport, resHomeTeamReportItems, resAwayTeamReportItems } =
-        await fetchReportAndItems(reportId)
-      if (resReport.user.ref.id !== uid) {
-        return 'unauthorized access'
-      }
+        await fetchReportAndItems(reportId, uid)
       initReport.value = resReport
       inputReport.title = resReport.title
       inputReport.selectTeam = resReport.selectTeam
@@ -39,8 +36,10 @@ const useEdit = () => {
       inputReport.publish = resReport.publish
       match.value = await fetchMatch(resReport.match.id)
       return 'success'
-    } catch {
-      return 'failure'
+    } catch (error) {
+      return error instanceof Error && error.message === 'unauthorized access'
+        ? 'unauthorized access'
+        : 'failure'
     } finally {
       isLoadingSetUp.value = false
     }

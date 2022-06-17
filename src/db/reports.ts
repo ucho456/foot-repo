@@ -115,7 +115,13 @@ export const toStoreFirstReports = async (reports: {
   const db = getFirestore()
   const rRef = collection(db, 'reports').withConverter(reportConverter)
   const options = makeSearchOption(reports.searchOption)
-  const q = query(rRef, ...options, orderBy('createdAt', 'desc'), limit(perPage))
+  const q = query(
+    rRef,
+    ...options,
+    where('publish', '==', true),
+    orderBy('createdAt', 'desc'),
+    limit(perPage)
+  )
   const rSnapshot = await getDocs(q)
   rSnapshot.forEach((doc) => {
     if (doc.exists()) {
@@ -139,6 +145,7 @@ export const toStoreNextReports = async (
   const q = query(
     rRef,
     ...options,
+    where('publish', '==', true),
     orderBy('createdAt', 'desc'),
     startAfter(reports.lastVisible),
     limit(perPage)
@@ -156,7 +163,8 @@ export const toStoreNextReports = async (
 }
 
 export const fetchReportAndItems = async (
-  reportId: string
+  reportId: string,
+  uid?: string
 ): Promise<{
   resReport: Report
   resHomeTeamReportItems: ReportItem[]
@@ -168,6 +176,9 @@ export const fetchReportAndItems = async (
 
   if (rShapshot.exists()) {
     const resReport = rShapshot.data()
+    if (!resReport.publish && resReport.user.ref.id !== uid) {
+      throw new Error('unauthorized access')
+    }
     const resHomeTeamReportItems: ReportItem[] = []
     const resAwayTeamReportItems: ReportItem[] = []
     const htriRef = collection(db, 'reports', reportId, 'home-team-report-items').withConverter(
@@ -219,7 +230,13 @@ export const fetchSameMatchReports = async (
 ): Promise<Report[]> => {
   const db = getFirestore()
   const rRef = collection(db, 'reports').withConverter(reportConverter)
-  const q = query(rRef, where('match.id', '==', matchId), orderBy('createdAt', 'desc'), limit(4))
+  const q = query(
+    rRef,
+    where('match.id', '==', matchId),
+    where('publish', '==', true),
+    orderBy('createdAt', 'desc'),
+    limit(4)
+  )
   const rShapshot = await getDocs(q)
   const reports: Report[] = []
   rShapshot.forEach((doc) => {
@@ -316,7 +333,13 @@ export const toStoreSameMatchReports = async (
 ): Promise<void> => {
   const db = getFirestore()
   const rRef = collection(db, 'reports').withConverter(reportConverter)
-  const q = query(rRef, where('match.id', '==', matchId), orderBy('createdAt', 'desc'), limit(3))
+  const q = query(
+    rRef,
+    where('match.id', '==', matchId),
+    where('publish', '==', true),
+    orderBy('createdAt', 'desc'),
+    limit(3)
+  )
   const rSnaphot = await getDocs(q)
   rSnaphot.forEach((doc) => {
     if (doc.exists()) {

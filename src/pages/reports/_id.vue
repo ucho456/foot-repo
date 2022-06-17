@@ -118,7 +118,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeUnmount, useRoute } from '@nuxtjs/composition-api'
+import { defineComponent, onBeforeUnmount, useRoute, useRouter } from '@nuxtjs/composition-api'
 import useShow from '@/composables/reports/useShow'
 import useLoginUser from '@/utils/useLoginUser'
 import useSnackbar from '@/utils/useSnackbar'
@@ -146,6 +146,7 @@ export default defineComponent({
 
   setup() {
     const route = useRoute()
+    const router = useRouter()
     const {
       report,
       homeTeamReportItems,
@@ -174,6 +175,9 @@ export default defineComponent({
       const result = await setUp(reportId)
       if (result === 'failure') {
         openSnackbar(result, 'データの取得に失敗しました。')
+      } else if (result === 'unauthorized access') {
+        openSnackbar(result, '不正なアクセスが発生した為、ホーム画面に遷移しました。')
+        router.push('/')
       }
     }
     setUpPage()

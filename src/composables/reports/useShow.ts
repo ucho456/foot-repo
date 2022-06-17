@@ -26,11 +26,13 @@ const useShow = () => {
   const isLoadingUser = ref(false)
   const isLoadingSameMatchReports = ref(false)
   const isLoadingComments = ref(false)
-  const setUp = async (reportId: string): Promise<'success' | 'failure'> => {
+  const setUp = async (
+    reportId: string
+  ): Promise<'success' | 'failure' | 'unauthorized access'> => {
     try {
       isLoadingReport.value = true
       const { resReport, resHomeTeamReportItems, resAwayTeamReportItems } =
-        await fetchReportAndItems(reportId)
+        await fetchReportAndItems(reportId, loginUser.value?.uid)
       report.value = resReport
       homeTeamReportItems.value = resHomeTeamReportItems
       awayTeamReportItems.value = resAwayTeamReportItems
@@ -50,8 +52,10 @@ const useShow = () => {
       isLoadingComments.value = false
 
       return 'success'
-    } catch {
-      return 'failure'
+    } catch (error) {
+      return error instanceof Error && error.message === 'unauthorized access'
+        ? 'unauthorized access'
+        : 'failure'
     } finally {
       isLoadingReport.value = false
       isLoadingUser.value = false

@@ -94,7 +94,7 @@ export default defineComponent({
       if (result === 'failure') {
         openSnackbar(result, 'エラーが発生しました。')
       } else if (result === 'unauthorized access') {
-        openSnackbar(result, '不正なアクセスが発生しました。')
+        openSnackbar(result, '不正なアクセスが発生した為、ホーム画面に遷移しました。')
         router.push('/')
       }
     }
