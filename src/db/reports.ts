@@ -34,7 +34,10 @@ export const createReport = async (
   const rRef = doc(db, 'reports', rId).withConverter(reportConverter)
   batch.set(rRef, {
     id: rId,
-    title: inputReport.title,
+    title:
+      inputReport.title !== ''
+        ? inputReport.title
+        : `${match.homeTeam.name} vs ${match.awayTeam.name} の選手採点`,
     user: loginUser
       ? {
           ref: doc(db, `users/${loginUser.uid}`),
@@ -332,7 +335,10 @@ export const updateReport = async (inputReport: InputReport, initReport: Report)
   const batch = writeBatch(db)
   const rRef = doc(db, 'reports', initReport.id).withConverter(reportConverter)
   batch.update(rRef, {
-    title: inputReport.title,
+    title:
+      inputReport.title !== ''
+        ? inputReport.title
+        : `${initReport.homeTeam.name} vs ${initReport.awayTeam.name} の選手採点`,
     user: initReport.user,
     homeTeam: initReport.homeTeam,
     awayTeam: initReport.awayTeam,

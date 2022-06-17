@@ -76,7 +76,7 @@ service cloud.firestore {
       && 'summary' in report && report.summary is string
       && 'teamIds' in report && report.teamIds is list
       && 'createdAt' in report && report.createdAt is timestamp
-      && isValidString(report.title, 0, 32)
+      && isValidString(report.title, 1, 100)
       && (report.user.ref == userRef(request.auth.uid) || report.user.ref == userRef('guest'))
       && isValidString(report.user.name, 1, 20)
       && isValidImage(report.user.imageUrl)
@@ -119,7 +119,7 @@ service cloud.firestore {
       && 'summary' in newReport && newReport.summary is string
       && 'teamIds' in newReport && newReport.teamIds is list
       && 'createdAt' in newReport && newReport.createdAt is timestamp
-      && isValidString(newReport.title, 0, 32)
+      && isValidString(newReport.title, 1, 100)
       && newReport.user.ref == oldReport.user.ref
       && newReport.user.name == oldReport.user.name
       && newReport.homeTeam.id == oldReport.homeTeam.id

@@ -10,7 +10,7 @@
               v-model="inputReport.title"
               :icon="'mdi-format-title'"
               :label="'タイトル'"
-              :maxlength="32"
+              :maxlength="100"
             />
           </v-col>
         </v-row>
