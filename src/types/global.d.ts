@@ -19,6 +19,7 @@ type InputReport = {
   awayTeamReportItems: ReportItem[]
   summary: string
   momId: string
+  publish: boolean
 }
 
 type InputUser = {

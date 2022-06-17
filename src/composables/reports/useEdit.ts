@@ -12,7 +12,8 @@ const useEdit = () => {
     homeTeamReportItems: [],
     awayTeamReportItems: [],
     summary: '',
-    momId: ''
+    momId: '',
+    publish: true
   })
   const match: Ref<Match | null> = ref(null)
 
@@ -34,7 +35,8 @@ const useEdit = () => {
       inputReport.homeTeamReportItems = resHomeTeamReportItems
       inputReport.awayTeamReportItems = resAwayTeamReportItems
       inputReport.summary = resReport.summary
-      inputReport.momId = resReport.momId // momIdの初期値がセレクトボックスに反映されない。
+      inputReport.momId = resReport.momId
+      inputReport.publish = resReport.publish
       match.value = await fetchMatch(resReport.match.id)
       return 'success'
     } catch {
@@ -57,6 +59,7 @@ const useEdit = () => {
   const update = async (): Promise<'success' | 'failure'> => {
     try {
       isLoadingSend.value = true
+      inputReport.publish = true
       await updateReport(inputReport, initReport.value!)
       return 'success'
     } catch {
@@ -66,9 +69,11 @@ const useEdit = () => {
     }
   }
 
-  const save = () => {
+  const save = async (): Promise<'success' | 'failure'> => {
     try {
       isLoadingSend.value = true
+      inputReport.publish = false
+      await updateReport(inputReport, initReport.value!)
       return 'success'
     } catch {
       return 'failure'

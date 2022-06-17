@@ -12,7 +12,8 @@ const useNew = () => {
     homeTeamReportItems: [],
     awayTeamReportItems: [],
     summary: '',
-    momId: ''
+    momId: '',
+    publish: true
   })
   const match: Ref<Match | null> = ref(null)
 
@@ -47,6 +48,7 @@ const useNew = () => {
   const create = async (): Promise<{ result: string; reportId: string }> => {
     try {
       isLoadingSend.value = true
+      inputReport.publish = true
       const reportId = await createReport(loginUser.value, inputReport, match.value!)
       return { result: 'success', reportId }
     } catch {
@@ -56,12 +58,14 @@ const useNew = () => {
     }
   }
 
-  const save = () => {
+  const save = async (): Promise<{ result: string; reportId: string }> => {
     try {
       isLoadingSend.value = true
-      return 'success'
+      inputReport.publish = false
+      const reportId = await createReport(loginUser.value, inputReport, match.value!)
+      return { result: 'success', reportId }
     } catch {
-      return 'failure'
+      return { result: 'failure', reportId: '' }
     } finally {
       isLoadingSend.value = false
     }

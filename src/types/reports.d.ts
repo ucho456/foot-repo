@@ -37,6 +37,7 @@ type Report = {
   momId: string
   summary: string
   teamIds: string[]
+  publish: boolean
   createdAt: import('firebase/firestore').FieldValue
 }
 

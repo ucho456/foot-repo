@@ -149,6 +149,7 @@ export const reportConverter: FirestoreDataConverter<Report> = {
       momId: report.momId,
       summary: report.summary,
       teamIds: report.teamIds,
+      publish: report.publish,
       createdAt: report.createdAt
     }
   },
@@ -168,6 +169,7 @@ export const reportConverter: FirestoreDataConverter<Report> = {
       momId: data.momId,
       summary: data.summary,
       teamIds: data.teamIds,
+      publish: data.publish,
       createdAt: data.createdAt
     }
   }

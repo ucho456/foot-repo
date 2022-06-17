@@ -62,7 +62,7 @@ service cloud.firestore {
 
     // reports
     function isValidCreateReport(report) {
-      return report.size() == 13
+      return report.size() == 14
       && 'title' in report && report.title is string
       && 'user' in report && report.user is map
       && 'homeTeam' in report && report.homeTeam is map
@@ -75,6 +75,7 @@ service cloud.firestore {
       && 'momId' in report && report.momId is string
       && 'summary' in report && report.summary is string
       && 'teamIds' in report && report.teamIds is list
+      && 'publish' in report && report.publish is bool
       && 'createdAt' in report && report.createdAt is timestamp
       && isValidString(report.title, 1, 100)
       && (report.user.ref == userRef(request.auth.uid) || report.user.ref == userRef('guest'))
@@ -105,7 +106,7 @@ service cloud.firestore {
     }
 
     function isValidUpdateReport(newReport, oldReport) {
-      return newReport.size() == 13
+      return newReport.size() == 14
       && 'title' in newReport && newReport.title is string
       && 'user' in newReport && newReport.user is map
       && 'homeTeam' in newReport && newReport.homeTeam is map
@@ -118,6 +119,7 @@ service cloud.firestore {
       && 'momId' in newReport && newReport.momId is string
       && 'summary' in newReport && newReport.summary is string
       && 'teamIds' in newReport && newReport.teamIds is list
+      && 'publish' in newReport && newReport.publish is bool
       && 'createdAt' in newReport && newReport.createdAt is timestamp
       && isValidString(newReport.title, 1, 100)
       && newReport.user.ref == oldReport.user.ref

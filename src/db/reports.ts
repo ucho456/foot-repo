@@ -80,6 +80,7 @@ export const createReport = async (
     momId: inputReport.momId,
     summary: inputReport.summary,
     teamIds: [match.homeTeam.id, match.awayTeam.id],
+    publish: inputReport.publish,
     createdAt: serverTimestamp()
   })
 
@@ -350,6 +351,7 @@ export const updateReport = async (inputReport: InputReport, initReport: Report)
     momId: inputReport.momId,
     summary: inputReport.summary,
     teamIds: initReport.teamIds,
+    publish: inputReport.publish,
     createdAt: initReport.createdAt
   })
 

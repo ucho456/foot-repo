@@ -73,7 +73,7 @@
           <v-col cols="10" sm="6">
             <ButtonSubmit
               :icon="'mdi-pencil-plus'"
-              :text="'更新'"
+              :text="inputReport.publish ? '更新する' : '更新して公開する'"
               :loading="isLoadingSend"
               @click="submitUpdate"
             />
@@ -81,7 +81,7 @@
           <v-col cols="10" sm="6">
             <ButtonSubmit
               :icon="'mdi-content-save'"
-              :text="'一時保存'"
+              :text="'非公開にして一時保存する'"
               :loading="isLoadingSend"
               @click="submitSave"
             />
@@ -151,7 +151,14 @@ export default defineComponent({
     }
 
     const submitSave = async (): Promise<void> => {
-      await save()
+      const result = await save()
+      const message =
+        result === 'success' ? '選手採点を一時保存しました。' : '選手採点の一時保存に失敗しました。'
+      openSnackbar(result, message)
+      if (result === 'success') {
+        const reportId = route.value.query.reportId as string
+        router.push(`/reports/${reportId}`)
+      }
     }
 
     return { inputReport, match, isLoadingSetUp, isLoadingSend, submitUpdate, submitSave }
