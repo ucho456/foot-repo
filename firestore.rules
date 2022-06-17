@@ -142,7 +142,7 @@ service cloud.firestore {
       && newReport.match.ref == oldReport.match.ref
       && newReport.matchday == oldReport.matchday
       && isValidSelectTeam(newReport.selectTeam)
-      && isValidString(newReport.momId, 0, 30) // 後で10に戻す。
+      && isValidString(newReport.momId, 0, 10)
       && isValidString(newReport.summary, 0, 300);
     }
 

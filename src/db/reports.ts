@@ -84,18 +84,18 @@ export const createReport = async (
   })
 
   inputReport.homeTeamReportItems.forEach((htri) => {
-    const htriColRef = collection(db, 'home-team-report-items')
-    const htriId = doc(htriColRef).id
-    const htriRef = doc(db, 'reports', rId, 'home-team-report-items', htriId).withConverter(
+    // const htriColRef = collection(db, 'home-team-report-items')
+    // const htriId = doc(htriColRef).id
+    const htriRef = doc(db, 'reports', rId, 'home-team-report-items', htri.id).withConverter(
       reportItemConverter
     )
     batch.set(htriRef, htri)
   })
 
   inputReport.awayTeamReportItems.forEach((atri) => {
-    const atriColRef = collection(db, 'away-team-report-items')
-    const atriId = doc(atriColRef).id
-    const atriRef = doc(db, 'reports', rId, 'away-team-report-items', atriId).withConverter(
+    // const atriColRef = collection(db, 'away-team-report-items')
+    // const atriId = doc(atriColRef).id
+    const atriRef = doc(db, 'reports', rId, 'away-team-report-items', atri.id).withConverter(
       reportItemConverter
     )
     batch.set(atriRef, atri)
