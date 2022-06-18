@@ -8,14 +8,10 @@ import { config, convertPosition, footballUrl, leagueCompetitions } from '../uti
 const getMatchInfos = async (
   competitionId: number
 ): Promise<{ id: string; status: string; lastUpdated: string }[]> => {
-  // const utcDate =
-  //   process.env.NODE_ENV === 'production' ? new Date().toISOString().substring(0, 10) : '2022-05-22'
-  // const res: AxiosResponse<any, any> = await axios.get(
-  //   footballUrl + `competitions/${competitionId}/matches?dateFrom=${utcDate}&dateTo=${utcDate}`,
-  //   config
-  // )
+  const utcDate =
+    process.env.NODE_ENV === 'production' ? new Date().toISOString().substring(0, 10) : '2022-05-22'
   const res: AxiosResponse<any, any> = await axios.get(
-    footballUrl + `competitions/${competitionId}/matches?matchday=38&season=2021`,
+    footballUrl + `competitions/${competitionId}/matches?dateFrom=${utcDate}&dateTo=${utcDate}`,
     config
   )
   const matches = res.data.matches as FbMatch[]

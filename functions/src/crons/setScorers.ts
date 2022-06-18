@@ -6,7 +6,7 @@ import { config, footballUrl, leagueCompetitions } from '../utils'
 
 const getScorers = async (competition: { id: number; collectionId: string }): Promise<Scorers> => {
   const res: AxiosResponse<any, any> = await axios.get(
-    footballUrl + `competitions/${competition.id}/scorers?season=2021`, // 後で消す
+    footballUrl + `competitions/${competition.id}/scorers`,
     config
   )
   const fbScorers = res.data as FbScorers

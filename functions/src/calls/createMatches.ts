@@ -15,7 +15,7 @@ type Competition = { id: number; collectionId: string; name: string }
 
 const getFbMatches = async (competitionId: number): Promise<FbMatch[]> => {
   const res: AxiosResponse<any, any> = await axios.get(
-    footballUrl + `competitions/${competitionId}/matches?matchday=38&season=2021`,
+    footballUrl + `competitions/${competitionId}/matches`,
     config
   )
   const fbMatches = res.data.matches as FbMatch[]
