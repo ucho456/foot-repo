@@ -90,9 +90,11 @@ type FbMatch = {
       name: string
     }
     scorer: {
+      id: number
       name: string
     }
     assist: null | {
+      id: number
       name: string
     }
   }[]
@@ -103,6 +105,7 @@ type FbMatch = {
       name: string
     }
     player: {
+      id: number
       name: string
     }
     card: 'YELLOW_CARD' | 'RED_CARD'

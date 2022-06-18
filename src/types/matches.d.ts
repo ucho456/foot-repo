@@ -38,30 +38,55 @@ type MatchDetail = {
   id: string
   homeLineup: Player[]
   homeBench: Player[]
-  homeCoachName: string
   awayLineup: Player[]
   awayBench: Player[]
-  awayCoachName: string
   goals: {
     keyId: string
     minute: number
-    teamName: string
-    goalPlayerName: string
-    assistPlayerName: string | null
+    team: {
+      id: string
+      ref: import('firebase/firestore').DocumentReference
+      name: string
+    }
+    scorer: {
+      id: string
+      name: string
+    }
+    assist: null | {
+      id: string
+      name: string
+    }
   }[]
   bookings: {
     keyId: string
     minute: number
-    teamName: string
-    playerName: string
+    team: {
+      id: string
+      ref: import('firebase/firestore').DocumentReference
+      name: string
+    }
+    player: {
+      id: string
+      name: string
+    }
     card: Card
   }[]
   substitutions: {
     keyId: string
     minute: number
-    teamName: string
-    outPlayerName: string
-    inPlayerName: string
+    team: {
+      id: string
+      ref: import('firebase/firestore').DocumentReference
+      name: string
+    }
+    outPlayer: {
+      id: string
+      name: string
+    }
+    inPlayer: {
+      id: string
+      name: string
+    }
   }[]
   lastUpdated: string
 }

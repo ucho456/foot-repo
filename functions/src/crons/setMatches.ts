@@ -28,45 +28,76 @@ const getFbMatch = async (matchId: string): Promise<FbMatch> => {
 }
 
 const makeMatchDetail = (fbMatch: FbMatch): MatchDetail => {
-  const homeLineup = fbMatch.homeTeam.lineup.map((l) => {
+  const homeLineup: Player[] = fbMatch.homeTeam.lineup.map((l) => {
     return {
-      id: String(l.id),
-      name: l.name,
+      player: {
+        id: String(l.id),
+        name: l.name
+      },
       position: convertPosition(l.position),
       shirtNumber: l.shirtNumber
     }
   })
-  const homeBench = fbMatch.homeTeam.bench.map((b) => {
+  const homeBench: Player[] = fbMatch.homeTeam.bench.map((b) => {
     return {
-      id: String(b.id),
-      name: b.name,
+      player: {
+        id: String(b.id),
+        name: b.name
+      },
       position: convertPosition(b.position),
       shirtNumber: b.shirtNumber
     }
   })
-  const awayLineup = fbMatch.awayTeam.lineup.map((l) => {
+  homeBench.push({
+    player: {
+      id: String(fbMatch.homeTeam.coach.id),
+      name: fbMatch.homeTeam.coach.name
+    },
+    position: 'HC',
+    shirtNumber: null
+  })
+  const awayLineup: Player[] = fbMatch.awayTeam.lineup.map((l) => {
     return {
-      id: String(l.id),
-      name: l.name,
+      player: {
+        id: String(l.id),
+        name: l.name
+      },
       position: convertPosition(l.position),
       shirtNumber: l.shirtNumber
     }
   })
-  const awayBench = fbMatch.awayTeam.bench.map((b) => {
+  const awayBench: Player[] = fbMatch.awayTeam.bench.map((b) => {
     return {
-      id: String(b.id),
-      name: b.name,
+      player: {
+        id: String(b.id),
+        name: b.name
+      },
       position: convertPosition(b.position),
       shirtNumber: b.shirtNumber
     }
+  })
+  awayBench.push({
+    player: {
+      id: String(fbMatch.awayTeam.coach.id),
+      name: fbMatch.awayTeam.coach.name
+    },
+    position: 'HC',
+    shirtNumber: null
   })
   const goals = fbMatch.goals.map((g, i) => {
     return {
       keyId: String(i),
       minute: g.minute,
-      teamName: g.team.name,
-      goalPlayerName: g.scorer.name,
-      assistPlayerName: g.assist?.name || null
+      team: {
+        id: String(g.team.id),
+        ref: admin.firestore().doc(`teams/${g.team.id}`),
+        name: g.team.name
+      },
+      scorer: {
+        id: String(g.scorer.id),
+        name: g.scorer.name
+      },
+      assist: g.assist ? { id: String(g.assist.id), name: g.assist.name } : null
     }
   })
   const bookings = fbMatch.bookings.map((b, i) => {
@@ -74,8 +105,15 @@ const makeMatchDetail = (fbMatch: FbMatch): MatchDetail => {
     return {
       keyId: String(i),
       minute: b.minute,
-      teamName: b.team.name,
-      playerName: b.player.name,
+      team: {
+        id: String(b.team.id),
+        ref: admin.firestore().doc(`teams/${b.team.id}`),
+        name: b.team.name
+      },
+      player: {
+        id: String(b.player.id),
+        name: b.player.name
+      },
       card
     }
   })
@@ -83,19 +121,27 @@ const makeMatchDetail = (fbMatch: FbMatch): MatchDetail => {
     return {
       keyId: String(i),
       minute: s.minute,
-      teamName: s.team.name,
-      outPlayerName: s.playerOut.name,
-      inPlayerName: s.playerIn.name
+      team: {
+        id: String(s.team.id),
+        ref: admin.firestore().doc(`teams/${s.team.id}`),
+        name: s.team.name
+      },
+      outPlayer: {
+        id: String(s.playerOut.id),
+        name: s.playerOut.name
+      },
+      inPlayer: {
+        id: String(s.playerIn.id),
+        name: s.playerIn.name
+      }
     }
   })
   return {
     id: String(fbMatch.id),
     homeLineup,
     homeBench,
-    homeCoachName: fbMatch.homeTeam.coach.name,
     awayLineup,
     awayBench,
-    awayCoachName: fbMatch.awayTeam.coach.name,
     goals,
     bookings,
     substitutions,

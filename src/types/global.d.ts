@@ -59,8 +59,10 @@ type Point =
 type Position = 'GK' | 'DF' | 'MF' | 'FW' | 'HC'
 
 type Player = {
-  id: string
-  name: string
+  player: {
+    id: string
+    name: string
+  }
   position: Position
   shirtNumber: number | null
 }

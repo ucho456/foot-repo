@@ -18,15 +18,10 @@
             <v-simple-table dence>
               <template #default>
                 <tbody>
-                  <tr v-for="player in homePlayers" :key="player.id" class="no-link">
+                  <tr v-for="player in homePlayers" :key="player.player.id" class="no-link">
                     <td class="text-center">{{ player.position }}</td>
                     <td class="text-center">{{ player.shirtNumber }}</td>
-                    <td class="text-center">{{ player.name }}</td>
-                  </tr>
-                  <tr>
-                    <td class="text-center">HC</td>
-                    <td></td>
-                    <td class="text-center">{{ match.detail.homeCoachName }}</td>
+                    <td class="text-center">{{ player.player.name }}</td>
                   </tr>
                 </tbody>
               </template>
@@ -43,15 +38,10 @@
             <v-simple-table dence>
               <template #default>
                 <tbody>
-                  <tr v-for="player in awayPlayers" :key="player.id" class="no-link">
+                  <tr v-for="player in awayPlayers" :key="player.player.id" class="no-link">
                     <td class="text-center">{{ player.position }}</td>
                     <td class="text-center">{{ player.shirtNumber }}</td>
-                    <td class="text-center">{{ player.name }}</td>
-                  </tr>
-                  <tr>
-                    <td class="text-center">HC</td>
-                    <td></td>
-                    <td class="text-center">{{ match.detail.awayCoachName }}</td>
+                    <td class="text-center">{{ player.player.name }}</td>
                   </tr>
                 </tbody>
               </template>
@@ -76,9 +66,9 @@
             <tbody>
               <tr v-for="item in match.detail.goals" :key="item.keyId" class="no-link">
                 <td class="text-center">{{ item.minute }}</td>
-                <td class="text-center">{{ item.teamName }}</td>
-                <td class="text-center">{{ item.goalPlayerName }}</td>
-                <td class="text-center">{{ item.assistPlayerName }}</td>
+                <td class="text-center">{{ item.team.name }}</td>
+                <td class="text-center">{{ item.scorer.name }}</td>
+                <td class="text-center">{{ item.assist ? item.assist.name : '' }}</td>
               </tr>
             </tbody>
           </template>
@@ -101,9 +91,9 @@
             <tbody>
               <tr v-for="item in match.detail.substitutions" :key="item.keyId" class="no-link">
                 <td class="text-center">{{ item.minute }}</td>
-                <td class="text-center">{{ item.teamName }}</td>
-                <td class="text-center">{{ item.inPlayerName }}</td>
-                <td class="text-center">{{ item.outPlayerName }}</td>
+                <td class="text-center">{{ item.team.name }}</td>
+                <td class="text-center">{{ item.inPlayer.name }}</td>
+                <td class="text-center">{{ item.outPlayer.name }}</td>
               </tr>
             </tbody>
           </template>
@@ -126,8 +116,8 @@
             <tbody>
               <tr v-for="item in match.detail.bookings" :key="item.keyId" class="no-link">
                 <td class="text-center">{{ item.minute }}</td>
-                <td class="text-center">{{ item.teamName }}</td>
-                <td class="text-center">{{ item.playerName }}</td>
+                <td class="text-center">{{ item.team.name }}</td>
+                <td class="text-center">{{ item.player.name }}</td>
                 <td class="text-center">
                   <div
                     :class="{
