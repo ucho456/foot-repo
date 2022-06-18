@@ -6,7 +6,7 @@ import { config, footballUrl, leagueCompetitions } from '../utils'
 
 const getScorers = async (competition: { id: number; collectionId: string }): Promise<Scorers> => {
   const res: AxiosResponse<any, any> = await axios.get(
-    footballUrl + `competitions/${competition.id}/scorers`,
+    footballUrl + `competitions/${competition.id}/scorers?season=2021`, // 後で消す
     config
   )
   const fbScorers = res.data as FbScorers
@@ -20,8 +20,16 @@ const getScorers = async (competition: { id: number; collectionId: string }): Pr
       return {
         keyId: String(i),
         rank: ranks[i],
-        playerName: s.player.name,
-        teamName: s.team.name,
+        player: {
+          id: String(s.player.id),
+          name: s.player.name
+        },
+        team: {
+          id: String(s.team.id),
+          ref: admin.firestore().doc(`teams/${s.team.id}`),
+          name: s.team.name,
+          imageUrl: s.team.crest
+        },
         goals: s.goals || 0,
         assists: s.assists || 0,
         penalties: s.penalties || 0

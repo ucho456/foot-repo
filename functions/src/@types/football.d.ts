@@ -131,10 +131,13 @@ type FbScorers = {
   }
   scorers: {
     player: {
+      id: number
       name: string
     }
     team: {
+      id: number
       name: string
+      crest: string
     }
     goals: number | null
     assists: number | null

@@ -80,8 +80,8 @@
             <tbody>
               <tr v-for="item in league.scorers.table" :key="item.keyId" class="no-link">
                 <td class="text-center">{{ item.rank }}</td>
-                <td class="text-center">{{ item.playerName }}</td>
-                <td class="text-center">{{ item.teamName }}</td>
+                <td class="text-center">{{ item.player.name }}</td>
+                <td class="text-center">{{ item.team.name }}</td>
                 <td class="text-center">{{ item.goals }}</td>
                 <td class="text-center">{{ item.assists }}</td>
                 <td class="text-center">{{ item.penalties }}</td>

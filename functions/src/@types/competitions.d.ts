@@ -11,8 +11,16 @@ type Scorers = {
   table: {
     keyId: string
     rank: number
-    playerName: string
-    teamName: string
+    player: {
+      id: string
+      name: string
+    }
+    team: {
+      id: string
+      ref: import('firebase-admin/firestore').DocumentReference
+      name: string
+      imageUrl: string
+    }
     goals: number
     assists: number
     penalties: number
