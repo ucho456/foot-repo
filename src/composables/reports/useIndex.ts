@@ -11,7 +11,8 @@ const useIndex = () => {
       isLoadingFirst.value = true
       await toStoreFirstReports(reports)
       return 'success'
-    } catch {
+    } catch (error) {
+      console.log(error)
       return 'failure'
     } finally {
       isLoadingFirst.value = false
@@ -25,7 +26,8 @@ const useIndex = () => {
       isLoadingNext.value = true
       await toStoreNextReports(reports, hasNextPage)
       return 'success'
-    } catch {
+    } catch (error) {
+      console.log(error)
       return 'failure'
     } finally {
       isLoadingNext.value = false
@@ -39,7 +41,8 @@ const useIndex = () => {
       isLoadingFirst.value = true
       await toStoreFirstReports(reports)
       return 'success'
-    } catch {
+    } catch (error) {
+      console.log(error)
       return 'failure'
     } finally {
       isLoadingFirst.value = false

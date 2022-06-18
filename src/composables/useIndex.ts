@@ -13,7 +13,8 @@ const useIndex = () => {
       isLoadingReports.value = false
 
       return 'success'
-    } catch {
+    } catch (error) {
+      console.log(error)
       return 'failure'
     } finally {
       isLoadingReports.value = false

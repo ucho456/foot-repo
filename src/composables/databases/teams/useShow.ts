@@ -14,7 +14,8 @@ const useShow = () => {
       resetTeam()
       await toStoreTeam(teamId, team)
       return 'success'
-    } catch {
+    } catch (error) {
+      console.log(error)
       return 'failure'
     } finally {
       isLoading.value = false

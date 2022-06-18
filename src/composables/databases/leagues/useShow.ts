@@ -43,7 +43,8 @@ const useShow = () => {
       isLoadingMatches.value = false
 
       return 'success'
-    } catch {
+    } catch (error) {
+      console.log(error)
       return 'failure'
     } finally {
       isLoadingStandings.value = false
@@ -57,7 +58,8 @@ const useShow = () => {
       isLoadingMatches.value = true
       await toStoreMatchSchedule(league)
       return 'success'
-    } catch {
+    } catch (error) {
+      console.log(error)
       return 'failure'
     } finally {
       isLoadingMatches.value = false

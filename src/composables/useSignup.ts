@@ -21,6 +21,7 @@ const useSignup = () => {
       await sendEmailVerification(userCredential.user)
       return 'success'
     } catch (error) {
+      console.log(error)
       return error instanceof Error && error.message.includes('auth/email-already-in-use')
         ? 'already used'
         : 'failure'
@@ -38,7 +39,8 @@ const useSignup = () => {
       const uid = userCredential.user.uid
       const user = await fetchUser(uid)
       return !user ? 'success' : 'already exist'
-    } catch {
+    } catch (error) {
+      console.log(error)
       return 'failure'
     } finally {
       isLoading.value = false
@@ -54,7 +56,8 @@ const useSignup = () => {
       const uid = userCredential.user.uid
       const user = await fetchUser(uid)
       return !user ? 'success' : 'already exist'
-    } catch {
+    } catch (error) {
+      console.log(error)
       return 'failure'
     } finally {
       isLoading.value = false

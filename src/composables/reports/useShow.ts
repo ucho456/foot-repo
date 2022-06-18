@@ -77,7 +77,8 @@ const useShow = () => {
       } else {
         return 'failure'
       }
-    } catch {
+    } catch (error) {
+      console.log(error)
       return 'failure'
     } finally {
       isLoadingNewComment.value = false

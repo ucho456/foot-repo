@@ -37,6 +37,7 @@ const useEdit = () => {
       match.value = await fetchMatch(resReport.match.id)
       return 'success'
     } catch (error) {
+      console.log(error)
       return error instanceof Error && error.message === 'unauthorized access'
         ? 'unauthorized access'
         : 'failure'
@@ -61,7 +62,8 @@ const useEdit = () => {
       inputReport.publish = true
       await updateReport(inputReport, initReport.value!)
       return 'success'
-    } catch {
+    } catch (error) {
+      console.log(error)
       return 'failure'
     } finally {
       isLoadingSend.value = false
@@ -74,7 +76,8 @@ const useEdit = () => {
       inputReport.publish = false
       await updateReport(inputReport, initReport.value!)
       return 'success'
-    } catch {
+    } catch (error) {
+      console.log(error)
       return 'failure'
     } finally {
       isLoadingSend.value = false

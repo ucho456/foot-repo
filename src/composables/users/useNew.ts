@@ -33,7 +33,8 @@ const useNew = () => {
         return 'unauthorized access'
       }
       return 'success'
-    } catch {
+    } catch (error) {
+      console.log(error)
       return 'failure'
     } finally {
       isLoadingSetUp.value = false
@@ -64,6 +65,7 @@ const useNew = () => {
       setUpLoginUser(inputUser)
       return 'success'
     } catch (error) {
+      console.log(error)
       return 'failure'
     } finally {
       isLoading.value = false

@@ -25,7 +25,8 @@ const useShow = () => {
       isLoadingSameMatchReports.value = false
 
       return 'success'
-    } catch {
+    } catch (error) {
+      console.log(error)
       return 'failure'
     } finally {
       isLoadingMatch.value = false

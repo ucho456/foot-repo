@@ -19,7 +19,8 @@ const useShow = () => {
       isLoadingReports.value = false
 
       return 'success'
-    } catch {
+    } catch (error) {
+      console.log(error)
       return 'failure'
     } finally {
       isLoadingUser.value = false
@@ -44,7 +45,8 @@ const useShow = () => {
       await deleteReport(targetReport.value?.id!)
       reports.value = reports.value.filter((r) => r.id !== targetReport.value?.id!)
       return 'success'
-    } catch {
+    } catch (error) {
+      console.log(error)
       return 'failure'
     } finally {
       hideDeletePopup()

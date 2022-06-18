@@ -28,6 +28,7 @@ const useLogin = () => {
       const resUser = await fetchUser(uid)
       return resUser ? 'success' : 'no user'
     } catch (error) {
+      console.log(error)
       return error instanceof Error && error.message.includes('auth/user-not-found')
         ? 'wrong email or password'
         : 'failure'
@@ -45,7 +46,8 @@ const useLogin = () => {
       const uid = userCredential.user.uid
       const resUser = await fetchUser(uid)
       return resUser ? 'success' : 'no user'
-    } catch {
+    } catch (error) {
+      console.log(error)
       return 'failure'
     } finally {
       isLoading.value = false
@@ -61,7 +63,8 @@ const useLogin = () => {
       const uid = userCredential.user.uid
       const resUser = await fetchUser(uid)
       return resUser ? 'success' : 'no user'
-    } catch {
+    } catch (error) {
+      console.log(error)
       return 'failure'
     } finally {
       isLoading.value = false

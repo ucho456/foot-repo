@@ -27,6 +27,7 @@ export const toStoreFirstMatches = async (matches: {
   const options = makeSearchOption(matches.searchOption)
   const q = query(mRef, ...options, orderBy('jstDate', 'desc'), limit(perPage))
   const mSnapshot = await getDocs(q)
+  console.log({ mSnapshot })
   mSnapshot.forEach((doc) => {
     if (doc.exists()) {
       matches.data.push(doc.data())

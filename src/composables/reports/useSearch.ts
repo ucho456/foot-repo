@@ -23,6 +23,7 @@ const useSearch = () => {
   const isLoadingFirst = ref(false)
   const setUp = async (): Promise<'success' | 'failure'> => {
     try {
+      console.log('start setUp')
       isLoadingFirst.value = true
       matches.lastVisible = null
       matches.searchOption.jstDate = ''
@@ -30,9 +31,11 @@ const useSearch = () => {
         matches.searchOption.competitionId = loginUser.value.competitionId
         matches.searchOption.teamId = loginUser.value.teamId
       }
+      console.log({ matches })
       await toStoreFirstMatches(matches)
       return 'success'
-    } catch {
+    } catch (error) {
+      console.log('error', error)
       return 'failure'
     } finally {
       isLoadingFirst.value = false
@@ -46,7 +49,8 @@ const useSearch = () => {
       isLoadingNext.value = true
       await toStoreNextMatches(matches, hasNextPage)
       return 'success'
-    } catch {
+    } catch (error) {
+      console.log(error)
       return 'failure'
     } finally {
       isLoadingNext.value = false
@@ -59,7 +63,8 @@ const useSearch = () => {
       isLoadingFirst.value = true
       await toStoreFirstMatches(matches)
       return 'success'
-    } catch {
+    } catch (error) {
+      console.log(error)
       return 'failure'
     } finally {
       isLoadingFirst.value = false

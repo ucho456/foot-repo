@@ -28,7 +28,8 @@ const useNew = () => {
         inputReport.awayTeamReportItems = forReport.awayTeamReportItems
       }
       return 'success'
-    } catch {
+    } catch (error) {
+      console.log(error)
       return 'failure'
     } finally {
       isLoadingSetUp.value = false
@@ -51,7 +52,8 @@ const useNew = () => {
       inputReport.publish = true
       const reportId = await createReport(loginUser.value, inputReport, match.value!)
       return { result: 'success', reportId }
-    } catch {
+    } catch (error) {
+      console.log(error)
       return { result: 'failure', reportId: '' }
     } finally {
       isLoadingSend.value = false
@@ -64,7 +66,8 @@ const useNew = () => {
       inputReport.publish = false
       const reportId = await createReport(loginUser.value, inputReport, match.value!)
       return { result: 'success', reportId }
-    } catch {
+    } catch (error) {
+      console.log(error)
       return { result: 'failure', reportId: '' }
     } finally {
       isLoadingSend.value = false
