@@ -10,9 +10,12 @@ const getMatchInfos = async (
 ): Promise<{ id: string; status: string; lastUpdated: string }[]> => {
   // const utcDate =
   //   process.env.NODE_ENV === 'production' ? new Date().toISOString().substring(0, 10) : '2022-05-22'
+  // const res: AxiosResponse<any, any> = await axios.get(
+  //   footballUrl + `competitions/${competitionId}/matches?dateFrom=${utcDate}&dateTo=${utcDate}`,
+  //   config
+  // )
   const res: AxiosResponse<any, any> = await axios.get(
-    footballUrl +
-      `competitions/${competitionId}/matches?dateFrom=${'2022-05-24'}&dateTo=${'2022-05-24'}`,
+    footballUrl + `competitions/${competitionId}/matches?matchday=38&season=2021`,
     config
   )
   const matches = res.data.matches as FbMatch[]
