@@ -181,6 +181,7 @@ type FbTeam = {
     emblem: string
   }[]
   squad: {
+    id: number
     name: string
     position: FbPosition
     dateOfBirth: string

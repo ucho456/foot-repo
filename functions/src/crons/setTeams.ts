@@ -29,7 +29,10 @@ const getTeam = async (teamId: number): Promise<Team> => {
     squad: fbTeam.squad.map((s, i) => {
       return {
         keyId: String(i),
-        playerName: s.name,
+        player: {
+          id: String(s.id),
+          name: s.name
+        },
         position: convertPosition(s.position),
         dateOfBirth: s.dateOfBirth,
         nationality: s.nationality,

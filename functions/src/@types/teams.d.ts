@@ -10,7 +10,10 @@ type Team = {
   }[]
   squad: {
     keyId: string
-    playerName: string
+    player: {
+      id: string
+      name: string
+    }
     position: Position
     dateOfBirth: string
     nationality: string

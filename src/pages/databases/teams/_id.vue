@@ -50,7 +50,7 @@
               <tr v-for="player in team.data.squad" :key="player.keyId" class="no-link">
                 <td class="text-center pl-1 pr-1">{{ player.position }}</td>
                 <td class="text-center pl-1 pr-1">{{ player.shirtNumber }}</td>
-                <td class="text-center">{{ player.playerName }}</td>
+                <td class="text-center">{{ player.player.name }}</td>
                 <td class="text-center">{{ player.nationality }}</td>
                 <td class="text-center pl-1 pr-1 td-w">
                   {{ getAge(player.dateOfBirth) }}
