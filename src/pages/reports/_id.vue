@@ -8,6 +8,9 @@
             <h1>{{ report.title }}</h1>
           </v-col>
         </v-row>
+        <v-row v-if="!report.publish" justify="center">
+          <v-col cols="4" md="2" class="private"> 非公開 </v-col>
+        </v-row>
         <RowUser :image-url="report.user.imageUrl" :name="report.user.name" />
         <RowMatchHeader v-bind="match" />
         <v-row v-if="report.selectTeam !== 'away'">
@@ -230,6 +233,12 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+.private {
+  color: #1a237e;
+  background-color: #{$light-indigo};
+  border-radius: 5px;
+  text-align: center;
+}
 .mom {
   background: linear-gradient(transparent 70%, yellow 70%);
 }

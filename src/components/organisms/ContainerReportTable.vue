@@ -21,7 +21,10 @@
             <v-img v-else :src="noAvatarImage" />
           </v-list-item-avatar>
           <v-list-item-content>
-            <v-list-item-title>{{ report.title }}</v-list-item-title>
+            <v-list-item-title class="title"
+              >{{ report.title
+              }}<span v-if="!report.publish" class="private">非公開</span></v-list-item-title
+            >
             <v-list-item-subtitle class="d-flex">
               <v-img :max-height="14" :max-width="14" :src="report.homeTeam.imageUrl" />
               <span class="ml-2 mr-2">{{ report.homeTeam.shortName }}</span>
@@ -80,3 +83,17 @@ export default defineComponent({
   }
 })
 </script>
+
+<style lang="scss" scoped>
+.title {
+  font-size: 15px !important;
+  text-overflow: inherit;
+  white-space: unset;
+}
+.private {
+  color: #1a237e;
+  background-color: #{$light-indigo};
+  border-radius: 5px;
+  margin-left: 10px;
+}
+</style>
