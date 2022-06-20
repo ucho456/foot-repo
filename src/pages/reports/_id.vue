@@ -64,7 +64,7 @@
           :image-url="user.imageUrl"
           :image-size="60"
           :name="user.name"
-          :team-name="user.teamId"
+          :team-name="user.team.name"
           :greet="user.greet"
         />
       </v-container>
