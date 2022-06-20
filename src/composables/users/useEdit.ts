@@ -1,12 +1,9 @@
 import { reactive, ref } from '@nuxtjs/composition-api'
-import { getAuth, getIdTokenResult } from 'firebase/auth'
-import { createUser } from '@/db/users'
-import { teamMap } from '@/utils/selectTeams'
-import uploadAndGetImageUrl from '@/utils/uploadAndGetImageUrl'
+import { fetchUser } from '@/db/users'
 import useLoginUser from '@/utils/useLoginUser'
 
-const useNew = () => {
-  const { setUpLoginUser } = useLoginUser()
+const useEdit = () => {
+  const { loginUser } = useLoginUser()
 
   const inputUser: InputUser = reactive({
     id: '',
@@ -22,21 +19,27 @@ const useNew = () => {
   const setUp = async (): Promise<'success' | 'failure' | 'unauthorized access'> => {
     try {
       isLoadingSetUp.value = true
-      const auth = getAuth()
-      const currentUser = auth.currentUser!
-      const idTokenResult = await getIdTokenResult(currentUser)
-      const initSetting = idTokenResult.claims.initSetting as unknown as boolean
-      if (!initSetting) {
-        inputUser.id = currentUser.uid
-        inputUser.name = currentUser.displayName ? currentUser.displayName.substring(0, 20) : ''
-        inputUser.imageUrl = currentUser.photoURL
+      if (loginUser.value) {
+        const user = await fetchUser(loginUser.value.uid)
+        if (user) {
+          inputUser.id = user.id
+          inputUser.name = user.name
+          inputUser.imageUrl = user.imageUrl
+          inputUser.greet = user.greet
+          inputUser.competitionId = user.competitionId
+          inputUser.team = user.team
+        } else {
+          throw new Error('unauthorized access')
+        }
       } else {
-        return 'unauthorized access'
+        throw new Error('unauthorized access')
       }
       return 'success'
     } catch (error) {
       console.log(error)
-      return 'failure'
+      return error instanceof Error && error.message.includes('unauthorized access')
+        ? 'unauthorized access'
+        : 'failure'
     } finally {
       isLoadingSetUp.value = false
     }
@@ -53,18 +56,9 @@ const useNew = () => {
   }
 
   const isLoadingSubmit = ref(false)
-  const create = async (): Promise<'success' | 'failure'> => {
+  const update = async (): Promise<'success' | 'failure'> => {
     try {
       isLoadingSubmit.value = true
-      inputUser.team.name = teamMap.get(inputUser.team.id)?.name!
-      const imageUrl = userImageFile.value
-        ? await uploadAndGetImageUrl(`users/${inputUser.id}`, userImageFile.value)
-        : null
-      if (imageUrl) {
-        inputUser.imageUrl = imageUrl
-      }
-      await createUser(inputUser)
-      setUpLoginUser(inputUser)
       return 'success'
     } catch (error) {
       console.log(error)
@@ -81,8 +75,8 @@ const useNew = () => {
     changeImageUrl,
     clearImageUrl,
     isLoadingSubmit,
-    create
+    update
   }
 }
 
-export default useNew
+export default useEdit

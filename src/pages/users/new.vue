@@ -44,7 +44,7 @@
               <ButtonSubmit
                 :disabled="invalid"
                 :icon="'mdi-send'"
-                :loading="isLoading"
+                :loading="isLoadingSubmit"
                 :text="'登録する'"
                 @click="submit"
               />
@@ -85,11 +85,18 @@ export default defineComponent({
 
   setup() {
     const router = useRouter()
-    const { inputUser, isLoadingSetUp, setUp, changeImageUrl, clearImageUrl, isLoading, create } =
-      useNew()
+    const {
+      inputUser,
+      isLoadingSetUp,
+      setUp,
+      changeImageUrl,
+      clearImageUrl,
+      isLoadingSubmit,
+      create
+    } = useNew()
     const { openSnackbar } = useSnackbar()
 
-    const setUpPage = async () => {
+    const setUpPage = async (): Promise<void> => {
       const result = await setUp()
       if (result === 'failure') {
         openSnackbar(result, 'エラーが発生しました。')
@@ -115,7 +122,7 @@ export default defineComponent({
       isLoadingSetUp,
       changeImageUrl,
       clearImageUrl,
-      isLoading,
+      isLoadingSubmit,
       submit
     }
   }
