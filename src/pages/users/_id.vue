@@ -5,12 +5,14 @@
       <v-container v-if="user">
         <v-row>
           <v-col cols="8" sm="9" />
-          <v-col v-if="loginUser && loginUser.uid === user.id" cols="4" sm="3">
-            <ButtonOutlined :text="'編集'" />
-          </v-col>
-          <v-col v-else cols="4" sm="3">
-            <ButtonOutlined :text="'フォロー'" />
-          </v-col>
+          <client-only>
+            <v-col v-if="loginUser && loginUser.uid === user.id" cols="4" sm="3">
+              <ButtonOutlined :text="'編集'" />
+            </v-col>
+            <v-col v-else cols="4" sm="3">
+              <ButtonOutlined :text="'フォロー'" />
+            </v-col>
+          </client-only>
         </v-row>
         <RowUser
           :image-url="user.imageUrl"
@@ -40,13 +42,15 @@
     </v-card>
     <v-card v-if="!isLoadingUser && user" class="mt-4" outlined>
       <ContainerLoading :is-loading="isLoadingReports" />
-      <ContainerReportTable
-        v-if="!isLoadingReports"
-        :action-flg="loginUser && loginUser.uid === user.id"
-        :h2="`${user.name}の選手採点`"
-        :reports="reports"
-        @delete="showDeletePopup"
-      />
+      <client-only>
+        <ContainerReportTable
+          v-if="!isLoadingReports"
+          :action-flg="loginUser && loginUser.uid === user.id"
+          :h2="`${user.name}の選手採点`"
+          :reports="reports"
+          @delete="showDeletePopup"
+        />
+      </client-only>
     </v-card>
     <DialogDelete
       :is-dialog="isDialogDelete"
