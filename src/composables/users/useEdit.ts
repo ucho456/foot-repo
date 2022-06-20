@@ -1,9 +1,11 @@
 import { reactive, ref } from '@nuxtjs/composition-api'
-import { fetchUser } from '@/db/users'
+import { fetchUser, updateUser } from '@/db/users'
+import { teamMap } from '@/utils/selectTeams'
+import uploadAndGetImageUrl from '@/utils/uploadAndGetImageUrl'
 import useLoginUser from '@/utils/useLoginUser'
 
 const useEdit = () => {
-  const { loginUser } = useLoginUser()
+  const { loginUser, setUpLoginUser } = useLoginUser()
 
   const inputUser: InputUser = reactive({
     id: '',
@@ -59,6 +61,15 @@ const useEdit = () => {
   const update = async (): Promise<'success' | 'failure'> => {
     try {
       isLoadingSubmit.value = true
+      inputUser.team.name = teamMap.get(inputUser.team.id)?.name!
+      // const imageUrl = userImageFile.value
+      //   ? await uploadAndGetImageUrl(`users/${inputUser.id}`, userImageFile.value)
+      //   : null
+      // if (imageUrl) {
+      //   inputUser.imageUrl = imageUrl
+      // }
+      await updateUser(inputUser)
+      setUpLoginUser(inputUser)
       return 'success'
     } catch (error) {
       console.log(error)

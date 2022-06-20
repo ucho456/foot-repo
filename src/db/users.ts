@@ -1,4 +1,4 @@
-import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore'
+import { doc, getDoc, getFirestore, setDoc, updateDoc } from 'firebase/firestore'
 import { userConverter } from '@/utils/converters'
 
 export const fetchUser = async (uid: string | undefined): Promise<User | null> => {
@@ -13,6 +13,19 @@ export const createUser = async (inputUser: InputUser): Promise<void> => {
   const db = getFirestore()
   const uRef = doc(db, 'users', inputUser.id).withConverter(userConverter)
   await setDoc(uRef, {
+    id: inputUser.id,
+    name: inputUser.name,
+    imageUrl: inputUser.imageUrl,
+    greet: inputUser.greet,
+    competitionId: inputUser.competitionId,
+    team: inputUser.team
+  })
+}
+
+export const updateUser = async (inputUser: InputUser): Promise<void> => {
+  const db = getFirestore()
+  const uRef = doc(db, 'users', inputUser.id).withConverter(userConverter)
+  await updateDoc(uRef, {
     id: inputUser.id,
     name: inputUser.name,
     imageUrl: inputUser.imageUrl,

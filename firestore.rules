@@ -241,6 +241,7 @@ service cloud.firestore {
       allow read;
       allow create: if onlyMe(userId)
       && isValidUser(request.resource.data);
+      allow update;
     }
   }
 }
