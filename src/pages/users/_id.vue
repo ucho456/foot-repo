@@ -7,7 +7,7 @@
           <v-col cols="8" sm="9" />
           <client-only>
             <v-col v-if="loginUser && loginUser.uid === user.id" cols="4" sm="3">
-              <ButtonOutlined :text="'編集'" />
+              <ButtonOutlined :text="'編集'" @click="pushToUserEdit" />
             </v-col>
             <v-col v-else cols="4" sm="3">
               <ButtonOutlined :text="'フォロー'" />
@@ -62,7 +62,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useRoute } from '@nuxtjs/composition-api'
+import { defineComponent, useRoute, useRouter } from '@nuxtjs/composition-api'
 import useShow from '@/composables/users/useShow'
 import useLoginUser from '@/utils/useLoginUser'
 import useSnackbar from '@/utils/useSnackbar'
@@ -85,6 +85,7 @@ export default defineComponent({
 
   setup() {
     const route = useRoute()
+    const router = useRouter()
     const {
       user,
       reports,
@@ -110,7 +111,11 @@ export default defineComponent({
     }
     setUpPage()
 
-    const deleteReport = async () => {
+    const pushToUserEdit = (): void => {
+      router.push('/users/edit')
+    }
+
+    const deleteReport = async (): Promise<void> => {
       const result = await del()
       const message = result === 'success' ? '削除に成功しました。' : '削除に失敗しました。'
       openSnackbar(result, message)
@@ -127,6 +132,7 @@ export default defineComponent({
       hideDeletePopup,
       isLoadingDel,
       loginUser,
+      pushToUserEdit,
       deleteReport
     }
   }
