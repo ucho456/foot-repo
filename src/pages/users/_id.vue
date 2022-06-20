@@ -46,7 +46,6 @@
         <ContainerReportTable
           v-if="!isLoadingReports"
           :action-flg="loginUser && loginUser.uid === user.id"
-          :h2="`${user.name}の選手採点`"
           :reports="reports"
           @delete="showDeletePopup"
         />
