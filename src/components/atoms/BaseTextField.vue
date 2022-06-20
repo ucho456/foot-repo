@@ -2,6 +2,7 @@
   <v-text-field
     :counter="counterFlg"
     :dense="denseFlg"
+    :disabled="disabled"
     :error-messages="errMessage"
     :label="label"
     :max="max"
@@ -24,6 +25,7 @@ export default defineComponent({
   props: {
     counterFlg: { type: Boolean, default: false },
     denseFlg: { type: Boolean, default: false },
+    disabled: { type: Boolean, default: false },
     errMessage: { type: String, default: '' },
     icon: { type: String, default: '' },
     label: { type: String, default: '' },

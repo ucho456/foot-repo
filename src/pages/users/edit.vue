@@ -12,6 +12,7 @@
           <v-row class="mb-10" justify="center">
             <v-col cols="3" sm="2">
               <ImageUploaderUserImage
+                :disabled="true"
                 :value="inputUser.imageUrl"
                 @change="changeImageUrl"
                 @clear="clearImageUrl"
@@ -20,6 +21,7 @@
             <v-col class="mt-4" cols="7" sm="8">
               <TextField
                 v-model="inputUser.name"
+                :disabled="true"
                 :label="'ニックネーム'"
                 :maxlength="20"
                 :rules="'required'"

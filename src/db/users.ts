@@ -26,7 +26,6 @@ export const updateUser = async (inputUser: InputUser): Promise<void> => {
   const db = getFirestore()
   const uRef = doc(db, 'users', inputUser.id).withConverter(userConverter)
   await updateDoc(uRef, {
-    id: inputUser.id,
     name: inputUser.name,
     imageUrl: inputUser.imageUrl,
     greet: inputUser.greet,

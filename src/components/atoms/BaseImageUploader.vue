@@ -1,6 +1,6 @@
 <template>
   <div class="base-file-input">
-    <label for="image-input-form">
+    <label for="image-input-form" :class="{ 'no-event': disabled }">
       <v-avatar :size="imageSize">
         <v-img v-if="value" :src="value" />
         <v-img v-else :src="noAvatarImage" />
@@ -9,11 +9,12 @@
     <input
       id="image-input-form"
       :key="deletedTimes"
+      :disabled="disabled"
       type="file"
       accept="image/*"
       @change="handleChange"
     />
-    <v-btn class="button" color="black" :icon="true" @click="handleClear">
+    <v-btn v-if="!disabled" class="button" color="black" :icon="true" @click="handleClear">
       <v-icon>mdi-close</v-icon>
     </v-btn>
   </div>
@@ -27,6 +28,7 @@ export default defineComponent({
   name: 'BaseImageUploader',
 
   props: {
+    disabled: { type: Boolean, default: false },
     imageSize: { type: Number, default: 0 },
     maxWidthOrHeight: { type: Number, default: 0 },
     placeholder: { type: String, default: '' },
@@ -72,6 +74,12 @@ export default defineComponent({
     &:hover {
       opacity: 0.8;
       cursor: pointer;
+    }
+  }
+  .no-event {
+    opacity: 0.8;
+    &:hover {
+      cursor: default;
     }
   }
   input {

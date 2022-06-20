@@ -1,5 +1,6 @@
 <template>
   <BaseImageUploader
+    :disabled="disabled"
     :image-size="60"
     :max-width-or-height="100"
     :placeholder="'プロフィール写真'"
@@ -21,6 +22,7 @@ export default defineComponent({
   },
 
   props: {
+    disabled: { type: Boolean, default: false },
     value: { type: String, required: false, default: null }
   },
 

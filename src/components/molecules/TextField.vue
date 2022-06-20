@@ -2,6 +2,7 @@
   <ValidationProvider v-slot="{ errors }" :rules="rules">
     <BaseTextField
       :counter-flg="true"
+      :disabled="disabled"
       :err-message="errors[0]"
       :icon="icon"
       :label="label"
@@ -25,6 +26,7 @@ export default defineComponent({
   },
 
   props: {
+    disabled: { type: Boolean, default: false },
     icon: { type: String, default: '' },
     label: { type: String, default: '' },
     maxlength: { type: Number, default: 0 },
