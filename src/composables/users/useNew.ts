@@ -1,8 +1,9 @@
 import { reactive, ref } from '@nuxtjs/composition-api'
 import { getAuth, getIdTokenResult } from 'firebase/auth'
 import { createUser } from '@/db/users'
-import useLoginUser from '@/utils/useLoginUser'
+import { teamMap } from '@/utils/selectTeams'
 import uploadAndGetImageUrl from '@/utils/uploadAndGetImageUrl'
+import useLoginUser from '@/utils/useLoginUser'
 
 const useNew = () => {
   const { setUpLoginUser } = useLoginUser()
@@ -13,7 +14,7 @@ const useNew = () => {
     imageUrl: null,
     greet: '',
     competitionId: '',
-    teamId: ''
+    team: { id: '', name: '' }
   })
   const userImageFile = ref<File | null>(null)
 
@@ -55,6 +56,7 @@ const useNew = () => {
   const create = async (): Promise<'success' | 'failure'> => {
     try {
       isLoading.value = true
+      inputUser.team.name = teamMap.get(inputUser.team.id)?.name!
       const imageUrl = userImageFile.value
         ? await uploadAndGetImageUrl(`users/${inputUser.id}`, userImageFile.value)
         : null

@@ -7,7 +7,10 @@ type LoginUser = {
   name: string
   imageUrl: string | null
   competitionId: string
-  teamId: string
+  team: {
+    id: string
+    name: string
+  }
 }
 
 type HomeAway = 'home' | 'away' | 'both'
@@ -28,7 +31,10 @@ type InputUser = {
   imageUrl: string | null
   greet: string
   competitionId: string
-  teamId: string
+  team: {
+    id: string
+    name: string
+  }
 }
 
 type MatchStatus = 'SCHEDULED' | 'FINISHED'

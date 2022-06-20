@@ -228,12 +228,13 @@ service cloud.firestore {
       && 'imageUrl' in user && (user.imageUrl == null || user.imageUrl is string)
       && 'greet' in user && user.greet is string
       && 'competitionId' in user && user.competitionId is string
-      && 'teamId' in user && user.teamId is string
+      && 'team' in user && user.team is map
       && isValidString(user.name, 1, 20)
       && isValidImage(user.imageUrl)
       && isValidString(user.greet, 0, 140)
       && isValidString(user.competitionId, 0, 20)
-      && isValidString(user.teamId, 0, 20);
+      && isValidString(user.team.id, 0, 20)
+      && isValidString(user.team.name, 0, 100);
     }
 
     match /users/{userId} {

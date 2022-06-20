@@ -38,7 +38,7 @@
               <SelectIdCompetition v-model="inputUser.competitionId" />
             </v-col>
             <v-col cols="10" sm="5">
-              <SelectIdTeam v-model="inputUser.teamId" :competition-id="inputUser.competitionId" />
+              <SelectIdTeam v-model="inputUser.team.id" :competition-id="inputUser.competitionId" />
             </v-col>
             <v-col cols="10" sm="6">
               <ButtonSubmit

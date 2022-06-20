@@ -18,6 +18,6 @@ export const createUser = async (inputUser: InputUser): Promise<void> => {
     imageUrl: inputUser.imageUrl,
     greet: inputUser.greet,
     competitionId: inputUser.competitionId,
-    teamId: inputUser.teamId
+    team: inputUser.team
   })
 }

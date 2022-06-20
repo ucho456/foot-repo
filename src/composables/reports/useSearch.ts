@@ -29,7 +29,7 @@ const useSearch = () => {
       matches.searchOption.jstDate = ''
       if (loginUser.value) {
         matches.searchOption.competitionId = loginUser.value.competitionId
-        matches.searchOption.teamId = loginUser.value.teamId
+        matches.searchOption.teamId = loginUser.value.team.id
       }
       console.log({ matches })
       await toStoreFirstMatches(matches)

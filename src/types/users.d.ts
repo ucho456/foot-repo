@@ -4,5 +4,8 @@ type User = {
   imageUrl: string | null
   greet: string
   competitionId: string
-  teamId: string
+  team: {
+    id: string
+    name: string
+  }
 }

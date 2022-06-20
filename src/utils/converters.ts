@@ -255,7 +255,7 @@ export const userConverter: FirestoreDataConverter<User> = {
       imageUrl: user.imageUrl,
       greet: user.greet,
       competitionId: user.competitionId,
-      teamId: user.teamId
+      team: user.team
     }
   },
   fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions): User {
@@ -266,7 +266,7 @@ export const userConverter: FirestoreDataConverter<User> = {
       imageUrl: data.imageUrl,
       greet: data.greet,
       competitionId: data.competitionId,
-      teamId: data.teamId
+      team: data.team
     }
   }
 }
