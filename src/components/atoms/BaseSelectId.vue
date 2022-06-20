@@ -1,7 +1,7 @@
 <template>
   <v-select
     :background-color="'white'"
-    :item-text="'text'"
+    :item-text="'name'"
     :item-value="'id'"
     :items="items"
     :label="label"
@@ -20,8 +20,8 @@ export default defineComponent({
   props: {
     icon: { type: String, default: '' },
     items: {
-      type: Array as () => { id: string; text: string }[],
-      default: () => [{ id: '', text: '' }]
+      type: Array as () => { id: string; name: string }[],
+      default: () => [{ id: '', name: '' }]
     },
     label: { type: String, default: '' },
     value: { type: String, default: '' }

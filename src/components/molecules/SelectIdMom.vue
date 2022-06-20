@@ -33,9 +33,9 @@ export default defineComponent({
   },
 
   setup(props, ctx) {
-    const makePlayers = (reportItems: ReportItem[]): { id: string; text: string }[] => {
+    const makePlayers = (reportItems: ReportItem[]): { id: string; name: string }[] => {
       return reportItems.map((ri) => {
-        return { id: ri.id, text: ri.player.name }
+        return { id: ri.id, name: ri.player.name }
       })
     }
     const players = computed(() => {
