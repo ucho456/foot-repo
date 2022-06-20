@@ -22,29 +22,11 @@ export default defineComponent({
   props: {
     awayTeamReportItems: {
       type: Array as () => ReportItem[],
-      default: () => [
-        {
-          id: '',
-          playerName: '',
-          position: 'GK',
-          shirtNumber: 0,
-          point: '6.5',
-          text: ''
-        }
-      ]
+      default: () => [{ id: '', player: { name: '' } }]
     },
     homeTeamReportItems: {
       type: Array as () => ReportItem[],
-      default: () => [
-        {
-          id: '',
-          playerName: '',
-          position: 'GK',
-          shirtNumber: 0,
-          point: '6.5',
-          text: ''
-        }
-      ]
+      default: () => [{ id: '', player: { name: '' } }]
     },
     selectTeam: { type: String as () => HomeAway, default: 'home' },
     value: { type: String, default: '' }

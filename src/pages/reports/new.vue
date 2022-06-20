@@ -28,7 +28,7 @@
           <v-row v-for="reportItem in inputReport.homeTeamReportItems" :key="reportItem.id">
             <v-col cols="3"> {{ reportItem.position }}. {{ reportItem.shirtNumber }} </v-col>
             <v-col cols="9">{{ reportItem.player.name }}</v-col>
-            <v-col class="mt-n3" cols="3"><TextFieldPoint v-model="reportItem.point" /></v-col>
+            <v-col class="mt-n3" cols="3"><SelectPoint v-model="reportItem.point" /></v-col>
             <v-col class="mt-n5" cols="9">
               <Textarea v-model="reportItem.text" :maxlength="140" />
             </v-col>
@@ -43,7 +43,7 @@
           <v-row v-for="reportItem in inputReport.awayTeamReportItems" :key="reportItem.id">
             <v-col cols="3"> {{ reportItem.position }}. {{ reportItem.shirtNumber }} </v-col>
             <v-col cols="9">{{ reportItem.player.name }}</v-col>
-            <v-col class="mt-n3" cols="3"><TextFieldPoint v-model="reportItem.point" /></v-col>
+            <v-col class="mt-n3" cols="3"><SelectPoint v-model="reportItem.point" /></v-col>
             <v-col class="mt-n5" cols="9">
               <Textarea v-model="reportItem.text" :maxlength="140" />
             </v-col>
@@ -100,7 +100,7 @@ import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 import RowMatchHeader from '@/components/organisms/RowMatchHeader.vue'
 import TextField from '@/components/molecules/TextField.vue'
 import SelectHomeAway from '@/components/molecules/SelectHomeAway.vue'
-import TextFieldPoint from '@/components/molecules/TextFieldPoint.vue'
+import SelectPoint from '@/components/molecules/SelectPoint.vue'
 import Textarea from '@/components/molecules/Textarea.vue'
 import SelectIdMom from '@/components/molecules/SelectIdMom.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
@@ -113,7 +113,7 @@ export default defineComponent({
     RowMatchHeader,
     TextField,
     SelectHomeAway,
-    TextFieldPoint,
+    SelectPoint,
     Textarea,
     SelectIdMom,
     ButtonSubmit

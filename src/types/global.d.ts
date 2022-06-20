@@ -34,6 +34,7 @@ type InputUser = {
 type MatchStatus = 'SCHEDULED' | 'FINISHED'
 
 type Point =
+  | ''
   | '0.0'
   | '0.5'
   | '1.0'

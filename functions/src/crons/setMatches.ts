@@ -160,7 +160,7 @@ const makeForReport = (fbMatch: FbMatch): ForReport => {
       },
       position: convertPosition(l.position),
       shirtNumber: l.shirtNumber,
-      point: '6.5',
+      point: '',
       text: '',
       order: 0
     }
@@ -175,7 +175,7 @@ const makeForReport = (fbMatch: FbMatch): ForReport => {
       },
       position: convertPosition(b.position),
       shirtNumber: b.shirtNumber,
-      point: '6.5',
+      point: '',
       text: '',
       order: 0
     }
@@ -188,7 +188,7 @@ const makeForReport = (fbMatch: FbMatch): ForReport => {
     },
     position: 'HC',
     shirtNumber: null,
-    point: '6.5',
+    point: '',
     text: '',
     order: 0
   }
@@ -208,7 +208,7 @@ const makeForReport = (fbMatch: FbMatch): ForReport => {
       },
       position: convertPosition(l.position),
       shirtNumber: l.shirtNumber,
-      point: '6.5',
+      point: '',
       text: '',
       order: 0
     }
@@ -223,7 +223,7 @@ const makeForReport = (fbMatch: FbMatch): ForReport => {
       },
       position: convertPosition(b.position),
       shirtNumber: b.shirtNumber,
-      point: '6.5',
+      point: '',
       text: '',
       order: 0
     }
@@ -236,7 +236,7 @@ const makeForReport = (fbMatch: FbMatch): ForReport => {
     },
     position: 'HC',
     shirtNumber: null,
-    point: '6.5',
+    point: '',
     text: '',
     order: 0
   }

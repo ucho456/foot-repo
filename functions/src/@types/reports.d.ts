@@ -6,7 +6,7 @@ type ReportItem = {
   }
   position: Position
   shirtNumber: number | null
-  point: '6.5'
+  point: ''
   text: string
   order: number
 }
