@@ -32,23 +32,23 @@ export const createReport = async (
   const rColRef = collection(db, 'reports')
   const rId = doc(rColRef).id
   const rRef = doc(db, 'reports', rId).withConverter(reportConverter)
+
+  const user = loginUser
+    ? {
+        id: loginUser.uid,
+        ref: doc(db, `users/${loginUser.uid}`),
+        name: loginUser.name,
+        imageUrl: loginUser.imageUrl
+      }
+    : { id: 'guest', ref: doc(db, 'users/guest'), name: 'Guest', imageUrl: null }
+
   batch.set(rRef, {
     id: rId,
     title:
       inputReport.title !== ''
         ? inputReport.title
         : `${match.homeTeam.name} vs ${match.awayTeam.name} の選手採点`,
-    user: loginUser
-      ? {
-          ref: doc(db, `users/${loginUser.uid}`),
-          name: loginUser.name,
-          imageUrl: loginUser.imageUrl
-        }
-      : {
-          ref: doc(db, 'users/guest'),
-          name: 'ゲスト',
-          imageUrl: null
-        },
+    user,
     homeTeam: {
       id: match.homeTeam.id,
       ref: doc(db, `teams/${match.homeTeam.id}`),
@@ -85,21 +85,17 @@ export const createReport = async (
   })
 
   inputReport.homeTeamReportItems.forEach((htri) => {
-    // const htriColRef = collection(db, 'home-team-report-items')
-    // const htriId = doc(htriColRef).id
     const htriRef = doc(db, 'reports', rId, 'home-team-report-items', htri.id).withConverter(
       reportItemConverter
     )
-    batch.set(htriRef, htri)
+    batch.set(htriRef, { ...htri, user: { id: user.id, ref: user.ref } })
   })
 
   inputReport.awayTeamReportItems.forEach((atri) => {
-    // const atriColRef = collection(db, 'away-team-report-items')
-    // const atriId = doc(atriColRef).id
     const atriRef = doc(db, 'reports', rId, 'away-team-report-items', atri.id).withConverter(
       reportItemConverter
     )
-    batch.set(atriRef, atri)
+    batch.set(atriRef, { ...atri, user: { id: user.id, ref: user.ref } })
   })
   await batch.commit()
   return rId

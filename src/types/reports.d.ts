@@ -2,6 +2,7 @@ type Report = {
   id: string
   title: string
   user: {
+    id: string
     ref: import('firebase/firestore').DocumentReference
     name: string
     imageUrl: string | null
@@ -43,6 +44,10 @@ type Report = {
 
 type ReportItem = {
   id: string
+  user: {
+    id: string
+    ref: import('firebase/firestore').DocumentReference
+  }
   player: {
     id: string
     name: string

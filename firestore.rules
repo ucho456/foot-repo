@@ -78,6 +78,7 @@ service cloud.firestore {
       && 'publish' in report && report.publish is bool
       && 'createdAt' in report && report.createdAt is timestamp
       && isValidString(report.title, 1, 100)
+      && (report.user.id == request.auth.uid || report.user.id == 'guest')
       && (report.user.ref == userRef(request.auth.uid) || report.user.ref == userRef('guest'))
       && isValidString(report.user.name, 1, 20)
       && isValidImage(report.user.imageUrl)
@@ -149,13 +150,16 @@ service cloud.firestore {
     }
 
     function isValidCreateReportItem(reportItem) {
-      return reportItem.size() == 6
+      return reportItem.size() == 7
+      && 'user' in reportItem && reportItem.user is map
       && 'player' in reportItem && reportItem.player is map
       && 'position' in reportItem && (reportItem.position is string || reportItem.position == null)
       && 'shirtNumber' in reportItem && (reportItem.shirtNumber is int || reportItem.shirtNumber == null)
       && 'point' in reportItem && reportItem.point is string
       && 'text' in reportItem && reportItem.text is string
       && 'order' in reportItem && reportItem.order is int
+      && (reportItem.user.id == request.auth.uid || reportItem.user.id == 'guest')
+      && (reportItem.user.ref == userRef(request.auth.uid) || reportItem.user.ref == userRef('guest'))
       && isValidString(reportItem.player.id, 1, 10)
       && isValidString(reportItem.player.name, 1, 100)
       && isValidPosition(reportItem.position)

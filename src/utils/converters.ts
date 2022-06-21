@@ -174,6 +174,7 @@ export const reportConverter: FirestoreDataConverter<Report> = {
 export const reportItemConverter: FirestoreDataConverter<ReportItem> = {
   toFirestore(reportItem: ReportItem): DocumentData {
     return {
+      user: reportItem.user,
       player: reportItem.player,
       position: reportItem.position,
       shirtNumber: reportItem.shirtNumber,
@@ -186,6 +187,7 @@ export const reportItemConverter: FirestoreDataConverter<ReportItem> = {
     const data = snapshot.data(options)
     return {
       id: snapshot.id,
+      user: data.user,
       player: data.player,
       position: data.position,
       shirtNumber: data.shirtNumber,
