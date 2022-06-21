@@ -170,13 +170,16 @@ service cloud.firestore {
     }
 
     function isValidUpdateReportItem(newReportItem, oldReportItem) {
-      return newReportItem.size() == 6
+      return newReportItem.size() == 7
+      && 'user' in newReportItem && newReportItem.user is map
       && 'player' in newReportItem && newReportItem.player is map
       && 'position' in newReportItem && (newReportItem.position is string || newReportItem.position == null)
       && 'shirtNumber' in newReportItem && (newReportItem.shirtNumber is int || newReportItem.shirtNumber == null)
       && 'point' in newReportItem && newReportItem.point is string
       && 'text' in newReportItem && newReportItem.text is string
       && 'order' in newReportItem && newReportItem.order is int
+      && newReportItem.user.id == oldReportItem.user.id
+      && newReportItem.user.ref == oldReportItem.user.ref
       && newReportItem.player.id == oldReportItem.player.id
       && newReportItem.player.name == oldReportItem.player.name
       && newReportItem.position == oldReportItem.position
@@ -208,12 +211,16 @@ service cloud.firestore {
       match /home-team-report-items/{homeTeamReportItemId} {
         allow read;
         allow create: if isValidCreateReportItem(request.resource.data)
-        allow update: if isValidUpdateReportItem(request.resource.data, resource.data);
+        allow update: if request.auth != null
+        && userRef(request.auth.uid) == resource.data.user.ref
+        && isValidUpdateReportItem(request.resource.data, resource.data);
       }
       match /away-team-report-items/{awayTeamReportItemId} {
         allow read;
         allow create: if isValidCreateReportItem(request.resource.data)
-        allow update: if isValidUpdateReportItem(request.resource.data, resource.data);
+        allow update: if request.auth != null
+        && userRef(request.auth.uid) == resource.data.user.ref
+        && isValidUpdateReportItem(request.resource.data, resource.data);
       }
       match /comments/{commentId} {
         allow read;
