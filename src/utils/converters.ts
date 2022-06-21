@@ -146,6 +146,7 @@ export const reportConverter: FirestoreDataConverter<Report> = {
       summary: report.summary,
       teamIds: report.teamIds,
       publish: report.publish,
+      likeCount: report.likeCount,
       createdAt: report.createdAt
     }
   },
@@ -166,6 +167,7 @@ export const reportConverter: FirestoreDataConverter<Report> = {
       summary: data.summary,
       teamIds: data.teamIds,
       publish: data.publish,
+      likeCount: data.likeCount,
       createdAt: data.createdAt
     }
   }

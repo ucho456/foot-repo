@@ -81,6 +81,7 @@ export const createReport = async (
     summary: inputReport.summary,
     teamIds: [match.homeTeam.id, match.awayTeam.id],
     publish: inputReport.publish,
+    likeCount: 0,
     createdAt: serverTimestamp()
   })
 
