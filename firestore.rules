@@ -109,7 +109,7 @@ service cloud.firestore {
     }
 
     function isValidUpdateReport(newReport, oldReport) {
-      return newReport.size() == 14
+      return newReport.size() == 15
       && 'title' in newReport && newReport.title is string
       && 'user' in newReport && newReport.user is map
       && 'homeTeam' in newReport && newReport.homeTeam is map
@@ -123,6 +123,7 @@ service cloud.firestore {
       && 'summary' in newReport && newReport.summary is string
       && 'teamIds' in newReport && newReport.teamIds is list
       && 'publish' in newReport && newReport.publish is bool
+      && 'likeCount' in newReport && newReport.likeCount is int
       && 'createdAt' in newReport && newReport.createdAt is timestamp
       && isValidString(newReport.title, 1, 100)
       && newReport.user.ref == oldReport.user.ref
@@ -148,7 +149,8 @@ service cloud.firestore {
       && newReport.matchday == oldReport.matchday
       && isValidSelectTeam(newReport.selectTeam)
       && isValidString(newReport.momId, 0, 10)
-      && isValidString(newReport.summary, 0, 300);
+      && isValidString(newReport.summary, 0, 300)
+      && isValidInt(newReport.likeCount, 0, 0);
     }
 
     function isValidCreateReportItem(reportItem) {

@@ -356,23 +356,14 @@ export const updateReport = async (inputReport: InputReport, initReport: Report)
   const batch = writeBatch(db)
   const rRef = doc(db, 'reports', initReport.id).withConverter(reportConverter)
   batch.update(rRef, {
-    title:
+    [`title`]:
       inputReport.title !== ''
         ? inputReport.title
         : `${initReport.homeTeam.name} vs ${initReport.awayTeam.name} の選手採点`,
-    user: initReport.user,
-    homeTeam: initReport.homeTeam,
-    awayTeam: initReport.awayTeam,
-    competition: initReport.competition,
-    jstDate: initReport.jstDate,
-    matchday: initReport.matchday,
-    match: initReport.match,
-    selectTeam: inputReport.selectTeam,
-    momId: inputReport.momId,
-    summary: inputReport.summary,
-    teamIds: initReport.teamIds,
-    publish: inputReport.publish,
-    createdAt: initReport.createdAt
+    [`selectTeam`]: inputReport.selectTeam,
+    [`momId`]: inputReport.momId,
+    [`summary`]: inputReport.summary,
+    [`publish`]: inputReport.publish
   })
 
   inputReport.homeTeamReportItems.forEach((htri) => {
@@ -383,14 +374,7 @@ export const updateReport = async (inputReport: InputReport, initReport: Report)
       'home-team-report-items',
       htri.id
     ).withConverter(reportItemConverter)
-    batch.update(htriRef, {
-      player: htri.player,
-      position: htri.position,
-      shirtNumber: htri.shirtNumber,
-      point: htri.point,
-      text: htri.text,
-      order: htri.order
-    })
+    batch.update(htriRef, { [`point`]: htri.point, [`text`]: htri.text })
   })
 
   inputReport.awayTeamReportItems.forEach((atri) => {
@@ -401,14 +385,7 @@ export const updateReport = async (inputReport: InputReport, initReport: Report)
       'away-team-report-items',
       atri.id
     ).withConverter(reportItemConverter)
-    batch.update(htriRef, {
-      player: atri.player,
-      position: atri.position,
-      shirtNumber: atri.shirtNumber,
-      point: atri.point,
-      text: atri.text,
-      order: atri.order
-    })
+    batch.update(htriRef, { [`point`]: atri.point, [`text`]: atri.text })
   })
 
   await batch.commit()
