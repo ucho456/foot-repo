@@ -64,6 +64,17 @@ const useShow = () => {
     }
   }
 
+  const shareTwitter = () => {
+    const shareUrl =
+      'https://twitter.com/intent/tweet?text=' +
+      `${report.value?.homeTeam.name} vs ${report.value?.awayTeam.name} の選手採点` +
+      '%20%23選手採点' +
+      '%20%23フットレポ' +
+      '&url=' +
+      location.href
+    window.open(shareUrl)
+  }
+
   const inputComment = ref('')
   const isLoadingNewComment = ref(false)
   const isDialog = ref(false)
@@ -99,6 +110,7 @@ const useShow = () => {
     isLoadingSameMatchReports,
     isLoadingComments,
     setUp,
+    shareTwitter,
     inputComment,
     isLoadingNewComment,
     isDialog,
