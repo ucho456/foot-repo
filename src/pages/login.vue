@@ -2,7 +2,7 @@
   <v-container>
     <v-card class="mx-auto" max-width="400" outlined>
       <v-container>
-        <v-row justify="center"><v-img max-width="240" :src="logo" /></v-row>
+        <v-row class="mt-3" justify="center"><v-img max-width="240" :src="logo" /></v-row>
         <ValidationObserver v-slot="{ invalid }">
           <v-row class="mt-4" justify="center">
             <v-col cols="10">
