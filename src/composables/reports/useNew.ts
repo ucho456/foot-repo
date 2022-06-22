@@ -27,6 +27,9 @@ const useNew = () => {
         inputReport.homeTeamReportItems = forReport.homeTeamReportItems
         inputReport.awayTeamReportItems = forReport.awayTeamReportItems
       }
+      if (loginUser.value?.team.id === match.value?.awayTeam.id) {
+        inputReport.selectTeam = 'away'
+      }
       return 'success'
     } catch (error) {
       console.log(error)

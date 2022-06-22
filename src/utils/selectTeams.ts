@@ -7,7 +7,8 @@ export const jLeagueTeams = [
 export const premierLeagueTeams = [
   { id: '65', name: 'Manchester City FC' },
   { id: '64', name: 'Liverpool FC' },
-  { id: '61', name: 'Chelsea FC' }
+  { id: '61', name: 'Chelsea FC' },
+  { id: '346', name: 'Watford FC' }
 ]
 
 export const laLigaTeams = [
