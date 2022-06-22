@@ -25,7 +25,7 @@
         <v-row v-if="report.selectTeam !== 'away'">
           <v-container>
             <v-row v-for="htrItem in homeTeamReportItems" :key="htrItem.id">
-              <v-col cols="12">
+              <v-col cols="12" class="font-weight-bold">
                 {{ htrItem.position }} {{ htrItem.shirtNumber }} {{ htrItem.player.name }}
                 <span v-if="report && report.momId === htrItem.player.id" class="mom">☆MOM</span>
               </v-col>
@@ -42,7 +42,7 @@
         <v-row v-if="report.selectTeam !== 'home'">
           <v-container>
             <v-row v-for="atrItem in awayTeamReportItems" :key="atrItem.id">
-              <v-col cols="12">
+              <v-col cols="12" class="font-weight-bold">
                 {{ atrItem.position }} {{ atrItem.shirtNumber }} {{ atrItem.player.name }}
                 <span v-if="report && report.momId === atrItem.player.id" class="mom">☆MOM</span>
               </v-col>
