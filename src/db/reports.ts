@@ -312,13 +312,15 @@ export const createComment = async (
     id: cId,
     user: loginUser
       ? {
+          id: loginUser.uid,
           ref: doc(db, 'users', loginUser.uid),
           name: loginUser.name,
           imageUrl: loginUser.imageUrl
         }
       : {
+          id: 'guest',
           ref: doc(db, 'users', 'guest'),
-          name: 'ゲスト',
+          name: 'Guest',
           imageUrl: null
         },
     text,

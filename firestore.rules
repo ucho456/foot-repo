@@ -230,10 +230,14 @@ service cloud.firestore {
       match /comments/{commentId} {
         allow read;
         allow create: if isValidComment(newData())
+        && (newData().user.id == request.auth.uid || newData().user.id == 'guest')
         && (newData().user.ref == userRef(request.auth.uid) || newData().user.ref == userRef('guest'))
         && isValidString(newData().user.name, 1, 20)
         && isValidImage(newData().user.imageUrl)
         && isValidString(newData().text, 1, 140);
+
+        allow delete: if request.auth != null
+        && userRef(request.auth.uid) == resource.data.user.ref;
       }
     }
 

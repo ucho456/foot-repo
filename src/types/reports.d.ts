@@ -64,6 +64,7 @@ type ReportItem = {
 type ReportComment = {
   id: string
   user: {
+    id: string
     ref: import('firebase/firestore').DocumentReference
     name: string
     imageUrl: string | null
