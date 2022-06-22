@@ -17,7 +17,7 @@ type Team = {
     position: Position
     dateOfBirth: string
     nationality: string
-    shirtNumber: number
+    shirtNumber: number | null
   }[]
   lastUpdated: string
 }

@@ -39,6 +39,7 @@ type Report = {
   summary: string
   teamIds: string[]
   publish: boolean
+  frozen: boolean
   likeCount: number
   createdAt: import('firebase/firestore').FieldValue
 }

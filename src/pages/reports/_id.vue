@@ -13,6 +13,7 @@
         </v-row>
         <v-row>
           <v-col cols="4"><ButtonTwitter :text="'シェアする'" @click="shareTwitter" /></v-col>
+          <v-col cols="4"><ButtonTwitter :text="'いいね'" @click="clickLike" /></v-col>
         </v-row>
         <RowUser :image-url="report.user.imageUrl" :name="report.user.name" />
         <RowMatchHeader v-bind="match" />
@@ -173,6 +174,7 @@ export default defineComponent({
       isLoadingComments,
       setUp,
       shareTwitter,
+      clickLike,
       inputComment,
       isLoadingNewComment,
       isDialog,
@@ -231,6 +233,7 @@ export default defineComponent({
       isLoadingSameMatchReports,
       isLoadingComments,
       shareTwitter,
+      clickLike,
       inputComment,
       isLoadingNewComment,
       isDialog,

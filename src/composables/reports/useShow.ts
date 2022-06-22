@@ -5,6 +5,7 @@ import {
   createComment,
   fetchSameMatchReports,
   fetchReportAndItems,
+  updateLikeCount,
   subscribeComments
 } from '@/db/reports'
 import { fetchUser } from '@/db/users'
@@ -64,7 +65,7 @@ const useShow = () => {
     }
   }
 
-  const shareTwitter = () => {
+  const shareTwitter = (): void => {
     const shareUrl =
       'https://twitter.com/intent/tweet?text=' +
       `${report.value?.homeTeam.name} vs ${report.value?.awayTeam.name} の選手採点` +
@@ -73,6 +74,17 @@ const useShow = () => {
       '&url=' +
       location.href
     window.open(shareUrl)
+  }
+
+  const like = ref(false)
+  const clickLike = async () => {
+    try {
+      await updateLikeCount(report.value?.id!, like.value)
+    } catch {
+      return 'failure'
+    } finally {
+      //
+    }
   }
 
   const inputComment = ref('')
@@ -110,6 +122,7 @@ const useShow = () => {
     isLoadingSameMatchReports,
     isLoadingComments,
     setUp,
+    clickLike,
     shareTwitter,
     inputComment,
     isLoadingNewComment,

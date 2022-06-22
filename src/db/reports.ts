@@ -18,6 +18,7 @@ import {
   writeBatch
 } from 'firebase/firestore'
 import type { QueryDocumentSnapshot, Unsubscribe } from 'firebase/firestore'
+import { getFunctions, httpsCallable } from 'firebase/functions'
 import { commentConverter, reportConverter, reportItemConverter } from '@/utils/converters'
 import { makeSearchOption } from '@/utils/searchOption'
 
@@ -82,6 +83,7 @@ export const createReport = async (
     teamIds: [match.homeTeam.id, match.awayTeam.id],
     publish: inputReport.publish,
     likeCount: 0,
+    frozen: false,
     createdAt: serverTimestamp()
   })
 
@@ -389,4 +391,12 @@ export const updateReport = async (inputReport: InputReport, initReport: Report)
   })
 
   await batch.commit()
+}
+
+export const updateLikeCount = async (reportId: string, like: boolean) => {
+  const region = process.env.NODE_ENV === 'development' ? undefined : 'asia-northeast1'
+  const functions = getFunctions(undefined, region)
+  const likeFunc = httpsCallable(functions, 'updateLike')
+  const res = await likeFunc({ reportId, like })
+  console.log(res)
 }

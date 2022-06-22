@@ -9,6 +9,7 @@ import {
 } from './calls/createMatches'
 import createUser from './calls/createUser'
 import updateEmailVerified from './calls/updateEmailVerified'
+import updateLike from './calls/updateLike'
 import {
   setJLeagueMatches,
   setPremierLeagueMatches,
@@ -37,6 +38,7 @@ module.exports = {
   createBundesligaMatches,
   createUser,
   updateEmailVerified,
+  updateLike,
   setJLeagueMatches,
   setPremierLeagueMatches,
   setLaLigaMatches,

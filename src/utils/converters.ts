@@ -147,6 +147,7 @@ export const reportConverter: FirestoreDataConverter<Report> = {
       teamIds: report.teamIds,
       publish: report.publish,
       likeCount: report.likeCount,
+      frozen: report.frozen,
       createdAt: report.createdAt
     }
   },
@@ -168,6 +169,7 @@ export const reportConverter: FirestoreDataConverter<Report> = {
       teamIds: data.teamIds,
       publish: data.publish,
       likeCount: data.likeCount,
+      frozen: data.frozen,
       createdAt: data.createdAt
     }
   }
@@ -259,7 +261,10 @@ export const userConverter: FirestoreDataConverter<User> = {
       imageUrl: user.imageUrl,
       greet: user.greet,
       competitionId: user.competitionId,
-      team: user.team
+      team: user.team,
+      reportCount: user.reportCount,
+      followCount: user.followCount,
+      followerCount: user.followerCount
     }
   },
   fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions): User {
@@ -270,7 +275,10 @@ export const userConverter: FirestoreDataConverter<User> = {
       imageUrl: data.imageUrl,
       greet: data.greet,
       competitionId: data.competitionId,
-      team: data.team
+      team: data.team,
+      reportCount: data.reportCount,
+      followCount: data.followCount,
+      followerCount: data.followerCount
     }
   }
 }
