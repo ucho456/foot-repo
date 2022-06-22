@@ -105,7 +105,7 @@
           </v-container>
         </v-row>
         <RowUser v-if="loginUser" :image-url="loginUser.imageUrl" :name="loginUser.name" />
-        <RowUser v-else :name="'ゲスト'" />
+        <RowUser v-else :name="'Guest'" />
         <v-row>
           <v-col cols="12"> <Textarea v-model="inputComment" :maxlength="140" /></v-col>
           <v-col cols="6" class="mt-n8">
