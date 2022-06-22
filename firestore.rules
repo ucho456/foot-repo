@@ -10,6 +10,14 @@ service cloud.firestore {
       return request.auth != null && userId == request.auth.uid;
     }
 
+    function newData() {
+      return request.resource.data
+    }
+
+    function oldData() {
+      return resource.data
+    }
+
     function userRef(uid) {
       return /databases/$(database)/documents/users/$(uid)
     }
@@ -61,7 +69,7 @@ service cloud.firestore {
     }
 
     // reports
-    function isValidCreateReport(report) {
+    function isValidReport(report) {
       return report.size() == 16
       && 'title' in report && report.title is string
       && 'user' in report && report.user is map
@@ -78,84 +86,10 @@ service cloud.firestore {
       && 'publish' in report && report.publish is bool
       && 'frozen' in report && report.frozen is bool
       && 'likeCount' in report && report.likeCount is int
-      && 'createdAt' in report && report.createdAt is timestamp
-      && isValidString(report.title, 1, 100)
-      && (report.user.id == request.auth.uid || report.user.id == 'guest')
-      && (report.user.ref == userRef(request.auth.uid) || report.user.ref == userRef('guest'))
-      && isValidString(report.user.name, 1, 20)
-      && isValidImage(report.user.imageUrl)
-      && isValidString(report.homeTeam.id, 1, 20)
-      && exists(report.homeTeam.ref)
-      && isValidString(report.homeTeam.name, 1, 100)
-      && isValidString(report.homeTeam.shortName, 1, 3)
-      && isValidImage(report.homeTeam.imageUrl)
-      && isValidInt(report.homeTeam.score, 0, 100)
-      && isValidString(report.awayTeam.id, 1, 20)
-      && exists(report.awayTeam.ref)
-      && isValidString(report.awayTeam.name, 1, 100)
-      && isValidString(report.awayTeam.shortName, 1, 3)
-      && isValidImage(report.awayTeam.imageUrl)
-      && isValidInt(report.awayTeam.score, 0, 100)
-      && isValidString(report.competition.id, 1, 20)
-      && exists(report.competition.ref)
-      && isValidString(report.competition.name, 1, 20)
-      && isValidString(report.jstDate, 10, 10)
-      && isValidString(report.match.id, 1, 20)
-      && exists(report.match.ref)
-      && isValidInt(report.matchday, 1, 100)
-      && isValidSelectTeam(report.selectTeam)
-      && isValidString(report.momId, 0, 10)
-      && isValidString(report.summary, 0, 300)
-      && isValidInt(report.likeCount, 0, 0);
+      && 'createdAt' in report && report.createdAt is timestamp;
     }
 
-    function isValidUpdateReport(newReport, oldReport) {
-      return newReport.size() == 16
-      && 'title' in newReport && newReport.title is string
-      && 'user' in newReport && newReport.user is map
-      && 'homeTeam' in newReport && newReport.homeTeam is map
-      && 'awayTeam' in newReport && newReport.awayTeam is map
-      && 'competition' in newReport && newReport.competition is map
-      && 'jstDate' in newReport && newReport.jstDate is string
-      && 'match' in newReport && newReport.match is map
-      && 'matchday' in newReport && newReport.matchday is int
-      && 'selectTeam' in newReport && newReport.selectTeam is string
-      && 'momId' in newReport && newReport.momId is string
-      && 'summary' in newReport && newReport.summary is string
-      && 'teamIds' in newReport && newReport.teamIds is list
-      && 'publish' in newReport && newReport.publish is bool
-      && 'frozen' in newReport && newReport.frozen is bool
-      && 'likeCount' in newReport && newReport.likeCount is int
-      && 'createdAt' in newReport && newReport.createdAt is timestamp
-      && isValidString(newReport.title, 1, 100)
-      && newReport.user.ref == oldReport.user.ref
-      && newReport.user.name == oldReport.user.name
-      && newReport.homeTeam.id == oldReport.homeTeam.id
-      && newReport.homeTeam.ref == oldReport.homeTeam.ref
-      && newReport.homeTeam.name == oldReport.homeTeam.name
-      && newReport.homeTeam.shortName == oldReport.homeTeam.shortName
-      && newReport.homeTeam.imageUrl == oldReport.homeTeam.imageUrl
-      && newReport.homeTeam.score == oldReport.homeTeam.score
-      && newReport.awayTeam.id == oldReport.awayTeam.id
-      && newReport.awayTeam.ref == oldReport.awayTeam.ref
-      && newReport.awayTeam.name == oldReport.awayTeam.name
-      && newReport.awayTeam.shortName == oldReport.awayTeam.shortName
-      && newReport.awayTeam.imageUrl == oldReport.awayTeam.imageUrl
-      && newReport.awayTeam.score == oldReport.awayTeam.score
-      && newReport.competition.id == oldReport.competition.id
-      && newReport.competition.ref == oldReport.competition.ref
-      && newReport.competition.name == oldReport.competition.name
-      && newReport.jstDate == oldReport.jstDate
-      && newReport.match.id == oldReport.match.id
-      && newReport.match.ref == oldReport.match.ref
-      && newReport.matchday == oldReport.matchday
-      && isValidSelectTeam(newReport.selectTeam)
-      && isValidString(newReport.momId, 0, 10)
-      && isValidString(newReport.summary, 0, 300)
-      && isValidInt(newReport.likeCount, 0, 0);
-    }
-
-    function isValidCreateReportItem(reportItem) {
+    function isValidReportItem(reportItem) {
       return reportItem.size() == 7
       && 'user' in reportItem && reportItem.user is map
       && 'player' in reportItem && reportItem.player is map
@@ -163,74 +97,143 @@ service cloud.firestore {
       && 'shirtNumber' in reportItem && (reportItem.shirtNumber is int || reportItem.shirtNumber == null)
       && 'point' in reportItem && reportItem.point is string
       && 'text' in reportItem && reportItem.text is string
-      && 'order' in reportItem && reportItem.order is int
-      && (reportItem.user.id == request.auth.uid || reportItem.user.id == 'guest')
-      && (reportItem.user.ref == userRef(request.auth.uid) || reportItem.user.ref == userRef('guest'))
-      && isValidString(reportItem.player.id, 1, 10)
-      && isValidString(reportItem.player.name, 1, 100)
-      && isValidPosition(reportItem.position)
-      && (isValidInt(reportItem.shirtNumber, 1, 99) || reportItem.shirtNumber == null)
-      && isValidPoint(reportItem.point)
-      && isValidString(reportItem.text, 0, 140)
-      && isValidInt(reportItem.order, 1, 30);
-    }
-
-    function isValidUpdateReportItem(newReportItem, oldReportItem) {
-      return newReportItem.size() == 7
-      && 'user' in newReportItem && newReportItem.user is map
-      && 'player' in newReportItem && newReportItem.player is map
-      && 'position' in newReportItem && (newReportItem.position is string || newReportItem.position == null)
-      && 'shirtNumber' in newReportItem && (newReportItem.shirtNumber is int || newReportItem.shirtNumber == null)
-      && 'point' in newReportItem && newReportItem.point is string
-      && 'text' in newReportItem && newReportItem.text is string
-      && 'order' in newReportItem && newReportItem.order is int
-      && newReportItem.user.id == oldReportItem.user.id
-      && newReportItem.user.ref == oldReportItem.user.ref
-      && newReportItem.player.id == oldReportItem.player.id
-      && newReportItem.player.name == oldReportItem.player.name
-      && newReportItem.position == oldReportItem.position
-      && newReportItem.shirtNumber == oldReportItem.shirtNumber
-      && isValidPoint(newReportItem.point)
-      && isValidString(newReportItem.text, 0, 140)
-      && newReportItem.order == oldReportItem.order;
+      && 'order' in reportItem && reportItem.order is int;
     }
 
     function isValidComment(comment) {
       return comment.size() == 3
       && 'user' in comment && comment.user is map
       && 'text' in comment && comment.text is string
-      && 'createdAt' in comment && comment.createdAt is timestamp
-      && (comment.user.ref == userRef(request.auth.uid) || comment.user.ref == userRef('guest'))
-      && isValidString(comment.user.name, 1, 20)
-      && isValidImage(comment.user.imageUrl)
-      && isValidString(comment.text, 1, 140);
+      && 'createdAt' in comment && comment.createdAt is timestamp;
     }
 
     match /reports/{reportId} {
       allow read;
-      allow create: if isValidCreateReport(request.resource.data);
+
+      allow create: if isValidReport(newData())
+      && isValidString(newData().title, 1, 100)
+      && (newData().user.id == request.auth.uid || newData().user.id == 'guest')
+      && (newData().user.ref == userRef(request.auth.uid) || newData().user.ref == userRef('guest'))
+      && isValidString(newData().user.name, 1, 20)
+      && isValidImage(newData().user.imageUrl)
+      && isValidString(newData().homeTeam.id, 1, 20)
+      && exists(newData().homeTeam.ref)
+      && isValidString(newData().homeTeam.name, 1, 100)
+      && isValidString(newData().homeTeam.shortName, 1, 3)
+      && isValidImage(newData().homeTeam.imageUrl)
+      && isValidInt(newData().homeTeam.score, 0, 100)
+      && isValidString(newData().awayTeam.id, 1, 20)
+      && exists(newData().awayTeam.ref)
+      && isValidString(newData().awayTeam.name, 1, 100)
+      && isValidString(newData().awayTeam.shortName, 1, 3)
+      && isValidImage(newData().awayTeam.imageUrl)
+      && isValidInt(newData().awayTeam.score, 0, 100)
+      && isValidString(newData().competition.id, 1, 20)
+      && exists(newData().competition.ref)
+      && isValidString(newData().competition.name, 1, 100)
+      && isValidString(newData().jstDate, 10, 10)
+      && isValidString(newData().match.id, 1, 20)
+      && exists(newData().match.ref)
+      && isValidInt(newData().matchday, 1, 100)
+      && isValidSelectTeam(newData().selectTeam)
+      && isValidString(newData().momId, 0, 20)
+      && isValidString(newData().summary, 0, 300)
+      && isValidInt(newData().likeCount, 0, 0);
+
       allow update: if request.auth != null
       && userRef(request.auth.uid) == resource.data.user.ref
-      && isValidUpdateReport(request.resource.data, resource.data);
+      && isValidReport(newData())
+      && isValidString(newData().title, 1, 100)
+      && newData().user.ref == oldData().user.ref
+      && newData().user.name == oldData().user.name
+      && newData().homeTeam.id == oldData().homeTeam.id
+      && newData().homeTeam.ref == oldData().homeTeam.ref
+      && newData().homeTeam.name == oldData().homeTeam.name
+      && newData().homeTeam.shortName == oldData().homeTeam.shortName
+      && newData().homeTeam.imageUrl == oldData().homeTeam.imageUrl
+      && newData().homeTeam.score == oldData().homeTeam.score
+      && newData().awayTeam.id == oldData().awayTeam.id
+      && newData().awayTeam.ref == oldData().awayTeam.ref
+      && newData().awayTeam.name == oldData().awayTeam.name
+      && newData().awayTeam.shortName == oldData().awayTeam.shortName
+      && newData().awayTeam.imageUrl == oldData().awayTeam.imageUrl
+      && newData().awayTeam.score == oldData().awayTeam.score
+      && newData().competition.id == oldData().competition.id
+      && newData().competition.ref == oldData().competition.ref
+      && newData().competition.name == oldData().competition.name
+      && newData().jstDate == oldData().jstDate
+      && newData().match.id == oldData().match.id
+      && newData().match.ref == oldData().match.ref
+      && newData().matchday == oldData().matchday
+      && isValidSelectTeam(newData().selectTeam)
+      && isValidString(newData().momId, 0, 20)
+      && isValidString(newData().summary, 0, 300)
+      && newData().likeCount >= 0;
+
       allow delete: if request.auth != null
       && userRef(request.auth.uid) == resource.data.user.ref;
+
       match /home-team-report-items/{homeTeamReportItemId} {
         allow read;
-        allow create: if isValidCreateReportItem(request.resource.data)
+
+        allow create: if isValidReportItem(newData())
+        && (newData().user.id == request.auth.uid || newData().user.id == 'guest')
+        && (newData().user.ref == userRef(request.auth.uid) || newData().user.ref == userRef('guest'))
+        && isValidString(newData().player.id, 1, 20)
+        && isValidString(newData().player.name, 1, 100)
+        && isValidPosition(newData().position)
+        && (isValidInt(newData().shirtNumber, 1, 99) || newData().shirtNumber == null)
+        && isValidPoint(newData().point)
+        && isValidString(newData().text, 0, 140)
+        && isValidInt(newData().order, 1, 100);
+
         allow update: if request.auth != null
         && userRef(request.auth.uid) == resource.data.user.ref
-        && isValidUpdateReportItem(request.resource.data, resource.data);
+        && isValidReportItem(newData())
+        && newData().user.id == oldData().user.id
+        && newData().user.ref == oldData().user.ref
+        && newData().player.id == oldData().player.id
+        && newData().player.name == oldData().player.name
+        && newData().position == oldData().position
+        && newData().shirtNumber == oldData().shirtNumber
+        && isValidPoint(newData().point)
+        && isValidString(newData().text, 0, 140)
+        && newData().order == oldData().order;
       }
       match /away-team-report-items/{awayTeamReportItemId} {
         allow read;
-        allow create: if isValidCreateReportItem(request.resource.data)
+
+        allow create: if isValidReportItem(newData())
+        && (newData().user.id == request.auth.uid || newData().user.id == 'guest')
+        && (newData().user.ref == userRef(request.auth.uid) || newData().user.ref == userRef('guest'))
+        && isValidString(newData().player.id, 1, 20)
+        && isValidString(newData().player.name, 1, 100)
+        && isValidPosition(newData().position)
+        && (isValidInt(newData().shirtNumber, 1, 99) || newData().shirtNumber == null)
+        && isValidPoint(newData().point)
+        && isValidString(newData().text, 0, 140)
+        && isValidInt(newData().order, 1, 100);
+
         allow update: if request.auth != null
         && userRef(request.auth.uid) == resource.data.user.ref
-        && isValidUpdateReportItem(request.resource.data, resource.data);
+        && isValidReportItem(newData())
+        && newData().user.id == oldData().user.id
+        && newData().user.ref == oldData().user.ref
+        && newData().player.id == oldData().player.id
+        && newData().player.name == oldData().player.name
+        && newData().position == oldData().position
+        && newData().shirtNumber == oldData().shirtNumber
+        && isValidPoint(newData().point)
+        && isValidString(newData().text, 0, 140)
+        && newData().order == oldData().order;
       }
       match /comments/{commentId} {
         allow read;
-        allow create: if isValidComment(request.resource.data);
+        allow create: if isValidComment(newData())
+        && (newData().user.ref == userRef(request.auth.uid) || newData().user.ref == userRef('guest'))
+        && isValidString(newData().user.name, 1, 20)
+        && isValidImage(newData().user.imageUrl)
+        && isValidString(newData().text, 1, 140);
       }
     }
 
@@ -239,7 +242,7 @@ service cloud.firestore {
     }
 
     // users
-    function isValidCreateUser(user) {
+    function isValidUser(user) {
       return user.size() == 8
       && 'name' in user && user.name is string
       && 'imageUrl' in user && (user.imageUrl == null || user.imageUrl is string)
@@ -248,45 +251,34 @@ service cloud.firestore {
       && 'team' in user && user.team is map
       && 'reportCount' in user && user.reportCount is int
       && 'followCount' in user && user.followCount is int
-      && 'followerCount' in user && user.followerCount is int
-      && isValidString(user.name, 1, 20)
-      && isValidImage(user.imageUrl)
-      && isValidString(user.greet, 0, 140)
-      && isValidString(user.competitionId, 0, 20)
-      && isValidString(user.team.id, 0, 20)
-      && isValidString(user.team.name, 0, 100)
-      && user.reportCount == 0
-      && user.followCount == 0
-      && user.followerCount == 0;
-    }
-
-    function isValidUpdateUser(newUser, oldUser) {
-      return newUser.size() == 8
-      && 'name' in newUser && newUser.name is string
-      && 'imageUrl' in newUser && (newUser.imageUrl == null || newUser.imageUrl is string)
-      && 'greet' in newUser && newUser.greet is string
-      && 'competitionId' in newUser && newUser.competitionId is string
-      && 'team' in newUser && newUser.team is map
-      && 'reportCount' in newUser && newUser.reportCount is int
-      && 'followCount' in newUser && newUser.followCount is int
-      && 'followerCount' in newUser && newUser.followerCount is int
-      && newUser.name == oldUser.name
-      && newUser.imageUrl == oldUser.imageUrl
-      && isValidString(newUser.greet, 0, 140)
-      && isValidString(newUser.competitionId, 0, 20)
-      && isValidString(newUser.team.id, 0, 20)
-      && isValidString(newUser.team.name, 0, 100)
-      && newUser.reportCount >= 0
-      && newUser.followCount >= 0
-      && newUser.followerCount >= 0;
+      && 'followerCount' in user && user.followerCount is int;
     }
 
     match /users/{userId} {
       allow read;
       allow create: if onlyMe(userId)
-      && isValidCreateUser(request.resource.data);
+      && isValidUser(newData())
+      && isValidString(newData().name, 1, 20)
+      && isValidImage(newData().imageUrl)
+      && isValidString(newData().greet, 0, 140)
+      && isValidString(newData().competitionId, 0, 20)
+      && isValidString(newData().team.id, 0, 20)
+      && isValidString(newData().team.name, 0, 100)
+      && newData().reportCount == 0
+      && newData().followCount == 0
+      && newData().followerCount == 0;
+
       allow update: if onlyMe(userId)
-      && isValidUpdateUser(request.resource.data, resource.data);
+      && isValidUser(newData())
+      && newData().name == oldData().name
+      && newData().imageUrl == oldData().imageUrl
+      && isValidString(newData().greet, 0, 140)
+      && isValidString(newData().competitionId, 0, 20)
+      && isValidString(newData().team.id, 0, 20)
+      && isValidString(newData().team.name, 0, 100)
+      && newData().reportCount >= 0
+      && newData().followCount >= 0
+      && newData().followerCount >= 0;
     }
   }
 }
