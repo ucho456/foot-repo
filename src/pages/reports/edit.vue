@@ -80,6 +80,7 @@
           </v-col>
           <v-col cols="10" sm="6">
             <ButtonSubmit
+              :disabled="inputReport.publish"
               :icon="'mdi-content-save'"
               :text="'非公開にして一時保存する'"
               :loading="isLoadingSend"
