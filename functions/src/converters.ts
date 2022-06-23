@@ -156,3 +156,69 @@ export const teamConverter: FirestoreDataConverter<Team> = {
     }
   }
 }
+
+/*
+  reports
+*/
+export const reportConverter: FirestoreDataConverter<Report> = {
+  toFirestore(report: Report): DocumentData {
+    return {
+      title: report.title,
+      user: report.user,
+      homeTeam: report.homeTeam,
+      awayTeam: report.awayTeam,
+      competition: report.competition,
+      jstDate: report.jstDate,
+      match: report.match,
+      matchday: report.matchday,
+      selectTeam: report.selectTeam,
+      momId: report.momId,
+      summary: report.summary,
+      teamIds: report.teamIds,
+      publish: report.publish,
+      likeCount: report.likeCount,
+      frozen: report.frozen,
+      createdAt: report.createdAt
+    }
+  },
+  fromFirestore(snapshot: QueryDocumentSnapshot): Report {
+    const data = snapshot.data()
+    return {
+      id: snapshot.id,
+      title: data.title,
+      user: data.user,
+      homeTeam: data.homeTeam,
+      awayTeam: data.awayTeam,
+      competition: data.competition,
+      jstDate: data.jstDate,
+      match: data.match,
+      matchday: data.matchday,
+      selectTeam: data.selectTeam,
+      momId: data.momId,
+      summary: data.summary,
+      teamIds: data.teamIds,
+      publish: data.publish,
+      likeCount: data.likeCount,
+      frozen: data.frozen,
+      createdAt: data.createdAt
+    }
+  }
+}
+
+/*
+  users
+*/
+export const likeConverter: FirestoreDataConverter<Like> = {
+  toFirestore(like: Like): DocumentData {
+    return {
+      report: like.report
+    }
+  },
+  fromFirestore(snapshot: QueryDocumentSnapshot): Like {
+    const data = snapshot.data()
+    return {
+      id: snapshot.id,
+      report: data.report
+    }
+  }
+}

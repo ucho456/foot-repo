@@ -81,12 +81,12 @@ const useShow = () => {
   const clickLike = async () => {
     try {
       like.value = !like.value
-      await updateLikeCount(report.value?.id!, like.value)
       if (report.value && like.value) {
         report.value.likeCount++
       } else if (report.value && !like.value) {
         report.value.likeCount--
       }
+      await updateLikeCount(report.value?.id!, like.value)
     } catch {
       return 'failure'
     } finally {

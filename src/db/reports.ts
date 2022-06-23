@@ -396,9 +396,7 @@ export const updateReport = async (inputReport: InputReport, initReport: Report)
 }
 
 export const updateLikeCount = async (reportId: string, like: boolean) => {
-  const region = process.env.NODE_ENV === 'development' ? undefined : 'asia-northeast1'
-  const functions = getFunctions(undefined, region)
-  const likeFunc = httpsCallable(functions, 'updateLike')
-  const res = await likeFunc({ reportId, like })
-  console.log('updateLikeCount 戻り値', res)
+  const functions = getFunctions(undefined, 'asia-northeast1')
+  const updateLike = httpsCallable(functions, 'updateLike')
+  await updateLike({ reportId, like })
 }

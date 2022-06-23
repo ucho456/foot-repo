@@ -14,6 +14,7 @@ type User = {
 }
 
 type Like = {
+  id: string
   report: {
     id: string
     ref: import('firebase/firestore').DocumentReference
