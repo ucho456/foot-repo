@@ -55,7 +55,12 @@
             <v-btn icon color="#1da1f2" @click="shareTwitter">
               <v-icon>mdi-twitter</v-icon>
             </v-btn>
-            <v-btn icon :color="like ? 'orange' : 'grey'" :disabled="!loginUser" @click="clickLike">
+            <v-btn
+              icon
+              :color="like ? 'orange' : 'grey'"
+              :disabled="!loginUser || loginUser.uid === report.user.id"
+              @click="clickLike"
+            >
               <v-icon>mdi-thumb-up</v-icon>
             </v-btn>
             {{ report.likeCount }}
