@@ -79,7 +79,13 @@ const useShow = () => {
   const like = ref(false)
   const clickLike = async () => {
     try {
+      like.value = !like.value
       await updateLikeCount(report.value?.id!, like.value)
+      if (report.value && like.value) {
+        report.value.likeCount++
+      } else if (report.value && !like.value) {
+        report.value.likeCount--
+      }
     } catch {
       return 'failure'
     } finally {
@@ -122,6 +128,7 @@ const useShow = () => {
     isLoadingSameMatchReports,
     isLoadingComments,
     setUp,
+    like,
     clickLike,
     shareTwitter,
     inputComment,

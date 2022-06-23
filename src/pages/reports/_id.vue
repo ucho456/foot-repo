@@ -11,10 +11,6 @@
         <v-row v-if="!report.publish" justify="center">
           <v-col cols="4" md="2" class="private"> 非公開 </v-col>
         </v-row>
-        <v-row>
-          <v-col cols="4"><ButtonTwitter :text="'シェアする'" @click="shareTwitter" /></v-col>
-          <v-col cols="4"><ButtonTwitter :text="'いいね'" @click="clickLike" /></v-col>
-        </v-row>
         <RowUser :image-url="report.user.imageUrl" :name="report.user.name" />
         <RowMatchHeader v-bind="match" />
         <v-row v-if="report.selectTeam !== 'away'">
@@ -54,6 +50,17 @@
         <v-row>
           <v-col cols="12">総評：{{ report.summary }}</v-col>
         </v-row>
+        <v-row>
+          <v-col>
+            <v-btn icon color="#1da1f2" @click="shareTwitter">
+              <v-icon>mdi-twitter</v-icon>
+            </v-btn>
+            <v-btn icon :color="like ? 'primary' : 'grey'" @click="clickLike">
+              <v-icon>mdi-thumb-up</v-icon>
+            </v-btn>
+            {{ report.likeCount }}
+          </v-col>
+        </v-row>
       </v-container>
     </v-card>
     <v-card v-if="!isLoadingReport" class="mt-4" outlined>
@@ -61,7 +68,7 @@
       <v-container v-if="user">
         <v-row>
           <v-col>
-            <h2>投稿者 / いいねボタン・フォローボタン</h2>
+            <h2>投稿者 / フォローボタン</h2>
           </v-col>
         </v-row>
         <RowUser
@@ -71,9 +78,6 @@
           :team-name="user.team.name"
           :greet="user.greet"
         />
-        <v-row>
-          <v-col cols="2"><ButtonTwitter :text="'シェアする'" @click="shareTwitter" /></v-col>
-        </v-row>
       </v-container>
     </v-card>
     <v-card v-if="!isLoadingReport && !isLoadingUser" class="mt-4" outlined>
@@ -135,7 +139,6 @@ import useSnackbar from '@/utils/useSnackbar'
 import useStore from '@/utils/useStore'
 import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 import RowUser from '@/components/organisms/RowUser.vue'
-import ButtonTwitter from '@/components/molecules/ButtonTwitter.vue'
 import RowMatchHeader from '@/components/organisms/RowMatchHeader.vue'
 import ContainerReportTable from '@/components/organisms/ContainerReportTable.vue'
 import Textarea from '@/components/molecules/Textarea.vue'
@@ -148,7 +151,6 @@ export default defineComponent({
   components: {
     ContainerLoading,
     RowUser,
-    ButtonTwitter,
     RowMatchHeader,
     ContainerReportTable,
     Textarea,
@@ -174,6 +176,7 @@ export default defineComponent({
       isLoadingComments,
       setUp,
       shareTwitter,
+      like,
       clickLike,
       inputComment,
       isLoadingNewComment,
@@ -233,6 +236,7 @@ export default defineComponent({
       isLoadingSameMatchReports,
       isLoadingComments,
       shareTwitter,
+      like,
       clickLike,
       inputComment,
       isLoadingNewComment,
