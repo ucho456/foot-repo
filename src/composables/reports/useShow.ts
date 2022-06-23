@@ -35,13 +35,13 @@ const useShow = () => {
       isLoadingReport.value = true
       const { resReport, resHomeTeamReportItems, resAwayTeamReportItems } =
         await fetchReportAndItems(reportId, loginUser.value?.uid)
+      if (loginUser.value) {
+        like.value = await fetchLike(loginUser.value.uid, resReport.id)
+      }
       report.value = resReport
       homeTeamReportItems.value = resHomeTeamReportItems
       awayTeamReportItems.value = resAwayTeamReportItems
       match.value = await fetchMatch(report.value?.match.id!)
-      if (loginUser.value) {
-        like.value = await fetchLike(loginUser.value.uid, resReport.id)
-      }
       isLoadingReport.value = false
 
       isLoadingUser.value = true

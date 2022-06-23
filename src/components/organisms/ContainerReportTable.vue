@@ -27,15 +27,16 @@
             >
             <v-list-item-subtitle class="d-flex">
               <v-img :max-height="14" :max-width="14" :src="report.homeTeam.imageUrl" />
-              <span class="ml-2 mr-2">{{ report.homeTeam.shortName }}</span>
+              <span class="mx-2">{{ report.homeTeam.shortName }}</span>
               <span>{{ report.homeTeam.score }}</span>
-              <span class="ml-2 mr-2">vs</span>
+              <span class="mx-2">vs</span>
               <span>{{ report.awayTeam.score }}</span>
-              <span class="ml-2 mr-2">{{ report.awayTeam.shortName }}</span>
+              <span class="mx-2">{{ report.awayTeam.shortName }}</span>
               <v-img :max-height="14" :max-width="14" :src="report.awayTeam.imageUrl" />
             </v-list-item-subtitle>
             <v-list-item-subtitle>
-              {{ report.jstDate }} / {{ report.competition.name }} / {{ report.matchday }}節
+              {{ report.jstDate }} / {{ report.competition.name }} / {{ report.matchday }}節 /
+              <v-icon color="orange" size="13px">mdi-thumb-up</v-icon> {{ report.likeCount }}
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
