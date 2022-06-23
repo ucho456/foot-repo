@@ -7,7 +7,7 @@
           data-height="400"
           data-lang="ja"
           data-dnt="true"
-          href="https://twitter.com/FootRepo?ref_src=twsrc%5Etfw"
+          href="https://twitter.com/foot_repo?ref_src=twsrc%5Etfw"
         ></a>
       </v-container>
     </v-card>
