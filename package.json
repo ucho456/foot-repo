@@ -9,6 +9,7 @@
     "emu": "firebase emulators:start --import=./.emulator --export-on-exit",
     "deploy": "firebase deploy",
     "deploy:firestore:rules": "firebase deploy --only firestore:rules",
+    "export:firestore:indexes": "firebase firestore:indexes > firestore.indexes.json",
     "deploy:storage:rules": "firebase deploy --only storage:rules",
     "deploy:functions": "firebase deploy --only functions",
     "functions:shell": "firebase functions:shell",
