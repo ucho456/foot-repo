@@ -11,7 +11,7 @@
         <v-row v-if="!report.publish" justify="center">
           <v-col cols="4" md="2" class="private"> 非公開 </v-col>
         </v-row>
-        <RowUser :image-url="report.user.imageUrl" :name="report.user.name" />
+        <RowUser :id="report.user.id" :image-url="report.user.imageUrl" :name="report.user.name" />
         <RowMatchHeader v-bind="match" />
         <v-row v-if="report.selectTeam !== 'away'">
           <v-col>
@@ -77,6 +77,7 @@
           </v-col>
         </v-row>
         <RowUser
+          :id="user.id"
           :image-url="user.imageUrl"
           :image-size="60"
           :name="user.name"
@@ -107,6 +108,7 @@
         <v-row v-for="comment in comments" :key="comment.id">
           <v-container class="comment">
             <RowUser
+              :id="comment.user.id"
               :comment="comment.text"
               :image-url="comment.user.imageUrl"
               :name="comment.user.name"

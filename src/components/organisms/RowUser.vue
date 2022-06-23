@@ -1,11 +1,23 @@
 <template>
   <v-row>
     <v-col class="d-flex">
-      <div v-if="imageUrl">
-        <v-img class="rounded-circle" :height="imageSize" :width="imageSize" :src="imageUrl" />
+      <div v-if="imageUrl" :class="{ hover: id !== null }">
+        <v-img
+          class="rounded-circle"
+          :height="imageSize"
+          :width="imageSize"
+          :src="imageUrl"
+          @click="pushToUserShow"
+        />
       </div>
-      <div v-else>
-        <v-img class="rounded-circle" :height="imageSize" :width="imageSize" :src="noAvatarImage" />
+      <div v-else :class="{ hover: id !== 'guest' && id !== null }">
+        <v-img
+          class="rounded-circle"
+          :height="imageSize"
+          :width="imageSize"
+          :src="noAvatarImage"
+          @click="pushToUserShow"
+        />
       </div>
       <div class="ml-3">
         <div class="name">{{ name }}</div>
@@ -18,13 +30,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, useRouter } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   name: 'RowUser',
 
   props: {
     comment: { type: String, required: false, default: null },
+    id: { type: String, required: false, default: null },
     imageUrl: { type: String, required: false, default: null },
     imageSize: { type: Number, default: 30 },
     name: { type: String, default: '' },
@@ -32,10 +45,17 @@ export default defineComponent({
     greet: { type: String, required: false, default: null }
   },
 
-  setup() {
+  setup(props) {
+    const router = useRouter()
     const noAvatarImage = require('@/assets/no_avatar.png')
 
-    return { noAvatarImage }
+    const pushToUserShow = () => {
+      if (props.id !== 'guest' && props.id !== null) {
+        router.push(`/users/${props.id}`)
+      }
+    }
+
+    return { noAvatarImage, pushToUserShow }
   }
 })
 </script>
