@@ -27,12 +27,12 @@
             <div>投稿</div>
             <div>{{ reports.length }} 件</div></v-col
           >
-          <v-col cols="4" class="text-center hover"
+          <v-col cols="4" class="text-center follow"
             ><v-icon large>mdi-account-arrow-right</v-icon>
             <div>フォロー</div>
             <div>0 件</div></v-col
           >
-          <v-col cols="4" class="text-center hover"
+          <v-col cols="4" class="text-center follow"
             ><v-icon large>mdi-account-arrow-left</v-icon>
             <div>フォロワー</div>
             <div>0 件</div></v-col
@@ -140,7 +140,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.hover {
+.follow {
   &:hover {
     background: #eceff1;
     opacity: 0.8;

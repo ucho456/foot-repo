@@ -134,12 +134,3 @@ export default defineComponent({
   }
 })
 </script>
-
-<style lang="scss" scoped>
-.hover {
-  &:hover {
-    cursor: pointer;
-    opacity: 0.8;
-  }
-}
-</style>

@@ -158,10 +158,4 @@ export default defineComponent({
 .light-indigo {
   background: #{$light-indigo};
 }
-.hover {
-  &:hover {
-    cursor: pointer;
-    opacity: 0.8;
-  }
-}
 </style>

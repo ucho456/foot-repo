@@ -151,10 +151,4 @@ export default defineComponent({
   color: #1a237e;
   text-decoration: underline;
 }
-.hover {
-  &:hover {
-    cursor: pointer;
-    opacity: 0.8;
-  }
-}
 </style>
