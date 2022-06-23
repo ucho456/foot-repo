@@ -23,7 +23,6 @@ const useSearch = () => {
   const isLoadingFirst = ref(false)
   const setUp = async (): Promise<'success' | 'failure'> => {
     try {
-      console.log('start setUp')
       isLoadingFirst.value = true
       matches.lastVisible = null
       matches.searchOption.jstDate = ''
@@ -31,11 +30,10 @@ const useSearch = () => {
         matches.searchOption.competitionId = loginUser.value.competitionId
         matches.searchOption.teamId = loginUser.value.team.id
       }
-      console.log({ matches })
       await toStoreFirstMatches(matches)
       return 'success'
     } catch (error) {
-      console.log('error', error)
+      console.log(error)
       return 'failure'
     } finally {
       isLoadingFirst.value = false

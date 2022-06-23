@@ -400,5 +400,5 @@ export const updateLikeCount = async (reportId: string, like: boolean) => {
   const functions = getFunctions(undefined, region)
   const likeFunc = httpsCallable(functions, 'updateLike')
   const res = await likeFunc({ reportId, like })
-  console.log(res)
+  console.log('updateLikeCount 戻り値', res)
 }

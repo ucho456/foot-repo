@@ -54,6 +54,7 @@ const useShow = () => {
 
       return 'success'
     } catch (error) {
+      console.log(error)
       return error instanceof Error && error.message === 'unauthorized access'
         ? 'unauthorized access'
         : 'failure'
