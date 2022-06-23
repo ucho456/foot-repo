@@ -8,7 +8,7 @@ import {
   updateLikeCount,
   subscribeComments
 } from '@/db/reports'
-import { fetchUser } from '@/db/users'
+import { fetchLike, fetchUser } from '@/db/users'
 import useLoginUser from '@/utils/useLoginUser'
 
 const useShow = () => {
@@ -22,6 +22,7 @@ const useShow = () => {
   const sameMatchReports: Ref<Report[]> = ref([])
   const comments: Ref<ReportComment[]> = ref([])
   const unsubscribeComments: Ref<Unsubscribe | null> = ref(null)
+  const like = ref(false)
 
   const isLoadingReport = ref(false)
   const isLoadingUser = ref(false)
@@ -38,6 +39,9 @@ const useShow = () => {
       homeTeamReportItems.value = resHomeTeamReportItems
       awayTeamReportItems.value = resAwayTeamReportItems
       match.value = await fetchMatch(report.value?.match.id!)
+      if (loginUser.value) {
+        like.value = await fetchLike(loginUser.value.uid, resReport.id)
+      }
       isLoadingReport.value = false
 
       isLoadingUser.value = true
@@ -77,9 +81,13 @@ const useShow = () => {
     window.open(shareUrl)
   }
 
-  const like = ref(false)
-  const clickLike = async () => {
+  const preventContinue = ref(false)
+  const updateLike = async (): Promise<'success' | 'failure' | undefined> => {
     try {
+      if (preventContinue.value) {
+        return
+      }
+      preventContinue.value = true
       like.value = !like.value
       if (report.value && like.value) {
         report.value.likeCount++
@@ -87,10 +95,11 @@ const useShow = () => {
         report.value.likeCount--
       }
       await updateLikeCount(report.value?.id!, like.value)
+      return 'success'
     } catch {
       return 'failure'
     } finally {
-      //
+      preventContinue.value = false
     }
   }
 
@@ -130,7 +139,7 @@ const useShow = () => {
     isLoadingComments,
     setUp,
     like,
-    clickLike,
+    updateLike,
     shareTwitter,
     inputComment,
     isLoadingNewComment,

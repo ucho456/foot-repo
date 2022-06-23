@@ -283,6 +283,10 @@ service cloud.firestore {
       && newData().reportCount >= 0
       && newData().followCount >= 0
       && newData().followerCount >= 0;
+
+      match /likes/{likeId} {
+        allow read;
+      }
     }
   }
 }

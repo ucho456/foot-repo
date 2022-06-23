@@ -55,7 +55,7 @@
             <v-btn icon color="#1da1f2" @click="shareTwitter">
               <v-icon>mdi-twitter</v-icon>
             </v-btn>
-            <v-btn icon :color="like ? 'primary' : 'grey'" @click="clickLike">
+            <v-btn icon :color="like ? 'orange' : 'grey'" :disabled="!loginUser" @click="clickLike">
               <v-icon>mdi-thumb-up</v-icon>
             </v-btn>
             {{ report.likeCount }}
@@ -177,7 +177,7 @@ export default defineComponent({
       setUp,
       shareTwitter,
       like,
-      clickLike,
+      updateLike,
       inputComment,
       isLoadingNewComment,
       isDialog,
@@ -199,7 +199,14 @@ export default defineComponent({
     }
     setUpPage()
 
-    const confirmLogin = () => {
+    const clickLike = async (): Promise<void> => {
+      const result = await updateLike()
+      if (result === 'failure') {
+        openSnackbar(result, '通信エラーが発生しました。')
+      }
+    }
+
+    const confirmLogin = (): void => {
       if (!confirmation.isLogin && !loginUser.value) {
         isDialog.value = true
       } else {
@@ -208,7 +215,7 @@ export default defineComponent({
       }
     }
 
-    const submitCreate = async () => {
+    const submitCreate = async (): Promise<void> => {
       confirmation.isLogin = true
       isDialog.value = false
       const result = await create()

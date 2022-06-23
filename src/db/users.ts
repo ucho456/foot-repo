@@ -1,5 +1,5 @@
 import { doc, getDoc, getFirestore, setDoc, updateDoc } from 'firebase/firestore'
-import { userConverter } from '@/utils/converters'
+import { likeConverter, userConverter } from '@/utils/converters'
 
 export const createUser = async (inputUser: InputUser): Promise<void> => {
   const db = getFirestore()
@@ -18,7 +18,9 @@ export const createUser = async (inputUser: InputUser): Promise<void> => {
 }
 
 export const fetchUser = async (uid: string | undefined): Promise<User | null> => {
-  if (!uid) return null
+  if (!uid) {
+    return null
+  }
   const db = getFirestore()
   const uRef = doc(db, 'users', uid).withConverter(userConverter)
   const uSnapshot = await getDoc(uRef)
@@ -33,4 +35,11 @@ export const updateUser = async (inputUser: InputUser): Promise<void> => {
     [`competitionId`]: inputUser.competitionId,
     [`team`]: inputUser.team
   })
+}
+
+export const fetchLike = async (uid: string, reportId: string): Promise<boolean> => {
+  const db = getFirestore()
+  const lRef = doc(db, 'users', uid, 'likes', reportId).withConverter(likeConverter)
+  const lSnapshot = await getDoc(lRef)
+  return lSnapshot.exists()
 }
