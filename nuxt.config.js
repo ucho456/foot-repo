@@ -2,7 +2,6 @@ import colors from 'vuetify/es5/util/colors'
 
 export default {
   head: {
-    titleTemplate: 'フットレポ',
     title: 'フットレポ',
     htmlAttrs: {
       lang: 'ja'
@@ -10,8 +9,13 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
-      { name: 'format-detection', content: 'telephone=no' }
+      {
+        hid: 'description',
+        name: 'description',
+        content:
+          'サッカーの選手採点共有サービスです。各国主要リーグやワールドカップ、日本代表などの試合の選手採点を投稿したり閲覧する事が出来ます。'
+      },
+      { hid: 'keywords', name: 'keywords', content: 'サッカー,選手採点' }
     ],
     link: [{ rel: 'icon', type: 'image/png', href: '/favicon_logo.png' }]
   },
