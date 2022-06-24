@@ -21,7 +21,8 @@ export const updateLike = functions.region('asia-northeast1').https.onCall(async
   } else {
     batch.set(lRef, {
       id: reportId,
-      report: { id: reportId, ref: rRef }
+      report: { id: reportId, ref: rRef },
+      createdAt: admin.firestore.FieldValue.serverTimestamp()
     })
     batch.update(rRef, {
       [`likeCount`]: admin.firestore.FieldValue.increment(1)

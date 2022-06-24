@@ -19,6 +19,7 @@ type Like = {
     id: string
     ref: import('firebase/firestore').DocumentReference
   }
+  createdAt: import('firebase/firestore').FieldValue
 }
 
 type Follower = {

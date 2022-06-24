@@ -286,14 +286,16 @@ export const userConverter: FirestoreDataConverter<User> = {
 export const likeConverter: FirestoreDataConverter<Like> = {
   toFirestore(like: Like): DocumentData {
     return {
-      report: like.report
+      report: like.report,
+      createdAt: like.createdAt
     }
   },
   fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions): Like {
     const data = snapshot.data(options)
     return {
       id: snapshot.id,
-      report: data.report
+      report: data.report,
+      createdAt: data.createdAt
     }
   }
 }
