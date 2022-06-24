@@ -133,20 +133,30 @@
         </v-simple-table>
       </v-container>
     </v-card>
+    <v-card class="mt-4" outlined>
+      <v-container>
+        <v-row justify="center">
+          <v-col cols="10" md="6">
+            <ButtonOutlined :text="'同試合の選手採点を投稿する'" @click="pushToReportNew" />
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-card>
     <v-card v-if="!isLoadingMatch && match.data && match.detail" class="mt-4" outlined>
       <ContainerLoading :is-loading="isLoadingSameMatchReports" />
-      <ContainerReportTable :h2="'同じ試合の選手採点'" :reports="match.reports" />
+      <ContainerReportTable :h2="'同試合の選手採点'" :reports="match.reports" />
     </v-card>
   </v-container>
 </template>
 
 <script lang="ts">
-import { defineComponent, useRoute } from '@nuxtjs/composition-api'
+import { defineComponent, useRoute, useRouter } from '@nuxtjs/composition-api'
 import useShow from '@/composables/databases/matches/useShow'
 import useSnackbar from '@/utils/useSnackbar'
 import useStore from '@/utils/useStore'
 import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 import RowMatchHeader from '@/components/organisms/RowMatchHeader.vue'
+import ButtonOutlined from '@/components/molecules/ButtonOutlined.vue'
 import ContainerReportTable from '@/components/organisms/ContainerReportTable.vue'
 
 export default defineComponent({
@@ -155,11 +165,13 @@ export default defineComponent({
   components: {
     ContainerLoading,
     RowMatchHeader,
+    ButtonOutlined,
     ContainerReportTable
   },
 
   setup() {
     const route = useRoute()
+    const router = useRouter()
     const {
       isLoadingMatch,
       isLoadingSameMatchReports,
@@ -172,8 +184,8 @@ export default defineComponent({
     const { openSnackbar } = useSnackbar()
     const { match } = useStore()
 
-    const setUpPage = async () => {
-      const matchId = route.value.params.id as string
+    const matchId = route.value.params.id as string
+    const setUpPage = async (): Promise<void> => {
       if (!match.data || (match.data && match.data.id !== matchId)) {
         const result = await setUp(matchId)
         if (result === 'failure') {
@@ -183,6 +195,10 @@ export default defineComponent({
     }
     setUpPage()
 
+    const pushToReportNew = (): void => {
+      router.push(`/reports/new?matchId=${matchId}`)
+    }
+
     return {
       isLoadingMatch,
       isLoadingSameMatchReports,
@@ -190,7 +206,8 @@ export default defineComponent({
       homeTab,
       homePlayers,
       awayTab,
-      awayPlayers
+      awayPlayers,
+      pushToReportNew
     }
   }
 })
