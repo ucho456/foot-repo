@@ -1,5 +1,5 @@
 import { ref, Ref } from '@nuxtjs/composition-api'
-import { fetchUserReports, deleteReport } from '@/db/reports'
+import { fetchUserLikeReports, fetchUserReports, deleteReport } from '@/db/reports'
 import { fetchUser } from '@/db/users'
 
 const useShow = () => {
@@ -25,6 +25,28 @@ const useShow = () => {
     } finally {
       isLoadingUser.value = false
       isLoadingReports.value = false
+    }
+  }
+
+  const tab = ref('Mine')
+  const tabs = ['Mine', 'Like']
+  const changeTab = (index: number): void => {
+    tab.value = tabs[index]
+  }
+  const isLoadingChangeReports = ref(false)
+  const changeReports = async (): Promise<'success' | 'failure'> => {
+    try {
+      isLoadingChangeReports.value = true
+      reports.value =
+        tab.value === 'Mine'
+          ? await fetchUserReports(user.value?.id!)
+          : await fetchUserLikeReports(user.value?.id!)
+      return 'success'
+    } catch (error) {
+      console.log(error)
+      return 'failure'
+    } finally {
+      isLoadingChangeReports.value = false
     }
   }
 
@@ -65,7 +87,12 @@ const useShow = () => {
     showDeletePopup,
     hideDeletePopup,
     isLoadingDel,
-    del
+    del,
+    tabs,
+    isLoadingChangeReports,
+    changeReports,
+    tab,
+    changeTab
   }
 }
 

@@ -46,8 +46,11 @@
         <ContainerReportTable
           v-if="!isLoadingReports"
           :action-flg="loginUser && loginUser.uid === user.id"
+          :is-loading="isLoadingChangeReports"
           :reports="reports"
+          :tabs="tabs"
           @delete="showDeletePopup"
+          @change-tab="changeTab"
         />
       </client-only>
     </v-card>
@@ -62,7 +65,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useRoute, useRouter } from '@nuxtjs/composition-api'
+import { defineComponent, useRoute, useRouter, watch } from '@nuxtjs/composition-api'
 import useShow from '@/composables/users/useShow'
 import useLoginUser from '@/utils/useLoginUser'
 import useSnackbar from '@/utils/useSnackbar'
@@ -97,7 +100,12 @@ export default defineComponent({
       showDeletePopup,
       hideDeletePopup,
       isLoadingDel,
-      del
+      del,
+      tabs,
+      isLoadingChangeReports,
+      changeReports,
+      tab,
+      changeTab
     } = useShow()
     const { loginUser } = useLoginUser()
     const { openSnackbar } = useSnackbar()
@@ -106,10 +114,17 @@ export default defineComponent({
       const userId = route.value.params.id
       const result = await setUp(userId)
       if (result === 'failure') {
-        openSnackbar(result, 'データの取得に失敗しました。')
+        openSnackbar(result, '選手採点の取得に失敗しました。')
       }
     }
     setUpPage()
+
+    watch(tab, async () => {
+      const result = await changeReports()
+      if (result === 'failure') {
+        openSnackbar(result, '選手採点の取得に失敗しました。')
+      }
+    })
 
     const pushToUserEdit = (): void => {
       router.push('/users/edit')
@@ -133,7 +148,10 @@ export default defineComponent({
       isLoadingDel,
       loginUser,
       pushToUserEdit,
-      deleteReport
+      deleteReport,
+      tabs,
+      isLoadingChangeReports,
+      changeTab
     }
   }
 })

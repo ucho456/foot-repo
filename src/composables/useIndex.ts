@@ -73,7 +73,8 @@ const useIndex = () => {
         await toStoreFirstReports(reports)
       }
       return 'success'
-    } catch {
+    } catch (error) {
+      console.log(error)
       return 'failure'
     } finally {
       isLoadingChangeReports.value = false

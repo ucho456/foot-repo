@@ -3,6 +3,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  documentId,
   endAt,
   endBefore,
   getDoc,
@@ -21,7 +22,12 @@ import {
 } from 'firebase/firestore'
 import type { QueryDocumentSnapshot, Unsubscribe } from 'firebase/firestore'
 import { getFunctions, httpsCallable } from 'firebase/functions'
-import { commentConverter, reportConverter, reportItemConverter } from '@/utils/converters'
+import {
+  commentConverter,
+  likeConverter,
+  reportConverter,
+  reportItemConverter
+} from '@/utils/converters'
 import { makeSearchOption } from '@/utils/searchOption'
 
 export const createReport = async (
@@ -292,6 +298,25 @@ export const fetchUserReports = async (userId: string): Promise<Report[]> => {
   return reports
 }
 
+export const fetchUserLikeReports = async (userId: string): Promise<Report[]> => {
+  const db = getFirestore()
+  const lRef = collection(db, 'users', userId, 'likes').withConverter(likeConverter)
+  const lQuery = query(lRef, orderBy('createdAt', 'desc'), limit(10))
+  const lShapshot = await getDocs(lQuery)
+  const reportIds: string[] = []
+  lShapshot.forEach((doc) => {
+    if (doc.exists()) reportIds.push(doc.data().report.id)
+  })
+  const rRef = collection(db, 'reports').withConverter(reportConverter)
+  const rQuery = query(rRef, where(documentId(), 'in', reportIds))
+  const rSnapshot = await getDocs(rQuery)
+  const reports: Report[] = []
+  rSnapshot.forEach((doc) => {
+    if (doc.exists()) reports.push(doc.data())
+  })
+  return reports
+}
+
 export const subscribeComments = async (
   reportId: string,
   comments: ReportComment[]
@@ -372,8 +397,8 @@ export const toStoreSameMatchReports = async (
     orderBy('createdAt', 'desc'),
     limit(3)
   )
-  const rSnaphot = await getDocs(q)
-  rSnaphot.forEach((doc) => {
+  const rSnapshot = await getDocs(q)
+  rSnapshot.forEach((doc) => {
     if (doc.exists()) {
       match.reports.push(doc.data())
     }
