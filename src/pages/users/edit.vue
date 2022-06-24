@@ -37,7 +37,7 @@
             </v-col>
             <v-col cols="10"> マイチーム </v-col>
             <v-col cols="10" sm="5">
-              <SelectIdCompetition v-model="inputUser.competitionId" />
+              <SelectIdCompetition :value="inputUser.competitionId" @input="inputCompetitionId" />
             </v-col>
             <v-col cols="10" sm="5">
               <SelectIdTeam v-model="inputUser.team.id" :competition-id="inputUser.competitionId" />
@@ -99,6 +99,7 @@ export default defineComponent({
       setUp,
       changeImageUrl,
       clearImageUrl,
+      inputCompetitionId,
       isLoadingSubmit,
       update
     } = useEdit()
@@ -135,6 +136,7 @@ export default defineComponent({
       isLoadingSetUp,
       changeImageUrl,
       clearImageUrl,
+      inputCompetitionId,
       isLoadingSubmit,
       submit,
       back

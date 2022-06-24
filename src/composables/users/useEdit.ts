@@ -51,17 +51,23 @@ const useEdit = () => {
     inputUser.imageUrl = URL.createObjectURL(imageFile)
     userImageFile.value = imageFile
   }
-
   const clearImageUrl = (): void => {
     inputUser.imageUrl = null
     userImageFile.value = null
+  }
+  const inputCompetitionId = (competitionId: string): void => {
+    inputUser.competitionId = competitionId
+    inputUser.team.id = ''
+    inputUser.team.name = ''
   }
 
   const isLoadingSubmit = ref(false)
   const update = async (): Promise<'success' | 'failure'> => {
     try {
       isLoadingSubmit.value = true
-      inputUser.team.name = teamMap.get(inputUser.team.id)?.name!
+      if (inputUser.team.id) {
+        inputUser.team.name = teamMap.get(inputUser.team.id)?.name!
+      }
       // const imageUrl = userImageFile.value
       //   ? await uploadAndGetImageUrl(`users/${inputUser.id}`, userImageFile.value)
       //   : null
@@ -85,6 +91,7 @@ const useEdit = () => {
     setUp,
     changeImageUrl,
     clearImageUrl,
+    inputCompetitionId,
     isLoadingSubmit,
     update
   }
