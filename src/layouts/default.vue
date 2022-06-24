@@ -6,7 +6,6 @@
           <v-img class="hover" :src="headerLogo" @click="pushToHome" />
         </v-toolbar-title>
         <v-spacer />
-        <v-btn class="white--text" color="accent" elevation="0" to="/reports/search"> 投稿 </v-btn>
         <v-btn icon @click.stop="showDrawer"><v-icon color="white">mdi-menu</v-icon></v-btn>
       </v-container>
     </v-app-bar>
