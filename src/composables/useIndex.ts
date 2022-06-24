@@ -1,17 +1,18 @@
-import { computed, ref, watch } from '@nuxtjs/composition-api'
-import { toStoreFirstReports } from '@/db/reports'
+import { computed, ref } from '@nuxtjs/composition-api'
+import { toStoreFirstReports, toStorePopularReports } from '@/db/reports'
 import useLoginUser from '@/utils/useLoginUser'
 import useStore from '@/utils/useStore'
 
 const useIndex = () => {
   const { loginUser } = useLoginUser()
-  const { reports } = useStore()
+  const { reports, clearReportSearchOption } = useStore()
 
   /* setUp */
   const isLoadingReports = ref(false)
   const setUp = async () => {
     try {
       isLoadingReports.value = true
+      clearReportSearchOption()
       await toStoreFirstReports(reports)
       isLoadingReports.value = false
       return 'success'
@@ -48,14 +49,36 @@ const useIndex = () => {
   /* tabs */
   const tab = ref('New')
   const tabs = computed(() => {
-    return loginUser.value ? ['New', 'Popular', 'My Team'] : ['New', 'Popular']
+    return loginUser.value && loginUser.value.team.id
+      ? ['New', 'Popular', 'My Team']
+      : ['New', 'Popular']
   })
   const changeTab = (index: number): void => {
     tab.value = tabs.value[index]
   }
-  watch(tab, () => {
-    console.log('watch tab value', tab.value)
-  })
+  const isLoadingChangeReports = ref(false)
+  const changeReports = async () => {
+    try {
+      isLoadingChangeReports.value = true
+      if (tab.value === 'New') {
+        clearReportSearchOption()
+        await toStoreFirstReports(reports)
+      } else if (tab.value === 'Popular') {
+        clearReportSearchOption()
+        await toStorePopularReports(reports)
+      } else if (tab.value === 'My Team') {
+        reports.searchOption.teamId = loginUser.value?.team.id!
+        reports.searchOption.competitionId = loginUser.value?.competitionId!
+        reports.searchOption.jstDate = ''
+        await toStoreFirstReports(reports)
+      }
+      return 'success'
+    } catch {
+      return 'failure'
+    } finally {
+      isLoadingChangeReports.value = false
+    }
+  }
 
   return {
     isLoadingReports,
@@ -67,8 +90,11 @@ const useIndex = () => {
     inputTeamId,
     inputDate,
     clearDate,
+    tab,
     tabs,
-    changeTab
+    changeTab,
+    isLoadingChangeReports,
+    changeReports
   }
 }
 

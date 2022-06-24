@@ -13,10 +13,11 @@
     <v-tabs v-if="tabs.length > 0" class="mb-2" fixed-tabs @change="handleTab">
       <v-tab v-for="t in tabs" :key="t" class="tab">{{ t }}</v-tab>
     </v-tabs>
-    <v-row v-if="reports.length === 0">
+    <ContainerLoading :is-loading="isLoading" />
+    <v-row v-if="reports.length === 0 && !isLoading">
       <v-col>対象の選手採点はありません。</v-col>
     </v-row>
-    <v-list class="mt-n4" three-line>
+    <v-list v-if="reports.length > 0 && !isLoading" class="mt-n4" three-line>
       <div v-for="report in reports" :key="report.id" class="d-flex">
         <v-list-item exact router :to="{ path: `/reports/${report.id}` }">
           <v-list-item-avatar>
@@ -58,13 +59,19 @@
 
 <script lang="ts">
 import { defineComponent, useRouter } from '@nuxtjs/composition-api'
+import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 
 export default defineComponent({
   name: 'ContainerReportTable',
 
+  components: {
+    ContainerLoading
+  },
+
   props: {
     actionFlg: { type: Boolean, default: false },
     h2: { type: String, default: '' },
+    isLoading: { type: Boolean, default: false },
     reports: { type: Array as () => Report[], default: () => [] },
     searchButtonFlg: { type: Boolean, default: false },
     tabs: { type: Array as () => String[], default: () => [] }

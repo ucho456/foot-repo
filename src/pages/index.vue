@@ -6,6 +6,7 @@
         v-if="!isLoadingReports"
         :h2="'みんなの選手採点'"
         :reports="reports.data"
+        :is-loading="isLoadingChangeReports"
         :search-button-flg="true"
         :tabs="tabs"
         @search="showDialog"
@@ -26,7 +27,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useRouter } from '@nuxtjs/composition-api'
+import { defineComponent, useRouter, watch } from '@nuxtjs/composition-api'
 import useIndex from '@/composables/useIndex'
 import useSnackbar from '@/utils/useSnackbar'
 import useStore from '@/utils/useStore'
@@ -55,8 +56,11 @@ export default defineComponent({
       inputTeamId,
       inputDate,
       clearDate,
+      tab,
       tabs,
-      changeTab
+      changeTab,
+      isLoadingChangeReports,
+      changeReports
     } = useIndex()
     const { openSnackbar } = useSnackbar()
     const { reports } = useStore()
@@ -64,10 +68,17 @@ export default defineComponent({
     const setUpPage = async () => {
       const result = await setUp()
       if (result === 'failure') {
-        openSnackbar(result, 'データの取得に失敗しました。')
+        openSnackbar(result, '選手採点の取得に失敗しました。')
       }
     }
     setUpPage()
+
+    watch(tab, async () => {
+      const result = await changeReports()
+      if (result === 'failure') {
+        openSnackbar(result, '選手採点の取得に失敗しました。')
+      }
+    })
 
     const pushToReports = (): void => {
       router.push('/reports')
@@ -80,6 +91,7 @@ export default defineComponent({
       hideDialog,
       tabs,
       changeTab,
+      isLoadingChangeReports,
       inputCompetitionId,
       inputTeamId,
       inputDate,

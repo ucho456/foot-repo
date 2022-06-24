@@ -38,7 +38,14 @@ const useStore = () => {
   const store = inject(StoreKey)
   if (store === undefined) throw new Error('store is no provided')
 
+  const clearReportSearchOption = (): void => {
+    store.reports.searchOption.competitionId = ''
+    store.reports.searchOption.teamId = ''
+    store.reports.searchOption.jstDate = ''
+  }
+
   return {
+    clearReportSearchOption,
     confirmation: store.confirmation,
     matches: store.matches,
     reports: store.reports,

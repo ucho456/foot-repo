@@ -3,6 +3,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  endAt,
   endBefore,
   getDoc,
   getDocs,
@@ -14,6 +15,7 @@ import {
   serverTimestamp,
   setDoc,
   startAfter,
+  startAt,
   where,
   writeBatch
 } from 'firebase/firestore'
@@ -159,6 +161,35 @@ export const toStoreNextReports = async (
     hasNextPage.value = false
   }
   reports.lastVisible = rSnapshot.docs[rSnapshot.docs.length - 1]
+}
+
+export const toStorePopularReports = async (reports: {
+  data: Report[]
+  lastVisible: QueryDocumentSnapshot<Report> | null
+  searchOption: SearchOption
+}) => {
+  reports.data = []
+  const db = getFirestore()
+  const rRef = collection(db, 'reports').withConverter(reportConverter)
+  const endDate = new Date()
+  endDate.setDate(endDate.getDate() + 1)
+  const startDate = new Date()
+  startDate.setDate(startDate.getDate() - 7)
+  const q = query(
+    rRef,
+    where('publish', '==', true),
+    orderBy('createdAt', 'asc'),
+    orderBy('likeCount', 'desc'),
+    startAt(startDate),
+    endAt(endDate),
+    limit(perPage)
+  )
+  const rSnapshot = await getDocs(q)
+  rSnapshot.forEach((doc) => {
+    if (doc.exists()) {
+      reports.data.push(doc.data())
+    }
+  })
 }
 
 export const fetchReportAndItems = async (
