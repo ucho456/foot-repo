@@ -121,6 +121,7 @@
                 <td class="text-center">
                   <div
                     :class="{
+                      card: true,
                       'yellow-card': item.card === 'yellow',
                       'red-card': item.card === 'red'
                     }"
@@ -201,18 +202,16 @@ export default defineComponent({
     background-color: transparent !important;
   }
 }
-.yellow-card {
+.card {
   margin: 0 auto;
   height: 28px;
   width: 20px;
-  background: #ffd600;
   border-radius: 3px;
 }
+.yellow-card {
+  background: #ffd600;
+}
 .red-card {
-  margin: 0 auto;
-  height: 28px;
-  width: 20px;
   background: red;
-  border-radius: 3px;
 }
 </style>

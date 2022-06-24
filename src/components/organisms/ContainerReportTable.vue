@@ -10,6 +10,9 @@
         </v-btn>
       </v-col>
     </v-row>
+    <v-tabs v-if="tabs.length > 0" class="mb-2" fixed-tabs @change="handleTab">
+      <v-tab v-for="t in tabs" :key="t" class="tab">{{ t }}</v-tab>
+    </v-tabs>
     <v-row v-if="reports.length === 0">
       <v-col>対象の選手採点はありません。</v-col>
     </v-row>
@@ -35,7 +38,7 @@
               <v-img :max-height="14" :max-width="14" :src="report.awayTeam.imageUrl" />
             </v-list-item-subtitle>
             <v-list-item-subtitle>
-              {{ report.jstDate }} / {{ report.competition.name }} / {{ report.matchday }}節 /
+              {{ report.jstDate }} / {{ report.competition.name }} / {{ report.matchday }}節
               <v-icon color="orange" size="13px">mdi-thumb-up</v-icon> {{ report.likeCount }}
             </v-list-item-subtitle>
           </v-list-item-content>
@@ -63,7 +66,8 @@ export default defineComponent({
     actionFlg: { type: Boolean, default: false },
     h2: { type: String, default: '' },
     reports: { type: Array as () => Report[], default: () => [] },
-    searchButtonFlg: { type: Boolean, default: false }
+    searchButtonFlg: { type: Boolean, default: false },
+    tabs: { type: Array as () => String[], default: () => [] }
   },
 
   setup(_, ctx) {
@@ -73,6 +77,9 @@ export default defineComponent({
     const handleSearch = (): void => {
       ctx.emit('search')
     }
+    const handleTab = (index: number): void => {
+      ctx.emit('change-tab', index)
+    }
     const pushToReportEdit = (reportId: string): void => {
       router.push({ path: '/reports/edit', query: { reportId } })
     }
@@ -80,12 +87,15 @@ export default defineComponent({
       ctx.emit('delete', report)
     }
 
-    return { noAvatarImage, handleSearch, pushToReportEdit, handleDelete }
+    return { noAvatarImage, handleSearch, handleTab, pushToReportEdit, handleDelete }
   }
 })
 </script>
 
 <style lang="scss" scoped>
+.tab {
+  text-transform: none;
+}
 .title {
   font-size: 15px !important;
   text-overflow: inherit;

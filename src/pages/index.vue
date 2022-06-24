@@ -7,7 +7,9 @@
         :h2="'みんなの選手採点'"
         :reports="reports.data"
         :search-button-flg="true"
+        :tabs="tabs"
         @search="showDialog"
+        @change-tab="changeTab"
       />
     </v-card>
     <DialogSearch
@@ -52,7 +54,9 @@ export default defineComponent({
       inputCompetitionId,
       inputTeamId,
       inputDate,
-      clearDate
+      clearDate,
+      tabs,
+      changeTab
     } = useIndex()
     const { openSnackbar } = useSnackbar()
     const { reports } = useStore()
@@ -71,14 +75,16 @@ export default defineComponent({
 
     return {
       isLoadingReports,
-      reports,
       isDialog,
       showDialog,
       hideDialog,
+      tabs,
+      changeTab,
       inputCompetitionId,
       inputTeamId,
       inputDate,
       clearDate,
+      reports,
       pushToReports
     }
   }
