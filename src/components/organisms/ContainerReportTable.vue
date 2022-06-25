@@ -40,6 +40,8 @@
             </v-list-item-subtitle>
             <v-list-item-subtitle>
               {{ report.jstDate }} / {{ report.competition.name }} / {{ report.matchday }}節
+            </v-list-item-subtitle>
+            <v-list-item-subtitle>
               <v-icon color="orange" size="13px">mdi-thumb-up</v-icon> {{ report.likeCount }}
             </v-list-item-subtitle>
           </v-list-item-content>
