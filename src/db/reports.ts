@@ -307,13 +307,15 @@ export const fetchUserLikeReports = async (userId: string): Promise<Report[]> =>
   lShapshot.forEach((doc) => {
     if (doc.exists()) reportIds.push(doc.data().report.id)
   })
-  const rRef = collection(db, 'reports').withConverter(reportConverter)
-  const rQuery = query(rRef, where(documentId(), 'in', reportIds))
-  const rSnapshot = await getDocs(rQuery)
   const reports: Report[] = []
-  rSnapshot.forEach((doc) => {
-    if (doc.exists()) reports.push(doc.data())
-  })
+  if (reportIds.length > 0) {
+    const rRef = collection(db, 'reports').withConverter(reportConverter)
+    const rQuery = query(rRef, where(documentId(), 'in', reportIds))
+    const rSnapshot = await getDocs(rQuery)
+    rSnapshot.forEach((doc) => {
+      if (doc.exists()) reports.push(doc.data())
+    })
+  }
   return reports
 }
 
