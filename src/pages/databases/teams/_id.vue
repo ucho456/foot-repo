@@ -44,7 +44,10 @@
       </v-container>
       <v-container v-if="team.data">
         <h2>選手一覧</h2>
-        <v-simple-table dence>
+        <v-row v-if="team.data.squad.length === 0">
+          <v-col>データが更新されるまで暫くお待ち下さい。</v-col>
+        </v-row>
+        <v-simple-table v-else dence>
           <template #default>
             <tbody>
               <tr v-for="player in team.data.squad" :key="player.keyId" class="no-link">
