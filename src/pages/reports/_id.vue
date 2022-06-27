@@ -84,6 +84,7 @@
           :name="user.name"
           :team-name="user.team.name"
           :greet="user.greet"
+          @click="clickFollow"
         />
       </v-container>
     </v-card>
@@ -189,7 +190,8 @@ export default defineComponent({
       inputComment,
       isLoadingNewComment,
       isDialog,
-      create
+      create,
+      updateFollow
     } = useShow()
     const { loginUser } = useLoginUser()
     const { openSnackbar } = useSnackbar()
@@ -209,6 +211,13 @@ export default defineComponent({
 
     const clickLike = async (): Promise<void> => {
       const result = await updateLike()
+      if (result === 'failure') {
+        openSnackbar(result, '通信エラーが発生しました。')
+      }
+    }
+
+    const clickFollow = async (): Promise<void> => {
+      const result = await updateFollow()
       if (result === 'failure') {
         openSnackbar(result, '通信エラーが発生しました。')
       }
@@ -239,6 +248,7 @@ export default defineComponent({
     })
 
     return {
+      clickFollow,
       report,
       homeTeamReportItems,
       awayTeamReportItems,

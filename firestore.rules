@@ -287,6 +287,12 @@ service cloud.firestore {
       match /likes/{likeId} {
         allow read;
       }
+      match /follows/{followId} {
+        allow read;
+      }
+      match /followers/{followerId} {
+        allow read;
+      }
     }
   }
 }

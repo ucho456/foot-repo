@@ -205,9 +205,36 @@ export const reportConverter: FirestoreDataConverter<Report> = {
   }
 }
 
-/*
-  users
-*/
+/* users */
+export const userConverter: FirestoreDataConverter<User> = {
+  toFirestore(user: User): DocumentData {
+    return {
+      name: user.name,
+      imageUrl: user.imageUrl,
+      greet: user.greet,
+      competitionId: user.competitionId,
+      team: user.team,
+      reportCount: user.reportCount,
+      followCount: user.followCount,
+      followerCount: user.followerCount
+    }
+  },
+  fromFirestore(snapshot: QueryDocumentSnapshot): User {
+    const data = snapshot.data()
+    return {
+      id: snapshot.id,
+      name: data.name,
+      imageUrl: data.imageUrl,
+      greet: data.greet,
+      competitionId: data.competitionId,
+      team: data.team,
+      reportCount: data.reportCount,
+      followCount: data.followCount,
+      followerCount: data.followerCount
+    }
+  }
+}
+
 export const likeConverter: FirestoreDataConverter<Like> = {
   toFirestore(like: Like): DocumentData {
     return {
@@ -221,6 +248,21 @@ export const likeConverter: FirestoreDataConverter<Like> = {
       id: snapshot.id,
       report: data.report,
       createdAt: data.createdAt
+    }
+  }
+}
+
+export const followerConverter: FirestoreDataConverter<Follower> = {
+  toFirestore(follower: Follower): DocumentData {
+    return {
+      user: follower.user
+    }
+  },
+  fromFirestore(snapshot: QueryDocumentSnapshot): Follower {
+    const data = snapshot.data()
+    return {
+      id: snapshot.id,
+      user: data.user
     }
   }
 }

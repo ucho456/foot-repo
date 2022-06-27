@@ -23,11 +23,12 @@ type Like = {
 }
 
 type Follower = {
+  id: string
   user: {
     id: string
     ref: import('firebase/firestore').DocumentReference
     name: string
-    imageUrl: string
+    imageUrl: string | null
   }
 }
 

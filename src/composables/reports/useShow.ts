@@ -8,7 +8,7 @@ import {
   updateLikeCount,
   subscribeComments
 } from '@/db/reports'
-import { fetchLike, fetchUser } from '@/db/users'
+import { fetchLike, fetchUser, putFollow } from '@/db/users'
 import useLoginUser from '@/utils/useLoginUser'
 
 const useShow = () => {
@@ -81,13 +81,11 @@ const useShow = () => {
     window.open(shareUrl)
   }
 
-  const preventContinue = ref(false)
+  const blockDoubleClick = ref(false)
   const updateLike = async (): Promise<'success' | 'failure' | undefined> => {
     try {
-      if (preventContinue.value) {
-        return
-      }
-      preventContinue.value = true
+      if (blockDoubleClick.value) return
+      blockDoubleClick.value = true
       like.value = !like.value
       if (report.value && like.value) {
         report.value.likeCount++
@@ -99,7 +97,21 @@ const useShow = () => {
     } catch {
       return 'failure'
     } finally {
-      preventContinue.value = false
+      blockDoubleClick.value = false
+    }
+  }
+
+  const updateFollow = async (): Promise<'success' | 'failure' | undefined> => {
+    try {
+      if (blockDoubleClick.value) return
+      blockDoubleClick.value = true
+      await putFollow(report.value?.user.id!)
+      return 'success'
+    } catch (error) {
+      console.log(error)
+      return 'failure'
+    } finally {
+      blockDoubleClick.value = false
     }
   }
 
@@ -144,7 +156,8 @@ const useShow = () => {
     inputComment,
     isLoadingNewComment,
     isDialog,
-    create
+    create,
+    updateFollow
   }
 }
 
