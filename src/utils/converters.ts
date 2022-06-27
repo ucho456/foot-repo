@@ -299,3 +299,20 @@ export const likeConverter: FirestoreDataConverter<Like> = {
     }
   }
 }
+
+export const followerConverter: FirestoreDataConverter<Follower> = {
+  toFirestore(follower: Follower): DocumentData {
+    return {
+      user: follower.user,
+      createdAt: follower.createdAt
+    }
+  },
+  fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions): Follower {
+    const data = snapshot.data(options)
+    return {
+      id: snapshot.id,
+      user: data.user,
+      createdAt: data.createdAt
+    }
+  }
+}

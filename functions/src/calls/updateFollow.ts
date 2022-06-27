@@ -26,13 +26,15 @@ export const updateFollow = functions.region('asia-northeast1').https.onCall(asy
     const you = youSnapshot.data()!
     batch.set(meFollowRef, {
       id: userId,
-      user: { id: userId, ref: youRef, name: you.name, imageUrl: you.imageUrl }
+      user: { id: userId, ref: youRef, name: you.name, imageUrl: you.imageUrl },
+      createdAt: admin.firestore.FieldValue.serverTimestamp()
     })
     batch.update(youRef, { [`followerCount`]: admin.firestore.FieldValue.increment(1) })
     const me = meSnapshot.data()!
     batch.set(youFollowerRef, {
       id: uid,
-      user: { id: uid, ref: meRef, name: me.name, imageUrl: me.imageUrl }
+      user: { id: uid, ref: meRef, name: me.name, imageUrl: me.imageUrl },
+      createdAt: admin.firestore.FieldValue.serverTimestamp()
     })
   }
   await batch.commit()

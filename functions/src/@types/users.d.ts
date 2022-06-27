@@ -30,4 +30,5 @@ type Follower = {
     name: string
     imageUrl: string | null
   }
+  createdAt: import('firebase-admin/firestore').FieldValue
 }

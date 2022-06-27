@@ -255,14 +255,16 @@ export const likeConverter: FirestoreDataConverter<Like> = {
 export const followerConverter: FirestoreDataConverter<Follower> = {
   toFirestore(follower: Follower): DocumentData {
     return {
-      user: follower.user
+      user: follower.user,
+      createdAt: follower.createdAt
     }
   },
   fromFirestore(snapshot: QueryDocumentSnapshot): Follower {
     const data = snapshot.data()
     return {
       id: snapshot.id,
-      user: data.user
+      user: data.user,
+      createdAt: data.createdAt
     }
   }
 }
