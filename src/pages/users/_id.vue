@@ -27,7 +27,7 @@
             <div>投稿</div>
             <div>{{ user.reportCount }} 件</div></v-col
           >
-          <v-col cols="4" class="text-center follow"
+          <v-col cols="4" class="text-center follow" @click="clickFollows"
             ><v-icon large>mdi-account-arrow-right</v-icon>
             <div>フォロー</div>
             <div>{{ user.followCount }} 件</div></v-col
@@ -61,6 +61,11 @@
       @close="hideDeletePopup"
       @delete="deleteReport"
     />
+    <DialogFollowers
+      :is-dialog="isDialogFollow"
+      :is-loading="isLoadingFollow"
+      :follwers="follows"
+    />
   </v-container>
 </template>
 
@@ -74,6 +79,7 @@ import ButtonOutlined from '@/components/molecules/ButtonOutlined.vue'
 import RowUser from '@/components/organisms/RowUser.vue'
 import ContainerReportTable from '@/components/organisms/ContainerReportTable.vue'
 import DialogDelete from '@/components/molecules/DialogDelete.vue'
+import DialogFollowers from '@/components/organisms/DialogFollowers.vue'
 
 export default defineComponent({
   name: 'UserShow',
@@ -83,7 +89,8 @@ export default defineComponent({
     ButtonOutlined,
     RowUser,
     ContainerReportTable,
-    DialogDelete
+    DialogDelete,
+    DialogFollowers
   },
 
   setup() {
@@ -105,7 +112,11 @@ export default defineComponent({
       isLoadingChangeReports,
       changeReports,
       tab,
-      changeTab
+      changeTab,
+      follows,
+      isDialogFollow,
+      isLoadingFollow,
+      readFollows
     } = useShow()
     const { loginUser } = useLoginUser()
     const { openSnackbar } = useSnackbar()
@@ -136,7 +147,13 @@ export default defineComponent({
       openSnackbar(result, message)
     }
 
+    const clickFollows = async (): Promise<void> => {
+      const result = await readFollows()
+      if (result === 'failure') openSnackbar(result, 'フォローの取得に失敗しました。')
+    }
+
     return {
+      clickFollows,
       user,
       reports,
       isLoadingUser,
@@ -151,7 +168,10 @@ export default defineComponent({
       deleteReport,
       tabs,
       isLoadingChangeReports,
-      changeTab
+      changeTab,
+      follows,
+      isDialogFollow,
+      isLoadingFollow
     }
   }
 })

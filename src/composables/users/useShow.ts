@@ -1,6 +1,6 @@
 import { ref, Ref } from '@nuxtjs/composition-api'
 import { fetchUserLikeReports, fetchUserReports, deleteReport } from '@/db/reports'
-import { fetchUser } from '@/db/users'
+import { fetchFollows, fetchUser } from '@/db/users'
 import useLoginUser from '@/utils/useLoginUser'
 
 const useShow = () => {
@@ -78,6 +78,25 @@ const useShow = () => {
     }
   }
 
+  /* follow */
+  const follows: Ref<Follower[]> = ref([])
+  const isDialogFollow = ref(false)
+  const isLoadingFollow = ref(false)
+  const readFollows = async (): Promise<'success' | 'failure'> => {
+    try {
+      isLoadingFollow.value = true
+      isDialogFollow.value = true
+      const resFollows = await fetchFollows(user.value?.id!)
+      follows.value = follows.value.concat(resFollows)
+      return 'success'
+    } catch (error) {
+      console.log(error)
+      return 'failure'
+    } finally {
+      isLoadingFollow.value = false
+    }
+  }
+
   return {
     user,
     reports,
@@ -94,7 +113,11 @@ const useShow = () => {
     isLoadingChangeReports,
     changeReports,
     tab,
-    changeTab
+    changeTab,
+    follows,
+    isDialogFollow,
+    isLoadingFollow,
+    readFollows
   }
 }
 

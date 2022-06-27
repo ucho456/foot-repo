@@ -1,4 +1,14 @@
-import { doc, getDoc, getFirestore, setDoc, updateDoc } from 'firebase/firestore'
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  getFirestore,
+  orderBy,
+  query,
+  setDoc,
+  updateDoc
+} from 'firebase/firestore'
 import { getFunctions, httpsCallable } from 'firebase/functions'
 import { followerConverter, likeConverter, userConverter } from '@/utils/converters'
 
@@ -56,4 +66,16 @@ export const putFollow = async (userId: string): Promise<void> => {
   const functions = getFunctions(undefined, 'asia-northeast1')
   const updateFollow = httpsCallable(functions, 'updateFollow')
   await updateFollow({ userId })
+}
+
+export const fetchFollows = async (userId: string): Promise<Follower[]> => {
+  const db = getFirestore()
+  const fRef = collection(db, 'users', userId, 'follows').withConverter(followerConverter)
+  const q = query(fRef, orderBy('createdAt', 'desc'))
+  const fSnapshot = await getDocs(q)
+  const follows: Follower[] = []
+  fSnapshot.forEach((doc) => {
+    if (doc.exists()) follows.push(doc.data())
+  })
+  return follows
 }

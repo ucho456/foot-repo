@@ -29,7 +29,7 @@ export default defineComponent({
   },
 
   setup(props, ctx) {
-    const text = computed(() => (props.follow ? 'フォロー済み' : 'フォロー'))
+    const text = computed(() => (props.follow ? 'フォロー中' : 'フォロー'))
     const handleClick = (): void => ctx.emit('click')
 
     return { handleClick, text }
