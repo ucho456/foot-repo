@@ -73,11 +73,12 @@
       <v-container v-if="user">
         <v-row>
           <v-col>
-            <h2>投稿者 / フォローボタン</h2>
+            <h2>投稿者</h2>
           </v-col>
         </v-row>
         <RowUser
           :id="user.id"
+          :button-text-bottom="'フォロー'"
           :image-url="user.imageUrl"
           :image-size="60"
           :name="user.name"
