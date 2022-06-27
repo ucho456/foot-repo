@@ -1,0 +1,38 @@
+<template>
+  <BaseButton
+    :block-flg="true"
+    :color="'primary'"
+    :disabled="disabled"
+    :outlined-flg="!follow"
+    :text="text"
+    :white-text-flg="follow"
+    @click="handleClick"
+  />
+</template>
+
+<script lang="ts">
+import { defineComponent, computed } from '@nuxtjs/composition-api'
+import BaseButton from '@/components/atoms/BaseButton.vue'
+
+export default defineComponent({
+  name: 'ButtonFollow',
+
+  components: {
+    BaseButton
+  },
+
+  props: {
+    disabled: { type: Boolean, default: false },
+    follow: { type: Boolean, default: false },
+    uid: { type: String, default: '' },
+    userId: { type: String, default: '' }
+  },
+
+  setup(props, ctx) {
+    const text = computed(() => (props.follow ? 'フォロー済み' : 'フォロー'))
+    const handleClick = (): void => ctx.emit('click')
+
+    return { handleClick, text }
+  }
+})
+</script>

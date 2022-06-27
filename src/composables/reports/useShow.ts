@@ -8,7 +8,7 @@ import {
   updateLikeCount,
   subscribeComments
 } from '@/db/reports'
-import { fetchLike, fetchUser, putFollow } from '@/db/users'
+import { fetchFollow, fetchLike, fetchUser, putFollow } from '@/db/users'
 import useLoginUser from '@/utils/useLoginUser'
 
 const useShow = () => {
@@ -23,6 +23,7 @@ const useShow = () => {
   const comments: Ref<ReportComment[]> = ref([])
   const unsubscribeComments: Ref<Unsubscribe | null> = ref(null)
   const like = ref(false)
+  const follow = ref(false)
 
   const isLoadingReport = ref(false)
   const isLoadingUser = ref(false)
@@ -35,9 +36,7 @@ const useShow = () => {
       isLoadingReport.value = true
       const { resReport, resHomeTeamReportItems, resAwayTeamReportItems } =
         await fetchReportAndItems(reportId, loginUser.value?.uid)
-      if (loginUser.value) {
-        like.value = await fetchLike(loginUser.value.uid, resReport.id)
-      }
+      if (loginUser.value) like.value = await fetchLike(loginUser.value.uid, resReport.id)
       report.value = resReport
       homeTeamReportItems.value = resHomeTeamReportItems
       awayTeamReportItems.value = resAwayTeamReportItems
@@ -46,6 +45,9 @@ const useShow = () => {
 
       isLoadingUser.value = true
       user.value = await fetchUser(resReport.user.ref.id)
+      if (loginUser.value) {
+        follow.value = await fetchFollow(loginUser.value.uid, report.value?.user.id)
+      }
       isLoadingUser.value = false
 
       isLoadingSameMatchReports.value = true
@@ -105,6 +107,7 @@ const useShow = () => {
     try {
       if (blockDoubleClick.value) return
       blockDoubleClick.value = true
+      follow.value = !follow.value
       await putFollow(report.value?.user.id!)
       return 'success'
     } catch (error) {
@@ -157,7 +160,8 @@ const useShow = () => {
     isLoadingNewComment,
     isDialog,
     create,
-    updateFollow
+    updateFollow,
+    follow
   }
 }
 

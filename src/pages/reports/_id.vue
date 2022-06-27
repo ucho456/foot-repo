@@ -11,7 +11,11 @@
         <v-row v-if="!report.publish" justify="center">
           <v-col cols="4" md="2" class="private"> 非公開 </v-col>
         </v-row>
-        <RowUser :id="report.user.id" :image-url="report.user.imageUrl" :name="report.user.name" />
+        <RowUser
+          :user-id="report.user.id"
+          :image-url="report.user.imageUrl"
+          :name="report.user.name"
+        />
         <RowMatchHeader v-bind="match" />
         <v-row v-if="report.selectTeam !== 'away'">
           <v-col>
@@ -70,20 +74,22 @@
     </v-card>
     <v-card v-if="!isLoadingReport" class="mt-4" outlined>
       <ContainerLoading :is-loading="isLoadingUser" />
-      <v-container v-if="user">
+      <v-container v-if="user && report">
         <v-row>
           <v-col>
             <h2>投稿者</h2>
           </v-col>
         </v-row>
         <RowUser
-          :id="user.id"
-          :button-text-bottom="'フォロー'"
-          :image-url="user.imageUrl"
+          :bottom-flg="true"
+          :follow="follow"
+          :greet="user.greet"
           :image-size="60"
+          :image-url="user.imageUrl"
           :name="user.name"
           :team-name="user.team.name"
-          :greet="user.greet"
+          :uid="loginUser ? loginUser.uid : null"
+          :user-id="user.id"
           @click="clickFollow"
         />
       </v-container>
@@ -110,10 +116,10 @@
         <v-row v-for="comment in comments" :key="comment.id">
           <v-container class="comment">
             <RowUser
-              :id="comment.user.id"
               :comment="comment.text"
               :image-url="comment.user.imageUrl"
               :name="comment.user.name"
+              :user-id="comment.user.id"
             />
           </v-container>
         </v-row>
@@ -191,7 +197,8 @@ export default defineComponent({
       isLoadingNewComment,
       isDialog,
       create,
-      updateFollow
+      updateFollow,
+      follow
     } = useShow()
     const { loginUser } = useLoginUser()
     const { openSnackbar } = useSnackbar()
@@ -268,7 +275,8 @@ export default defineComponent({
       isDialog,
       loginUser,
       confirmLogin,
-      submitCreate
+      submitCreate,
+      follow
     }
   }
 })

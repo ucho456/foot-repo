@@ -1,6 +1,6 @@
 import { doc, getDoc, getFirestore, setDoc, updateDoc } from 'firebase/firestore'
 import { getFunctions, httpsCallable } from 'firebase/functions'
-import { likeConverter, userConverter } from '@/utils/converters'
+import { followerConverter, likeConverter, userConverter } from '@/utils/converters'
 
 export const createUser = async (inputUser: InputUser): Promise<void> => {
   const db = getFirestore()
@@ -43,6 +43,13 @@ export const fetchLike = async (uid: string, reportId: string): Promise<boolean>
   const lRef = doc(db, 'users', uid, 'likes', reportId).withConverter(likeConverter)
   const lSnapshot = await getDoc(lRef)
   return lSnapshot.exists()
+}
+
+export const fetchFollow = async (uid: string, userId: string): Promise<boolean> => {
+  const db = getFirestore()
+  const uRef = doc(db, 'users', uid, 'follows', userId).withConverter(followerConverter)
+  const uSnapshot = await getDoc(uRef)
+  return uSnapshot.exists()
 }
 
 export const putFollow = async (userId: string): Promise<void> => {
