@@ -5,8 +5,8 @@
         <v-row dense>
           <v-col v-for="competition in competitions" :key="competition.title" cols="6" sm="4">
             <v-card :to="competition.to">
-              <v-img :src="competition.src" />
-              <v-card-text class="font-weight-bold text-center">
+              <v-img :height="183" :src="competition.src" />
+              <v-card-text class="font-weight-bold text-center" style="height: 70px">
                 {{ competition.title }}
               </v-card-text>
             </v-card>
@@ -28,14 +28,21 @@ export default defineComponent({
       id: string
       title: string
       src: string
-      to: string
+      to?: string
       type: CompetitionType
     }[] = [
       {
+        id: 'Japan',
+        title: '日本代表（準備中）',
+        src: 'https://upload.wikimedia.org/wikipedia/commons/9/9e/Flag_of_Japan.svg',
+        // to: '/databases/leagues/J-League',
+        type: 'japan'
+      },
+      {
         id: 'J-League',
-        title: 'J. League',
+        title: 'J. League（準備中）',
         src: require('@/assets/JJL.jpg') as string,
-        to: '/databases/leagues/J-League',
+        // to: '/databases/leagues/J-League',
         type: 'league'
       },
       {
@@ -65,6 +72,20 @@ export default defineComponent({
         src: 'https://crests.football-data.org/BL1.png',
         to: '/databases/leagues/Bundesliga',
         type: 'league'
+      },
+      {
+        id: 'Champions-League',
+        title: 'UEFA Champions League（準備中）',
+        src: 'https://crests.football-data.org/CL.png',
+        // to: '/databases/leagues/Bundesliga',
+        type: 'cup'
+      },
+      {
+        id: 'World-Cup',
+        title: 'World Cup（準備中）',
+        src: 'https://crests.football-data.org/qatar.png',
+        // to: '/databases/leagues/Bundesliga',
+        type: 'cup'
       }
     ]
 
