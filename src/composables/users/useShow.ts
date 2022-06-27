@@ -1,10 +1,12 @@
 import { ref, Ref } from '@nuxtjs/composition-api'
 import { fetchUserLikeReports, fetchUserReports, deleteReport } from '@/db/reports'
 import { fetchUser } from '@/db/users'
+import useLoginUser from '@/utils/useLoginUser'
 
 const useShow = () => {
   const user: Ref<User | null> = ref(null)
   const reports: Ref<Report[]> = ref([])
+  const { loginUser } = useLoginUser()
 
   const isLoadingUser = ref(false)
   const isLoadingReports = ref(false)
@@ -64,7 +66,7 @@ const useShow = () => {
   const del = async (): Promise<'success' | 'failure'> => {
     try {
       isLoadingDel.value = true
-      await deleteReport(targetReport.value?.id!)
+      await deleteReport(targetReport.value?.id!, loginUser.value?.uid!)
       reports.value = reports.value.filter((r) => r.id !== targetReport.value?.id!)
       return 'success'
     } catch (error) {

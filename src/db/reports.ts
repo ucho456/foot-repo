@@ -1,7 +1,6 @@
 import { Ref } from '@nuxtjs/composition-api'
 import {
   collection,
-  deleteDoc,
   doc,
   documentId,
   endAt,
@@ -9,6 +8,7 @@ import {
   getDoc,
   getDocs,
   getFirestore,
+  increment,
   limit,
   onSnapshot,
   orderBy,
@@ -26,7 +26,8 @@ import {
   commentConverter,
   likeConverter,
   reportConverter,
-  reportItemConverter
+  reportItemConverter,
+  userConverter
 } from '@/utils/converters'
 import { makeSearchOption } from '@/utils/searchOption'
 
@@ -108,6 +109,11 @@ export const createReport = async (
     )
     batch.set(atriRef, { ...atri, user: { id: user.id, ref: user.ref } })
   })
+
+  if (loginUser) {
+    const uRef = doc(db, 'users', loginUser.uid).withConverter(userConverter)
+    batch.update(uRef, { [`reportCount`]: increment(1) })
+  }
   await batch.commit()
   return rId
 }
@@ -407,10 +413,14 @@ export const toStoreSameMatchReports = async (
   })
 }
 
-export const deleteReport = async (reportId: string): Promise<void> => {
+export const deleteReport = async (reportId: string, uid: string): Promise<void> => {
   const db = getFirestore()
+  const batch = writeBatch(db)
   const rRef = doc(db, 'reports', reportId).withConverter(reportConverter)
-  await deleteDoc(rRef)
+  batch.delete(rRef)
+  const uRef = doc(db, 'users', uid).withConverter(userConverter)
+  batch.update(uRef, { [`reportCount`]: increment(-1) })
+  await batch.commit()
 }
 
 export const updateReport = async (inputReport: InputReport, initReport: Report): Promise<void> => {

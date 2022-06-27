@@ -25,17 +25,17 @@
           <v-col cols="4" class="text-center"
             ><v-icon large>mdi-text-box-edit</v-icon>
             <div>投稿</div>
-            <div>{{ reports.length }} 件</div></v-col
+            <div>{{ user.reportCount }} 件</div></v-col
           >
           <v-col cols="4" class="text-center follow"
             ><v-icon large>mdi-account-arrow-right</v-icon>
             <div>フォロー</div>
-            <div>0 件</div></v-col
+            <div>{{ user.followCount }} 件</div></v-col
           >
           <v-col cols="4" class="text-center follow"
             ><v-icon large>mdi-account-arrow-left</v-icon>
             <div>フォロワー</div>
-            <div>0 件</div></v-col
+            <div>{{ user.followerCount }} 件</div></v-col
           >
         </v-row>
       </v-container>
