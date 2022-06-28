@@ -27,7 +27,11 @@
             <div>投稿</div>
             <div>{{ user.reportCount }} 件</div></v-col
           >
-          <v-col cols="4" class="text-center follow" @click="clickFollows"
+          <v-col
+            cols="4"
+            class="text-center"
+            :class="{ follow: user.followCount !== 0 }"
+            @click="clickFollows"
             ><v-icon large>mdi-account-arrow-right</v-icon>
             <div>フォロー</div>
             <div>{{ user.followCount }} 件</div></v-col
@@ -62,6 +66,7 @@
       @delete="deleteReport"
     />
     <DialogFollowers
+      :has-next="hasNextFollows"
       :is-dialog="isDialogFollow"
       :is-loading="isLoadingFollow"
       :is-loading-button="isLoadingNextFollows"
@@ -123,7 +128,8 @@ export default defineComponent({
       readFirstFollows,
       hideFollowsPopup,
       isLoadingNextFollows,
-      readNextFollows
+      readNextFollows,
+      hasNextFollows
     } = useShow()
     const { loginUser } = useLoginUser()
     const { openSnackbar } = useSnackbar()
@@ -156,6 +162,7 @@ export default defineComponent({
 
     /* follows */
     const clickFollows = async (): Promise<void> => {
+      if (user.value?.followCount === 0) return
       const result = await readFirstFollows()
       if (result === 'failure') openSnackbar(result, 'フォローの取得に失敗しました。')
     }
@@ -186,7 +193,8 @@ export default defineComponent({
       isLoadingFollow,
       hideFollowsPopup,
       clickNextFollows,
-      isLoadingNextFollows
+      isLoadingNextFollows,
+      hasNextFollows
     }
   }
 })

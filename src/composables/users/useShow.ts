@@ -84,6 +84,7 @@ const useShow = () => {
   const followsLastVisible: Ref<QueryDocumentSnapshot<Follower> | null> = ref(null)
   const isDialogFollow = ref(false)
   const isLoadingFollow = ref(false)
+  const hasNextFollows = ref(true)
   const showFollowsDialog = (): void => {
     isDialogFollow.value = true
   }
@@ -99,6 +100,7 @@ const useShow = () => {
           user.value?.id!,
           followsLastVisible.value
         )
+        if (resFollows.length === 0) hasNextFollows.value = false
         follows.value = follows.value.concat(resFollows)
         followsLastVisible.value = resLastVisible
       }
@@ -118,6 +120,7 @@ const useShow = () => {
         user.value?.id!,
         followsLastVisible.value
       )
+      if (resFollows.length === 0) hasNextFollows.value = false
       follows.value = follows.value.concat(resFollows)
       followsLastVisible.value = resLastVisible
       return 'success'
@@ -152,7 +155,8 @@ const useShow = () => {
     readFirstFollows,
     hideFollowsPopup,
     readNextFollows,
-    isLoadingNextFollows
+    isLoadingNextFollows,
+    hasNextFollows
   }
 }
 

@@ -22,7 +22,12 @@
         </v-virtual-scroll>
         <v-row class="mt-3" justify="center">
           <v-col cols="10">
-            <ButtonSubmit :text="'もっと読み込む'" :loading="isLoadingButton" @click="handleNext" />
+            <ButtonSubmit
+              :disabled="!hasNext"
+              :text="'もっと読み込む'"
+              :loading="isLoadingButton"
+              @click="handleNext"
+            />
           </v-col>
         </v-row>
       </v-container>
@@ -52,6 +57,7 @@ export default defineComponent({
   },
 
   props: {
+    hasNext: { type: Boolean, default: false },
     isDialog: { type: Boolean, default: false },
     isLoading: { type: Boolean, default: false },
     isLoadingButton: { type: Boolean, default: false },
