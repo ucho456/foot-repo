@@ -1,4 +1,5 @@
 import { ref, Ref } from '@nuxtjs/composition-api'
+import type { QueryDocumentSnapshot } from 'firebase/firestore'
 import { fetchUserLikeReports, fetchUserReports, deleteReport } from '@/db/reports'
 import { fetchFollows, fetchUser } from '@/db/users'
 import useLoginUser from '@/utils/useLoginUser'
@@ -78,16 +79,29 @@ const useShow = () => {
     }
   }
 
-  /* follow */
+  /* follows */
   const follows: Ref<Follower[]> = ref([])
+  const followsLastVisible: Ref<QueryDocumentSnapshot<Follower> | null> = ref(null)
   const isDialogFollow = ref(false)
   const isLoadingFollow = ref(false)
-  const readFollows = async (): Promise<'success' | 'failure'> => {
+  const showFollowsDialog = (): void => {
+    isDialogFollow.value = true
+  }
+  const hideFollowsPopup = (): void => {
+    isDialogFollow.value = false
+  }
+  const readFirstFollows = async (): Promise<'success' | 'failure'> => {
     try {
-      isLoadingFollow.value = true
-      isDialogFollow.value = true
-      const resFollows = await fetchFollows(user.value?.id!)
-      follows.value = follows.value.concat(resFollows)
+      showFollowsDialog()
+      if (follows.value.length === 0) {
+        isLoadingFollow.value = true
+        const { resFollows, resLastVisible } = await fetchFollows(
+          user.value?.id!,
+          followsLastVisible.value
+        )
+        follows.value = follows.value.concat(resFollows)
+        followsLastVisible.value = resLastVisible
+      }
       return 'success'
     } catch (error) {
       console.log(error)
@@ -96,8 +110,23 @@ const useShow = () => {
       isLoadingFollow.value = false
     }
   }
-  const hideFollowsPopup = (): void => {
-    isDialogFollow.value = false
+  const isLoadingNextFollows = ref(false)
+  const readNextFollows = async (): Promise<'success' | 'failure'> => {
+    try {
+      isLoadingNextFollows.value = true
+      const { resFollows, resLastVisible } = await fetchFollows(
+        user.value?.id!,
+        followsLastVisible.value
+      )
+      follows.value = follows.value.concat(resFollows)
+      followsLastVisible.value = resLastVisible
+      return 'success'
+    } catch (error) {
+      console.log(error)
+      return 'failure'
+    } finally {
+      isLoadingNextFollows.value = false
+    }
   }
 
   return {
@@ -120,8 +149,10 @@ const useShow = () => {
     follows,
     isDialogFollow,
     isLoadingFollow,
-    readFollows,
-    hideFollowsPopup
+    readFirstFollows,
+    hideFollowsPopup,
+    readNextFollows,
+    isLoadingNextFollows
   }
 }
 

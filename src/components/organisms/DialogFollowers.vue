@@ -20,9 +20,9 @@
             </v-container>
           </template>
         </v-virtual-scroll>
-        <v-row justify="center">
+        <v-row class="mt-3" justify="center">
           <v-col cols="10">
-            <ButtonSubmit :text="'もっと読み込む'" :loading="isLoading" />
+            <ButtonSubmit :text="'もっと読み込む'" :loading="isLoadingButton" @click="handleNext" />
           </v-col>
         </v-row>
       </v-container>
@@ -54,14 +54,16 @@ export default defineComponent({
   props: {
     isDialog: { type: Boolean, default: false },
     isLoading: { type: Boolean, default: false },
+    isLoadingButton: { type: Boolean, default: false },
     follwers: { type: Array as () => Follower[], default: () => [] },
     uid: { type: String, required: false, default: null }
   },
 
   setup(_, ctx) {
     const handleClose = (): void => ctx.emit('close')
+    const handleNext = (): void => ctx.emit('next')
 
-    return { handleClose }
+    return { handleClose, handleNext }
   }
 })
 </script>

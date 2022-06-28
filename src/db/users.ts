@@ -4,11 +4,14 @@ import {
   getDoc,
   getDocs,
   getFirestore,
+  limit,
   orderBy,
   query,
   setDoc,
+  startAfter,
   updateDoc
 } from 'firebase/firestore'
+import type { QueryDocumentSnapshot } from 'firebase/firestore'
 import { getFunctions, httpsCallable } from 'firebase/functions'
 import { followerConverter, likeConverter, userConverter } from '@/utils/converters'
 
@@ -68,14 +71,24 @@ export const putFollow = async (userId: string): Promise<void> => {
   await updateFollow({ userId })
 }
 
-export const fetchFollows = async (userId: string): Promise<Follower[]> => {
+const perPage = 10
+export const fetchFollows = async (
+  userId: string,
+  lastVisible: QueryDocumentSnapshot<Follower> | null
+): Promise<{
+  resFollows: Follower[]
+  resLastVisible: QueryDocumentSnapshot<Follower>
+}> => {
   const db = getFirestore()
   const fRef = collection(db, 'users', userId, 'follows').withConverter(followerConverter)
-  const q = query(fRef, orderBy('createdAt', 'desc'))
+  const q = lastVisible
+    ? query(fRef, orderBy('createdAt', 'desc'), startAfter(lastVisible), limit(perPage))
+    : query(fRef, orderBy('createdAt', 'desc'), limit(perPage))
   const fSnapshot = await getDocs(q)
-  const follows: Follower[] = []
+  const resFollows: Follower[] = []
   fSnapshot.forEach((doc) => {
-    if (doc.exists()) follows.push(doc.data())
+    if (doc.exists()) resFollows.push(doc.data())
   })
-  return follows
+  const resLastVisible = fSnapshot.docs[fSnapshot.docs.length - 1]
+  return { resFollows, resLastVisible }
 }

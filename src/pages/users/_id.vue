@@ -64,9 +64,11 @@
     <DialogFollowers
       :is-dialog="isDialogFollow"
       :is-loading="isLoadingFollow"
+      :is-loading-button="isLoadingNextFollows"
       :follwers="follows"
       :uid="loginUser ? loginUser.uid : null"
       @close="hideFollowsPopup"
+      @next="clickNextFollows"
     />
   </v-container>
 </template>
@@ -118,8 +120,10 @@ export default defineComponent({
       follows,
       isDialogFollow,
       isLoadingFollow,
-      readFollows,
-      hideFollowsPopup
+      readFirstFollows,
+      hideFollowsPopup,
+      isLoadingNextFollows,
+      readNextFollows
     } = useShow()
     const { loginUser } = useLoginUser()
     const { openSnackbar } = useSnackbar()
@@ -150,8 +154,13 @@ export default defineComponent({
       openSnackbar(result, message)
     }
 
+    /* follows */
     const clickFollows = async (): Promise<void> => {
-      const result = await readFollows()
+      const result = await readFirstFollows()
+      if (result === 'failure') openSnackbar(result, 'フォローの取得に失敗しました。')
+    }
+    const clickNextFollows = async (): Promise<void> => {
+      const result = await readNextFollows()
       if (result === 'failure') openSnackbar(result, 'フォローの取得に失敗しました。')
     }
 
@@ -175,7 +184,9 @@ export default defineComponent({
       follows,
       isDialogFollow,
       isLoadingFollow,
-      hideFollowsPopup
+      hideFollowsPopup,
+      clickNextFollows,
+      isLoadingNextFollows
     }
   }
 })
