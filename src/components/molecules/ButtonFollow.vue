@@ -2,7 +2,6 @@
   <BaseButton
     :block-flg="true"
     :color="'primary'"
-    :disabled="disabled"
     :outlined-flg="!follow"
     :text="text"
     :white-text-flg="follow"
@@ -22,10 +21,7 @@ export default defineComponent({
   },
 
   props: {
-    disabled: { type: Boolean, default: false },
-    follow: { type: Boolean, default: false },
-    uid: { type: String, default: '' },
-    userId: { type: String, default: '' }
+    follow: { type: Boolean, default: false }
   },
 
   setup(props, ctx) {

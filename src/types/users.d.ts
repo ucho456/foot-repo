@@ -31,6 +31,7 @@ type Follower = {
     imageUrl: string | null
   }
   createdAt: import('firebase/firestore').FieldValue
+  follow?: boolean
 }
 
 type ViolationReporter = {

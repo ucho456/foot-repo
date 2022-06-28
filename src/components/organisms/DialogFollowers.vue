@@ -13,8 +13,8 @@
                   :name="item.user.name"
                   :user-id="item.user.id"
                 />
-                <v-col cols="5">
-                  <ButtonFollow />
+                <v-col v-if="item.follow !== undefined && item.user.id !== uid" cols="5">
+                  <ButtonFollow :follow="item.follow" />
                 </v-col>
               </v-row>
             </v-container>

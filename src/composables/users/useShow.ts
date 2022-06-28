@@ -98,7 +98,8 @@ const useShow = () => {
         isLoadingFollow.value = true
         const { resFollows, resLastVisible } = await fetchFollows(
           user.value?.id!,
-          followsLastVisible.value
+          followsLastVisible.value,
+          loginUser.value
         )
         if (resFollows.length === 0) hasNextFollows.value = false
         follows.value = follows.value.concat(resFollows)
@@ -118,7 +119,8 @@ const useShow = () => {
       isLoadingNextFollows.value = true
       const { resFollows, resLastVisible } = await fetchFollows(
         user.value?.id!,
-        followsLastVisible.value
+        followsLastVisible.value,
+        loginUser.value
       )
       if (resFollows.length === 0) hasNextFollows.value = false
       follows.value = follows.value.concat(resFollows)

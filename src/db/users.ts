@@ -1,6 +1,7 @@
 import {
   collection,
   doc,
+  documentId,
   getDoc,
   getDocs,
   getFirestore,
@@ -9,7 +10,8 @@ import {
   query,
   setDoc,
   startAfter,
-  updateDoc
+  updateDoc,
+  where
 } from 'firebase/firestore'
 import type { QueryDocumentSnapshot } from 'firebase/firestore'
 import { getFunctions, httpsCallable } from 'firebase/functions'
@@ -74,7 +76,8 @@ export const putFollow = async (userId: string): Promise<void> => {
 const perPage = 10
 export const fetchFollows = async (
   userId: string,
-  lastVisible: QueryDocumentSnapshot<Follower> | null
+  lastVisible: QueryDocumentSnapshot<Follower> | null,
+  loginUser: LoginUser | null
 ): Promise<{
   resFollows: Follower[]
   resLastVisible: QueryDocumentSnapshot<Follower>
@@ -85,10 +88,28 @@ export const fetchFollows = async (
     ? query(fRef, orderBy('createdAt', 'desc'), startAfter(lastVisible), limit(perPage))
     : query(fRef, orderBy('createdAt', 'desc'), limit(perPage))
   const fSnapshot = await getDocs(q)
-  const resFollows: Follower[] = []
+  let resFollows: Follower[] = []
+  const followIds: string[] = []
   fSnapshot.forEach((doc) => {
-    if (doc.exists()) resFollows.push(doc.data())
+    if (doc.exists()) {
+      resFollows.push(doc.data())
+      followIds.push(doc.data().id)
+    }
   })
   const resLastVisible = fSnapshot.docs[fSnapshot.docs.length - 1]
+  if (loginUser && followIds.length > 0) {
+    const myFRef = collection(db, 'users', loginUser.uid, 'follows').withConverter(
+      followerConverter
+    )
+    const q = query(myFRef, where(documentId(), 'in', followIds))
+    const myFSnapshot = await getDocs(q)
+    const map: Map<string, Follower> = new Map()
+    myFSnapshot.forEach((doc) => {
+      if (doc.exists()) map.set(doc.data().id, doc.data())
+    })
+    resFollows = resFollows.map((f) => {
+      return { ...f, follow: map.has(f.id) }
+    })
+  }
   return { resFollows, resLastVisible }
 }
