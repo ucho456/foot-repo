@@ -65,6 +65,8 @@
       :is-dialog="isDialogFollow"
       :is-loading="isLoadingFollow"
       :follwers="follows"
+      :uid="loginUser ? loginUser.uid : null"
+      @close="hideFollowsPopup"
     />
   </v-container>
 </template>
@@ -116,7 +118,8 @@ export default defineComponent({
       follows,
       isDialogFollow,
       isLoadingFollow,
-      readFollows
+      readFollows,
+      hideFollowsPopup
     } = useShow()
     const { loginUser } = useLoginUser()
     const { openSnackbar } = useSnackbar()
@@ -171,7 +174,8 @@ export default defineComponent({
       changeTab,
       follows,
       isDialogFollow,
-      isLoadingFollow
+      isLoadingFollow,
+      hideFollowsPopup
     }
   }
 })

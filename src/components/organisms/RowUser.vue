@@ -73,10 +73,3 @@ export default defineComponent({
   }
 })
 </script>
-
-<style lang="scss" scoped>
-.name {
-  font-size: 18px;
-  line-height: 30px;
-}
-</style>

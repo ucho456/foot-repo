@@ -96,6 +96,9 @@ const useShow = () => {
       isLoadingFollow.value = false
     }
   }
+  const hideFollowsPopup = (): void => {
+    isDialogFollow.value = false
+  }
 
   return {
     user,
@@ -117,7 +120,8 @@ const useShow = () => {
     follows,
     isDialogFollow,
     isLoadingFollow,
-    readFollows
+    readFollows,
+    hideFollowsPopup
   }
 }
 

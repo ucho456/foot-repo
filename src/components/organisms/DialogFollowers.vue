@@ -3,12 +3,33 @@
     <v-card>
       <ContainerLoading :is-loading="isLoading" />
       <v-container v-if="!isLoading">
-        <v-virtual-scroll :items="follwers" :item-height="100" height="300">
+        <v-virtual-scroll :items="follwers" :item-height="50" height="450">
           <template #default="{ item }">
-            <RowUser :image-url="item.user.imageUrl" :name="item.user.name" />
+            <v-container>
+              <v-row style="height: 30px">
+                <ColUserImageName
+                  :cols="7"
+                  :image-url="item.user.imageUrl"
+                  :name="item.user.name"
+                  :user-id="item.user.id"
+                />
+                <v-col cols="5">
+                  <ButtonFollow />
+                </v-col>
+              </v-row>
+            </v-container>
           </template>
         </v-virtual-scroll>
+        <v-row justify="center">
+          <v-col cols="10">
+            <ButtonSubmit :text="'もっと読み込む'" :loading="isLoading" />
+          </v-col>
+        </v-row>
       </v-container>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="'primary'" text @click="handleClose"> 閉じる </v-btn>
+      </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
@@ -16,24 +37,31 @@
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
 import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
-import RowUser from '@/components/organisms/RowUser.vue'
+import ColUserImageName from '@/components/organisms/ColUserImageName.vue'
+import ButtonFollow from '@/components/molecules/ButtonFollow.vue'
+import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
 
 export default defineComponent({
   name: 'DialogFollowers',
 
   components: {
     ContainerLoading,
-    RowUser
+    ColUserImageName,
+    ButtonFollow,
+    ButtonSubmit
   },
 
   props: {
     isDialog: { type: Boolean, default: false },
     isLoading: { type: Boolean, default: false },
-    follwers: { type: Array as () => Follower[], default: () => [] }
+    follwers: { type: Array as () => Follower[], default: () => [] },
+    uid: { type: String, required: false, default: null }
   },
 
-  setup() {
-    return {}
+  setup(_, ctx) {
+    const handleClose = (): void => ctx.emit('close')
+
+    return { handleClose }
   }
 })
 </script>
