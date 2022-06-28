@@ -140,6 +140,9 @@ const useShow = () => {
       blockDoubleClick.value = true
       const index = follows.value.findIndex((f) => f.user.id === userId)
       follows.value[index].follow = !follows.value[index].follow
+      if (loginUser.value && user.value && loginUser.value.uid === user.value.id) {
+        user.value.followCount += follows.value[index].follow === true ? 1 : -1
+      }
       await putFollow(userId)
       return 'success'
     } catch (error) {
