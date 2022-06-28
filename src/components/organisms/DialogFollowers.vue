@@ -14,7 +14,11 @@
                   :user-id="item.user.id"
                 />
                 <v-col v-if="item.follow !== undefined && item.user.id !== uid" cols="5">
-                  <ButtonFollow :follow="item.follow" />
+                  <ButtonFollow
+                    :follow="item.follow"
+                    :user-id="item.user.id"
+                    @click="handleFollow"
+                  />
                 </v-col>
               </v-row>
             </v-container>
@@ -67,9 +71,10 @@ export default defineComponent({
 
   setup(_, ctx) {
     const handleClose = (): void => ctx.emit('close')
+    const handleFollow = (userId: string): void => ctx.emit('follow', userId)
     const handleNext = (): void => ctx.emit('next')
 
-    return { handleClose, handleNext }
+    return { handleClose, handleFollow, handleNext }
   }
 })
 </script>

@@ -31,7 +31,7 @@
             cols="4"
             class="text-center"
             :class="{ follow: user.followCount !== 0 }"
-            @click="clickFollows"
+            @click="showFollowsDialog"
             ><v-icon large>mdi-account-arrow-right</v-icon>
             <div>フォロー</div>
             <div>{{ user.followCount }} 件</div></v-col
@@ -73,6 +73,7 @@
       :follwers="follows"
       :uid="loginUser ? loginUser.uid : null"
       @close="hideFollowsPopup"
+      @follow="clickFollow"
       @next="clickNextFollows"
     />
   </v-container>
@@ -129,7 +130,8 @@ export default defineComponent({
       hideFollowsPopup,
       isLoadingNextFollows,
       readNextFollows,
-      hasNextFollows
+      hasNextFollows,
+      updateFollow
     } = useShow()
     const { loginUser } = useLoginUser()
     const { openSnackbar } = useSnackbar()
@@ -161,7 +163,7 @@ export default defineComponent({
     }
 
     /* follows */
-    const clickFollows = async (): Promise<void> => {
+    const showFollowsDialog = async (): Promise<void> => {
       if (user.value?.followCount === 0) return
       const result = await readFirstFollows()
       if (result === 'failure') openSnackbar(result, 'フォローの取得に失敗しました。')
@@ -170,9 +172,13 @@ export default defineComponent({
       const result = await readNextFollows()
       if (result === 'failure') openSnackbar(result, 'フォローの取得に失敗しました。')
     }
+    const clickFollow = async (userId: string): Promise<void> => {
+      const result = await updateFollow(userId)
+      if (result === 'failure') openSnackbar(result, '通信エラーが発生しました。')
+    }
 
     return {
-      clickFollows,
+      showFollowsDialog,
       user,
       reports,
       isLoadingUser,
@@ -194,7 +200,8 @@ export default defineComponent({
       hideFollowsPopup,
       clickNextFollows,
       isLoadingNextFollows,
-      hasNextFollows
+      hasNextFollows,
+      clickFollow
     }
   }
 })

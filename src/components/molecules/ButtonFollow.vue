@@ -21,12 +21,13 @@ export default defineComponent({
   },
 
   props: {
-    follow: { type: Boolean, default: false }
+    follow: { type: Boolean, default: false },
+    userId: { type: String, default: '' }
   },
 
   setup(props, ctx) {
     const text = computed(() => (props.follow ? 'フォロー中' : 'フォロー'))
-    const handleClick = (): void => ctx.emit('click')
+    const handleClick = (): void => ctx.emit('click', props.userId)
 
     return { handleClick, text }
   }
