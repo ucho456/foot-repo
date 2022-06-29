@@ -90,7 +90,12 @@
             :user-id="user.id"
           />
           <v-col cols="5" sm="3">
-            <ButtonFollow :follow="follow" :user-id="user.id" @click="clickFollow" />
+            <ButtonFollow
+              v-if="loginUser && loginUser.uid !== user.id"
+              :follow="follow"
+              :user-id="user.id"
+              @click="clickFollow"
+            />
           </v-col>
           <v-col cols="12" class="mt-n4">マイチーム：{{ user.team.name }}</v-col>
           <v-col cols="12" class="greet mt-n4">{{ user.greet }}</v-col>
