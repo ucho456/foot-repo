@@ -1,6 +1,8 @@
 <template>
   <v-col
     :cols="cols"
+    :sm="sm"
+    :md="md"
     :class="{ 'd-flex': true, hover: userId !== 'guest' && userId !== null }"
     @click="pushToUserShow"
   >
@@ -25,7 +27,9 @@ export default defineComponent({
   components: {},
 
   props: {
-    cols: { type: Number, default: 0 },
+    cols: { type: Number, default: 12 },
+    sm: { type: Number, default: 12 },
+    md: { type: Number, default: 12 },
     imageSize: { type: Number, default: 36 },
     imageUrl: { type: String, required: false, default: null },
     name: { type: String, default: '' },

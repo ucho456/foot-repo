@@ -11,11 +11,13 @@
         <v-row v-if="!report.publish" justify="center">
           <v-col cols="4" md="2" class="private"> 非公開 </v-col>
         </v-row>
-        <RowUser
-          :user-id="report.user.id"
-          :image-url="report.user.imageUrl"
-          :name="report.user.name"
-        />
+        <v-row>
+          <ColUserImageName
+            :user-id="report.user.id"
+            :image-url="report.user.imageUrl"
+            :name="report.user.name"
+          />
+        </v-row>
         <RowMatchHeader v-bind="match" />
         <v-row v-if="report.selectTeam !== 'away'">
           <v-col>
@@ -76,22 +78,23 @@
       <ContainerLoading :is-loading="isLoadingUser" />
       <v-container v-if="user && report">
         <v-row>
-          <v-col>
+          <v-col cols="12" class="mb-n6">
             <h2>投稿者</h2>
           </v-col>
+          <ColUserImageName
+            :cols="7"
+            :sm="9"
+            :md="9"
+            :image-url="user.imageUrl"
+            :name="user.name"
+            :user-id="user.id"
+          />
+          <v-col cols="5" sm="3">
+            <ButtonFollow :follow="follow" :user-id="user.id" @click="clickFollow" />
+          </v-col>
+          <v-col cols="12" class="mt-n4">マイチーム：{{ user.team.name }}</v-col>
+          <v-col cols="12" class="greet mt-n4">{{ user.greet }}</v-col>
         </v-row>
-        <RowUser
-          :bottom-flg="true"
-          :follow="follow"
-          :greet="user.greet"
-          :image-size="60"
-          :image-url="user.imageUrl"
-          :name="user.name"
-          :team-name="user.team.name"
-          :uid="loginUser ? loginUser.uid : null"
-          :user-id="user.id"
-          @click="clickFollow"
-        />
       </v-container>
     </v-card>
     <v-card v-if="!isLoadingReport && !isLoadingUser" class="mt-4" outlined>
@@ -114,17 +117,22 @@
           <v-col>コメントはまだありません。 </v-col>
         </v-row>
         <v-row v-for="comment in comments" :key="comment.id">
-          <v-container class="comment">
-            <RowUser
-              :comment="comment.text"
-              :image-url="comment.user.imageUrl"
-              :name="comment.user.name"
-              :user-id="comment.user.id"
-            />
-          </v-container>
+          <ColUserImageName
+            :image-size="20"
+            :image-url="comment.user.imageUrl"
+            :name="comment.user.name"
+            :user-id="comment.user.id"
+          />
+          <v-col class="comment mt-n4 pl-11">{{ comment.text }}</v-col>
         </v-row>
-        <RowUser v-if="loginUser" :image-url="loginUser.imageUrl" :name="loginUser.name" />
-        <RowUser v-else :name="'Guest'" />
+        <v-row>
+          <ColUserImageName
+            v-if="loginUser"
+            :image-url="loginUser.imageUrl"
+            :name="loginUser.name"
+          />
+          <ColUserImageName v-else :name="'Guest'" />
+        </v-row>
         <v-row>
           <v-col cols="12"> <Textarea v-model="inputComment" :maxlength="140" /></v-col>
           <v-col cols="6" class="mt-n8">
@@ -152,8 +160,9 @@ import useShow from '@/composables/reports/useShow'
 import useLoginUser from '@/utils/useLoginUser'
 import useSnackbar from '@/utils/useSnackbar'
 import useStore from '@/utils/useStore'
+import ButtonFollow from '@/components/molecules/ButtonFollow.vue'
 import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
-import RowUser from '@/components/organisms/RowUser.vue'
+import ColUserImageName from '@/components/organisms/ColUserImageName.vue'
 import RowMatchHeader from '@/components/organisms/RowMatchHeader.vue'
 import ContainerReportTable from '@/components/organisms/ContainerReportTable.vue'
 import Textarea from '@/components/molecules/Textarea.vue'
@@ -164,8 +173,9 @@ export default defineComponent({
   name: 'ReportShow',
 
   components: {
+    ButtonFollow,
     ContainerLoading,
-    RowUser,
+    ColUserImageName,
     RowMatchHeader,
     ContainerReportTable,
     Textarea,
@@ -223,8 +233,8 @@ export default defineComponent({
       }
     }
 
-    const clickFollow = async (): Promise<void> => {
-      const result = await updateFollow()
+    const clickFollow = async (userId: string): Promise<void> => {
+      const result = await updateFollow(userId)
       if (result === 'failure') {
         openSnackbar(result, '通信エラーが発生しました。')
       }
@@ -294,5 +304,9 @@ export default defineComponent({
 }
 .comment {
   border-bottom: 1px solid #{$light-indigo};
+}
+.greet {
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 </style>

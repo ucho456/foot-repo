@@ -4,23 +4,22 @@
       <ContainerLoading :is-loading="isLoadingUser" />
       <v-container v-if="user">
         <v-row>
-          <v-col cols="8" sm="9" />
-          <client-only>
-            <v-col v-if="loginUser && loginUser.uid === user.id" cols="4" sm="3">
-              <ButtonOutlined :text="'編集'" @click="pushToUserEdit" />
-            </v-col>
-            <v-col v-else cols="4" sm="3">
-              <ButtonOutlined :text="'フォロー'" />
-            </v-col>
-          </client-only>
+          <ColUserImageName
+            :cols="7"
+            :sm="9"
+            :md="9"
+            :image-url="user.imageUrl"
+            :name="user.name"
+          />
+          <v-col v-if="loginUser && loginUser.uid === user.id" cols="5" sm="3">
+            <ButtonOutlined :text="'編集'" @click="pushToUserEdit" />
+          </v-col>
+          <v-col v-else cols="5" sm="3">
+            <ButtonOutlined :text="'フォロー'" />
+          </v-col>
+          <v-col cols="12" class="mt-n4">マイチーム：{{ user.team.name }}</v-col>
+          <v-col cols="12" class="greet mt-n4">{{ user.greet }}</v-col>
         </v-row>
-        <RowUser
-          :image-url="user.imageUrl"
-          :image-size="60"
-          :name="user.name"
-          :team-name="user.team.name"
-          :greet="user.greet"
-        />
         <v-row>
           <v-col cols="4" class="text-center"
             ><v-icon large>mdi-text-box-edit</v-icon>
@@ -86,7 +85,7 @@ import useLoginUser from '@/utils/useLoginUser'
 import useSnackbar from '@/utils/useSnackbar'
 import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 import ButtonOutlined from '@/components/molecules/ButtonOutlined.vue'
-import RowUser from '@/components/organisms/RowUser.vue'
+import ColUserImageName from '@/components/organisms/ColUserImageName.vue'
 import ContainerReportTable from '@/components/organisms/ContainerReportTable.vue'
 import DialogDelete from '@/components/molecules/DialogDelete.vue'
 import DialogFollowers from '@/components/organisms/DialogFollowers.vue'
@@ -97,7 +96,7 @@ export default defineComponent({
   components: {
     ContainerLoading,
     ButtonOutlined,
-    RowUser,
+    ColUserImageName,
     ContainerReportTable,
     DialogDelete,
     DialogFollowers
@@ -214,5 +213,9 @@ export default defineComponent({
     opacity: 0.8;
     cursor: pointer;
   }
+}
+.greet {
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 </style>
