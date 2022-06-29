@@ -138,14 +138,21 @@ const useShow = () => {
     }
   }
   const blockDoubleClick = ref(false)
-  const updateFollow = async (userId: string): Promise<'success' | 'failure' | undefined> => {
+  const updateFollow = async (
+    userId: string,
+    type: 'profile' | 'dialog'
+  ): Promise<'success' | 'failure' | undefined> => {
     try {
       if (blockDoubleClick.value) return
       blockDoubleClick.value = true
-      const index = follows.value.findIndex((f) => f.user.id === userId)
-      follows.value[index].follow = !follows.value[index].follow
-      if (loginUser.value && user.value && loginUser.value.uid === user.value.id) {
-        user.value.followCount += follows.value[index].follow === true ? 1 : -1
+      if (type === 'dialog') {
+        const index = follows.value.findIndex((f) => f.user.id === userId)
+        follows.value[index].follow = !follows.value[index].follow
+        if (loginUser.value && user.value && loginUser.value.uid === user.value.id) {
+          user.value.followCount += follows.value[index].follow === true ? 1 : -1
+        }
+      } else {
+        follow.value = !follow.value
       }
       await putFollow(userId)
       return 'success'

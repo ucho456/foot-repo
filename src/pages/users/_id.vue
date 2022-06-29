@@ -15,7 +15,11 @@
             <ButtonOutlined :text="'編集'" @click="pushToUserEdit" />
           </v-col>
           <v-col v-else cols="5" sm="3">
-            <ButtonFollow :follow="follow" :user-id="user.id" />
+            <ButtonFollow
+              :follow="follow"
+              :user-id="user.id"
+              @click="(userId) => clickFollow(userId, 'profile')"
+            />
           </v-col>
           <v-col cols="12" class="mt-n4">マイチーム：{{ user.team.name }}</v-col>
           <v-col cols="12" class="greet mt-n4">{{ user.greet }}</v-col>
@@ -72,7 +76,7 @@
       :follwers="follows"
       :uid="loginUser ? loginUser.uid : null"
       @close="hideFollowsPopup"
-      @follow="clickFollow"
+      @follow="(userId) => clickFollow(userId, 'dialog')"
       @next="clickNextFollows"
     />
   </v-container>
@@ -174,8 +178,8 @@ export default defineComponent({
       const result = await readNextFollows()
       if (result === 'failure') openSnackbar(result, 'フォローの取得に失敗しました。')
     }
-    const clickFollow = async (userId: string): Promise<void> => {
-      const result = await updateFollow(userId)
+    const clickFollow = async (userId: string, type: 'profile' | 'dialog'): Promise<void> => {
+      const result = await updateFollow(userId, type)
       if (result === 'failure') openSnackbar(result, '通信エラーが発生しました。')
     }
 
