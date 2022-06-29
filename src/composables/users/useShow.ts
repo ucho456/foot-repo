@@ -138,32 +138,6 @@ const useShow = () => {
       isLoadingNextFollows.value = false
     }
   }
-  const blockDoubleClick = ref(false)
-  const updateFollow = async (
-    userId: string,
-    type: 'profile' | 'dialog'
-  ): Promise<'success' | 'failure' | undefined> => {
-    try {
-      if (blockDoubleClick.value) return
-      blockDoubleClick.value = true
-      if (type === 'dialog') {
-        const index = follows.value.findIndex((f) => f.user.id === userId)
-        follows.value[index].follow = !follows.value[index].follow
-        if (loginUser.value && user.value && loginUser.value.uid === user.value.id) {
-          user.value.followCount += follows.value[index].follow === true ? 1 : -1
-        }
-      } else {
-        follow.value = !follow.value
-      }
-      await putFollow(userId)
-      return 'success'
-    } catch (error) {
-      console.log(error)
-      return 'failure'
-    } finally {
-      blockDoubleClick.value = false
-    }
-  }
 
   /* followers dialog */
   const followers = ref<Follower[]>([])
@@ -213,6 +187,51 @@ const useShow = () => {
       openSnackbar('failure', 'フォロワーの取得に失敗しました。')
     } finally {
       isLoadingNextFollowers.value = false
+    }
+  }
+
+  /* follow */
+  const blockDoubleClick = ref(false)
+  const adjustCount = (userId: string) => {
+    console.log('adjust')
+    if (follows.value.length > 0) {
+      const followIndex = follows.value.findIndex((f) => f.user.id === userId)
+      if (followIndex !== -1) {
+        follows.value[followIndex].follow = !follows.value[followIndex].follow
+        if (loginUser.value && user.value && loginUser.value.uid === user.value.id) {
+          user.value.followCount += follows.value[followIndex].follow === true ? 1 : -1
+        }
+      }
+    }
+    if (followers.value.length > 0) {
+      const followerIndex = followers.value.findIndex((f) => f.user.id === userId)
+      if (followerIndex !== -1) {
+        followers.value[followerIndex].follow = !followers.value[followerIndex].follow
+        if (loginUser.value && user.value && loginUser.value.uid === user.value.id) {
+          user.value.followerCount += followers.value[followerIndex].follow === true ? 1 : -1
+        }
+      }
+    }
+  }
+  const updateFollow = async (
+    userId: string,
+    type: 'profile' | 'dialog'
+  ): Promise<'success' | 'failure' | undefined> => {
+    try {
+      if (blockDoubleClick.value) return
+      blockDoubleClick.value = true
+      if (type === 'dialog') {
+        adjustCount(userId)
+      } else {
+        follow.value = !follow.value
+      }
+      await putFollow(userId)
+      return 'success'
+    } catch (error) {
+      console.log(error)
+      return 'failure'
+    } finally {
+      blockDoubleClick.value = false
     }
   }
 
