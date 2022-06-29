@@ -1,13 +1,14 @@
 import { ref, Ref } from '@nuxtjs/composition-api'
 import type { QueryDocumentSnapshot } from 'firebase/firestore'
 import { fetchUserLikeReports, fetchUserReports, deleteReport } from '@/db/reports'
-import { fetchFollow, fetchFollows, fetchUser, putFollow } from '@/db/users'
+import { fetchFollow, fetchFollowers, fetchFollows, fetchUser, putFollow } from '@/db/users'
 import useLoginUser from '@/utils/useLoginUser'
-
+import useSnackbar from '@/utils/useSnackbar'
 const useShow = () => {
   const user: Ref<User | null> = ref(null)
   const reports: Ref<Report[]> = ref([])
   const { loginUser } = useLoginUser()
+  const { openSnackbar } = useSnackbar()
 
   const isLoadingUser = ref(false)
   const isLoadingReports = ref(false)
@@ -83,7 +84,7 @@ const useShow = () => {
     }
   }
 
-  /* follows */
+  /* follows dialog */
   const follows: Ref<Follower[]> = ref([])
   const followsLastVisible: Ref<QueryDocumentSnapshot<Follower> | null> = ref(null)
   const isDialogFollow = ref(false)
@@ -164,6 +165,57 @@ const useShow = () => {
     }
   }
 
+  /* followers dialog */
+  const followers = ref<Follower[]>([])
+  const lastVisibleFollower = ref<QueryDocumentSnapshot<Follower> | null>(null)
+  const hasNextFollowers = ref(true)
+  const isDialogFollowers = ref(false)
+  const isLoadingFollowers = ref(false)
+  const showFollowersDialog = async () => {
+    try {
+      if (user.value?.followerCount === 0) return
+      isDialogFollowers.value = true
+      if (followers.value.length === 0) {
+        isLoadingFollowers.value = true
+        const { resFollowers, resLastVisible } = await fetchFollowers(
+          user.value?.id!,
+          lastVisibleFollower.value,
+          loginUser.value
+        )
+        if (resFollowers.length === 0) hasNextFollowers.value = false
+        followers.value = followers.value.concat(resFollowers)
+        lastVisibleFollower.value = resLastVisible
+      }
+    } catch (error) {
+      console.log(error)
+      openSnackbar('failure', 'フォロワーの獲得に失敗しました。')
+    } finally {
+      isLoadingFollowers.value = false
+    }
+  }
+  const hideFollowersDialog = () => {
+    isDialogFollowers.value = false
+  }
+  const isLoadingNextFollowers = ref(false)
+  const readNextFollowers = async () => {
+    try {
+      isLoadingNextFollowers.value = true
+      const { resFollowers, resLastVisible } = await fetchFollowers(
+        user.value?.id!,
+        lastVisibleFollower.value,
+        loginUser.value
+      )
+      if (resFollowers.length === 0) hasNextFollowers.value = false
+      followers.value = followers.value.concat(resFollowers)
+      lastVisibleFollower.value = resLastVisible
+    } catch (error) {
+      console.log(error)
+      openSnackbar('failure', 'フォロワーの取得に失敗しました。')
+    } finally {
+      isLoadingNextFollowers.value = false
+    }
+  }
+
   return {
     user,
     reports,
@@ -190,7 +242,15 @@ const useShow = () => {
     isLoadingNextFollows,
     hasNextFollows,
     updateFollow,
-    follow
+    follow,
+    followers,
+    hasNextFollowers,
+    isDialogFollowers,
+    isLoadingFollowers,
+    showFollowersDialog,
+    hideFollowersDialog,
+    isLoadingNextFollowers,
+    readNextFollowers
   }
 }
 

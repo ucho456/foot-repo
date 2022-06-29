@@ -39,7 +39,11 @@
             <div>フォロー</div>
             <div>{{ user.followCount }} 件</div></v-col
           >
-          <v-col cols="4" class="text-center follow"
+          <v-col
+            cols="4"
+            class="text-center"
+            :class="{ follow: user.followerCount !== 0 }"
+            @click="showFollowersDialog"
             ><v-icon large>mdi-account-arrow-left</v-icon>
             <div>フォロワー</div>
             <div>{{ user.followerCount }} 件</div></v-col
@@ -78,6 +82,17 @@
       @close="hideFollowsDialog"
       @follow="(userId) => clickFollow(userId, 'dialog')"
       @next="clickNextFollows"
+    />
+    <DialogFollowers
+      :has-next="hasNextFollowers"
+      :is-dialog="isDialogFollowers"
+      :is-loading="isLoadingFollowers"
+      :is-loading-button="isLoadingNextFollowers"
+      :follwers="followers"
+      :uid="loginUser ? loginUser.uid : null"
+      @close="hideFollowersDialog"
+      @follow="(userId) => clickFollow(userId, 'dialog')"
+      @next="readNextFollowers"
     />
   </v-container>
 </template>
@@ -137,7 +152,15 @@ export default defineComponent({
       readNextFollows,
       hasNextFollows,
       updateFollow,
-      follow
+      follow,
+      followers,
+      hasNextFollowers,
+      isDialogFollowers,
+      isLoadingFollowers,
+      showFollowersDialog,
+      hideFollowersDialog,
+      isLoadingNextFollowers,
+      readNextFollowers
     } = useShow()
     const { loginUser } = useLoginUser()
     const { openSnackbar } = useSnackbar()
@@ -208,7 +231,15 @@ export default defineComponent({
       isLoadingNextFollows,
       hasNextFollows,
       clickFollow,
-      follow
+      follow,
+      followers,
+      hasNextFollowers,
+      isDialogFollowers,
+      isLoadingFollowers,
+      showFollowersDialog,
+      hideFollowersDialog,
+      isLoadingNextFollowers,
+      readNextFollowers
     }
   }
 })

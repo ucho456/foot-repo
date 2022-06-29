@@ -113,3 +113,41 @@ export const fetchFollows = async (
   }
   return { resFollows, resLastVisible }
 }
+
+export const fetchFollowers = async (
+  userId: string,
+  lastVisible: QueryDocumentSnapshot<Follower> | null,
+  loginUser: LoginUser | null
+): Promise<{
+  resFollowers: Follower[]
+  resLastVisible: QueryDocumentSnapshot<Follower>
+}> => {
+  const db = getFirestore()
+  const fRef = collection(db, 'users', userId, 'followers').withConverter(followerConverter)
+  const q = lastVisible
+    ? query(fRef, orderBy('createdAt', 'desc'), startAfter(lastVisible), limit(perPage))
+    : query(fRef, orderBy('createdAt', 'desc'), limit(perPage))
+  const fSnapshot = await getDocs(q)
+  let resFollowers: Follower[] = []
+  const followerIds: string[] = []
+  fSnapshot.forEach((doc) => {
+    if (doc.exists()) {
+      resFollowers.push(doc.data())
+      followerIds.push(doc.data().id)
+    }
+  })
+  const resLastVisible = fSnapshot.docs[fSnapshot.docs.length - 1]
+  if (loginUser && followerIds.length > 0) {
+    const fRef = collection(db, 'users', loginUser.uid, 'follows').withConverter(followerConverter)
+    const q = query(fRef, where(documentId(), 'in', followerIds))
+    const fSnapshot = await getDocs(q)
+    const map: Map<string, Follower> = new Map()
+    fSnapshot.forEach((doc) => {
+      if (doc.exists()) map.set(doc.data().id, doc.data())
+    })
+    resFollowers = resFollowers.map((f) => {
+      return { ...f, follow: map.has(f.id) }
+    })
+  }
+  return { resFollowers, resLastVisible }
+}
