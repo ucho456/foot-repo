@@ -9,6 +9,8 @@
               <v-row style="height: 30px">
                 <ColUserImageName
                   :cols="7"
+                  :sm="7"
+                  :md="7"
                   :image-url="item.user.imageUrl"
                   :name="item.user.name"
                   :user-id="item.user.id"
