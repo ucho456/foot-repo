@@ -1,23 +1,28 @@
-import { ref, Ref } from '@nuxtjs/composition-api'
+import { ref, useRoute, useRouter, watch } from '@nuxtjs/composition-api'
 import type { QueryDocumentSnapshot } from 'firebase/firestore'
-import { fetchUserLikeReports, fetchUserReports, deleteReport } from '@/db/reports'
+import { deleteReport, fetchUserLikeReports, fetchUserReports } from '@/db/reports'
 import { fetchFollow, fetchFollowers, fetchFollows, fetchUser, putFollow } from '@/db/users'
 import useLoginUser from '@/utils/useLoginUser'
 import useSnackbar from '@/utils/useSnackbar'
+
 const useShow = () => {
-  const user: Ref<User | null> = ref(null)
-  const reports: Ref<Report[]> = ref([])
+  const route = useRoute()
+  const router = useRouter()
   const { loginUser } = useLoginUser()
   const { openSnackbar } = useSnackbar()
 
+  /** setUp */
+  const user = ref<User | null>(null)
+  const follow = ref(false)
+  const reports = ref<Report[]>([])
   const isLoadingUser = ref(false)
   const isLoadingReports = ref(false)
-  const follow = ref(false)
-  const setUp = async (userId: string): Promise<'success' | 'failure'> => {
+  const setUp = async (): Promise<void> => {
     try {
       isLoadingUser.value = true
+      const userId = route.value.params.id
       user.value = await fetchUser(userId)
-      if (loginUser.value && user.value) {
+      if (loginUser.value && user.value && loginUser.value.uid !== userId) {
         follow.value = await fetchFollow(loginUser.value.uid, user.value.id)
       }
       isLoadingUser.value = false
@@ -25,127 +30,78 @@ const useShow = () => {
       isLoadingReports.value = true
       reports.value = await fetchUserReports(userId)
       isLoadingReports.value = false
-
-      return 'success'
     } catch (error) {
       console.log(error)
-      return 'failure'
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoadingUser.value = false
       isLoadingReports.value = false
     }
   }
 
-  const tab = ref('Mine')
-  const tabs = ['Mine', 'Like']
-  const changeTab = (index: number): void => {
-    tab.value = tabs[index]
-  }
-  const isLoadingChangeReports = ref(false)
-  const changeReports = async (): Promise<'success' | 'failure'> => {
-    try {
-      isLoadingChangeReports.value = true
-      reports.value =
-        tab.value === 'Mine'
-          ? await fetchUserReports(user.value?.id!)
-          : await fetchUserLikeReports(user.value?.id!)
-      return 'success'
-    } catch (error) {
-      console.log(error)
-      return 'failure'
-    } finally {
-      isLoadingChangeReports.value = false
-    }
+  /** router */
+  const pushToUserEdit = (): void => {
+    router.push('/users/edit')
   }
 
-  const isDialogDelete = ref(false)
-  const targetReport: Ref<Report | null> = ref(null)
-  const showDeleteDialog = (report: Report): void => {
-    isDialogDelete.value = true
-    targetReport.value = report
-  }
-  const hideDeleteDialog = (): void => {
-    isDialogDelete.value = false
-    targetReport.value = null
-  }
-  const isLoadingDel = ref(false)
-  const del = async (): Promise<'success' | 'failure'> => {
-    try {
-      isLoadingDel.value = true
-      await deleteReport(targetReport.value?.id!, loginUser.value?.uid!)
-      reports.value = reports.value.filter((r) => r.id !== targetReport.value?.id!)
-      return 'success'
-    } catch (error) {
-      console.log(error)
-      return 'failure'
-    } finally {
-      hideDeleteDialog()
-      isLoadingDel.value = false
-    }
-  }
-
-  /* follows dialog */
-  const follows: Ref<Follower[]> = ref([])
-  const followsLastVisible: Ref<QueryDocumentSnapshot<Follower> | null> = ref(null)
-  const isDialogFollow = ref(false)
-  const isLoadingFollow = ref(false)
+  /** follows dialog */
+  const follows = ref<Follower[]>([])
+  const lastVisibleFollow = ref<QueryDocumentSnapshot<Follower> | null>(null)
   const hasNextFollows = ref(true)
-  const showFollowsDialog = (): void => {
-    isDialogFollow.value = true
-  }
-  const hideFollowsDialog = (): void => {
-    isDialogFollow.value = false
-  }
-  const readFirstFollows = async (): Promise<'success' | 'failure'> => {
+  const isDialogFollows = ref(false)
+  const isLoadingFollows = ref(false)
+  const showFollowsDialog = async (): Promise<void> => {
     try {
-      showFollowsDialog()
+      if (user.value?.followCount === 0) return
+      isDialogFollows.value = true
       if (follows.value.length === 0) {
-        isLoadingFollow.value = true
+        isLoadingFollows.value = true
         const { resFollows, resLastVisible } = await fetchFollows(
           user.value?.id!,
-          followsLastVisible.value,
+          lastVisibleFollow.value,
           loginUser.value
         )
         if (resFollows.length === 0) hasNextFollows.value = false
         follows.value = follows.value.concat(resFollows)
-        followsLastVisible.value = resLastVisible
+        lastVisibleFollow.value = resLastVisible
       }
-      return 'success'
     } catch (error) {
       console.log(error)
-      return 'failure'
+      openSnackbar('failure', 'フォローの取得に失敗しました。')
     } finally {
-      isLoadingFollow.value = false
+      isLoadingFollows.value = false
     }
   }
+  const hideFollowsDialog = (): void => {
+    isDialogFollows.value = false
+  }
   const isLoadingNextFollows = ref(false)
-  const readNextFollows = async (): Promise<'success' | 'failure'> => {
+  const readNextFollows = async (): Promise<void> => {
     try {
       isLoadingNextFollows.value = true
       const { resFollows, resLastVisible } = await fetchFollows(
         user.value?.id!,
-        followsLastVisible.value,
+        lastVisibleFollow.value,
         loginUser.value
       )
       if (resFollows.length === 0) hasNextFollows.value = false
       follows.value = follows.value.concat(resFollows)
-      followsLastVisible.value = resLastVisible
-      return 'success'
+      lastVisibleFollow.value = resLastVisible
     } catch (error) {
       console.log(error)
-      return 'failure'
+      openSnackbar('failure', 'フォローの取得に失敗しました。')
     } finally {
       isLoadingNextFollows.value = false
     }
   }
 
-  /* followers dialog */
+  /** followers dialog */
   const followers = ref<Follower[]>([])
   const lastVisibleFollower = ref<QueryDocumentSnapshot<Follower> | null>(null)
   const hasNextFollowers = ref(true)
   const isDialogFollowers = ref(false)
   const isLoadingFollowers = ref(false)
-  const showFollowersDialog = async () => {
+  const showFollowersDialog = async (): Promise<void> => {
     try {
       if (user.value?.followerCount === 0) return
       isDialogFollowers.value = true
@@ -162,16 +118,16 @@ const useShow = () => {
       }
     } catch (error) {
       console.log(error)
-      openSnackbar('failure', 'フォロワーの獲得に失敗しました。')
+      openSnackbar('failure', 'フォロワーの取得に失敗しました。')
     } finally {
       isLoadingFollowers.value = false
     }
   }
-  const hideFollowersDialog = () => {
+  const hideFollowersDialog = (): void => {
     isDialogFollowers.value = false
   }
   const isLoadingNextFollowers = ref(false)
-  const readNextFollowers = async () => {
+  const readNextFollowers = async (): Promise<void> => {
     try {
       isLoadingNextFollowers.value = true
       const { resFollowers, resLastVisible } = await fetchFollowers(
@@ -190,10 +146,8 @@ const useShow = () => {
     }
   }
 
-  /* follow */
-  const blockDoubleClick = ref(false)
-  const adjustCount = (userId: string) => {
-    console.log('adjust')
+  /** follow */
+  const adjustCount = (userId: string): void => {
     if (follows.value.length > 0) {
       const followIndex = follows.value.findIndex((f) => f.user.id === userId)
       if (followIndex !== -1) {
@@ -213,10 +167,8 @@ const useShow = () => {
       }
     }
   }
-  const updateFollow = async (
-    userId: string,
-    type: 'profile' | 'dialog'
-  ): Promise<'success' | 'failure' | undefined> => {
+  const blockDoubleClick = ref(false)
+  const updateFollow = async (userId: string, type: 'profile' | 'dialog'): Promise<void> => {
     try {
       if (blockDoubleClick.value) return
       blockDoubleClick.value = true
@@ -224,52 +176,102 @@ const useShow = () => {
         adjustCount(userId)
       } else {
         follow.value = !follow.value
+        if (user.value) user.value.followerCount += follow.value ? 1 : -1
       }
       await putFollow(userId)
-      return 'success'
     } catch (error) {
       console.log(error)
-      return 'failure'
+      openSnackbar('failure', 'フォローの更新に失敗しました。')
     } finally {
       blockDoubleClick.value = false
     }
   }
 
+  /** reports tab */
+  const tab = ref('Mine')
+  const tabs = ['Mine', 'Like']
+  const changeTab = (index: number): void => {
+    tab.value = tabs[index]
+  }
+  const isLoadingChangeReports = ref(false)
+  const changeReports = async (): Promise<void> => {
+    try {
+      isLoadingChangeReports.value = true
+      reports.value =
+        tab.value === 'Mine'
+          ? await fetchUserReports(user.value?.id!)
+          : await fetchUserLikeReports(user.value?.id!)
+    } catch (error) {
+      console.log(error)
+      openSnackbar('failure', '選手採点の取得に失敗しました。')
+    } finally {
+      isLoadingChangeReports.value = false
+    }
+  }
+  watch(tab, () => changeReports())
+
+  /** report delete */
+  const isDialogDelete = ref(false)
+  const targetReport = ref<Report | null>(null)
+  const showDeleteDialog = (report: Report): void => {
+    isDialogDelete.value = true
+    targetReport.value = report
+  }
+  const hideDeleteDialog = (): void => {
+    isDialogDelete.value = false
+    targetReport.value = null
+  }
+  const isLoadingReportDelete = ref(false)
+  const trushReport = async (): Promise<void> => {
+    try {
+      isLoadingReportDelete.value = true
+      await deleteReport(targetReport.value?.id!, loginUser.value?.uid!)
+      reports.value = reports.value.filter((r) => r.id !== targetReport.value?.id!)
+      if (user.value) user.value.reportCount -= 1
+      openSnackbar('success', '削除に成功しました。')
+    } catch (error) {
+      console.log(error)
+      openSnackbar('failure', '削除に失敗しました。')
+    } finally {
+      hideDeleteDialog()
+      isLoadingReportDelete.value = false
+    }
+  }
+
   return {
-    user,
-    reports,
-    isLoadingUser,
-    isLoadingReports,
-    setUp,
-    isDialogDelete,
-    targetReport,
-    showDeleteDialog,
-    hideDeleteDialog,
-    isLoadingDel,
-    del,
-    tabs,
-    isLoadingChangeReports,
-    changeReports,
-    tab,
     changeTab,
-    follows,
-    isDialogFollow,
-    isLoadingFollow,
-    readFirstFollows,
-    hideFollowsDialog,
-    readNextFollows,
-    isLoadingNextFollows,
-    hasNextFollows,
-    updateFollow,
     follow,
     followers,
+    follows,
     hasNextFollowers,
-    isDialogFollowers,
-    isLoadingFollowers,
-    showFollowersDialog,
+    hasNextFollows,
+    hideDeleteDialog,
     hideFollowersDialog,
+    hideFollowsDialog,
+    isDialogDelete,
+    isDialogFollowers,
+    isDialogFollows,
+    isLoadingChangeReports,
+    isLoadingFollowers,
+    isLoadingFollows,
     isLoadingNextFollowers,
-    readNextFollowers
+    isLoadingNextFollows,
+    isLoadingReportDelete,
+    isLoadingReports,
+    isLoadingUser,
+    pushToUserEdit,
+    readNextFollowers,
+    readNextFollows,
+    reports,
+    setUp,
+    showDeleteDialog,
+    showFollowersDialog,
+    showFollowsDialog,
+    tabs,
+    targetReport,
+    trushReport,
+    updateFollow,
+    user
   }
 }
 

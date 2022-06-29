@@ -6,10 +6,10 @@
         <v-row>
           <ColUserImageName
             :cols="7"
-            :sm="9"
-            :md="9"
             :image-url="user.imageUrl"
+            :md="9"
             :name="user.name"
+            :sm="9"
           />
           <v-col v-if="loginUser && loginUser.uid === user.id" cols="5" sm="3">
             <ButtonOutlined :text="'編集'" @click="pushToUserEdit" />
@@ -18,94 +18,93 @@
             <ButtonFollow
               :follow="follow"
               :user-id="user.id"
-              @click="(userId) => clickFollow(userId, 'profile')"
+              @click="(userId) => updateFollow(userId, 'profile')"
             />
           </v-col>
           <v-col cols="12" class="mt-n4">マイチーム：{{ user.team.name }}</v-col>
           <v-col cols="12" class="greet mt-n4">{{ user.greet }}</v-col>
         </v-row>
         <v-row>
-          <v-col cols="4" class="text-center"
-            ><v-icon large>mdi-text-box-edit</v-icon>
+          <v-col cols="4" class="text-center">
+            <v-icon large>mdi-text-box-edit</v-icon>
             <div>投稿</div>
-            <div>{{ user.reportCount }} 件</div></v-col
-          >
+            <div>{{ user.reportCount }} 件</div>
+          </v-col>
           <v-col
             cols="4"
             class="text-center"
             :class="{ follow: user.followCount !== 0 }"
             @click="showFollowsDialog"
-            ><v-icon large>mdi-account-arrow-right</v-icon>
-            <div>フォロー</div>
-            <div>{{ user.followCount }} 件</div></v-col
           >
+            <v-icon large>mdi-account-arrow-right</v-icon>
+            <div>フォロー</div>
+            <div>{{ user.followCount }} 件</div>
+          </v-col>
           <v-col
             cols="4"
             class="text-center"
             :class="{ follow: user.followerCount !== 0 }"
             @click="showFollowersDialog"
-            ><v-icon large>mdi-account-arrow-left</v-icon>
-            <div>フォロワー</div>
-            <div>{{ user.followerCount }} 件</div></v-col
           >
+            <v-icon large>mdi-account-arrow-left</v-icon>
+            <div>フォロワー</div>
+            <div>{{ user.followerCount }} 件</div>
+          </v-col>
         </v-row>
       </v-container>
     </v-card>
     <v-card v-if="!isLoadingUser && user" class="mt-4" outlined>
       <ContainerLoading :is-loading="isLoadingReports" />
-      <client-only>
-        <ContainerReportTable
-          v-if="!isLoadingReports"
-          :action-flg="loginUser && loginUser.uid === user.id"
-          :is-loading="isLoadingChangeReports"
-          :reports="reports"
-          :tabs="tabs"
-          @delete="showDeleteDialog"
-          @change-tab="changeTab"
-        />
-      </client-only>
+      <ContainerReportTable
+        v-if="!isLoadingReports"
+        :action-flg="loginUser && loginUser.uid === user.id"
+        :is-loading="isLoadingChangeReports"
+        :reports="reports"
+        :tabs="tabs"
+        @change-tab="changeTab"
+        @delete="showDeleteDialog"
+      />
     </v-card>
     <DialogDelete
       :is-dialog="isDialogDelete"
-      :is-loading="isLoadingDel"
+      :is-loading="isLoadingReportDelete"
       :report="targetReport"
       @close="hideDeleteDialog"
-      @delete="deleteReport"
+      @delete="trushReport"
     />
     <DialogFollowers
-      :has-next="hasNextFollows"
-      :is-dialog="isDialogFollow"
-      :is-loading="isLoadingFollow"
-      :is-loading-button="isLoadingNextFollows"
       :follwers="follows"
+      :has-next="hasNextFollows"
+      :is-dialog="isDialogFollows"
+      :is-loading="isLoadingFollows"
+      :is-loading-button="isLoadingNextFollows"
       :uid="loginUser ? loginUser.uid : null"
       @close="hideFollowsDialog"
-      @follow="(userId) => clickFollow(userId, 'dialog')"
-      @next="clickNextFollows"
+      @follow="(userId) => updateFollow(userId, 'dialog')"
+      @next="readNextFollows"
     />
     <DialogFollowers
+      :follwers="followers"
       :has-next="hasNextFollowers"
       :is-dialog="isDialogFollowers"
       :is-loading="isLoadingFollowers"
       :is-loading-button="isLoadingNextFollowers"
-      :follwers="followers"
       :uid="loginUser ? loginUser.uid : null"
       @close="hideFollowersDialog"
-      @follow="(userId) => clickFollow(userId, 'dialog')"
+      @follow="(userId) => updateFollow(userId, 'dialog')"
       @next="readNextFollowers"
     />
   </v-container>
 </template>
 
 <script lang="ts">
-import { defineComponent, useRoute, useRouter, watch } from '@nuxtjs/composition-api'
+import { defineComponent } from '@nuxtjs/composition-api'
 import useShow from '@/composables/users/useShow'
 import useLoginUser from '@/utils/useLoginUser'
-import useSnackbar from '@/utils/useSnackbar'
-import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
-import ButtonOutlined from '@/components/molecules/ButtonOutlined.vue'
 import ButtonFollow from '@/components/molecules/ButtonFollow.vue'
+import ButtonOutlined from '@/components/molecules/ButtonOutlined.vue'
 import ColUserImageName from '@/components/organisms/ColUserImageName.vue'
+import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 import ContainerReportTable from '@/components/organisms/ContainerReportTable.vue'
 import DialogDelete from '@/components/molecules/DialogDelete.vue'
 import DialogFollowers from '@/components/organisms/DialogFollowers.vue'
@@ -114,132 +113,89 @@ export default defineComponent({
   name: 'UserShow',
 
   components: {
-    ContainerLoading,
-    ButtonOutlined,
     ButtonFollow,
+    ButtonOutlined,
     ColUserImageName,
+    ContainerLoading,
     ContainerReportTable,
     DialogDelete,
     DialogFollowers
   },
 
   setup() {
-    const route = useRoute()
-    const router = useRouter()
     const {
-      user,
-      reports,
-      isLoadingUser,
-      isLoadingReports,
-      setUp,
-      isDialogDelete,
-      targetReport,
-      showDeleteDialog,
-      hideDeleteDialog,
-      isLoadingDel,
-      del,
-      tabs,
-      isLoadingChangeReports,
-      changeReports,
-      tab,
       changeTab,
-      follows,
-      isDialogFollow,
-      isLoadingFollow,
-      readFirstFollows,
-      hideFollowsDialog,
-      isLoadingNextFollows,
-      readNextFollows,
-      hasNextFollows,
-      updateFollow,
       follow,
       followers,
+      follows,
       hasNextFollowers,
-      isDialogFollowers,
-      isLoadingFollowers,
-      showFollowersDialog,
+      hasNextFollows,
+      hideDeleteDialog,
       hideFollowersDialog,
+      hideFollowsDialog,
+      isDialogDelete,
+      isDialogFollowers,
+      isDialogFollows,
+      isLoadingChangeReports,
+      isLoadingFollowers,
+      isLoadingFollows,
       isLoadingNextFollowers,
-      readNextFollowers
+      isLoadingNextFollows,
+      isLoadingReportDelete,
+      isLoadingReports,
+      isLoadingUser,
+      pushToUserEdit,
+      readNextFollowers,
+      readNextFollows,
+      reports,
+      setUp,
+      showDeleteDialog,
+      showFollowersDialog,
+      showFollowsDialog,
+      tabs,
+      targetReport,
+      trushReport,
+      updateFollow,
+      user
     } = useShow()
     const { loginUser } = useLoginUser()
-    const { openSnackbar } = useSnackbar()
 
-    const setUpPage = async () => {
-      const userId = route.value.params.id
-      const result = await setUp(userId)
-      if (result === 'failure') {
-        openSnackbar(result, '選手採点の取得に失敗しました。')
-      }
-    }
-    setUpPage()
-
-    watch(tab, async () => {
-      const result = await changeReports()
-      if (result === 'failure') {
-        openSnackbar(result, '選手採点の取得に失敗しました。')
-      }
-    })
-
-    const pushToUserEdit = (): void => {
-      router.push('/users/edit')
-    }
-
-    const deleteReport = async (): Promise<void> => {
-      const result = await del()
-      const message = result === 'success' ? '削除に成功しました。' : '削除に失敗しました。'
-      openSnackbar(result, message)
-    }
-
-    /* follows */
-    const showFollowsDialog = async (): Promise<void> => {
-      if (user.value?.followCount === 0) return
-      const result = await readFirstFollows()
-      if (result === 'failure') openSnackbar(result, 'フォローの取得に失敗しました。')
-    }
-    const clickNextFollows = async (): Promise<void> => {
-      const result = await readNextFollows()
-      if (result === 'failure') openSnackbar(result, 'フォローの取得に失敗しました。')
-    }
-    const clickFollow = async (userId: string, type: 'profile' | 'dialog'): Promise<void> => {
-      const result = await updateFollow(userId, type)
-      if (result === 'failure') openSnackbar(result, '通信エラーが発生しました。')
-    }
+    setUp()
 
     return {
-      showFollowsDialog,
-      user,
-      reports,
-      isLoadingUser,
-      isLoadingReports,
-      isDialogDelete,
-      targetReport,
-      showDeleteDialog,
-      hideDeleteDialog,
-      isLoadingDel,
-      loginUser,
-      pushToUserEdit,
-      deleteReport,
-      tabs,
-      isLoadingChangeReports,
       changeTab,
-      follows,
-      isDialogFollow,
-      isLoadingFollow,
-      hideFollowsDialog,
-      clickNextFollows,
-      isLoadingNextFollows,
-      hasNextFollows,
-      clickFollow,
       follow,
       followers,
+      follows,
       hasNextFollowers,
-      isDialogFollowers,
-      isLoadingFollowers,
-      showFollowersDialog,
+      hasNextFollows,
+      hideDeleteDialog,
       hideFollowersDialog,
+      hideFollowsDialog,
+      isDialogDelete,
+      isDialogFollowers,
+      isDialogFollows,
+      isLoadingChangeReports,
+      isLoadingFollowers,
+      isLoadingFollows,
       isLoadingNextFollowers,
-      readNextFollowers
+      isLoadingNextFollows,
+      isLoadingReportDelete,
+      isLoadingReports,
+      isLoadingUser,
+      loginUser,
+      pushToUserEdit,
+      readNextFollowers,
+      readNextFollows,
+      reports,
+      showDeleteDialog,
+      showFollowersDialog,
+      showFollowsDialog,
+      tabs,
+      targetReport,
+      trushReport,
+      updateFollow,
+      user
     }
   }
 })

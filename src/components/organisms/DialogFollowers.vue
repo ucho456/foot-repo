@@ -63,11 +63,11 @@ export default defineComponent({
   },
 
   props: {
+    follwers: { type: Array as () => Follower[], default: () => [] },
     hasNext: { type: Boolean, default: false },
     isDialog: { type: Boolean, default: false },
     isLoading: { type: Boolean, default: false },
     isLoadingButton: { type: Boolean, default: false },
-    follwers: { type: Array as () => Follower[], default: () => [] },
     uid: { type: String, required: false, default: null }
   },
 
