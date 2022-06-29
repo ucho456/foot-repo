@@ -2,7 +2,7 @@
   <v-container>
     <v-card outlined>
       <ContainerLoading :is-loading="isLoadingUser" />
-      <v-container v-if="user">
+      <v-container v-if="!isLoadingUser && user">
         <v-row>
           <ColUserImageName
             :cols="7"
@@ -15,7 +15,7 @@
             <ButtonOutlined :text="'編集'" @click="pushToUserEdit" />
           </v-col>
           <v-col v-else cols="5" sm="3">
-            <ButtonOutlined :text="'フォロー'" />
+            <ButtonFollow :follow="follow" :user-id="user.id" />
           </v-col>
           <v-col cols="12" class="mt-n4">マイチーム：{{ user.team.name }}</v-col>
           <v-col cols="12" class="greet mt-n4">{{ user.greet }}</v-col>
@@ -85,6 +85,7 @@ import useLoginUser from '@/utils/useLoginUser'
 import useSnackbar from '@/utils/useSnackbar'
 import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 import ButtonOutlined from '@/components/molecules/ButtonOutlined.vue'
+import ButtonFollow from '@/components/molecules/ButtonFollow.vue'
 import ColUserImageName from '@/components/organisms/ColUserImageName.vue'
 import ContainerReportTable from '@/components/organisms/ContainerReportTable.vue'
 import DialogDelete from '@/components/molecules/DialogDelete.vue'
@@ -96,6 +97,7 @@ export default defineComponent({
   components: {
     ContainerLoading,
     ButtonOutlined,
+    ButtonFollow,
     ColUserImageName,
     ContainerReportTable,
     DialogDelete,
@@ -130,7 +132,8 @@ export default defineComponent({
       isLoadingNextFollows,
       readNextFollows,
       hasNextFollows,
-      updateFollow
+      updateFollow,
+      follow
     } = useShow()
     const { loginUser } = useLoginUser()
     const { openSnackbar } = useSnackbar()
@@ -200,7 +203,8 @@ export default defineComponent({
       clickNextFollows,
       isLoadingNextFollows,
       hasNextFollows,
-      clickFollow
+      clickFollow,
+      follow
     }
   }
 })

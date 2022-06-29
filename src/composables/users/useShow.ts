@@ -1,7 +1,7 @@
 import { ref, Ref } from '@nuxtjs/composition-api'
 import type { QueryDocumentSnapshot } from 'firebase/firestore'
 import { fetchUserLikeReports, fetchUserReports, deleteReport } from '@/db/reports'
-import { fetchFollows, fetchUser, putFollow } from '@/db/users'
+import { fetchFollow, fetchFollows, fetchUser, putFollow } from '@/db/users'
 import useLoginUser from '@/utils/useLoginUser'
 
 const useShow = () => {
@@ -11,10 +11,14 @@ const useShow = () => {
 
   const isLoadingUser = ref(false)
   const isLoadingReports = ref(false)
+  const follow = ref(false)
   const setUp = async (userId: string): Promise<'success' | 'failure'> => {
     try {
       isLoadingUser.value = true
       user.value = await fetchUser(userId)
+      if (loginUser.value && user.value) {
+        follow.value = await fetchFollow(loginUser.value.uid, user.value.id)
+      }
       isLoadingUser.value = false
 
       isLoadingReports.value = true
@@ -178,7 +182,8 @@ const useShow = () => {
     readNextFollows,
     isLoadingNextFollows,
     hasNextFollows,
-    updateFollow
+    updateFollow,
+    follow
   }
 }
 
