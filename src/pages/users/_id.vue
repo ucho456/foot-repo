@@ -59,11 +59,24 @@
         v-if="!isLoadingReports"
         :action-flg="loginUser && loginUser.uid === user.id"
         :is-loading="isLoadingChangeReports"
-        :reports="reports"
+        :reports="tab === 'Mine' ? myReports : likeReports"
         :tabs="tabs"
         @change-tab="changeTab"
         @delete="showDeleteDialog"
       />
+      <v-container>
+        <v-row justify="center">
+          <v-col cols="10">
+            <ButtonSubmit
+              :disabled="tab === 'Mine' ? !hasNextMyReports : !hasNextLikeReports"
+              :icon="'mdi-page-next'"
+              :loading="isLoadingNextReports"
+              :text="'もっと読み込む'"
+              @click="readNextReports"
+            />
+          </v-col>
+        </v-row>
+      </v-container>
     </v-card>
     <DialogDelete
       :is-dialog="isDialogDelete"
@@ -103,6 +116,7 @@ import useShow from '@/composables/users/useShow'
 import useLoginUser from '@/utils/useLoginUser'
 import ButtonFollow from '@/components/molecules/ButtonFollow.vue'
 import ButtonOutlined from '@/components/molecules/ButtonOutlined.vue'
+import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
 import ColUserImageName from '@/components/organisms/ColUserImageName.vue'
 import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 import ContainerReportTable from '@/components/organisms/ContainerReportTable.vue'
@@ -115,6 +129,7 @@ export default defineComponent({
   components: {
     ButtonFollow,
     ButtonOutlined,
+    ButtonSubmit,
     ColUserImageName,
     ContainerLoading,
     ContainerReportTable,
@@ -130,6 +145,8 @@ export default defineComponent({
       follows,
       hasNextFollowers,
       hasNextFollows,
+      hasNextLikeReports,
+      hasNextMyReports,
       hideDeleteDialog,
       hideFollowersDialog,
       hideFollowsDialog,
@@ -141,17 +158,21 @@ export default defineComponent({
       isLoadingFollows,
       isLoadingNextFollowers,
       isLoadingNextFollows,
+      isLoadingNextReports,
       isLoadingReportDelete,
       isLoadingReports,
       isLoadingUser,
+      likeReports,
+      myReports,
       pushToUserEdit,
       readNextFollowers,
       readNextFollows,
-      reports,
+      readNextReports,
       setUp,
       showDeleteDialog,
       showFollowersDialog,
       showFollowsDialog,
+      tab,
       tabs,
       targetReport,
       trushReport,
@@ -169,6 +190,8 @@ export default defineComponent({
       follows,
       hasNextFollowers,
       hasNextFollows,
+      hasNextLikeReports,
+      hasNextMyReports,
       hideDeleteDialog,
       hideFollowersDialog,
       hideFollowsDialog,
@@ -180,17 +203,22 @@ export default defineComponent({
       isLoadingFollows,
       isLoadingNextFollowers,
       isLoadingNextFollows,
+      isLoadingNextReports,
       isLoadingReportDelete,
       isLoadingReports,
       isLoadingUser,
+      likeReports,
       loginUser,
+      myReports,
       pushToUserEdit,
       readNextFollowers,
       readNextFollows,
-      reports,
+      readNextReports,
+      setUp,
       showDeleteDialog,
       showFollowersDialog,
       showFollowsDialog,
+      tab,
       tabs,
       targetReport,
       trushReport,

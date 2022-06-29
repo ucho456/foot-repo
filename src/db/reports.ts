@@ -30,6 +30,7 @@ import {
   userConverter
 } from '@/utils/converters'
 import { makeSearchOption } from '@/utils/searchOption'
+const perPage = 10
 
 export const createReport = async (
   loginUser: LoginUser | null,
@@ -118,7 +119,6 @@ export const createReport = async (
   return rId
 }
 
-const perPage = 10
 export const toStoreFirstReports = async (reports: {
   data: Report[]
   lastVisible: QueryDocumentSnapshot<Report> | null
@@ -289,40 +289,64 @@ export const fetchSameMatchReports = async (
   return reports
 }
 
-export const fetchUserReports = async (userId: string): Promise<Report[]> => {
+export const fetchUserReports = async (
+  userId: string,
+  lastVisible: QueryDocumentSnapshot<Report> | null
+): Promise<{
+  resReports: Report[]
+  resLastVisible: QueryDocumentSnapshot<Report>
+}> => {
   const db = getFirestore()
   const rRef = collection(db, 'reports').withConverter(reportConverter)
   const uRef = doc(db, 'users', userId)
-  const q = query(rRef, where('user.ref', '==', uRef), orderBy('createdAt', 'desc'))
+  const q = lastVisible
+    ? query(
+        rRef,
+        where('user.ref', '==', uRef),
+        orderBy('createdAt', 'desc'),
+        startAfter(lastVisible),
+        limit(perPage)
+      )
+    : query(rRef, where('user.ref', '==', uRef), orderBy('createdAt', 'desc'), limit(perPage))
   const rShapshot = await getDocs(q)
-  const reports: Report[] = []
+  const resReports: Report[] = []
   rShapshot.forEach((doc) => {
     if (doc.exists()) {
-      reports.push(doc.data())
+      resReports.push(doc.data())
     }
   })
-  return reports
+  const resLastVisible = rShapshot.docs[rShapshot.docs.length - 1]
+  return { resReports, resLastVisible }
 }
 
-export const fetchUserLikeReports = async (userId: string): Promise<Report[]> => {
+export const fetchUserLikeReports = async (
+  userId: string,
+  lastVisible: QueryDocumentSnapshot<Like> | null
+): Promise<{
+  resReports: Report[]
+  resLastVisible: QueryDocumentSnapshot<Like>
+}> => {
   const db = getFirestore()
   const lRef = collection(db, 'users', userId, 'likes').withConverter(likeConverter)
-  const lQuery = query(lRef, orderBy('createdAt', 'desc'), limit(10))
-  const lShapshot = await getDocs(lQuery)
+  const q = lastVisible
+    ? query(lRef, orderBy('createdAt', 'desc'), startAfter(lastVisible), limit(perPage))
+    : query(lRef, orderBy('createdAt', 'desc'), limit(perPage))
+  const lShapshot = await getDocs(q)
   const reportIds: string[] = []
   lShapshot.forEach((doc) => {
     if (doc.exists()) reportIds.push(doc.data().report.id)
   })
-  const reports: Report[] = []
+  const resLastVisible = lShapshot.docs[lShapshot.docs.length - 1]
+  const resReports: Report[] = []
   if (reportIds.length > 0) {
     const rRef = collection(db, 'reports').withConverter(reportConverter)
-    const rQuery = query(rRef, where(documentId(), 'in', reportIds))
-    const rSnapshot = await getDocs(rQuery)
+    const q = query(rRef, where(documentId(), 'in', reportIds))
+    const rSnapshot = await getDocs(q)
     rSnapshot.forEach((doc) => {
-      if (doc.exists()) reports.push(doc.data())
+      if (doc.exists()) resReports.push(doc.data())
     })
   }
-  return reports
+  return { resReports, resLastVisible }
 }
 
 export const subscribeComments = async (
