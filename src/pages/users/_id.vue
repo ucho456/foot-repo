@@ -56,7 +56,7 @@
           :is-loading="isLoadingChangeReports"
           :reports="reports"
           :tabs="tabs"
-          @delete="showDeletePopup"
+          @delete="showDeleteDialog"
           @change-tab="changeTab"
         />
       </client-only>
@@ -65,7 +65,7 @@
       :is-dialog="isDialogDelete"
       :is-loading="isLoadingDel"
       :report="targetReport"
-      @close="hideDeletePopup"
+      @close="hideDeleteDialog"
       @delete="deleteReport"
     />
     <DialogFollowers
@@ -75,7 +75,7 @@
       :is-loading-button="isLoadingNextFollows"
       :follwers="follows"
       :uid="loginUser ? loginUser.uid : null"
-      @close="hideFollowsPopup"
+      @close="hideFollowsDialog"
       @follow="(userId) => clickFollow(userId, 'dialog')"
       @next="clickNextFollows"
     />
@@ -119,8 +119,8 @@ export default defineComponent({
       setUp,
       isDialogDelete,
       targetReport,
-      showDeletePopup,
-      hideDeletePopup,
+      showDeleteDialog,
+      hideDeleteDialog,
       isLoadingDel,
       del,
       tabs,
@@ -132,7 +132,7 @@ export default defineComponent({
       isDialogFollow,
       isLoadingFollow,
       readFirstFollows,
-      hideFollowsPopup,
+      hideFollowsDialog,
       isLoadingNextFollows,
       readNextFollows,
       hasNextFollows,
@@ -191,8 +191,8 @@ export default defineComponent({
       isLoadingReports,
       isDialogDelete,
       targetReport,
-      showDeletePopup,
-      hideDeletePopup,
+      showDeleteDialog,
+      hideDeleteDialog,
       isLoadingDel,
       loginUser,
       pushToUserEdit,
@@ -203,7 +203,7 @@ export default defineComponent({
       follows,
       isDialogFollow,
       isLoadingFollow,
-      hideFollowsPopup,
+      hideFollowsDialog,
       clickNextFollows,
       isLoadingNextFollows,
       hasNextFollows,

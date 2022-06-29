@@ -59,11 +59,11 @@ const useShow = () => {
 
   const isDialogDelete = ref(false)
   const targetReport: Ref<Report | null> = ref(null)
-  const showDeletePopup = (report: Report): void => {
+  const showDeleteDialog = (report: Report): void => {
     isDialogDelete.value = true
     targetReport.value = report
   }
-  const hideDeletePopup = (): void => {
+  const hideDeleteDialog = (): void => {
     isDialogDelete.value = false
     targetReport.value = null
   }
@@ -78,7 +78,7 @@ const useShow = () => {
       console.log(error)
       return 'failure'
     } finally {
-      hideDeletePopup()
+      hideDeleteDialog()
       isLoadingDel.value = false
     }
   }
@@ -92,7 +92,7 @@ const useShow = () => {
   const showFollowsDialog = (): void => {
     isDialogFollow.value = true
   }
-  const hideFollowsPopup = (): void => {
+  const hideFollowsDialog = (): void => {
     isDialogFollow.value = false
   }
   const readFirstFollows = async (): Promise<'success' | 'failure'> => {
@@ -172,8 +172,8 @@ const useShow = () => {
     setUp,
     isDialogDelete,
     targetReport,
-    showDeletePopup,
-    hideDeletePopup,
+    showDeleteDialog,
+    hideDeleteDialog,
     isLoadingDel,
     del,
     tabs,
@@ -185,7 +185,7 @@ const useShow = () => {
     isDialogFollow,
     isLoadingFollow,
     readFirstFollows,
-    hideFollowsPopup,
+    hideFollowsDialog,
     readNextFollows,
     isLoadingNextFollows,
     hasNextFollows,
