@@ -93,6 +93,7 @@
             <ButtonFollow
               v-if="loginUser && loginUser.uid !== user.id"
               :follow="follow"
+              :is-loading="isLoadingUpdateFollow"
               :user-id="user.id"
               @click="clickFollow"
             />
@@ -213,7 +214,8 @@ export default defineComponent({
       isDialog,
       create,
       updateFollow,
-      follow
+      follow,
+      isLoadingUpdateFollow
     } = useShow()
     const { loginUser } = useLoginUser()
     const { openSnackbar } = useSnackbar()
@@ -291,7 +293,8 @@ export default defineComponent({
       loginUser,
       confirmLogin,
       submitCreate,
-      follow
+      follow,
+      isLoadingUpdateFollow
     }
   }
 })

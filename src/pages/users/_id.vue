@@ -17,6 +17,7 @@
           <v-col v-else cols="5" sm="3">
             <ButtonFollow
               :follow="follow"
+              :is-loading="isLoadingUpdateFollow"
               :user-id="user.id"
               @click="(userId) => updateFollow(userId, 'profile')"
             />
@@ -91,6 +92,7 @@
       :is-dialog="isDialogFollows"
       :is-loading="isLoadingFollows"
       :is-loading-button="isLoadingNextFollows"
+      :is-loading-update-follow="isLoadingUpdateFollow"
       :uid="loginUser ? loginUser.uid : null"
       @close="hideFollowsDialog"
       @follow="(userId) => updateFollow(userId, 'dialog')"
@@ -102,6 +104,7 @@
       :is-dialog="isDialogFollowers"
       :is-loading="isLoadingFollowers"
       :is-loading-button="isLoadingNextFollowers"
+      :is-loading-update-follow="isLoadingUpdateFollow"
       :uid="loginUser ? loginUser.uid : null"
       @close="hideFollowersDialog"
       @follow="(userId) => updateFollow(userId, 'dialog')"
@@ -161,6 +164,7 @@ export default defineComponent({
       isLoadingNextReports,
       isLoadingReportDelete,
       isLoadingReports,
+      isLoadingUpdateFollow,
       isLoadingUser,
       likeReports,
       myReports,
@@ -206,6 +210,7 @@ export default defineComponent({
       isLoadingNextReports,
       isLoadingReportDelete,
       isLoadingReports,
+      isLoadingUpdateFollow,
       isLoadingUser,
       likeReports,
       loginUser,

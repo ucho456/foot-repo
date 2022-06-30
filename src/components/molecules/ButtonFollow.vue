@@ -2,6 +2,7 @@
   <BaseButton
     :block-flg="true"
     :color="'primary'"
+    :loading="isLoading"
     :outlined-flg="!follow"
     :text="text"
     :white-text-flg="follow"
@@ -22,6 +23,7 @@ export default defineComponent({
 
   props: {
     follow: { type: Boolean, default: false },
+    isLoading: { type: Boolean, default: false },
     userId: { type: String, default: '' }
   },
 

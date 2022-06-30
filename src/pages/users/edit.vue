@@ -120,7 +120,7 @@ export default defineComponent({
     const submit = async (): Promise<void> => {
       const result = await update()
       const message =
-        result === 'success' ? 'プロフィールを編集しました。' : 'プロフィールの編集に失敗しました。'
+        result === 'success' ? 'プロフィールを更新しました。' : 'プロフィールの更新に失敗しました。'
       openSnackbar(result, message)
       if (result === 'success') {
         router.push(`/users/${loginUser.value?.uid!}`)

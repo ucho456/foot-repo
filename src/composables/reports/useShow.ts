@@ -103,18 +103,19 @@ const useShow = () => {
     }
   }
 
+  const isLoadingUpdateFollow = ref(false)
   const updateFollow = async (userId: string): Promise<'success' | 'failure' | undefined> => {
     try {
-      if (blockDoubleClick.value || !loginUser.value) return
-      blockDoubleClick.value = true
-      follow.value = !follow.value
+      if (!loginUser.value) return
+      isLoadingUpdateFollow.value = true
       await putFollow(loginUser.value.uid, userId)
+      follow.value = !follow.value
       return 'success'
     } catch (error) {
       console.log(error)
       return 'failure'
     } finally {
-      blockDoubleClick.value = false
+      isLoadingUpdateFollow.value = false
     }
   }
 
@@ -161,7 +162,8 @@ const useShow = () => {
     isDialog,
     create,
     updateFollow,
-    follow
+    follow,
+    isLoadingUpdateFollow
   }
 }
 

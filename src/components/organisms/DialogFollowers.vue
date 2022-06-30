@@ -18,6 +18,7 @@
                 <v-col v-if="item.follow !== undefined && item.user.id !== uid" cols="5">
                   <ButtonFollow
                     :follow="item.follow"
+                    :is-loading="isLoadingUpdateFollow"
                     :user-id="item.user.id"
                     @click="handleFollow"
                   />
@@ -68,6 +69,7 @@ export default defineComponent({
     isDialog: { type: Boolean, default: false },
     isLoading: { type: Boolean, default: false },
     isLoadingButton: { type: Boolean, default: false },
+    isLoadingUpdateFollow: { type: Boolean, default: false },
     uid: { type: String, required: false, default: null }
   },
 
