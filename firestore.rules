@@ -290,10 +290,16 @@ service cloud.firestore {
       && 'followerCount' in user && user.followerCount is int;
     }
 
-    function isValedLike(like) {
+    function isValidLike(like) {
       return like.size() == 2
       && 'report' in like && like.report is map
       && 'createdAt' in like && like.createdAt is timestamp;
+    }
+
+    function isValidFollower(follower) {
+      return follower.size() == 2
+      && 'user' in follower && follower.user is map
+      && 'createdAt' in follower && follower.createdAt is timestamp;
     }
 
     match /users/{userId} {
@@ -310,7 +316,9 @@ service cloud.firestore {
       && newData().followCount == 0
       && newData().followerCount == 0;
 
-      allow update: if onlyMe(userId)
+      allow update: if
+      // normal rule
+      (onlyMe(userId)
       && isValidUser(newData())
       && newData().name == oldData().name
       && newData().imageUrl == oldData().imageUrl
@@ -320,12 +328,25 @@ service cloud.firestore {
       && isValidString(newData().team.name, 0, 100)
       && newData().reportCount >= 0
       && newData().followCount >= 0
-      && newData().followerCount >= 0;
+      && newData().followerCount >= 0)
+      ||
+      // follow rule
+      (request.auth != null
+      && isValidUser(newData())
+      && newData().name == oldData().name
+      && newData().imageUrl == oldData().imageUrl
+      && newData().greet == oldData().greet
+      && newData().competitionId == oldData().competitionId
+      && newData().team.id == oldData().team.id
+      && newData().team.name == oldData().team.name
+      && newData().reportCount == oldData().reportCount
+      && newData().followCount >= 0
+      && newData().followerCount >= 0);
 
       match /likes/{likeId} {
         allow read;
         allow create: if onlyMe(userId)
-        && isValedLike(newData())
+        && isValidLike(newData())
         && isValidString(newData().report.id, 20, 20)
         && exists(newData().report.ref);
         allow delete: if request.auth != null
@@ -333,9 +354,24 @@ service cloud.firestore {
       }
       match /follows/{followId} {
         allow read;
+        allow create: if onlyMe(userId)
+        && isValidFollower(newData())
+        && isValidString(newData().user.id, 1, 100)
+        && exists(newData().user.ref)
+        && isValidString(newData().user.name, 1, 20)
+        && isValidImage(newData().user.imageUrl);
+        allow delete: if onlyMe(userId);
       }
       match /followers/{followerId} {
         allow read;
+        allow create: if request.auth != null
+        && isValidFollower(newData())
+        && isValidString(newData().user.id, 1, 100)
+        && exists(newData().user.ref)
+        && isValidString(newData().user.name, 1, 20)
+        && isValidImage(newData().user.imageUrl);
+        allow delete: if request.auth != null
+        && request.auth.uid == oldData().user.id;
       }
     }
   }

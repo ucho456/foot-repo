@@ -5,16 +5,18 @@ import {
   getDoc,
   getDocs,
   getFirestore,
+  increment,
   limit,
   orderBy,
   query,
+  serverTimestamp,
   setDoc,
   startAfter,
   updateDoc,
-  where
+  where,
+  writeBatch
 } from 'firebase/firestore'
 import type { QueryDocumentSnapshot } from 'firebase/firestore'
-import { getFunctions, httpsCallable } from 'firebase/functions'
 import { followerConverter, likeConverter, userConverter } from '@/utils/converters'
 
 export const createUser = async (inputUser: InputUser): Promise<void> => {
@@ -67,10 +69,39 @@ export const fetchFollow = async (uid: string, userId: string): Promise<boolean>
   return uSnapshot.exists()
 }
 
-export const putFollow = async (userId: string): Promise<void> => {
-  const functions = getFunctions(undefined, 'asia-northeast1')
-  const updateFollow = httpsCallable(functions, 'updateFollow')
-  await updateFollow({ userId })
+export const putFollow = async (uid: string, userId: string): Promise<void> => {
+  const db = getFirestore()
+  const meRef = doc(db, 'users', uid).withConverter(userConverter)
+  const meFollowRef = doc(db, 'users', uid, 'follows', userId).withConverter(followerConverter)
+  const youRef = doc(db, 'users', userId).withConverter(userConverter)
+  const youFollowerRef = doc(db, 'users', userId, 'followers', uid).withConverter(followerConverter)
+  const batch = writeBatch(db)
+  const meSnapshot = await getDoc(meRef)
+  const youSnapshot = await getDoc(youRef)
+  if (!meSnapshot.exists() || !youSnapshot.exists()) throw new Error('Not Found')
+  const followSnapshot = await getDoc(meFollowRef)
+  if (followSnapshot.exists()) {
+    batch.update(meRef, { [`followCount`]: increment(-1) })
+    batch.delete(meFollowRef)
+    batch.update(youRef, { [`followerCount`]: increment(-1) })
+    batch.delete(youFollowerRef)
+  } else {
+    batch.update(meRef, { [`followCount`]: increment(1) })
+    const you = youSnapshot.data()
+    batch.set(meFollowRef, {
+      id: userId,
+      user: { id: userId, ref: youRef, name: you.name, imageUrl: you.imageUrl },
+      createdAt: serverTimestamp()
+    })
+    batch.update(youRef, { [`followerCount`]: increment(1) })
+    const me = meSnapshot.data()
+    batch.set(youFollowerRef, {
+      id: uid,
+      user: { id: uid, ref: meRef, name: me.name, imageUrl: me.imageUrl },
+      createdAt: serverTimestamp()
+    })
+  }
+  await batch.commit()
 }
 
 const perPage = 10

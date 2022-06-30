@@ -153,7 +153,7 @@ const useShow = () => {
   const blockDoubleClick = ref(false)
   const updateFollow = async (userId: string, type: 'profile' | 'dialog'): Promise<void> => {
     try {
-      if (blockDoubleClick.value) return
+      if (blockDoubleClick.value || !loginUser.value) return
       blockDoubleClick.value = true
       /** adjust count */
       if (type === 'dialog') {
@@ -179,7 +179,7 @@ const useShow = () => {
         follow.value = !follow.value
         if (user.value) user.value.followerCount += follow.value ? 1 : -1
       }
-      await putFollow(userId)
+      await putFollow(loginUser.value.uid, userId)
     } catch (error) {
       console.log(error)
       openSnackbar('failure', 'フォローの更新に失敗しました。')

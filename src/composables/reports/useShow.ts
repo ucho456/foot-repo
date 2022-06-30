@@ -105,10 +105,10 @@ const useShow = () => {
 
   const updateFollow = async (userId: string): Promise<'success' | 'failure' | undefined> => {
     try {
-      if (blockDoubleClick.value) return
+      if (blockDoubleClick.value || !loginUser.value) return
       blockDoubleClick.value = true
       follow.value = !follow.value
-      await putFollow(userId)
+      await putFollow(loginUser.value.uid, userId)
       return 'success'
     } catch (error) {
       console.log(error)
