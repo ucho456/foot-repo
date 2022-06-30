@@ -46,7 +46,7 @@
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item-action v-if="actionFlg">
+        <v-list-item-action v-if="actionFlg && report.user.id === uid">
           <v-btn icon>
             <v-icon color="primary" @click="pushToReportEdit(report.id)">mdi-pencil</v-icon>
           </v-btn>
@@ -76,7 +76,8 @@ export default defineComponent({
     isLoading: { type: Boolean, default: false },
     reports: { type: Array as () => Report[], default: () => [] },
     searchButtonFlg: { type: Boolean, default: false },
-    tabs: { type: Array as () => String[], default: () => [] }
+    tabs: { type: Array as () => String[], default: () => [] },
+    uid: { type: String, required: false, default: null }
   },
 
   setup(_, ctx) {

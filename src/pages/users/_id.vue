@@ -62,6 +62,7 @@
         :is-loading="isLoadingChangeReports"
         :reports="tab === 'Mine' ? myReports : likeReports"
         :tabs="tabs"
+        :uid="loginUser.uid"
         @change-tab="changeTab"
         @delete="showDeleteDialog"
       />
