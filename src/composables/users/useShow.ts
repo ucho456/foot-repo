@@ -1,10 +1,66 @@
-import { ref, useRoute, useRouter, watch } from '@nuxtjs/composition-api'
+import { ref, Ref, useRoute, useRouter, watch } from '@nuxtjs/composition-api'
 import type { QueryDocumentSnapshot } from 'firebase/firestore'
 import { deleteReport, fetchUserLikeReports, fetchUserReports } from '@/db/reports'
 import { fetchFollow, fetchFollowers, fetchFollows, fetchUser, putFollow } from '@/db/users'
 import useLoginUser from '@/utils/useLoginUser'
 import useSnackbar from '@/utils/useSnackbar'
 const perPage = 10
+
+/** common functions */
+const readMyReports = async (
+  userId: string,
+  lastVisibleMyReport: Ref<QueryDocumentSnapshot<Report> | null>,
+  hasNextMyReports: Ref<boolean>,
+  myReports: Ref<Report[]>
+): Promise<void> => {
+  const { resReports, resLastVisible } = await fetchUserReports(userId, lastVisibleMyReport.value)
+  if (resReports.length < perPage) hasNextMyReports.value = false
+  myReports.value = myReports.value.concat(resReports)
+  lastVisibleMyReport.value = resLastVisible
+}
+const readFollows = async (
+  userId: string,
+  lastVisibleFollow: Ref<QueryDocumentSnapshot<Follower> | null>,
+  loginUser: LoginUser | null,
+  hasNextFollows: Ref<boolean>,
+  follows: Ref<Follower[]>
+): Promise<void> => {
+  const { resFollows, resLastVisible } = await fetchFollows(
+    userId,
+    lastVisibleFollow.value,
+    loginUser
+  )
+  if (resFollows.length < perPage) hasNextFollows.value = false
+  follows.value = follows.value.concat(resFollows)
+  lastVisibleFollow.value = resLastVisible
+}
+const readFollowers = async (
+  userId: string,
+  lastVisibleFollower: Ref<QueryDocumentSnapshot<Follower> | null>,
+  loginUser: LoginUser | null,
+  hasNextFollowers: Ref<boolean>,
+  followers: Ref<Follower[]>
+): Promise<void> => {
+  const { resFollowers, resLastVisible } = await fetchFollowers(
+    userId,
+    lastVisibleFollower.value,
+    loginUser
+  )
+  if (resFollowers.length < perPage) hasNextFollowers.value = false
+  followers.value = followers.value.concat(resFollowers)
+  lastVisibleFollower.value = resLastVisible
+}
+const readLikeReports = async (
+  userId: string,
+  lastVisibleLike: Ref<QueryDocumentSnapshot<Like> | null>,
+  hasNextLikeReports: Ref<boolean>,
+  likeReports: Ref<Report[]>
+): Promise<void> => {
+  const { resReports, resLastVisible } = await fetchUserLikeReports(userId, lastVisibleLike.value)
+  if (resReports.length < perPage) hasNextLikeReports.value = false
+  likeReports.value = likeReports.value.concat(resReports)
+  lastVisibleLike.value = resLastVisible
+}
 
 const useShow = () => {
   const route = useRoute()
@@ -20,15 +76,6 @@ const useShow = () => {
   const hasNextMyReports = ref(true)
   const isLoadingUser = ref(false)
   const isLoadingReports = ref(false)
-  const readMyReports = async (): Promise<void> => {
-    const { resReports, resLastVisible } = await fetchUserReports(
-      user.value?.id!,
-      lastVisibleMyReport.value
-    )
-    if (resReports.length < perPage) hasNextMyReports.value = false
-    myReports.value = myReports.value.concat(resReports)
-    lastVisibleMyReport.value = resLastVisible
-  }
   const setUp = async (): Promise<void> => {
     try {
       isLoadingUser.value = true
@@ -39,7 +86,7 @@ const useShow = () => {
       }
       isLoadingUser.value = false
       isLoadingReports.value = true
-      await readMyReports()
+      await readMyReports(userId, lastVisibleMyReport, hasNextMyReports, myReports)
       isLoadingReports.value = false
     } catch (error) {
       console.log(error)
@@ -61,23 +108,20 @@ const useShow = () => {
   const hasNextFollows = ref(true)
   const isDialogFollows = ref(false)
   const isLoadingFollows = ref(false)
-  const readFollows = async (): Promise<void> => {
-    const { resFollows, resLastVisible } = await fetchFollows(
-      user.value?.id!,
-      lastVisibleFollow.value,
-      loginUser.value
-    )
-    if (resFollows.length < perPage) hasNextFollows.value = false
-    follows.value = follows.value.concat(resFollows)
-    lastVisibleFollow.value = resLastVisible
-  }
+
   const showFollowsDialog = async (): Promise<void> => {
+    if (!user.value || user.value.followCount === 0) return
     try {
-      if (user.value?.followCount === 0) return
       isDialogFollows.value = true
       if (follows.value.length === 0) {
         isLoadingFollows.value = true
-        await readFollows()
+        await readFollows(
+          user.value.id,
+          lastVisibleFollow,
+          loginUser.value,
+          hasNextFollows,
+          follows
+        )
       }
     } catch (error) {
       console.log(error)
@@ -91,9 +135,10 @@ const useShow = () => {
   }
   const isLoadingNextFollows = ref(false)
   const readNextFollows = async (): Promise<void> => {
+    if (!user.value) return
     try {
       isLoadingNextFollows.value = true
-      await readFollows()
+      await readFollows(user.value.id, lastVisibleFollow, loginUser.value, hasNextFollows, follows)
     } catch (error) {
       console.log(error)
       openSnackbar('failure', 'フォローの取得に失敗しました。')
@@ -108,23 +153,19 @@ const useShow = () => {
   const hasNextFollowers = ref(true)
   const isDialogFollowers = ref(false)
   const isLoadingFollowers = ref(false)
-  const readFollowers = async (): Promise<void> => {
-    const { resFollowers, resLastVisible } = await fetchFollowers(
-      user.value?.id!,
-      lastVisibleFollower.value,
-      loginUser.value
-    )
-    if (resFollowers.length < perPage) hasNextFollowers.value = false
-    followers.value = followers.value.concat(resFollowers)
-    lastVisibleFollower.value = resLastVisible
-  }
   const showFollowersDialog = async (): Promise<void> => {
+    if (!user.value || user.value.followerCount === 0) return
     try {
-      if (user.value?.followerCount === 0) return
       isDialogFollowers.value = true
       if (followers.value.length === 0) {
         isLoadingFollowers.value = true
-        await readFollowers()
+        await readFollowers(
+          user.value.id,
+          lastVisibleFollower,
+          loginUser.value,
+          hasNextFollowers,
+          followers
+        )
       }
     } catch (error) {
       console.log(error)
@@ -138,9 +179,16 @@ const useShow = () => {
   }
   const isLoadingNextFollowers = ref(false)
   const readNextFollowers = async (): Promise<void> => {
+    if (!user.value) return
     try {
       isLoadingNextFollowers.value = true
-      await readFollowers()
+      await readFollowers(
+        user.value.id,
+        lastVisibleFollower,
+        loginUser.value,
+        hasNextFollowers,
+        followers
+      )
     } catch (error) {
       console.log(error)
       openSnackbar('failure', 'フォロワーの取得に失敗しました。')
@@ -198,21 +246,11 @@ const useShow = () => {
   const lastVisibleLike = ref<QueryDocumentSnapshot<Like> | null>(null)
   const hasNextLikeReports = ref(true)
   const isLoadingChangeReports = ref(false)
-  const readLikeReports = async (): Promise<void> => {
-    const { resReports, resLastVisible } = await fetchUserLikeReports(
-      user.value?.id!,
-      lastVisibleLike.value
-    )
-    if (resReports.length < perPage) hasNextLikeReports.value = false
-    likeReports.value = likeReports.value.concat(resReports)
-    lastVisibleLike.value = resLastVisible
-  }
   const readFirstLikeReports = async (): Promise<void> => {
+    if (!user.value || tab.value !== 'Like' || likeReports.value.length > 0) return
     try {
-      if (tab.value === 'Like' && likeReports.value.length === 0) {
-        isLoadingChangeReports.value = true
-        await readLikeReports()
-      }
+      isLoadingChangeReports.value = true
+      await readLikeReports(user.value.id, lastVisibleLike, hasNextLikeReports, likeReports)
     } catch (error) {
       console.log(error)
       openSnackbar('failure', '選手採点の取得に失敗しました。')
@@ -223,12 +261,13 @@ const useShow = () => {
   watch(tab, () => readFirstLikeReports())
   const isLoadingNextReports = ref(false)
   const readNextReports = async (): Promise<void> => {
+    if (!user.value) return
     try {
       isLoadingNextReports.value = true
       if (tab.value === 'Mine') {
-        await readMyReports()
+        await readMyReports(user.value.id, lastVisibleMyReport, hasNextMyReports, myReports)
       } else {
-        await readLikeReports()
+        await readLikeReports(user.value.id, lastVisibleLike, hasNextLikeReports, likeReports)
       }
     } catch (error) {
       console.log(error)
@@ -251,10 +290,12 @@ const useShow = () => {
   }
   const isLoadingReportDelete = ref(false)
   const trushReport = async (): Promise<void> => {
+    if (!targetReport.value || !loginUser.value) return
     try {
       isLoadingReportDelete.value = true
-      await deleteReport(targetReport.value?.id!, loginUser.value?.uid!)
-      myReports.value = myReports.value.filter((r) => r.id !== targetReport.value?.id!)
+      const reportId = targetReport.value.id
+      await deleteReport(reportId, loginUser.value.uid)
+      myReports.value = myReports.value.filter((r) => r.id !== reportId)
       if (user.value) user.value.reportCount -= 1
       openSnackbar('success', '削除に成功しました。')
     } catch (error) {
