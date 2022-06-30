@@ -140,7 +140,9 @@ service cloud.firestore {
       && isValidString(newData().summary, 0, 300)
       && isValidInt(newData().likeCount, 0, 0);
 
-      allow update: if request.auth != null
+      allow update: if
+      // normal rule
+      (request.auth != null
       && userRef(request.auth.uid) == resource.data.user.ref
       && isValidReport(newData())
       && isValidString(newData().title, 1, 100)
@@ -168,7 +170,37 @@ service cloud.firestore {
       && isValidSelectTeam(newData().selectTeam)
       && isValidString(newData().momId, 0, 20)
       && isValidString(newData().summary, 0, 300)
-      && newData().likeCount >= 0;
+      && newData().likeCount >= 0)
+      ||
+      // like rule
+      (request.auth != null
+      && userRef(request.auth.uid) != resource.data.user.ref
+      && isValidReport(newData())
+      && newData().user.ref == oldData().user.ref
+      && newData().user.name == oldData().user.name
+      && newData().homeTeam.id == oldData().homeTeam.id
+      && newData().homeTeam.ref == oldData().homeTeam.ref
+      && newData().homeTeam.name == oldData().homeTeam.name
+      && newData().homeTeam.shortName == oldData().homeTeam.shortName
+      && newData().homeTeam.imageUrl == oldData().homeTeam.imageUrl
+      && newData().homeTeam.score == oldData().homeTeam.score
+      && newData().awayTeam.id == oldData().awayTeam.id
+      && newData().awayTeam.ref == oldData().awayTeam.ref
+      && newData().awayTeam.name == oldData().awayTeam.name
+      && newData().awayTeam.shortName == oldData().awayTeam.shortName
+      && newData().awayTeam.imageUrl == oldData().awayTeam.imageUrl
+      && newData().awayTeam.score == oldData().awayTeam.score
+      && newData().competition.id == oldData().competition.id
+      && newData().competition.ref == oldData().competition.ref
+      && newData().competition.name == oldData().competition.name
+      && newData().jstDate == oldData().jstDate
+      && newData().match.id == oldData().match.id
+      && newData().match.ref == oldData().match.ref
+      && newData().matchday == oldData().matchday
+      && newData().selectTeam == oldData().selectTeam
+      && newData().momId == oldData().momId
+      && newData().summary == oldData().summary
+      && newData().likeCount >= 0);
 
       allow delete: if request.auth != null
       && userRef(request.auth.uid) == resource.data.user.ref;
@@ -258,6 +290,12 @@ service cloud.firestore {
       && 'followerCount' in user && user.followerCount is int;
     }
 
+    function isValedLike(like) {
+      return like.size() == 2
+      && 'report' in like && like.report is map
+      && 'createdAt' in like && like.createdAt is timestamp;
+    }
+
     match /users/{userId} {
       allow read;
       allow create: if onlyMe(userId)
@@ -286,6 +324,12 @@ service cloud.firestore {
 
       match /likes/{likeId} {
         allow read;
+        allow create: if onlyMe(userId)
+        && isValedLike(newData())
+        && isValidString(newData().report.id, 20, 20)
+        && exists(newData().report.ref);
+        allow delete: if request.auth != null
+        && request.auth.uid == userId;
       }
       match /follows/{followId} {
         allow read;

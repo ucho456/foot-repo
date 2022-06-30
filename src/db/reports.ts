@@ -21,7 +21,7 @@ import {
   writeBatch
 } from 'firebase/firestore'
 import type { QueryDocumentSnapshot, Unsubscribe } from 'firebase/firestore'
-import { getFunctions, httpsCallable } from 'firebase/functions'
+// import { getFunctions, httpsCallable } from 'firebase/functions'
 import {
   commentConverter,
   likeConverter,
@@ -487,8 +487,31 @@ export const updateReport = async (inputReport: InputReport, initReport: Report)
   await batch.commit()
 }
 
-export const updateLikeCount = async (reportId: string, like: boolean) => {
-  const functions = getFunctions(undefined, 'asia-northeast1')
-  const updateLike = httpsCallable(functions, 'updateLike')
-  await updateLike({ reportId, like })
+// export const updateLikeCount = async (reportId: string, like: boolean) => {
+//   const functions = getFunctions(undefined, 'asia-northeast1')
+//   const updateLike = httpsCallable(functions, 'updateLike')
+//   await updateLike({ reportId, like })
+// }
+
+export const updateLikeCount = async (uid: string, reportId: string) => {
+  const db = getFirestore()
+  const batch = writeBatch(db)
+  const lRef = doc(db, 'users', uid, 'likes', reportId).withConverter(likeConverter)
+  const rRef = doc(db, 'reports', reportId).withConverter(reportConverter)
+  const lSnapshot = await getDoc(lRef)
+  if (lSnapshot.exists()) {
+    batch.delete(lRef)
+    batch.update(rRef, { [`likeCount`]: increment(-1) })
+  } else {
+    batch.set(lRef, {
+      id: reportId,
+      report: { id: reportId, ref: rRef },
+      createdAt: serverTimestamp()
+    })
+    batch.update(rRef, { [`likeCount`]: increment(1) })
+  }
+  await batch.commit()
+  // const functions = getFunctions(undefined, 'asia-northeast1')
+  // const updateLike = httpsCallable(functions, 'updateLike')
+  // await updateLike({ reportId, like })
 }

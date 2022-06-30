@@ -94,7 +94,7 @@ const useShow = () => {
       } else if (report.value && !like.value) {
         report.value.likeCount--
       }
-      await updateLikeCount(report.value?.id!, like.value)
+      await updateLikeCount(loginUser.value?.uid!, report.value?.id!)
       return 'success'
     } catch {
       return 'failure'

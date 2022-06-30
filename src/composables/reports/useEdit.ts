@@ -26,6 +26,7 @@ const useEdit = () => {
       isLoadingSetUp.value = true
       const { resReport, resHomeTeamReportItems, resAwayTeamReportItems } =
         await fetchReportAndItems(reportId, uid)
+      if (resReport.user.id !== uid) throw new Error('unauthorized access')
       initReport.value = resReport
       inputReport.title = resReport.title
       inputReport.selectTeam = resReport.selectTeam
