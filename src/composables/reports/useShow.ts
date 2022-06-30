@@ -83,23 +83,23 @@ const useShow = () => {
     window.open(shareUrl)
   }
 
-  const blockDoubleClick = ref(false)
+  const isLoadingUpdateLike = ref(false)
   const updateLike = async (): Promise<'success' | 'failure' | undefined> => {
+    if (!loginUser.value || !report.value) return
     try {
-      if (blockDoubleClick.value) return
-      blockDoubleClick.value = true
+      isLoadingUpdateLike.value = true
+      await updateLikeCount(loginUser.value.uid, report.value.id)
       like.value = !like.value
       if (report.value && like.value) {
         report.value.likeCount++
       } else if (report.value && !like.value) {
         report.value.likeCount--
       }
-      await updateLikeCount(loginUser.value?.uid!, report.value?.id!)
       return 'success'
     } catch {
       return 'failure'
     } finally {
-      blockDoubleClick.value = false
+      isLoadingUpdateLike.value = false
     }
   }
 
@@ -163,7 +163,8 @@ const useShow = () => {
     create,
     updateFollow,
     follow,
-    isLoadingUpdateFollow
+    isLoadingUpdateFollow,
+    isLoadingUpdateLike
   }
 }
 

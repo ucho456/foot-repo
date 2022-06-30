@@ -65,6 +65,7 @@
               icon
               :color="like ? 'orange' : 'grey'"
               :disabled="!loginUser || loginUser.uid === report.user.id"
+              :loading="isLoadingUpdateLike"
               @click="clickLike"
             >
               <v-icon>mdi-thumb-up</v-icon>
@@ -215,7 +216,8 @@ export default defineComponent({
       create,
       updateFollow,
       follow,
-      isLoadingUpdateFollow
+      isLoadingUpdateFollow,
+      isLoadingUpdateLike
     } = useShow()
     const { loginUser } = useLoginUser()
     const { openSnackbar } = useSnackbar()
@@ -294,7 +296,8 @@ export default defineComponent({
       confirmLogin,
       submitCreate,
       follow,
-      isLoadingUpdateFollow
+      isLoadingUpdateFollow,
+      isLoadingUpdateLike
     }
   }
 })
