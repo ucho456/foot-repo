@@ -200,8 +200,8 @@ const useShow = () => {
   /** follow */
   const isLoadingUpdateFollow = ref(false)
   const updateFollow = async (userId: string, type: 'profile' | 'dialog'): Promise<void> => {
+    if (!loginUser.value) return
     try {
-      if (!loginUser.value) return
       isLoadingUpdateFollow.value = true
       await putFollow(loginUser.value.uid, userId)
       /** adjust count */

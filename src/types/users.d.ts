@@ -11,6 +11,7 @@ type User = {
   reportCount: number
   followCount: number
   followerCount: number
+  follow?: boolean
 }
 
 type Like = {

@@ -183,22 +183,42 @@ export const fetchFollowers = async (
   return { resFollowers, resLastVisible }
 }
 
-export const toStoreUsers = async (users: {
-  data: User[]
-  lastVisible: QueryDocumentSnapshot<User> | null
-  searchOption: SearchOption
-}): Promise<void> => {
+export const toStoreUsers = async (
+  users: {
+    data: User[]
+    lastVisible: QueryDocumentSnapshot<User> | null
+    searchOption: SearchOption
+  },
+  loginUser: LoginUser | null
+): Promise<void> => {
   const db = getFirestore()
   const uRef = collection(db, 'users').withConverter(userConverter)
-  const teamIdOption = users.searchOption.teamId
+  const teamId = users.searchOption.teamId
     ? [where('team.id', '==', users.searchOption.teamId)]
     : []
+  const besidesMe = loginUser ? [where(documentId(), '!=', loginUser.uid)] : []
   const q = users.lastVisible
-    ? query(uRef, ...teamIdOption, startAfter(users.lastVisible), limit(perPage))
-    : query(uRef, ...teamIdOption, limit(perPage))
+    ? query(uRef, ...teamId, ...besidesMe, startAfter(users.lastVisible), limit(perPage))
+    : query(uRef, ...teamId, ...besidesMe, limit(perPage))
   const uSnapshot = await getDocs(q)
+  const userIds: string[] = []
   uSnapshot.forEach((doc) => {
-    if (doc.exists()) users.data.push(doc.data())
+    if (doc.exists()) {
+      users.data.push(doc.data())
+      userIds.push(doc.data().id)
+    }
   })
   users.lastVisible = uSnapshot.docs[uSnapshot.docs.length - 1]
+  if (loginUser && userIds.length > 0) {
+    const fRef = collection(db, 'users', loginUser.uid, 'follows').withConverter(followerConverter)
+    const q = query(fRef, where(documentId(), 'in', userIds))
+    const fSnapshot = await getDocs(q)
+    const map: Map<string, Follower> = new Map()
+    fSnapshot.forEach((doc) => {
+      if (doc.exists()) map.set(doc.data().id, doc.data())
+    })
+    users.data = users.data.map((u) => {
+      return { ...u, follow: map.has(u.id) }
+    })
+  }
 }

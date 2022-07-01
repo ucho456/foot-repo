@@ -27,7 +27,15 @@
                 </v-list-item-avatar>
               </v-list-item>
               <v-card-actions>
-                <v-btn outlined text> フォロー </v-btn>
+                <v-col cols="6">
+                  <ButtonFollow
+                    v-if="loginUser && user.follow !== undefined"
+                    :follow="user.follow"
+                    :is-loading="isLoadingUpdateFollow"
+                    :user-id="user.id"
+                    @click="updateFollow"
+                  />
+                </v-col>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -40,24 +48,28 @@
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
 import useIndex from '@/composables/users/useIndex'
+import useLoginUser from '@/utils/useLoginUser'
 import useStore from '@/utils/useStore'
+import ButtonFollow from '@/components/molecules/ButtonFollow.vue'
 import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 
 export default defineComponent({
   name: 'Users',
 
   components: {
+    ButtonFollow,
     ContainerLoading
   },
 
   setup() {
-    const { isLoadingSetUp, setUp } = useIndex()
+    const { isLoadingSetUp, isLoadingUpdateFollow, setUp, updateFollow } = useIndex()
+    const { loginUser } = useLoginUser()
     const { users } = useStore()
     const noAvatarImage = require('@/assets/no_avatar.png')
 
     setUp()
 
-    return { isLoadingSetUp, noAvatarImage, users }
+    return { isLoadingSetUp, isLoadingUpdateFollow, loginUser, noAvatarImage, updateFollow, users }
   }
 })
 </script>
