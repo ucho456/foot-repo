@@ -91,7 +91,6 @@ export default defineComponent({
       closeDialog
     } = useSignup()
     const { openSnackbar } = useSnackbar()
-
     const logo = require('@/assets/signup_logo.png')
 
     const submitEmail = async (): Promise<void> => {
