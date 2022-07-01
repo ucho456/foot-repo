@@ -4,8 +4,9 @@
       <ContainerLoading :is-loading="isLoadingSetUp" />
       <v-container v-if="!isLoadingSetUp">
         <v-row>
-          <v-col>
-            <v-btn icon>
+          <v-col cols="9"><h2>ユーザー検索</h2></v-col>
+          <v-col cols="3" class="text-right">
+            <v-btn icon @click="showDialog">
               <v-icon>mdi-magnify</v-icon>
             </v-btn>
           </v-col>
@@ -22,6 +23,7 @@
                   <v-list-item-subtitle v-if="user.team.name">
                     マイチーム：{{ user.team.name }}
                   </v-list-item-subtitle>
+                  <v-list-item-subtitle v-else> マイチーム：未設定 </v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-avatar size="36">
                   <v-img v-if="user.imageUrl" :src="user.imageUrl" />
@@ -52,6 +54,15 @@
         </v-row>
       </v-container>
     </v-card>
+    <DialogSearch
+      :hide-date="true"
+      :is-dialog="isDialog"
+      :search-option="users.searchOption"
+      @input-competition-id="inputCompetitionId"
+      @input-team-id="inputTeamId"
+      @close="hideDialog"
+      @search="search"
+    />
   </v-container>
 </template>
 
@@ -63,6 +74,7 @@ import useStore from '@/utils/useStore'
 import ButtonFollow from '@/components/molecules/ButtonFollow.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
 import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
+import DialogSearch from '@/components/organisms/DialogSearch.vue'
 
 export default defineComponent({
   name: 'Users',
@@ -70,17 +82,24 @@ export default defineComponent({
   components: {
     ButtonFollow,
     ButtonSubmit,
-    ContainerLoading
+    ContainerLoading,
+    DialogSearch
   },
 
   setup() {
     const {
       hasNextUsers,
+      hideDialog,
+      inputCompetitionId,
+      inputTeamId,
+      isDialog,
       isLoadingNextUsers,
       isLoadingSetUp,
       isLoadingUpdateFollow,
       readNextUsers,
+      search,
       setUp,
+      showDialog,
       updateFollow
     } = useIndex()
     const { loginUser } = useLoginUser()
@@ -91,12 +110,18 @@ export default defineComponent({
 
     return {
       hasNextUsers,
+      hideDialog,
+      inputCompetitionId,
+      inputTeamId,
+      isDialog,
       isLoadingNextUsers,
       isLoadingSetUp,
       isLoadingUpdateFollow,
       loginUser,
       noAvatarImage,
       readNextUsers,
+      search,
+      showDialog,
       updateFollow,
       users
     }

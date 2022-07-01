@@ -16,7 +16,7 @@
             />
           </v-col>
         </v-row>
-        <v-row justify="center">
+        <v-row v-if="!hideDate" justify="center">
           <v-col cols="10">
             <DialogDate :date="searchOption.jstDate" @input="inputDate" @clear="clearDate" />
           </v-col>
@@ -47,6 +47,7 @@ export default defineComponent({
   },
 
   props: {
+    hideDate: { type: Boolean, default: false },
     isDialog: { type: Boolean, default: false },
     searchOption: {
       type: Object as () => SearchOption,
