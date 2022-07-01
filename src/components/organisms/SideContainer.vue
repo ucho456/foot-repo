@@ -1,5 +1,14 @@
 <template>
   <v-container>
+    <!-- <v-card outlined>
+      <v-container>
+        <v-row>
+          <v-col>
+            <div class="gcse-search"></div>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-card> -->
     <v-card outlined>
       <v-container>
         <a
@@ -21,13 +30,21 @@ export default defineComponent({
   name: 'SideContainer',
 
   setup() {
-    const createTweetScript = () => {
-      const tweetScript = document.createElement('script')
-      tweetScript.setAttribute('src', 'https://platform.twitter.com/widgets.js')
-      tweetScript.setAttribute('async', 'true')
-      document.head.appendChild(tweetScript)
+    /** サンプル。詳しい設定はまたやる。 */
+    // const createGoogleSearchScript = (): void => {
+    //   const script = document.createElement('script')
+    //   script.setAttribute('src', 'https://cse.google.com/cse.js?cx=396e2ac1911b23488')
+    //   script.setAttribute('async', 'true')
+    //   document.head.appendChild(script)
+    // }
+    const createTweetScript = (): void => {
+      const script = document.createElement('script')
+      script.setAttribute('src', 'https://platform.twitter.com/widgets.js')
+      script.setAttribute('async', 'true')
+      document.head.appendChild(script)
     }
     if (process.client) {
+      // createGoogleSearchScript()
       createTweetScript()
     }
   }
