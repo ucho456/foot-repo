@@ -32,6 +32,11 @@ export const StoreKey: InjectionKey<{
     detail: MatchDetail | null
     reports: Report[]
   }
+  users: {
+    data: User[]
+    lastVisible: QueryDocumentSnapshot<User> | null
+    searchOption: SearchOption
+  }
 }> = Symbol('store')
 
 const useStore = () => {
@@ -47,11 +52,12 @@ const useStore = () => {
   return {
     clearReportSearchOption,
     confirmation: store.confirmation,
+    league: store.league,
+    match: store.match,
     matches: store.matches,
     reports: store.reports,
-    league: store.league,
     team: store.team,
-    match: store.match
+    users: store.users
   }
 }
 

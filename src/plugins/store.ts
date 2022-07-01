@@ -40,6 +40,11 @@ export default defineNuxtPlugin((_, inject) => {
       detail: MatchDetail | null
       reports: Report[]
     }
+    users: {
+      data: User[]
+      lastVisible: QueryDocumentSnapshot<User> | null
+      searchOption: SearchOption
+    }
   } = reactive({
     confirmation: {
       isLogin: false
@@ -70,6 +75,11 @@ export default defineNuxtPlugin((_, inject) => {
       data: null,
       detail: null,
       reports: []
+    },
+    users: {
+      data: [],
+      lastVisible: null,
+      searchOption: { status: '', competitionId: '', teamId: '', jstDate: '' }
     }
   })
 
@@ -101,6 +111,11 @@ export default defineNuxtPlugin((_, inject) => {
       data: null,
       detail: null,
       reports: []
+    }
+    store.users = {
+      data: [],
+      lastVisible: null,
+      searchOption: { status: '', competitionId: '', teamId: '', jstDate: '' }
     }
   }
 

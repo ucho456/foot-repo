@@ -182,3 +182,23 @@ export const fetchFollowers = async (
   }
   return { resFollowers, resLastVisible }
 }
+
+export const toStoreUsers = async (users: {
+  data: User[]
+  lastVisible: QueryDocumentSnapshot<User> | null
+  searchOption: SearchOption
+}): Promise<void> => {
+  const db = getFirestore()
+  const uRef = collection(db, 'users').withConverter(userConverter)
+  const teamIdOption = users.searchOption.teamId
+    ? [where('team.id', '==', users.searchOption.teamId)]
+    : []
+  const q = users.lastVisible
+    ? query(uRef, ...teamIdOption, startAfter(users.lastVisible), limit(perPage))
+    : query(uRef, ...teamIdOption, limit(perPage))
+  const uSnapshot = await getDocs(q)
+  uSnapshot.forEach((doc) => {
+    if (doc.exists()) users.data.push(doc.data())
+  })
+  users.lastVisible = uSnapshot.docs[uSnapshot.docs.length - 1]
+}
