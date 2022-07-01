@@ -1,3 +1,4 @@
+import { Ref } from '@nuxtjs/composition-api'
 import {
   collection,
   doc,
@@ -189,7 +190,8 @@ export const toStoreUsers = async (
     lastVisible: QueryDocumentSnapshot<User> | null
     searchOption: SearchOption
   },
-  loginUser: LoginUser | null
+  loginUser: LoginUser | null,
+  hasNextUsers: Ref<boolean>
 ): Promise<void> => {
   const db = getFirestore()
   const uRef = collection(db, 'users').withConverter(userConverter)
@@ -209,6 +211,7 @@ export const toStoreUsers = async (
     }
   })
   users.lastVisible = uSnapshot.docs[uSnapshot.docs.length - 1]
+  if (userIds.length < perPage) hasNextUsers.value = false
   if (loginUser && userIds.length > 0) {
     const fRef = collection(db, 'users', loginUser.uid, 'follows').withConverter(followerConverter)
     const q = query(fRef, where(documentId(), 'in', userIds))

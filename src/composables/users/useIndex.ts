@@ -10,6 +10,7 @@ const useIndex = () => {
   const { users } = useStore()
 
   const isLoadingSetUp = ref(false)
+  const hasNextUsers = ref(true)
   const setUp = async () => {
     try {
       isLoadingSetUp.value = true
@@ -17,7 +18,7 @@ const useIndex = () => {
         // if (loginUser.value && loginUser.value.team.id) {
         //   users.searchOption.teamId = loginUser.value.team.id
         // }
-        await toStoreUsers(users, loginUser.value)
+        await toStoreUsers(users, loginUser.value, hasNextUsers)
       }
     } catch (error) {
       console.log(error)
@@ -43,7 +44,28 @@ const useIndex = () => {
     }
   }
 
-  return { isLoadingSetUp, isLoadingUpdateFollow, setUp, updateFollow }
+  const isLoadingNextUsers = ref(false)
+  const readNextUsers = async (): Promise<void> => {
+    try {
+      isLoadingNextUsers.value = true
+      await toStoreUsers(users, loginUser.value, hasNextUsers)
+    } catch (error) {
+      console.log(error)
+      openSnackbar('failure', 'ユーザーの取得に失敗しました。')
+    } finally {
+      isLoadingNextUsers.value = false
+    }
+  }
+
+  return {
+    hasNextUsers,
+    isLoadingNextUsers,
+    isLoadingSetUp,
+    isLoadingUpdateFollow,
+    readNextUsers,
+    setUp,
+    updateFollow
+  }
 }
 
 export default useIndex
