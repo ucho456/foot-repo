@@ -95,6 +95,7 @@ export default defineComponent({
       const home = { icon: 'mdi-home', title: 'ホーム', to: '/' }
       const reportNew = { icon: 'mdi-pencil-plus', title: '選手採点投稿', to: '/reports/search' }
       const database = { icon: 'mdi-chart-bar', title: 'データベース', to: '/databases/' }
+      const users = { icon: 'mdi-account-search', title: 'ユーザー検索', to: '/users' }
       // const chatRoom = { icon: 'mdi-chat-processing', title: 'チャットルーム', to: '/rooms/' }
       const contact = { icon: 'mdi-face-agent', title: '問い合わせ', to: '/contact' }
       const login = { icon: 'mdi-login', title: 'ログイン', to: '/login' }
@@ -105,9 +106,10 @@ export default defineComponent({
             { id: 1, ...home },
             { id: 2, ...reportNew },
             { id: 3, ...database },
-            // { id: 4, ...chatRoom },
-            { id: 5, ...about },
-            { id: 6, ...contact }
+            { id: 4, ...users },
+            // { id: 5, ...chatRoom },
+            { id: 6, ...about },
+            { id: 7, ...contact }
           ]
         : [
             { id: 1, ...home },
@@ -115,9 +117,10 @@ export default defineComponent({
             { id: 3, ...signup },
             { id: 4, ...reportNew },
             { id: 5, ...database },
-            // { id: 6, ...chatRoom },
-            { id: 7, ...about },
-            { id: 8, ...contact }
+            { id: 6, ...users },
+            // { id: 7, ...chatRoom },
+            { id: 8, ...about },
+            { id: 9, ...contact }
           ]
     })
     const isDrawer = ref(false)
