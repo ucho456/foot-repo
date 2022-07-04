@@ -7,7 +7,13 @@
     :width="'290px'"
   >
     <template #activator="{ on, attrs }">
-      <v-text-field v-bind="attrs" :readonly="true" :value="yearMonth" v-on="on" />
+      <v-text-field
+        v-bind="attrs"
+        :label="'試合年月'"
+        :readonly="true"
+        :value="yearMonth"
+        v-on="on"
+      />
     </template>
     <v-date-picker
       v-model="tmpYearMonth"

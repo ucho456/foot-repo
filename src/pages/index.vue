@@ -23,10 +23,10 @@
     <DialogSearch
       :is-dialog="isDialog"
       :search-option="reports.searchOption"
-      @clear-date="clearDate"
+      @clear-year-month="clearYearMonth"
       @close="hideDialog"
       @input-competition-id="inputCompetitionId"
-      @input-date="inputDate"
+      @input-year-month="inputYearMonth"
       @input-team-id="inputTeamId"
       @search="pushToReports"
     />
@@ -55,11 +55,11 @@ export default defineComponent({
   setup() {
     const {
       changeTab,
-      clearDate,
+      clearYearMonth,
       hideDialog,
       inputCompetitionId,
-      inputDate,
       inputTeamId,
+      inputYearMonth,
       isDialog,
       isLoadingChangeReports,
       isLoadingReports,
@@ -74,11 +74,11 @@ export default defineComponent({
 
     return {
       changeTab,
-      clearDate,
+      clearYearMonth,
       hideDialog,
       inputCompetitionId,
-      inputDate,
       inputTeamId,
+      inputYearMonth,
       isDialog,
       isLoadingChangeReports,
       isLoadingReports,

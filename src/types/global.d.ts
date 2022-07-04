@@ -78,7 +78,7 @@ type SearchOption = {
   status: string
   competitionId: string
   teamId: string
-  jstDate: string
+  yearMonth: string
 }
 
 type SnackbarColor = '' | 'success' | 'failure' | 'alert'

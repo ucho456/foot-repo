@@ -18,7 +18,11 @@
         </v-row>
         <v-row v-if="!hideDate" justify="center">
           <v-col cols="10">
-            <DialogDate :date="searchOption.jstDate" @input="inputDate" @clear="clearDate" />
+            <DialogYearMonth
+              :year-month="searchOption.yearMonth"
+              @input="inputYearMonth"
+              @clear="clearYearMonth"
+            />
           </v-col>
         </v-row>
       </v-container>
@@ -35,7 +39,7 @@
 import { defineComponent } from '@nuxtjs/composition-api'
 import SelectIdCompetition from '@/components/molecules/SelectIdCompetition.vue'
 import SelectIdTeam from '@/components/molecules/SelectIdTeam.vue'
-import DialogDate from '@/components/molecules/DialogDate.vue'
+import DialogYearMonth from '@/components/molecules/DialogYearMonth.vue'
 
 export default defineComponent({
   name: 'DialogSearch',
@@ -43,7 +47,7 @@ export default defineComponent({
   components: {
     SelectIdCompetition,
     SelectIdTeam,
-    DialogDate
+    DialogYearMonth
   },
 
   props: {
@@ -68,11 +72,11 @@ export default defineComponent({
     const inputTeamId = (teamId: string): void => {
       ctx.emit('input-team-id', teamId)
     }
-    const inputDate = (date: string): void => {
-      ctx.emit('input-date', date)
+    const inputYearMonth = (date: string): void => {
+      ctx.emit('input-year-month', date)
     }
-    const clearDate = (): void => {
-      ctx.emit('clear-date')
+    const clearYearMonth = (): void => {
+      ctx.emit('clear-year-month')
     }
     const handleClose = (): void => {
       ctx.emit('close')
@@ -81,7 +85,14 @@ export default defineComponent({
       ctx.emit('search')
     }
 
-    return { inputCompetitionId, inputTeamId, inputDate, clearDate, handleClose, handleSearch }
+    return {
+      inputCompetitionId,
+      inputTeamId,
+      inputYearMonth,
+      clearYearMonth,
+      handleClose,
+      handleSearch
+    }
   }
 })
 </script>

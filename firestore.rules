@@ -70,13 +70,14 @@ service cloud.firestore {
 
     // reports
     function isValidReport(report) {
-      return report.size() == 16
+      return report.size() == 17
       && 'title' in report && report.title is string
       && 'user' in report && report.user is map
       && 'homeTeam' in report && report.homeTeam is map
       && 'awayTeam' in report && report.awayTeam is map
       && 'competition' in report && report.competition is map
       && 'jstDate' in report && report.jstDate is string
+      && 'yearMonth' in report && report.yearMonth is string
       && 'match' in report && report.match is map
       && 'matchday' in report && report.matchday is int
       && 'selectTeam' in report && report.selectTeam is string
@@ -132,6 +133,7 @@ service cloud.firestore {
       && exists(newData().competition.ref)
       && isValidString(newData().competition.name, 1, 100)
       && isValidString(newData().jstDate, 10, 10)
+      && isValidString(newData().yearMonth, 7, 7)
       && isValidString(newData().match.id, 1, 20)
       && exists(newData().match.ref)
       && isValidInt(newData().matchday, 1, 100)
@@ -164,6 +166,7 @@ service cloud.firestore {
       && newData().competition.ref == oldData().competition.ref
       && newData().competition.name == oldData().competition.name
       && newData().jstDate == oldData().jstDate
+      && newData().yearMonth == oldData().yearMonth
       && newData().match.id == oldData().match.id
       && newData().match.ref == oldData().match.ref
       && newData().matchday == oldData().matchday
@@ -194,6 +197,7 @@ service cloud.firestore {
       && newData().competition.ref == oldData().competition.ref
       && newData().competition.name == oldData().competition.name
       && newData().jstDate == oldData().jstDate
+      && newData().yearMonth == oldData().yearMonth
       && newData().match.id == oldData().match.id
       && newData().match.ref == oldData().match.ref
       && newData().matchday == oldData().matchday

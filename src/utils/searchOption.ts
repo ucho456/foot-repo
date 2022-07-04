@@ -5,7 +5,7 @@ export const makeSearchOption = (searchOption: {
   status: string
   competitionId: string
   teamId: string
-  jstDate: string
+  yearMonth: string
 }): QueryConstraint[] => {
   const options = []
   if (searchOption.status) {
@@ -17,8 +17,8 @@ export const makeSearchOption = (searchOption: {
   if (searchOption.teamId !== '') {
     options.push(where('teamIds', 'array-contains', searchOption.teamId))
   }
-  if (searchOption.jstDate) {
-    options.push(where('jstDate', '==', searchOption.jstDate))
+  if (searchOption.yearMonth) {
+    options.push(where('yearMonth', '==', searchOption.yearMonth))
   }
   return options
 }

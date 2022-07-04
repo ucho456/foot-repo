@@ -25,7 +25,7 @@ const useSearch = () => {
     try {
       isLoadingFirst.value = true
       matches.lastVisible = null
-      matches.searchOption.jstDate = ''
+      matches.searchOption.yearMonth = ''
       if (loginUser.value) {
         matches.searchOption.competitionId = loginUser.value.competitionId
         matches.searchOption.teamId = loginUser.value.team.id
@@ -84,11 +84,11 @@ const useSearch = () => {
   const inputTeamId = (teamId: string): void => {
     matches.searchOption.teamId = teamId
   }
-  const inputDate = (date: string): void => {
-    matches.searchOption.jstDate = date
+  const inputYearMonth = (yearMonth: string): void => {
+    matches.searchOption.yearMonth = yearMonth
   }
-  const clearDate = (): void => {
-    matches.searchOption.jstDate = ''
+  const clearYearMonth = (): void => {
+    matches.searchOption.yearMonth = ''
   }
 
   return {
@@ -106,8 +106,8 @@ const useSearch = () => {
     hideDialog,
     inputCompetitionId,
     inputTeamId,
-    inputDate,
-    clearDate
+    inputYearMonth,
+    clearYearMonth
   }
 }
 

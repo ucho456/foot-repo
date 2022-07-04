@@ -51,11 +51,11 @@ const useIndex = () => {
   const inputTeamId = (teamId: string): void => {
     reports.searchOption.teamId = teamId
   }
-  const inputDate = (date: string): void => {
-    reports.searchOption.jstDate = date
+  const inputYearMonth = (date: string): void => {
+    reports.searchOption.yearMonth = date
   }
-  const clearDate = (): void => {
-    reports.searchOption.jstDate = ''
+  const clearYearMonth = (): void => {
+    reports.searchOption.yearMonth = ''
   }
   const search = async (): Promise<void> => {
     try {
@@ -73,12 +73,12 @@ const useIndex = () => {
   }
 
   return {
-    clearDate,
+    clearYearMonth,
     hasNextReports,
     hideDialog,
     inputCompetitionId,
-    inputDate,
     inputTeamId,
+    inputYearMonth,
     isDialog,
     isLoadingFirst,
     isLoadingNext,

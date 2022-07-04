@@ -52,12 +52,12 @@ export default defineNuxtPlugin((_, inject) => {
     matches: {
       data: [],
       lastVisible: null,
-      searchOption: { status: 'FINISHED', competitionId: '', teamId: '', jstDate: '' }
+      searchOption: { status: 'FINISHED', competitionId: '', teamId: '', yearMonth: '' }
     },
     reports: {
       data: [],
       lastVisible: null,
-      searchOption: { status: '', competitionId: '', teamId: '', jstDate: '' }
+      searchOption: { status: '', competitionId: '', teamId: '', yearMonth: '' }
     },
     league: {
       name: '',
@@ -79,7 +79,7 @@ export default defineNuxtPlugin((_, inject) => {
     users: {
       data: [],
       lastVisible: null,
-      searchOption: { status: '', competitionId: '', teamId: '', jstDate: '' }
+      searchOption: { status: '', competitionId: '', teamId: '', yearMonth: '' }
     }
   })
 
@@ -90,12 +90,12 @@ export default defineNuxtPlugin((_, inject) => {
     store.matches = {
       data: [],
       lastVisible: null,
-      searchOption: { status: 'FINISHED', competitionId: '', teamId: '', jstDate: '' }
+      searchOption: { status: 'FINISHED', competitionId: '', teamId: '', yearMonth: '' }
     }
     store.reports = {
       data: [],
       lastVisible: null,
-      searchOption: { status: '', competitionId: '', teamId: '', jstDate: '' }
+      searchOption: { status: '', competitionId: '', teamId: '', yearMonth: '' }
     }
     store.league = {
       name: '',
@@ -115,7 +115,7 @@ export default defineNuxtPlugin((_, inject) => {
     store.users = {
       data: [],
       lastVisible: null,
-      searchOption: { status: '', competitionId: '', teamId: '', jstDate: '' }
+      searchOption: { status: '', competitionId: '', teamId: '', yearMonth: '' }
     }
   }
 

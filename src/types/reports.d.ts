@@ -29,6 +29,7 @@ type Report = {
     name: string
   }
   jstDate: string
+  yearMonth: string
   match: {
     id: string
     ref: import('firebase/firestore').DocumentReference

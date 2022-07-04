@@ -40,11 +40,11 @@ const useIndex = () => {
   const inputTeamId = (teamId: string): void => {
     reports.searchOption.teamId = teamId
   }
-  const inputDate = (date: string): void => {
-    reports.searchOption.jstDate = date
+  const inputYearMonth = (yearMonth: string): void => {
+    reports.searchOption.yearMonth = yearMonth
   }
-  const clearDate = (): void => {
-    reports.searchOption.jstDate = ''
+  const clearYearMonth = (): void => {
+    reports.searchOption.yearMonth = ''
   }
   const pushToReports = (): void => {
     router.push('/reports')
@@ -75,7 +75,7 @@ const useIndex = () => {
         reports.data = []
         reports.searchOption.teamId = loginUser.value?.team.id!
         reports.searchOption.competitionId = loginUser.value?.competitionId!
-        reports.searchOption.jstDate = ''
+        reports.searchOption.yearMonth = ''
         await toStoreFirstReports(reports)
       }
     } catch (error) {
@@ -87,19 +87,19 @@ const useIndex = () => {
   }
 
   return {
-    isLoadingReports,
-    setUp,
-    isDialog,
-    showDialog,
+    changeTab,
+    clearYearMonth,
     hideDialog,
     inputCompetitionId,
     inputTeamId,
-    inputDate,
-    clearDate,
-    tabs,
-    changeTab,
+    inputYearMonth,
+    isDialog,
     isLoadingChangeReports,
-    pushToReports
+    isLoadingReports,
+    pushToReports,
+    setUp,
+    showDialog,
+    tabs
   }
 }
 

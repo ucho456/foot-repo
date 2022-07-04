@@ -47,7 +47,7 @@ const useStore = () => {
     store.reports.data = []
     store.reports.searchOption.competitionId = ''
     store.reports.searchOption.teamId = ''
-    store.reports.searchOption.jstDate = ''
+    store.reports.searchOption.yearMonth = ''
   }
 
   return {

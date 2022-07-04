@@ -81,6 +81,7 @@ export const createReport = async (
       name: match.competition.name
     },
     jstDate: match.jstDate,
+    yearMonth: match.jstDate.substring(0, 7),
     matchday: match.matchday,
     match: {
       id: match.id,

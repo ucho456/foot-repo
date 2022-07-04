@@ -64,8 +64,8 @@
       :search-option="matches.searchOption"
       @input-competition-id="inputCompetitionId"
       @input-team-id="inputTeamId"
-      @input-date="inputDate"
-      @clear-date="clearDate"
+      @input-year-month="inputYearMonth"
+      @clear-year-month="clearYearMonth"
       @close="hideDialog"
       @search="search"
     />
@@ -113,8 +113,8 @@ export default defineComponent({
       hideDialog,
       inputCompetitionId,
       inputTeamId,
-      inputDate,
-      clearDate
+      inputYearMonth,
+      clearYearMonth
     } = useSearch()
     const { openSnackbar } = useSnackbar()
     const { matches } = useStore()
@@ -150,8 +150,8 @@ export default defineComponent({
       hideDialog,
       inputCompetitionId,
       inputTeamId,
-      inputDate,
-      clearDate,
+      inputYearMonth,
+      clearYearMonth,
       matches
     }
   }
