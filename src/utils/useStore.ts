@@ -44,6 +44,7 @@ const useStore = () => {
   if (store === undefined) throw new Error('store is no provided')
 
   const clearReportSearchOption = (): void => {
+    store.reports.data = []
     store.reports.searchOption.competitionId = ''
     store.reports.searchOption.teamId = ''
     store.reports.searchOption.jstDate = ''

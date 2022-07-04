@@ -1,30 +1,31 @@
-import { computed, ref } from '@nuxtjs/composition-api'
+import { computed, ref, useRouter, watch } from '@nuxtjs/composition-api'
 import { toStoreFirstReports, toStorePopularReports } from '@/db/reports'
 import useLoginUser from '@/utils/useLoginUser'
+import useSnackbar from '@/utils/useSnackbar'
 import useStore from '@/utils/useStore'
 
 const useIndex = () => {
+  const router = useRouter()
   const { loginUser } = useLoginUser()
+  const { openSnackbar } = useSnackbar()
   const { reports, clearReportSearchOption } = useStore()
 
-  /* setUp */
+  /** setUp */
   const isLoadingReports = ref(false)
-  const setUp = async () => {
+  const setUp = async (): Promise<void> => {
     try {
       isLoadingReports.value = true
       clearReportSearchOption()
       await toStoreFirstReports(reports)
       isLoadingReports.value = false
-      return 'success'
     } catch (error) {
-      console.log(error)
-      return 'failure'
+      openSnackbar('failure', '選手採点の取得に失敗しました。')
     } finally {
       isLoadingReports.value = false
     }
   }
 
-  /* searchDialog */
+  /** searchDialog */
   const isDialog = ref(false)
   const showDialog = (): void => {
     isDialog.value = true
@@ -45,8 +46,11 @@ const useIndex = () => {
   const clearDate = (): void => {
     reports.searchOption.jstDate = ''
   }
+  const pushToReports = (): void => {
+    router.push('/reports')
+  }
 
-  /* tabs */
+  /** reports tab */
   const tab = ref('New')
   const tabs = computed(() => {
     return loginUser.value && loginUser.value.team.id
@@ -56,8 +60,9 @@ const useIndex = () => {
   const changeTab = (index: number): void => {
     tab.value = tabs.value[index]
   }
+  watch(tab, () => changeReports())
   const isLoadingChangeReports = ref(false)
-  const changeReports = async () => {
+  const changeReports = async (): Promise<void> => {
     try {
       isLoadingChangeReports.value = true
       if (tab.value === 'New') {
@@ -67,15 +72,15 @@ const useIndex = () => {
         clearReportSearchOption()
         await toStorePopularReports(reports)
       } else if (tab.value === 'My Team') {
+        reports.data = []
         reports.searchOption.teamId = loginUser.value?.team.id!
         reports.searchOption.competitionId = loginUser.value?.competitionId!
         reports.searchOption.jstDate = ''
         await toStoreFirstReports(reports)
       }
-      return 'success'
     } catch (error) {
       console.log(error)
-      return 'failure'
+      openSnackbar('failure', '選手採点の取得に失敗しました。')
     } finally {
       isLoadingChangeReports.value = false
     }
@@ -91,11 +96,10 @@ const useIndex = () => {
     inputTeamId,
     inputDate,
     clearDate,
-    tab,
     tabs,
     changeTab,
     isLoadingChangeReports,
-    changeReports
+    pushToReports
   }
 }
 
