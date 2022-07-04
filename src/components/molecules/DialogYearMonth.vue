@@ -17,8 +17,9 @@
     </template>
     <v-date-picker
       v-model="tmpYearMonth"
-      :no-title="true"
-      :scrollable="true"
+      locale="jp-ja"
+      no-title
+      scrollable
       :type="'month'"
       @input="inputYearMonth"
     >
