@@ -10,14 +10,14 @@
         @search="showDialog"
       />
       <v-container>
-        <v-row justify="center">
+        <v-row v-if="!isLoadingFirst" justify="center">
           <v-col cols="10">
             <ButtonSubmit
-              :disabled="!hasNextPage"
+              :disabled="!hasNextReports"
               :icon="'mdi-page-next'"
               :loading="isLoadingNext"
               :text="'もっと読み込む'"
-              @click="readMore"
+              @click="readNextReports"
             />
           </v-col>
         </v-row>
@@ -26,21 +26,20 @@
     <DialogSearch
       :is-dialog="isDialog"
       :search-option="reports.searchOption"
-      @input-competition-id="inputCompetitionId"
-      @input-team-id="inputTeamId"
-      @input-date="inputDate"
       @clear-date="clearDate"
       @close="hideDialog"
+      @input-competition-id="inputCompetitionId"
+      @input-date="inputDate"
+      @input-team-id="inputTeamId"
       @search="search"
     />
   </v-container>
 </template>
 
 <script lang="ts">
-import { defineComponent, watch } from '@nuxtjs/composition-api'
+import { defineComponent } from '@nuxtjs/composition-api'
 import useIndex from '@/composables/reports/useIndex'
 import useStore from '@/utils/useStore'
-import useSnackbar from '@/utils/useSnackbar'
 import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 import ContainerReportTable from '@/components/organisms/ContainerReportTable.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
@@ -58,51 +57,38 @@ export default defineComponent({
 
   setup() {
     const {
-      isLoadingFirst,
-      setUp,
-      isLoadingNext,
-      hasNextPage,
-      readMore,
-      search,
-      isDialog,
-      showDialog,
+      clearDate,
+      hasNextReports,
       hideDialog,
       inputCompetitionId,
-      inputTeamId,
       inputDate,
-      clearDate
+      inputTeamId,
+      isDialog,
+      isLoadingFirst,
+      isLoadingNext,
+      readNextReports,
+      search,
+      setUp,
+      showDialog
     } = useIndex()
     const { reports } = useStore()
-    const { openSnackbar } = useSnackbar()
 
-    const setUpPage = async () => {
-      const result = await setUp()
-      if (result === 'failure') {
-        openSnackbar(result, 'データの取得に失敗しました。')
-      }
-    }
-    setUpPage()
-
-    watch(hasNextPage, (newVal, oldVal) => {
-      if (newVal === false && oldVal === true) {
-        openSnackbar('alert', '検索条件に合う全ての選手採点の取得を完了しています。')
-      }
-    })
+    setUp()
 
     return {
-      isLoadingFirst,
-      isLoadingNext,
-      hasNextPage,
-      readMore,
-      search,
-      isDialog,
-      showDialog,
+      clearDate,
+      hasNextReports,
       hideDialog,
       inputCompetitionId,
-      inputTeamId,
       inputDate,
-      clearDate,
-      reports
+      inputTeamId,
+      isDialog,
+      isLoadingFirst,
+      isLoadingNext,
+      readNextReports,
+      reports,
+      search,
+      showDialog
     }
   }
 })

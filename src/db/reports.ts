@@ -118,12 +118,14 @@ export const createReport = async (
   return rId
 }
 
-export const toStoreFirstReports = async (reports: {
-  data: Report[]
-  lastVisible: QueryDocumentSnapshot<Report> | null
-  searchOption: SearchOption
-}): Promise<void> => {
-  reports.data = []
+export const toStoreFirstReports = async (
+  reports: {
+    data: Report[]
+    lastVisible: QueryDocumentSnapshot<Report> | null
+    searchOption: SearchOption
+  },
+  hasNextReports?: Ref<boolean>
+): Promise<void> => {
   const db = getFirestore()
   const rRef = collection(db, 'reports').withConverter(reportConverter)
   const options = makeSearchOption(reports.searchOption)
@@ -140,7 +142,8 @@ export const toStoreFirstReports = async (reports: {
       reports.data.push(doc.data())
     }
   })
-  reports.lastVisible = rSnapshot.docs[rSnapshot.docs.length - 1]
+  reports.lastVisible = rSnapshot.docs[rSnapshot.size - 1]
+  if (hasNextReports !== undefined && rSnapshot.size < perPage) hasNextReports.value = false
 }
 
 export const toStoreNextReports = async (
@@ -149,7 +152,7 @@ export const toStoreNextReports = async (
     lastVisible: QueryDocumentSnapshot<Report> | null
     searchOption: SearchOption
   },
-  hasNextPage: Ref<boolean>
+  hasNextReports: Ref<boolean>
 ): Promise<void> => {
   const db = getFirestore()
   const rRef = collection(db, 'reports').withConverter(reportConverter)
@@ -168,9 +171,7 @@ export const toStoreNextReports = async (
       reports.data.push(doc.data())
     }
   })
-  if (rSnapshot.size === 0) {
-    hasNextPage.value = false
-  }
+  if (rSnapshot.size < perPage) hasNextReports.value = false
   reports.lastVisible = rSnapshot.docs[rSnapshot.docs.length - 1]
 }
 

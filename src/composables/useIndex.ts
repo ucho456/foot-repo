@@ -25,7 +25,7 @@ const useIndex = () => {
     }
   }
 
-  /** searchDialog */
+  /** search dialog */
   const isDialog = ref(false)
   const showDialog = (): void => {
     isDialog.value = true
