@@ -13,6 +13,7 @@ const useIndex = () => {
   const setUp = async () => {
     try {
       isLoadingFirst.value = true
+      reports.data = []
       await toStoreFirstReports(reports, hasNextReports)
     } catch (error) {
       console.log(error)
