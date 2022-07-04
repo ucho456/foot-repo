@@ -11,6 +11,23 @@
     </v-card> -->
     <v-card outlined>
       <v-container>
+        <v-row>
+          <v-col>
+            相互リンクパートナー・広告スポンサーを募集中です。
+            <a
+              class="hover"
+              href="https://twitter.com/messages/compose?recipient_id=foot_repo"
+              target="_blank"
+            >
+              こちら
+            </a>
+            よりご連絡お待ちしております。
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-card>
+    <v-card class="mt-4" outlined>
+      <v-container>
         <a
           class="twitter-timeline"
           data-height="400"
