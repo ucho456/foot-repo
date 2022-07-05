@@ -140,7 +140,7 @@ export default defineComponent({
       openSnackbar(result, message)
       if (result === 'success') {
         const reportId = route.value.query.reportId as string
-        router.push(`/reports/${reportId}`)
+        router.push({ path: `/reports/${reportId}`, query: { publish: true } })
       }
     }
 

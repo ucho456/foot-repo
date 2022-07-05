@@ -141,7 +141,7 @@ export default defineComponent({
         res.result === 'success' ? '選手採点を作成しました。' : '選手採点の作成に失敗しました。'
       openSnackbar(res.result, message)
       if (res.result === 'success') {
-        router.push(`/reports/${res.reportId}`)
+        router.push({ path: `/reports/${res.reportId}`, query: { publish: true } })
       }
     }
 

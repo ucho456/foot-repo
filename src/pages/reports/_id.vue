@@ -158,11 +158,12 @@
       :text="'ログインが完了していません。\nゲストとしてコメントを投稿しますか？'"
       @guest="submitCreate"
     />
+    <DialogShare :dialog="dialogShare" @twitter="shareTwitter" @click="hide('share')" />
   </v-container>
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeUnmount, useRoute, useRouter } from '@nuxtjs/composition-api'
+import { defineComponent, onBeforeUnmount, useRoute, useRouter, ref } from '@nuxtjs/composition-api'
 import useShow from '@/composables/reports/useShow'
 import useLoginUser from '@/utils/useLoginUser'
 import useSnackbar from '@/utils/useSnackbar'
@@ -175,6 +176,7 @@ import ContainerReportTable from '@/components/organisms/ContainerReportTable.vu
 import Textarea from '@/components/molecules/Textarea.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
 import DialogConfirmLogin from '@/components/molecules/DialogConfirmLogin.vue'
+import DialogShare from '@/components/molecules/DialogShare.vue'
 
 export default defineComponent({
   name: 'ReportShow',
@@ -187,7 +189,8 @@ export default defineComponent({
     ContainerReportTable,
     Textarea,
     ButtonSubmit,
-    DialogConfirmLogin
+    DialogConfirmLogin,
+    DialogShare
   },
 
   setup() {
@@ -273,6 +276,15 @@ export default defineComponent({
       }
     })
 
+    const dialogShare = ref(false)
+    const show = () => {
+      if (process.client && route.value.query.publish) dialogShare.value = true
+    }
+    const hide = () => {
+      dialogShare.value = false
+    }
+    show()
+
     return {
       clickFollow,
       report,
@@ -297,7 +309,10 @@ export default defineComponent({
       submitCreate,
       follow,
       isLoadingUpdateFollow,
-      isLoadingUpdateLike
+      isLoadingUpdateLike,
+      dialogShare,
+      show,
+      hide
     }
   }
 })
