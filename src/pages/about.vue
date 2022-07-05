@@ -79,15 +79,13 @@ export default defineComponent({
   setup() {
     const router = useRouter()
     const logo = require('@/assets/signup_logo.png')
-    const sns = require('@/assets/sns.jpg')
-    const a = require('@/assets/a.jpg')
 
     const pushToSignup = (): void => {
       router.push('/signup')
     }
     const back = (): void => router.back()
 
-    return { back, logo, pushToSignup, sns, a }
+    return { back, logo, pushToSignup }
   }
 })
 </script>

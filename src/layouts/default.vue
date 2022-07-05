@@ -18,8 +18,19 @@
       </v-container>
     </v-main>
     <v-footer class="white--text" absolute app color="fotter">
-      <v-container class="align-center d-flex">
-        <span>&copy; {{ new Date().getFullYear() }}</span>
+      <v-container>
+        <v-row>
+          <v-col cols="6">
+            <span>&copy; {{ new Date().getFullYear() }}</span>
+          </v-col>
+          <v-col class="text-right" cols="6">
+            <div class="hover font-10" @click="show('terms')">利用規約</div>
+            <div class="hover font-10" @click="show('privacy policy')">プライバシーポリシー</div>
+            <div class="hover font-10" @click="show('specified commercial transactions law')">
+              特定商取引法に基づく表示
+            </div>
+          </v-col>
+        </v-row>
       </v-container>
     </v-footer>
     <v-navigation-drawer v-model="isDrawer" fixed right temporary>
@@ -60,6 +71,12 @@
       </client-only>
     </v-navigation-drawer>
     <Snackbar v-bind="snackbar" />
+    <DialogTerms :is-dialog="dialogTerms" @click="hide('terms')" />
+    <DialogPrivacyPolicy :dialog="dialogPrivacyPolicy" @click="hide('privacy policy')" />
+    <DialogSpecifiedCommercialTransactionsLaw
+      :dialog="dialogSpecifiedCommercialTransactionsLaw"
+      @click="hide('specified commercial transactions law')"
+    />
   </v-app>
 </template>
 
@@ -68,6 +85,9 @@ import { defineComponent, computed, ref, useRouter } from '@nuxtjs/composition-a
 import { getAuth, signOut } from 'firebase/auth'
 import useLoginUser from '@/utils/useLoginUser'
 import useSnackbar from '@/utils/useSnackbar'
+import DialogPrivacyPolicy from '@/components/molecules/DialogPrivacyPolicy.vue'
+import DialogSpecifiedCommercialTransactionsLaw from '@/components/molecules/DialogSpecifiedCommercialTransactionsLaw.vue'
+import DialogTerms from '@/components/molecules/DialogTerms.vue'
 import SideContainer from '@/components/organisms/SideContainer.vue'
 import Snackbar from '@/components/molecules/Snackbar.vue'
 
@@ -75,6 +95,9 @@ export default defineComponent({
   name: 'Default',
 
   components: {
+    DialogPrivacyPolicy,
+    DialogSpecifiedCommercialTransactionsLaw,
+    DialogTerms,
     SideContainer,
     Snackbar
   },
@@ -141,6 +164,33 @@ export default defineComponent({
         .catch(() => openSnackbar('failure', 'ログアウトに失敗しました。'))
     }
 
+    const drawer = ref(false)
+    const dialogTerms = ref(false)
+    const dialogPrivacyPolicy = ref(false)
+    const dialogSpecifiedCommercialTransactionsLaw = ref(false)
+    const show = (
+      type: 'drawer' | 'terms' | 'privacy policy' | 'specified commercial transactions law'
+    ): void => {
+      type === 'drawer'
+        ? (drawer.value = true)
+        : type === 'terms'
+        ? (dialogTerms.value = true)
+        : type === 'privacy policy'
+        ? (dialogPrivacyPolicy.value = true)
+        : (dialogSpecifiedCommercialTransactionsLaw.value = true)
+    }
+    const hide = (
+      type: 'drawer' | 'terms' | 'privacy policy' | 'specified commercial transactions law'
+    ): void => {
+      type === 'drawer'
+        ? (drawer.value = false)
+        : type === 'terms'
+        ? (dialogTerms.value = false)
+        : type === 'privacy policy'
+        ? (dialogPrivacyPolicy.value = false)
+        : (dialogSpecifiedCommercialTransactionsLaw.value = false)
+    }
+
     return {
       loginUser,
       snackbar,
@@ -150,7 +200,13 @@ export default defineComponent({
       navigationDrawerItems,
       isDrawer,
       showDrawer,
-      logout
+      logout,
+      drawer,
+      dialogTerms,
+      dialogPrivacyPolicy,
+      dialogSpecifiedCommercialTransactionsLaw,
+      show,
+      hide
     }
   }
 })
@@ -159,5 +215,8 @@ export default defineComponent({
 <style lang="scss" scoped>
 .light-indigo {
   background: #{$light-indigo};
+}
+.font-10 {
+  font-size: 10px;
 }
 </style>
