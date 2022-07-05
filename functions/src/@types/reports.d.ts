@@ -52,7 +52,7 @@ type ReportItem = {
   }
   position: Position
   shirtNumber: number | null
-  point: ''
+  point: '6.0'
   text: string
   order: number
 }
