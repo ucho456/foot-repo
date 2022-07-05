@@ -72,14 +72,16 @@ const useShow = () => {
     }
   }
 
-  const shareTwitter = (): void => {
+  const share = (type: 'twitter' | 'facebook'): void => {
     const shareUrl =
-      'https://twitter.com/intent/tweet?text=' +
-      `${report.value?.homeTeam.name} vs ${report.value?.awayTeam.name} の選手採点` +
-      '%20%23選手採点' +
-      '%20%23フットレポ' +
-      '&url=' +
-      location.href
+      type === 'twitter'
+        ? 'https://twitter.com/intent/tweet?text=' +
+          `${report.value?.homeTeam.name} vs ${report.value?.awayTeam.name} の選手採点` +
+          '%20%23選手採点' +
+          '%20%23フットレポ' +
+          '&url=' +
+          location.href
+        : 'http://www.facebook.com/share.php?u=' + location.href
     window.open(shareUrl)
   }
 
@@ -156,7 +158,7 @@ const useShow = () => {
     setUp,
     like,
     updateLike,
-    shareTwitter,
+    share,
     inputComment,
     isLoadingNewComment,
     isDialog,

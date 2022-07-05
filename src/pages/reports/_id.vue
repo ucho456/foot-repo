@@ -58,8 +58,11 @@
         </v-row>
         <v-row>
           <v-col>
-            <v-btn icon color="#1da1f2" @click="shareTwitter">
+            <v-btn icon color="#1da1f2" @click="share('twitter')">
               <v-icon>mdi-twitter</v-icon>
+            </v-btn>
+            <v-btn icon color="#3b5998" @click="share('facebook')">
+              <v-icon>mdi-facebook</v-icon>
             </v-btn>
             <v-btn
               icon
@@ -158,7 +161,12 @@
       :text="'ログインが完了していません。\nゲストとしてコメントを投稿しますか？'"
       @guest="submitCreate"
     />
-    <DialogShare :dialog="dialogShare" @twitter="shareTwitter" @click="hide('share')" />
+    <DialogShare
+      :dialog="dialogShare"
+      @click="hide('share')"
+      @facebook="share('facebook')"
+      @twitter="share('twitter')"
+    />
   </v-container>
 </template>
 
@@ -210,7 +218,7 @@ export default defineComponent({
       isLoadingSameMatchReports,
       isLoadingComments,
       setUp,
-      shareTwitter,
+      share,
       like,
       updateLike,
       inputComment,
@@ -298,7 +306,7 @@ export default defineComponent({
       isLoadingUser,
       isLoadingSameMatchReports,
       isLoadingComments,
-      shareTwitter,
+      share,
       like,
       clickLike,
       inputComment,

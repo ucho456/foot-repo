@@ -1,13 +1,16 @@
 <template>
-  <v-dialog max-width="380" scrollable :value="dialog">
+  <v-dialog max-width="260" scrollable :value="dialog">
     <v-card>
       <v-card-title>おめでとうございます！</v-card-title>
-      <v-card-text> あなたの選手採点をSNSで共有しましょう。 </v-card-text>
+      <v-card-text> 選手採点をSNSで共有しましょう。 </v-card-text>
       <v-container>
         <v-row>
-          <v-col>
-            <v-btn icon color="#1da1f2" @click="handleTwitter">
+          <v-col class="text-center">
+            <v-btn class="mr-5" icon color="#1da1f2" @click="handleTwitter">
               <v-icon>mdi-twitter</v-icon>
+            </v-btn>
+            <v-btn icon color="#3b5998" @click="handleFacebook">
+              <v-icon>mdi-facebook</v-icon>
             </v-btn>
           </v-col>
         </v-row>
@@ -32,10 +35,11 @@ export default defineComponent({
   },
 
   setup(_, ctx) {
-    const handleTwitter = (): void => ctx.emit('twitter')
     const handleClick = (): void => ctx.emit('click')
+    const handleFacebook = (): void => ctx.emit('facebook')
+    const handleTwitter = (): void => ctx.emit('twitter')
 
-    return { handleClick, handleTwitter }
+    return { handleClick, handleFacebook, handleTwitter }
   }
 })
 </script>
