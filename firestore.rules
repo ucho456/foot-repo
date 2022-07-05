@@ -170,7 +170,7 @@ service cloud.firestore {
       && newData().match.id == oldData().match.id
       && newData().match.ref == oldData().match.ref
       && newData().matchday == oldData().matchday
-      && isValidSelectTeam(newData().selectTeam)
+      && newData().selectTeam == oldData().selectTeam
       && isValidString(newData().momId, 0, 20)
       && isValidString(newData().summary, 0, 300)
       && newData().likeCount >= 0)

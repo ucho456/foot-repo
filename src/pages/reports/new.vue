@@ -15,8 +15,9 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="8" sm="5">
+          <v-col cols="9" sm="5">
             <SelectHomeAway v-model="inputReport.selectTeam" />
+            <span class="note">後から変更ができませんのでご注意ください。</span>
           </v-col>
         </v-row>
         <v-row v-if="inputReport.selectTeam !== 'away'">
@@ -160,3 +161,12 @@ export default defineComponent({
   }
 })
 </script>
+
+<style lang="scss" scoped>
+.note {
+  position: relative;
+  top: -24px;
+  font-size: 10px;
+  color: red;
+}
+</style>

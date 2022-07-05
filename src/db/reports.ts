@@ -97,19 +97,22 @@ export const createReport = async (
     createdAt: serverTimestamp()
   })
 
-  inputReport.homeTeamReportItems.forEach((htri) => {
-    const htriRef = doc(db, 'reports', rId, 'home-team-report-items', htri.id).withConverter(
-      reportItemConverter
-    )
-    batch.set(htriRef, { ...htri, user: { id: user.id, ref: user.ref } })
-  })
-
-  inputReport.awayTeamReportItems.forEach((atri) => {
-    const atriRef = doc(db, 'reports', rId, 'away-team-report-items', atri.id).withConverter(
-      reportItemConverter
-    )
-    batch.set(atriRef, { ...atri, user: { id: user.id, ref: user.ref } })
-  })
+  if (inputReport.selectTeam !== 'away') {
+    inputReport.homeTeamReportItems.forEach((htri) => {
+      const htriRef = doc(db, 'reports', rId, 'home-team-report-items', htri.id).withConverter(
+        reportItemConverter
+      )
+      batch.set(htriRef, { ...htri, user: { id: user.id, ref: user.ref } })
+    })
+  }
+  if (inputReport.selectTeam !== 'home') {
+    inputReport.awayTeamReportItems.forEach((atri) => {
+      const atriRef = doc(db, 'reports', rId, 'away-team-report-items', atri.id).withConverter(
+        reportItemConverter
+      )
+      batch.set(atriRef, { ...atri, user: { id: user.id, ref: user.ref } })
+    })
+  }
 
   if (loginUser) {
     const uRef = doc(db, 'users', loginUser.uid).withConverter(userConverter)

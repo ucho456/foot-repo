@@ -14,11 +14,6 @@
             />
           </v-col>
         </v-row>
-        <v-row>
-          <v-col cols="8" sm="5">
-            <SelectHomeAway v-model="inputReport.selectTeam" />
-          </v-col>
-        </v-row>
         <v-row v-if="inputReport.selectTeam !== 'away'">
           <v-col>
             <v-img max-height="30" max-width="30" :src="match.homeTeam.imageUrl" />
@@ -101,7 +96,6 @@ import useSnackbar from '@/utils/useSnackbar'
 import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 import RowMatchHeader from '@/components/organisms/RowMatchHeader.vue'
 import TextField from '@/components/molecules/TextField.vue'
-import SelectHomeAway from '@/components/molecules/SelectHomeAway.vue'
 import SelectPoint from '@/components/molecules/SelectPoint.vue'
 import Textarea from '@/components/molecules/Textarea.vue'
 import SelectIdMom from '@/components/molecules/SelectIdMom.vue'
@@ -114,7 +108,6 @@ export default defineComponent({
     ContainerLoading,
     RowMatchHeader,
     TextField,
-    SelectHomeAway,
     SelectPoint,
     Textarea,
     SelectIdMom,
