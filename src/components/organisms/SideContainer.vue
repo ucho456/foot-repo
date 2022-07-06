@@ -26,7 +26,7 @@
         </v-row>
       </v-container>
     </v-card>
-    <v-card class="mt-4" outlined>
+    <!-- <v-card class="mt-4" outlined>
       <v-container>
         <a
           class="twitter-timeline"
@@ -36,7 +36,7 @@
           href="https://twitter.com/foot_repo?ref_src=twsrc%5Etfw"
         ></a>
       </v-container>
-    </v-card>
+    </v-card> -->
   </v-container>
 </template>
 
@@ -54,15 +54,15 @@ export default defineComponent({
     //   script.setAttribute('async', 'true')
     //   document.head.appendChild(script)
     // }
-    const createTweetScript = (): void => {
-      const script = document.createElement('script')
-      script.setAttribute('src', 'https://platform.twitter.com/widgets.js')
-      script.setAttribute('async', 'true')
-      document.head.appendChild(script)
-    }
+    // const createTweetScript = (): void => {
+    //   const script = document.createElement('script')
+    //   script.setAttribute('src', 'https://platform.twitter.com/widgets.js')
+    //   script.setAttribute('async', 'true')
+    //   document.head.appendChild(script)
+    // }
     if (process.client) {
       // createGoogleSearchScript()
-      createTweetScript()
+      // createTweetScript()
     }
   }
 })
