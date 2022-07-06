@@ -9,6 +9,13 @@ import {
   createSerieAMatches
 } from './calls/createMatches'
 import createUser from './calls/createUser'
+import {
+  setBundesligaTeams,
+  setJLeagueTeams,
+  setLaLigaTeams,
+  setPremierLeagueTeams,
+  setSerieATeams
+} from './calls/setTeams'
 import updateEmailVerified from './calls/updateEmailVerified'
 // import {
 // setBundesligaMatches,
@@ -19,13 +26,6 @@ import updateEmailVerified from './calls/updateEmailVerified'
 // } from './crons/setMatches'
 // import setScorers from './crons/setScorers'
 // import setStandings from './crons/setStandings'
-// import {
-//   setBundesligaTeams,
-//   setJLeagueTeams,
-//   setLaLigaTeams,
-//   setPremierLeagueTeams,
-//   setSerieATeams
-// } from './crons/setTeams'
 
 admin.initializeApp()
 
@@ -38,16 +38,16 @@ module.exports = {
   createSerieAMatches,
   createUser,
   // setBundesligaMatches,
-  // setBundesligaTeams,
+  setBundesligaTeams,
   // setJLeagueMatches,
-  // setJLeagueTeams,
+  setJLeagueTeams,
   // setLaLigaMatches,
-  // setLaLigaTeams,
+  setLaLigaTeams,
   // setPremierLeagueMatches,
-  // setPremierLeagueTeams,
+  setPremierLeagueTeams,
   // setScorers,
   // setSerieAMatches,
-  // setSerieATeams,
+  setSerieATeams,
   // setStandings,
   updateEmailVerified
 }

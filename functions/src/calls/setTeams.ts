@@ -1,8 +1,8 @@
-import * as functions from 'firebase-functions'
 import * as admin from 'firebase-admin'
+import * as functions from 'firebase-functions'
 import axios, { AxiosResponse } from 'axios'
 import { teamConverter } from '../converters'
-import { config, convertPosition, footballUrl, leagueCompetitions } from '../utils'
+import { config, convertPosition, env, footballUrl, leagueCompetitions } from '../utils'
 
 const getTeamIds = async (competitionId: number): Promise<number[]> => {
   const res: AxiosResponse<any, any> = await axios.get(
@@ -43,7 +43,13 @@ const getTeam = async (teamId: number): Promise<Team> => {
   }
 }
 
-const setTeams = async (competition: { id: number; collectionId: string }): Promise<void> => {
+const setTeams = async (
+  competition: { id: number; collectionId: string },
+  req: functions.https.Request
+): Promise<void> => {
+  if (process.env.NODE_ENV === 'production' && req.body.secret !== env.secret) {
+    throw new Error('Unauthorized')
+  }
   const teamIds = await getTeamIds(competition.id)
   const batch = admin.firestore().batch()
   for (const teamId of teamIds) {
@@ -60,42 +66,37 @@ const setTeams = async (competition: { id: number; collectionId: string }): Prom
   await batch.commit()
 }
 
-export const setJLeagueTeams = functions
+export const setBundesligaTeams = functions
   .region('asia-northeast1')
-  .pubsub.schedule('0 7 * * *')
-  .onRun(async () => {
-    await setTeams(leagueCompetitions[0])
-    return null
+  .https.onRequest(async (req, res) => {
+    await setTeams(leagueCompetitions[4], req)
+    res.sendStatus(200)
   })
 
-export const setPremierLeagueTeams = functions
+export const setJLeagueTeams = functions
   .region('asia-northeast1')
-  .pubsub.schedule('0 8 * * *')
-  .onRun(async () => {
-    await setTeams(leagueCompetitions[1])
-    return null
+  .https.onRequest(async (req, res) => {
+    await setTeams(leagueCompetitions[0], req)
+    res.sendStatus(200)
   })
 
 export const setLaLigaTeams = functions
   .region('asia-northeast1')
-  .pubsub.schedule('0 9 * * *')
-  .onRun(async () => {
-    await setTeams(leagueCompetitions[2])
-    return null
+  .https.onRequest(async (req, res) => {
+    await setTeams(leagueCompetitions[2], req)
+    res.sendStatus(200)
+  })
+
+export const setPremierLeagueTeams = functions
+  .region('asia-northeast1')
+  .https.onRequest(async (req, res) => {
+    await setTeams(leagueCompetitions[1], req)
+    res.sendStatus(200)
   })
 
 export const setSerieATeams = functions
   .region('asia-northeast1')
-  .pubsub.schedule('0 10 * * *')
-  .onRun(async () => {
-    await setTeams(leagueCompetitions[3])
-    return null
-  })
-
-export const setBundesligaTeams = functions
-  .region('asia-northeast1')
-  .pubsub.schedule('0 11 * * *')
-  .onRun(async () => {
-    await setTeams(leagueCompetitions[4])
-    return null
+  .https.onRequest(async (req, res) => {
+    await setTeams(leagueCompetitions[3], req)
+    res.sendStatus(200)
   })
