@@ -5,7 +5,6 @@
     :label="label"
     :maxlength="maxlength"
     :outlined="true"
-    :prepend-inner-icon="icon"
     :value="value"
     @input="handleInput"
   />
@@ -20,7 +19,6 @@ export default defineComponent({
   props: {
     counterFlg: { type: Boolean, default: false },
     errMessage: { type: String, default: '' },
-    icon: { type: String, default: '' },
     label: { type: String, default: '' },
     maxlength: { type: Number, default: 0 },
     value: { type: String, default: '' }

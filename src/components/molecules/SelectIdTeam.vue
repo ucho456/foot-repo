@@ -1,11 +1,5 @@
 <template>
-  <BaseSelectId
-    :icon="'mdi-soccer'"
-    :items="teams"
-    :label="'チーム'"
-    :value="value"
-    @input="handleInput"
-  />
+  <BaseSelectId :items="teams" :label="'チーム'" :value="value" @input="handleInput" />
 </template>
 
 <script lang="ts">

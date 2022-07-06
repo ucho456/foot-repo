@@ -3,7 +3,6 @@
     :background-color="'white'"
     :items="items"
     :label="label"
-    :prepend-inner-icon="icon"
     :value="value"
     @input="handleInput"
   />
@@ -16,7 +15,6 @@ export default defineComponent({
   name: 'BaseSelect',
 
   props: {
-    icon: { type: String, default: '' },
     items: { type: Array as () => string[], default: () => [''] },
     label: { type: String, default: '' },
     value: { type: String, default: '' }

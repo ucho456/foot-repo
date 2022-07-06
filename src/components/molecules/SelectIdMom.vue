@@ -1,7 +1,6 @@
 <template>
   <BaseSelectId
     :items="players"
-    :icon="'mdi-account-star'"
     :label="'マン・オブ・ザ・マッチ'"
     :value="value"
     @input="handleInput"

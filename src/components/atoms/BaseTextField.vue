@@ -8,7 +8,6 @@
     :max="max"
     :maxlength="maxlength"
     :min="min"
-    :prepend-inner-icon="icon"
     :step="step"
     :type="type"
     :value="value"
@@ -27,7 +26,6 @@ export default defineComponent({
     denseFlg: { type: Boolean, default: false },
     disabled: { type: Boolean, default: false },
     errMessage: { type: String, default: '' },
-    icon: { type: String, default: '' },
     label: { type: String, default: '' },
     max: { type: Number, default: 0 },
     maxlength: { type: Number, default: 0 },

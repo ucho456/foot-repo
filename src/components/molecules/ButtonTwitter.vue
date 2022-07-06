@@ -2,7 +2,7 @@
   <BaseButton
     :block-flg="true"
     :color="'#1da1f2'"
-    :icon="'mdi-twitter'"
+    :icon="mdiTwitter"
     :left-flg="true"
     :loading="loading"
     :text="text"
@@ -13,6 +13,7 @@
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
+import { mdiTwitter } from '@mdi/js'
 import BaseButton from '@/components/atoms/BaseButton.vue'
 
 export default defineComponent({
@@ -32,7 +33,7 @@ export default defineComponent({
       ctx.emit('click')
     }
 
-    return { handleClick }
+    return { handleClick, mdiTwitter }
   }
 })
 </script>

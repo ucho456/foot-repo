@@ -6,7 +6,9 @@
           <v-img class="hover" :src="headerLogo" @click="pushToHome" />
         </v-toolbar-title>
         <v-spacer />
-        <v-btn icon @click.stop="showDrawer"><v-icon color="white">mdi-menu</v-icon></v-btn>
+        <v-btn icon @click.stop="showDrawer"
+          ><v-icon color="white">{{ mdiMenu }}</v-icon></v-btn
+        >
       </v-container>
     </v-app-bar>
     <v-main>
@@ -61,7 +63,7 @@
           </v-list-item>
           <v-list-item v-if="loginUser" class="ml-2 px-2" @click="logout">
             <v-list-item-action>
-              <v-icon>mdi-logout</v-icon>
+              <v-icon>{{ mdiLogout }}</v-icon>
             </v-list-item-action>
             <v-list-item-content>
               <v-list-item-title v-text="'ログアウト'" />
@@ -83,6 +85,18 @@
 <script lang="ts">
 import { defineComponent, computed, ref, useRouter } from '@nuxtjs/composition-api'
 import { getAuth, signOut } from 'firebase/auth'
+import {
+  mdiAccountPlus,
+  mdiAccountSearch,
+  mdiChartBar,
+  mdiFaceAgent,
+  mdiHome,
+  mdiInformation,
+  mdiLogin,
+  mdiLogout,
+  mdiMenu,
+  mdiPencilPlus
+} from '@mdi/js'
 import useLoginUser from '@/utils/useLoginUser'
 import useSnackbar from '@/utils/useSnackbar'
 import DialogPrivacyPolicy from '@/components/molecules/DialogPrivacyPolicy.vue'
@@ -115,15 +129,15 @@ export default defineComponent({
     }
 
     const navigationDrawerItems = computed(() => {
-      const home = { icon: 'mdi-home', title: 'ホーム', to: '/' }
-      const reportNew = { icon: 'mdi-pencil-plus', title: '選手採点投稿', to: '/reports/search' }
-      const database = { icon: 'mdi-chart-bar', title: 'データベース', to: '/databases/' }
-      const users = { icon: 'mdi-account-search', title: 'ユーザー検索', to: '/users' }
+      const home = { icon: mdiHome, title: 'ホーム', to: '/' }
+      const reportNew = { icon: mdiPencilPlus, title: '選手採点投稿', to: '/reports/search' }
+      const database = { icon: mdiChartBar, title: 'データベース', to: '/databases/' }
+      const users = { icon: mdiAccountSearch, title: 'ユーザー検索', to: '/users' }
       // const chatRoom = { icon: 'mdi-chat-processing', title: 'チャットルーム', to: '/rooms/' }
-      const contact = { icon: 'mdi-face-agent', title: '問い合わせ', to: '/contact' }
-      const login = { icon: 'mdi-login', title: 'ログイン', to: '/login' }
-      const about = { icon: 'mdi-information', title: '当サイトについて', to: '/about' }
-      const signup = { icon: 'mdi-account-plus', title: '新規登録', to: '/signup' }
+      const contact = { icon: mdiFaceAgent, title: '問い合わせ', to: '/contact' }
+      const login = { icon: mdiLogin, title: 'ログイン', to: '/login' }
+      const about = { icon: mdiInformation, title: '当サイトについて', to: '/about' }
+      const signup = { icon: mdiAccountPlus, title: '新規登録', to: '/signup' }
       return loginUser.value
         ? [
             { id: 1, ...home },
@@ -206,7 +220,9 @@ export default defineComponent({
       dialogPrivacyPolicy,
       dialogSpecifiedCommercialTransactionsLaw,
       show,
-      hide
+      hide,
+      mdiLogout,
+      mdiMenu
     }
   }
 })

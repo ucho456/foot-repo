@@ -15,13 +15,14 @@
       @change="handleChange"
     />
     <v-btn v-if="!disabled" class="button" color="black" :icon="true" @click="handleClear">
-      <v-icon>mdi-close</v-icon>
+      <v-icon>{{ mdiClose }}</v-icon>
     </v-btn>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from '@nuxtjs/composition-api'
+import { mdiClose } from '@mdi/js'
 import imageCompression from 'browser-image-compression'
 
 export default defineComponent({
@@ -61,7 +62,7 @@ export default defineComponent({
       ctx.emit('clear')
     }
 
-    return { noAvatarImage, deletedTimes, handleChange, handleClear }
+    return { noAvatarImage, deletedTimes, mdiClose, handleChange, handleClear }
   }
 })
 </script>

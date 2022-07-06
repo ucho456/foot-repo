@@ -17,7 +17,6 @@
             <v-col cols="10">
               <ButtonSubmit
                 :disabled="invalid"
-                :icon="'mdi-send'"
                 :loading="isLoading"
                 :text="'登録する'"
                 @click="submitEmail"

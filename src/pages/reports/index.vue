@@ -14,7 +14,6 @@
           <v-col cols="10">
             <ButtonSubmit
               :disabled="!hasNextReports"
-              :icon="'mdi-page-next'"
               :loading="isLoadingNext"
               :text="'もっと読み込む'"
               @click="readNextReports"

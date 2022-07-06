@@ -3,8 +3,6 @@
     :block-flg="true"
     :color="'primary'"
     :disabled="disabled"
-    :icon="icon"
-    :left-flg="true"
     :loading="loading"
     :text="text"
     :white-text-flg="true"
@@ -25,7 +23,6 @@ export default defineComponent({
 
   props: {
     disabled: { type: Boolean, default: false },
-    icon: { type: String, default: '' },
     loading: { type: Boolean, default: false },
     text: { type: String, default: '' }
   },

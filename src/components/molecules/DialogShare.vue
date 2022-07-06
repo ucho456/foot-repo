@@ -7,10 +7,10 @@
         <v-row>
           <v-col class="text-center">
             <v-btn class="mr-5" icon color="#1da1f2" @click="handleTwitter">
-              <v-icon>mdi-twitter</v-icon>
+              <v-icon>{{ mdiTwitter }}</v-icon>
             </v-btn>
             <v-btn icon color="#3b5998" @click="handleFacebook">
-              <v-icon>mdi-facebook</v-icon>
+              <v-icon>{{ mdiFacebook }}</v-icon>
             </v-btn>
           </v-col>
         </v-row>
@@ -26,6 +26,7 @@
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
+import { mdiFacebook, mdiTwitter } from '@mdi/js'
 
 export default defineComponent({
   name: 'DialogPrivacyPolicy',
@@ -39,7 +40,7 @@ export default defineComponent({
     const handleFacebook = (): void => ctx.emit('facebook')
     const handleTwitter = (): void => ctx.emit('twitter')
 
-    return { handleClick, handleFacebook, handleTwitter }
+    return { handleClick, handleFacebook, handleTwitter, mdiFacebook, mdiTwitter }
   }
 })
 </script>

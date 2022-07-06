@@ -5,7 +5,6 @@
     :item-value="'id'"
     :items="items"
     :label="label"
-    :prepend-inner-icon="icon"
     :value="value"
     @input="handleInput"
   />
@@ -18,7 +17,6 @@ export default defineComponent({
   name: 'BaseSelectId',
 
   props: {
-    icon: { type: String, default: '' },
     items: {
       type: Array as () => { id: string; name: string }[],
       default: () => [{ id: '', name: '' }]

@@ -1,6 +1,5 @@
 <template>
   <BaseSelectId
-    :icon="'mdi-tournament'"
     :items="competitions"
     :label="'コンペティション'"
     :value="value"

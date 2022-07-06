@@ -26,12 +26,7 @@
               />
             </v-col>
             <v-col cols="10">
-              <Textarea
-                v-model="inputUser.greet"
-                :icon="'mdi-human-greeting-variant'"
-                :label="'自己紹介文'"
-                :maxlength="140"
-              />
+              <Textarea v-model="inputUser.greet" :label="'自己紹介文'" :maxlength="140" />
             </v-col>
             <v-col cols="10"> マイチーム </v-col>
             <v-col cols="10" sm="5">
@@ -43,7 +38,6 @@
             <v-col cols="10" sm="6">
               <ButtonSubmit
                 :disabled="invalid"
-                :icon="'mdi-send'"
                 :loading="isLoadingSubmit"
                 :text="'登録する'"
                 @click="submit"

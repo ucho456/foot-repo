@@ -1,11 +1,5 @@
 <template>
-  <BaseSelect
-    :icon="'mdi-format-list-bulleted-type'"
-    :items="items"
-    :label="'チーム選択'"
-    :value="value"
-    @input="handleInput"
-  />
+  <BaseSelect :items="items" :label="'チーム選択'" :value="value" @input="handleInput" />
 </template>
 
 <script lang="ts">

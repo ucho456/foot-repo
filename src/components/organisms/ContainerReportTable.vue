@@ -6,7 +6,7 @@
       >
       <v-col v-if="searchButtonFlg" cols="3" class="text-right">
         <v-btn icon @click="handleSearch">
-          <v-icon>mdi-magnify</v-icon>
+          <v-icon>{{ mdiMagnify }}</v-icon>
         </v-btn>
       </v-col>
     </v-row>
@@ -42,16 +42,16 @@
               {{ report.jstDate }} / {{ report.competition.name }} / {{ report.matchday }}節
             </v-list-item-subtitle>
             <v-list-item-subtitle>
-              <v-icon color="orange" size="13px">mdi-thumb-up</v-icon> {{ report.likeCount }}
+              <v-icon color="orange" size="13px">{{ mdiThumbUp }}</v-icon> {{ report.likeCount }}
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
         <v-list-item-action v-if="actionFlg && report.user.id === uid">
           <v-btn icon>
-            <v-icon color="primary" @click="pushToReportEdit(report.id)">mdi-pencil</v-icon>
+            <v-icon color="primary" @click="pushToReportEdit(report.id)">{{ mdiPencil }}</v-icon>
           </v-btn>
           <v-btn icon>
-            <v-icon color="failure" @click="handleDelete(report)">mdi-delete</v-icon>
+            <v-icon color="failure" @click="handleDelete(report)">{{ mdiDelete }}</v-icon>
           </v-btn>
         </v-list-item-action>
       </div>
@@ -61,6 +61,7 @@
 
 <script lang="ts">
 import { defineComponent, useRouter } from '@nuxtjs/composition-api'
+import { mdiDelete, mdiMagnify, mdiPencil, mdiThumbUp } from '@mdi/js'
 import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 
 export default defineComponent({
@@ -97,7 +98,17 @@ export default defineComponent({
       ctx.emit('delete', report)
     }
 
-    return { noAvatarImage, handleSearch, handleTab, pushToReportEdit, handleDelete }
+    return {
+      noAvatarImage,
+      handleSearch,
+      handleTab,
+      pushToReportEdit,
+      handleDelete,
+      mdiDelete,
+      mdiMagnify,
+      mdiPencil,
+      mdiThumbUp
+    }
   }
 })
 </script>

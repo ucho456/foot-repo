@@ -59,10 +59,10 @@
         <v-row>
           <v-col>
             <v-btn icon color="#1da1f2" @click="share('twitter')">
-              <v-icon>mdi-twitter</v-icon>
+              <v-icon>{{ mdiTwitter }}</v-icon>
             </v-btn>
             <v-btn icon color="#3b5998" @click="share('facebook')">
-              <v-icon>mdi-facebook</v-icon>
+              <v-icon>{{ mdiFacebook }}</v-icon>
             </v-btn>
             <v-btn
               icon
@@ -71,7 +71,7 @@
               :loading="isLoadingUpdateLike"
               @click="clickLike"
             >
-              <v-icon>mdi-thumb-up</v-icon>
+              <v-icon>{{ mdiThumbUp }}</v-icon>
             </v-btn>
             {{ report.likeCount }}
           </v-col>
@@ -172,6 +172,7 @@
 
 <script lang="ts">
 import { defineComponent, onBeforeUnmount, useRoute, useRouter, ref } from '@nuxtjs/composition-api'
+import { mdiFacebook, mdiThumbUp, mdiTwitter } from '@mdi/js'
 import useShow from '@/composables/reports/useShow'
 import useLoginUser from '@/utils/useLoginUser'
 import useSnackbar from '@/utils/useSnackbar'
@@ -320,7 +321,10 @@ export default defineComponent({
       isLoadingUpdateLike,
       dialogShare,
       show,
-      hide
+      hide,
+      mdiFacebook,
+      mdiThumbUp,
+      mdiTwitter
     }
   }
 })

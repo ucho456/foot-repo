@@ -7,7 +7,7 @@
           <v-col cols="9"><h2>ユーザー検索</h2></v-col>
           <v-col cols="3" class="text-right">
             <v-btn icon @click="showDialog">
-              <v-icon>mdi-magnify</v-icon>
+              <v-icon>{{ mdiMagnify }}</v-icon>
             </v-btn>
           </v-col>
         </v-row>
@@ -68,6 +68,7 @@
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
+import { mdiMagnify } from '@mdi/js'
 import useIndex from '@/composables/users/useIndex'
 import useLoginUser from '@/utils/useLoginUser'
 import useStore from '@/utils/useStore'
@@ -118,6 +119,7 @@ export default defineComponent({
       isLoadingSetUp,
       isLoadingUpdateFollow,
       loginUser,
+      mdiMagnify,
       noAvatarImage,
       readNextUsers,
       search,

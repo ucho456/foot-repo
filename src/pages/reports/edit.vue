@@ -6,12 +6,7 @@
         <RowMatchHeader v-bind="match" />
         <v-row>
           <v-col>
-            <TextField
-              v-model="inputReport.title"
-              :icon="'mdi-format-title'"
-              :label="'タイトル'"
-              :maxlength="100"
-            />
+            <TextField v-model="inputReport.title" :label="'タイトル'" :maxlength="100" />
           </v-col>
         </v-row>
         <v-row v-if="inputReport.selectTeam !== 'away'">
@@ -56,18 +51,12 @@
         </v-row>
         <v-row>
           <v-col>
-            <Textarea
-              v-model="inputReport.summary"
-              :icon="'mdi-note-text-outline'"
-              :label="'総評'"
-              :maxlength="300"
-            />
+            <Textarea v-model="inputReport.summary" :label="'総評'" :maxlength="300" />
           </v-col>
         </v-row>
         <v-row justify="center">
           <v-col cols="10" sm="6">
             <ButtonSubmit
-              :icon="'mdi-pencil-plus'"
               :text="inputReport.publish ? '更新する' : '更新して公開する'"
               :loading="isLoadingSend"
               @click="submitUpdate"
@@ -76,7 +65,6 @@
           <v-col cols="10" sm="6">
             <ButtonSubmit
               :disabled="inputReport.publish"
-              :icon="'mdi-content-save'"
               :text="'非公開にして一時保存する'"
               :loading="isLoadingSend"
               @click="submitSave"

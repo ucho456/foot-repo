@@ -2,7 +2,6 @@
   <ValidationProvider v-slot="{ errors }" rules="email|required">
     <BaseTextField
       :err-message="errors[0]"
-      :icon="'mdi-email'"
       :label="'メール'"
       :maxlength="255"
       :type="'email'"

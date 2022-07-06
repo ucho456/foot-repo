@@ -27,7 +27,7 @@
         </v-row>
         <v-row>
           <v-col cols="4" class="text-center">
-            <v-icon large>mdi-text-box-edit</v-icon>
+            <v-icon large>{{ mdiTextBoxEdit }}</v-icon>
             <div>投稿</div>
             <div>{{ user.reportCount }} 件</div>
           </v-col>
@@ -37,7 +37,7 @@
             :class="{ follow: user.followCount !== 0 }"
             @click="showFollowsDialog"
           >
-            <v-icon large>mdi-account-arrow-right</v-icon>
+            <v-icon large>{{ mdiAccountArrowRight }}</v-icon>
             <div>フォロー</div>
             <div>{{ user.followCount }} 件</div>
           </v-col>
@@ -47,7 +47,7 @@
             :class="{ follow: user.followerCount !== 0 }"
             @click="showFollowersDialog"
           >
-            <v-icon large>mdi-account-arrow-left</v-icon>
+            <v-icon large>{{ mdiAccountArrowLeft }}</v-icon>
             <div>フォロワー</div>
             <div>{{ user.followerCount }} 件</div>
           </v-col>
@@ -71,7 +71,6 @@
           <v-col cols="10">
             <ButtonSubmit
               :disabled="tab === 'Mine' ? !hasNextMyReports : !hasNextLikeReports"
-              :icon="'mdi-page-next'"
               :loading="isLoadingNextReports"
               :text="'もっと読み込む'"
               @click="readNextReports"
@@ -116,6 +115,7 @@
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
+import { mdiAccountArrowLeft, mdiAccountArrowRight, mdiTextBoxEdit } from '@mdi/js'
 import useShow from '@/composables/users/useShow'
 import useLoginUser from '@/utils/useLoginUser'
 import ButtonFollow from '@/components/molecules/ButtonFollow.vue'
@@ -215,6 +215,9 @@ export default defineComponent({
       isLoadingUser,
       likeReports,
       loginUser,
+      mdiAccountArrowLeft,
+      mdiAccountArrowRight,
+      mdiTextBoxEdit,
       myReports,
       pushToUserEdit,
       readNextFollowers,

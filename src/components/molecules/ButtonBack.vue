@@ -3,7 +3,6 @@
     :block-flg="true"
     :color="'primary'"
     :disabled="disabled"
-    :icon="'mdi-arrow-left'"
     :left-flg="true"
     :outlined-flg="true"
     :text="'戻る'"

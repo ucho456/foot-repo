@@ -7,7 +7,7 @@
           <v-col cols="9" align-self="center"> 採点する試合を選んで下さい。 </v-col>
           <v-col cols="3" class="text-right">
             <v-btn icon @click="showDialog">
-              <v-icon>mdi-magnify</v-icon>
+              <v-icon>{{ mdiMagnify }}</v-icon>
             </v-btn>
           </v-col>
         </v-row>
@@ -50,7 +50,6 @@
           <v-col cols="10">
             <ButtonSubmit
               :disabled="!hasNextPage"
-              :icon="'mdi-page-next'"
               :loading="isLoadingNext"
               :text="'もっと読み込む'"
               @click="readMore"
@@ -79,6 +78,7 @@
 
 <script lang="ts">
 import { defineComponent, watch } from '@nuxtjs/composition-api'
+import { mdiMagnify } from '@mdi/js'
 import useSearch from '@/composables/reports/useSearch'
 import useSnackbar from '@/utils/useSnackbar'
 import useStore from '@/utils/useStore'
@@ -152,7 +152,8 @@ export default defineComponent({
       inputTeamId,
       inputYearMonth,
       clearYearMonth,
-      matches
+      matches,
+      mdiMagnify
     }
   }
 })
