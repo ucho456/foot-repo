@@ -38,6 +38,7 @@ export default {
     '@nuxtjs/composition-api/module',
     '@nuxt/typescript-build',
     '@nuxtjs/stylelint-module',
+    '@nuxtjs/google-fonts',
     '@nuxtjs/vuetify'
   ],
 
@@ -58,6 +59,9 @@ export default {
 
   vuetify: {
     customVariables: ['@/assets/variables.scss'],
+    defaultAssets: {
+      font: false
+    },
     treeShake: true,
     theme: {
       themes: {
@@ -70,6 +74,14 @@ export default {
           failure: colors.pink
         }
       }
+    }
+  },
+
+  googleFonts: {
+    families: {
+      Roboto: [500, 700],
+      download: true,
+      inject: true
     }
   },
 
