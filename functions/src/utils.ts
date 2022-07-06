@@ -1,11 +1,12 @@
+/** check */
 import * as functions from 'firebase-functions'
 import { AxiosRequestConfig } from 'axios'
 
 export const env = functions.config()['foot-repo']
 
-export const footballUrl = env.football_url
-
 export const config: AxiosRequestConfig<any> = { headers: { 'X-Auth-Token': env.football_token } }
+
+export const footballUrl = env.football_url
 
 export const leagueCompetitions = [
   { id: 2119, collectionId: 'J-League', name: 'J. League' },
@@ -23,12 +24,6 @@ export const convertJST = (utcDate: string): string => {
   ).padStart(2, '0')}`
 }
 
-export const convertYearMonth = (utcDate: string): string => {
-  const time = new Date(utcDate)
-  time.setHours(time.getHours() + 9)
-  return `${time.getFullYear()}-${String(time.getMonth() + 1).padStart(2, '0')}`
-}
-
 export const convertPosition = (position: FbPosition): 'GK' | 'DF' | 'MF' | 'FW' | null => {
   return position === 'Goalkeeper'
     ? 'GK'
@@ -42,4 +37,10 @@ export const convertPosition = (position: FbPosition): 'GK' | 'DF' | 'MF' | 'FW'
       position?.includes('Winger')
     ? 'FW'
     : null
+}
+
+export const convertYearMonth = (utcDate: string): string => {
+  const time = new Date(utcDate)
+  time.setHours(time.getHours() + 9)
+  return `${time.getFullYear()}-${String(time.getMonth() + 1).padStart(2, '0')}`
 }

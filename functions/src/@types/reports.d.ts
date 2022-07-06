@@ -48,10 +48,6 @@ type Report = {
 
 type ReportItem = {
   id: string
-  user: {
-    id: string
-    ref: import('firebase-admin/firestore').DocumentReference
-  }
   player: {
     id: string
     name: string
