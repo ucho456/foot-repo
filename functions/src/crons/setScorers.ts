@@ -1,5 +1,6 @@
-import * as functions from 'firebase-functions'
+/** check */
 import * as admin from 'firebase-admin'
+import * as functions from 'firebase-functions'
 import axios, { AxiosResponse } from 'axios'
 import { scorersConverter } from '../converters'
 import { config, footballUrl, leagueCompetitions } from '../utils'
@@ -40,7 +41,7 @@ const getScorers = async (competition: { id: number; collectionId: string }): Pr
 
 const setScorers = functions
   .region('asia-northeast1')
-  .pubsub.schedule('0 5 * * *')
+  .pubsub.schedule('18 5 * * *')
   .onRun(async () => {
     const batch = admin.firestore().batch()
     for (const competition of leagueCompetitions) {

@@ -42,7 +42,7 @@ const getStandings = async (competition: {
 
 const setStandings = functions
   .region('asia-northeast1')
-  .pubsub.schedule('0 6 * * *')
+  .pubsub.schedule('21 5 * * *')
   .onRun(async () => {
     const batch = admin.firestore().batch()
     for (const competition of leagueCompetitions) {
