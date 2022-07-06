@@ -1,4 +1,5 @@
-/** 8/1にsetMatches復活予定 */
+/** check */
+/** 8/1にJLeague以外復活予定 */
 import * as admin from 'firebase-admin'
 import createAuth from './calls/createAuth'
 import {

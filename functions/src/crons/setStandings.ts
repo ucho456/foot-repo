@@ -1,5 +1,6 @@
-import * as functions from 'firebase-functions'
+/** check */
 import * as admin from 'firebase-admin'
+import * as functions from 'firebase-functions'
 import axios, { AxiosResponse } from 'axios'
 import { standingsConverter } from '../converters'
 import { config, footballUrl, leagueCompetitions } from '../utils'
@@ -9,7 +10,7 @@ const getStandings = async (competition: {
   collectionId: string
 }): Promise<Standings> => {
   const res: AxiosResponse<any, any> = await axios.get(
-    footballUrl + `competitions/${competition.id}/standings`,
+    footballUrl + `competitions/${competition.id}/standings?season=2021`,
     config
   )
   const fbStandings = res.data as FbStandings
