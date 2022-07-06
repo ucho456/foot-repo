@@ -7,7 +7,8 @@ export const competitionMap = new Map([
     {
       id: 'J-League',
       name: 'J. League',
-      imageUrl: require('@/assets/JJL.jpg') as string,
+      imageUrl:
+        'https://firebasestorage.googleapis.com/v0/b/foot-repo.appspot.com/o/JJL.jpg?alt=media&token=1625822d-a6dc-4bb9-a018-23506a19fbd3',
       type: 'league',
       to: '/databases/leagues/J-League'
     }

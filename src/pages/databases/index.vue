@@ -41,7 +41,7 @@ export default defineComponent({
       {
         id: 'J-League',
         title: 'J. League（準備中）',
-        src: require('@/assets/JJL.jpg') as string,
+        src: 'https://firebasestorage.googleapis.com/v0/b/foot-repo.appspot.com/o/JJL.jpg?alt=media&token=1625822d-a6dc-4bb9-a018-23506a19fbd3',
         // to: '/databases/leagues/J-League',
         type: 'league'
       },
