@@ -1,3 +1,4 @@
+/** check */
 type Card = 'red' | 'yellow'
 
 type CompetitionType = 'league' | 'cup' | 'japan'

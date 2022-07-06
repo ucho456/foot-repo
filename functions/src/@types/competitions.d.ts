@@ -1,3 +1,4 @@
+/** check */
 type Competitions = {
   id: string
   name: string

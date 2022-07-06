@@ -1,3 +1,4 @@
+/** check */
 type FbPosition =
   | 'Goalkeeper'
   | 'Defence'

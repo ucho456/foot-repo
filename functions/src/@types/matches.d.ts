@@ -1,10 +1,11 @@
+/** check */
 type Match = {
   id: string
   season: string
   jstDate: string
   yearMonth: string
   matchday: number
-  status: 'SCHEDULED' | 'FINISHED'
+  status: MatchStatus
   venue: string
   teamIds: string[]
   competition: {
@@ -32,17 +33,6 @@ type Match = {
     penalty: number | null
   }
   lastUpdated: string
-}
-
-type Position = 'GK' | 'DF' | 'MF' | 'FW' | 'HC' | null
-
-type Player = {
-  player: {
-    id: string
-    name: string
-  }
-  position: Position
-  shirtNumber: number | null
 }
 
 type MatchDetail = {
@@ -80,7 +70,7 @@ type MatchDetail = {
       id: string
       name: string
     }
-    card: 'red' | 'yellow'
+    card: Card
   }[]
   substitutions: {
     keyId: string

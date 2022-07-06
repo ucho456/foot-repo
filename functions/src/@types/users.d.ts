@@ -1,3 +1,4 @@
+/** check */
 type User = {
   id: string
   name: string
@@ -11,6 +12,7 @@ type User = {
   reportCount: number
   followCount: number
   followerCount: number
+  follow?: boolean
 }
 
 type Like = {
@@ -31,4 +33,12 @@ type Follower = {
     imageUrl: string | null
   }
   createdAt: import('firebase-admin/firestore').FieldValue
+  follow?: boolean
+}
+
+type ViolationReporter = {
+  user: {
+    id: string
+    ref: import('firebase-admin/firestore').DocumentReference
+  }
 }
