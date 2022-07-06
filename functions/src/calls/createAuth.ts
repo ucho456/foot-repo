@@ -1,5 +1,6 @@
-import * as functions from 'firebase-functions'
+/** check */
 import * as admin from 'firebase-admin'
+import * as functions from 'firebase-functions'
 
 export const createAuth = functions
   .region('asia-northeast1')

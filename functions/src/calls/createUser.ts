@@ -1,11 +1,12 @@
-import * as functions from 'firebase-functions'
+/** check */
 import * as admin from 'firebase-admin'
+import * as functions from 'firebase-functions'
 
 export const createUser = functions
   .region('asia-northeast1')
   .firestore.document('users/{userId}')
-  .onCreate(async (_, context) => {
-    const uid = context.params.userId
+  .onCreate(async (_, ctx) => {
+    const uid = ctx.params.userId as string
     await admin.auth().setCustomUserClaims(uid, {
       initSetting: true,
       suspended: false,
