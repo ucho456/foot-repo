@@ -1,5 +1,7 @@
-import * as functions from 'firebase-functions'
+/** check */
+/** 8/1に13行目を復活予定 */
 import * as admin from 'firebase-admin'
+import * as functions from 'firebase-functions'
 import axios, { AxiosResponse } from 'axios'
 import { makeMatch } from '../calls/createMatches'
 import { forReportConverter, matchConverter, matchDetailConverter } from '../converters'
@@ -8,10 +10,14 @@ import { config, convertPosition, footballUrl, leagueCompetitions } from '../uti
 const getMatchInfos = async (
   competitionId: number
 ): Promise<{ id: string; status: string; lastUpdated: string }[]> => {
-  const utcDate =
-    process.env.NODE_ENV === 'production' ? new Date().toISOString().substring(0, 10) : '2022-05-22'
+  // const utcDate =
+  //   process.env.NODE_ENV === 'production' ? new Date().toISOString().substring(0, 10) : '2022-05-22'
+  // const res: AxiosResponse<any, any> = await axios.get(
+  //   footballUrl + `competitions/${competitionId}/matches?dateFrom=${utcDate}&dateTo=${utcDate}`,
+  //   config
+  // )
   const res: AxiosResponse<any, any> = await axios.get(
-    footballUrl + `competitions/${competitionId}/matches?dateFrom=${utcDate}&dateTo=${utcDate}`,
+    footballUrl + `competitions/${competitionId}/matches?season=2021&matchday=38`,
     config
   )
   const matches = res.data.matches as FbMatch[]
@@ -266,7 +272,6 @@ const setMatches = async (competition: { id: number; collectionId: string; name:
         const match = makeMatch(fbMatch, competition)
         batch.set(mRef, match)
       }
-
       const mdRef = admin
         .firestore()
         .doc(`matches/${fbMatchInfo.id}/match-detail/${fbMatchInfo.id}`)
@@ -276,7 +281,6 @@ const setMatches = async (competition: { id: number; collectionId: string; name:
         const matchDetail = makeMatchDetail(fbMatch)
         batch.set(mdRef, matchDetail)
       }
-
       const frRef = admin
         .firestore()
         .doc(`matches/${fbMatchInfo.id}/for-report/${fbMatchInfo.id}`)
@@ -291,19 +295,19 @@ const setMatches = async (competition: { id: number; collectionId: string; name:
   await batch.commit()
 }
 
+export const setBundesligaMatches = functions
+  .region('asia-northeast1')
+  .pubsub.schedule('15 */1 * * *')
+  .onRun(async () => {
+    await setMatches(leagueCompetitions[4])
+    return null
+  })
+
 export const setJLeagueMatches = functions
   .region('asia-northeast1')
   .pubsub.schedule('3 */1 * * *')
   .onRun(async () => {
     await setMatches(leagueCompetitions[0])
-    return null
-  })
-
-export const setPremierLeagueMatches = functions
-  .region('asia-northeast1')
-  .pubsub.schedule('6 */1 * * *')
-  .onRun(async () => {
-    await setMatches(leagueCompetitions[1])
     return null
   })
 
@@ -315,18 +319,18 @@ export const setLaLigaMatches = functions
     return null
   })
 
+export const setPremierLeagueMatches = functions
+  .region('asia-northeast1')
+  .pubsub.schedule('6 */1 * * *')
+  .onRun(async () => {
+    await setMatches(leagueCompetitions[1])
+    return null
+  })
+
 export const setSerieAMatches = functions
   .region('asia-northeast1')
   .pubsub.schedule('12 */1 * * *')
   .onRun(async () => {
     await setMatches(leagueCompetitions[3])
-    return null
-  })
-
-export const setBundesligaMatches = functions
-  .region('asia-northeast1')
-  .pubsub.schedule('15 */1 * * *')
-  .onRun(async () => {
-    await setMatches(leagueCompetitions[4])
     return null
   })

@@ -1,8 +1,9 @@
+/** 8/1にsetMatches復活予定 */
 import * as admin from 'firebase-admin'
 import createAuth from './calls/createAuth'
 import {
   createBundesligaMatches,
-  createJLeagueMatches,
+  // createJLeagueMatches,
   createLaLigaMatches,
   createPremierLeagueMatches,
   createSerieAMatches
@@ -10,11 +11,11 @@ import {
 import createUser from './calls/createUser'
 import updateEmailVerified from './calls/updateEmailVerified'
 // import {
-//   setBundesligaMatches,
-//   setJLeagueMatches,
-//   setLaLigaMatches,
-//   setPremierLeagueMatches,
-//   setSerieAMatches
+// setBundesligaMatches,
+// setJLeagueMatches,
+// setLaLigaMatches,
+// setPremierLeagueMatches,
+// setSerieAMatches
 // } from './crons/setMatches'
 // import setScorers from './crons/setScorers'
 // import setStandings from './crons/setStandings'
@@ -31,7 +32,7 @@ admin.initializeApp()
 module.exports = {
   createAuth,
   createBundesligaMatches,
-  createJLeagueMatches,
+  // createJLeagueMatches,
   createLaLigaMatches,
   createPremierLeagueMatches,
   createSerieAMatches,
