@@ -63,7 +63,6 @@
           </template>
         </v-simple-table>
       </v-container>
-      <ContainerLastUpdated v-if="team.data" :last-updated="team.data.lastUpdated" />
     </v-card>
   </v-container>
 </template>
@@ -74,14 +73,12 @@ import useShow from '@/composables/databases/teams/useShow'
 import useSnackbar from '@/utils/useSnackbar'
 import useStore from '@/utils/useStore'
 import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
-import ContainerLastUpdated from '@/components/molecules/ContainerLastUpdated.vue'
 
 export default defineComponent({
   name: 'TeamShow',
 
   components: {
-    ContainerLoading,
-    ContainerLastUpdated
+    ContainerLoading
   },
 
   setup() {
