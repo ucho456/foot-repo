@@ -32,7 +32,7 @@
             <ButtonSubmit
               :disabled="!hasNext"
               :text="'もっと読み込む'"
-              :loading="isLoadingButton"
+              :is-loading="isLoadingButton"
               @click="handleNext"
             />
           </v-col>

@@ -17,21 +17,21 @@
             <v-col cols="10">
               <ButtonSubmit
                 :disabled="invalid"
-                :loading="isLoading"
+                :is-loading="isLoading"
                 :text="'登録する'"
                 @click="submitEmail"
               />
             </v-col>
             <v-col cols="10">
               <ButtonTwitter
-                :loading="isLoading"
+                :is-loading="isLoading"
                 :text="'Twitterアカウントで登録'"
                 @click="submitTwitter"
               />
             </v-col>
             <v-col cols="10">
               <ButtonGoogle
-                :loading="isLoading"
+                :is-loading="isLoading"
                 :text="'Googleアカウントで登録'"
                 @click="submitGoogle"
               />

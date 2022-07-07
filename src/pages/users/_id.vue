@@ -71,7 +71,7 @@
           <v-col cols="10">
             <ButtonSubmit
               :disabled="tab === 'Mine' ? !hasNextMyReports : !hasNextLikeReports"
-              :loading="isLoadingNextReports"
+              :is-loading="isLoadingNextReports"
               :text="'もっと読み込む'"
               @click="readNextReports"
             />

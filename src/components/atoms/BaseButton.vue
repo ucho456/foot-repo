@@ -1,21 +1,24 @@
 <template>
   <v-btn
+    class="v-btn"
     :block="blockFlg"
-    :class="{ 'v-btn': true, 'white--text': whiteTextFlg }"
+    :class="{ 'white--text': whiteTextFlg }"
     :color="color"
     :disabled="disabled"
     :icon="iconFlg"
-    :loading="loading"
+    :loading="isLoading"
     :outlined="outlinedFlg"
     :text="textFlg"
     @click="handleClick"
-    ><v-icon :left="leftFlg">{{ icon }}</v-icon>
-    <v-img v-if="image" class="mr-2" :max-height="18" :max-width="18" :src="image" />
-    {{ text }}</v-btn
   >
+    <v-icon :left="leftFlg">{{ icon }}</v-icon>
+    <v-img v-if="image" class="mr-2" max-height="18" max-width="18" :src="image" />
+    {{ text }}
+  </v-btn>
 </template>
 
 <script lang="ts">
+/** check */
 import { defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
@@ -28,8 +31,8 @@ export default defineComponent({
     icon: { type: String, default: '' },
     iconFlg: { type: Boolean, default: false },
     image: { type: String, default: '' },
+    isLoading: { type: Boolean, default: false },
     leftFlg: { type: Boolean, default: false },
-    loading: { type: Boolean, default: false },
     outlinedFlg: { type: Boolean, default: false },
     text: { type: String, default: '' },
     textFlg: { type: Boolean, default: false },
@@ -37,9 +40,7 @@ export default defineComponent({
   },
 
   setup(_, ctx) {
-    const handleClick = (): void => {
-      ctx.emit('click')
-    }
+    const handleClick = (): void => ctx.emit('click')
 
     return { handleClick }
   }

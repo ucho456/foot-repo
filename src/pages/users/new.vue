@@ -38,7 +38,7 @@
             <v-col cols="10" sm="6">
               <ButtonSubmit
                 :disabled="invalid"
-                :loading="isLoadingSubmit"
+                :is-loading="isLoadingSubmit"
                 :text="'登録する'"
                 @click="submit"
               />

@@ -50,7 +50,7 @@
           <v-col cols="10">
             <ButtonSubmit
               :disabled="!hasNextPage"
-              :loading="isLoadingNext"
+              :is-loading="isLoadingNext"
               :text="'もっと読み込む'"
               @click="readMore"
             />

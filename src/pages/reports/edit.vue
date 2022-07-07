@@ -58,7 +58,7 @@
           <v-col cols="10" sm="6">
             <ButtonSubmit
               :text="inputReport.publish ? '更新する' : '更新して公開する'"
-              :loading="isLoadingSend"
+              :is-loading="isLoadingSend"
               @click="submitUpdate"
             />
           </v-col>
@@ -66,7 +66,7 @@
             <ButtonSubmit
               :disabled="inputReport.publish"
               :text="'非公開にして一時保存する'"
-              :loading="isLoadingSend"
+              :is-loading="isLoadingSend"
               @click="submitSave"
             />
           </v-col>

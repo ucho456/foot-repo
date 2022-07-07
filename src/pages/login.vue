@@ -14,27 +14,27 @@
             <v-col cols="10">
               <ButtonSubmit
                 :disabled="invalid"
-                :loading="isLoading"
+                :is-loading="isLoading"
                 :text="'ログイン'"
                 @click="submitEmail"
               />
             </v-col>
             <v-col cols="10">
               <ButtonTwitter
-                :loading="isLoading"
+                :is-loading="isLoading"
                 :text="'Twitterアカウントでログイン'"
                 @click="submitTwitter"
               />
             </v-col>
             <v-col cols="10">
               <ButtonGoogle
-                :loading="isLoading"
+                :is-loading="isLoading"
                 :text="'Googleアカウントでログイン'"
                 @click="submitGoogle"
               />
             </v-col>
             <v-col cols="10">
-              <ButtonBack @click="back" />
+              <ButtonBack :disabled="isLoading" @click="back" />
             </v-col>
             <NuxtLink class="text-caption hover mb-4" to="/signup"> 新規登録はこちらから </NuxtLink>
           </v-row>

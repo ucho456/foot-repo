@@ -40,13 +40,13 @@
             <v-col cols="10" sm="4">
               <ButtonSubmit
                 :disabled="invalid"
-                :loading="isLoadingSubmit"
+                :is-loading="isLoadingSubmit"
                 :text="'更新する'"
                 @click="submit"
               />
             </v-col>
             <v-col cols="10" sm="4">
-              <ButtonBack :disabled="invalid" @click="back" />
+              <ButtonBack :disabled="isLoadingSubmit" @click="back" />
             </v-col>
           </v-row>
         </ValidationObserver>

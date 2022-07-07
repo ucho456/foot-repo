@@ -62,12 +62,12 @@
         </v-row>
         <v-row justify="center">
           <v-col cols="10" sm="6">
-            <ButtonSubmit :text="'投稿する'" :loading="isLoadingSend" @click="submitCreate" />
+            <ButtonSubmit :text="'投稿する'" :is-loading="isLoadingSend" @click="submitCreate" />
           </v-col>
           <v-col cols="10" sm="6">
             <ButtonSubmit
               :text="'非公開にして一時保存する'"
-              :loading="isLoadingSend"
+              :is-loading="isLoadingSend"
               @click="submitSave"
             />
           </v-col>

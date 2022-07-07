@@ -46,7 +46,7 @@
           <v-col cols="10">
             <ButtonSubmit
               :disabled="!hasNextUsers"
-              :loading="isLoadingNextUsers"
+              :is-loading="isLoadingNextUsers"
               :text="'もっと読み込む'"
               @click="readNextUsers"
             />

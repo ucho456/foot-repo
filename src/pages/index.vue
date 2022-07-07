@@ -15,7 +15,7 @@
       <v-container v-if="!isLoadingReports">
         <v-row justify="center">
           <v-col cols="10">
-            <ButtonOutline :text="'選手採点を検索する'" @click="showDialog" />
+            <ButtonOutlined :text="'選手採点を検索する'" @click="showDialog" />
           </v-col>
         </v-row>
       </v-container>
@@ -37,7 +37,7 @@
 import { defineComponent } from '@nuxtjs/composition-api'
 import useIndex from '@/composables/useIndex'
 import useStore from '@/utils/useStore'
-import ButtonOutline from '@/components/molecules/ButtonOutlined.vue'
+import ButtonOutlined from '@/components/molecules/ButtonOutlined.vue'
 import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 import ContainerReportTable from '@/components/organisms/ContainerReportTable.vue'
 import DialogSearch from '@/components/organisms/DialogSearch.vue'
@@ -46,7 +46,7 @@ export default defineComponent({
   name: 'Index',
 
   components: {
-    ButtonOutline,
+    ButtonOutlined,
     ContainerLoading,
     ContainerReportTable,
     DialogSearch

@@ -148,7 +148,7 @@
           <v-col cols="6" class="mt-n8">
             <ButtonSubmit
               :disabled="inputComment.length === 0"
-              :loading="isLoadingNewComment"
+              :is-loading="isLoadingNewComment"
               :text="'コメントを投稿'"
               @click="confirmLogin"
             />

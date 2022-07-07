@@ -2,7 +2,7 @@
   <BaseButton
     :block-flg="true"
     :color="'primary'"
-    :loading="isLoading"
+    :is-loading="isLoading"
     :outlined-flg="!follow"
     :text="text"
     :white-text-flg="follow"
@@ -11,6 +11,7 @@
 </template>
 
 <script lang="ts">
+/** check */
 import { defineComponent, computed } from '@nuxtjs/composition-api'
 import BaseButton from '@/components/atoms/BaseButton.vue'
 
