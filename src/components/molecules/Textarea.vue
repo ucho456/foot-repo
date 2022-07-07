@@ -1,8 +1,9 @@
 <template>
   <ValidationProvider v-slot="{ errors }" :rules="rules">
-    <BaseTextarea
-      :counter-flg="true"
-      :err-message="errors[0]"
+    <v-textarea
+      counter
+      outlined
+      :error-messages="errors[0]"
       :label="label"
       :maxlength="maxlength"
       :value="value"
@@ -12,15 +13,11 @@
 </template>
 
 <script lang="ts">
+/** check */
 import { defineComponent } from '@nuxtjs/composition-api'
-import BaseTextarea from '@/components/atoms/BaseTextarea.vue'
 
 export default defineComponent({
   name: 'Textarea',
-
-  components: {
-    BaseTextarea
-  },
 
   props: {
     label: { type: String, default: '' },
@@ -30,9 +27,7 @@ export default defineComponent({
   },
 
   setup(_, ctx) {
-    const handleInput = (value: string): void => {
-      ctx.emit('input', value)
-    }
+    const handleInput = (value: string): void => ctx.emit('input', value)
 
     return { handleInput }
   }
