@@ -3,6 +3,7 @@
 </template>
 
 <script lang="ts">
+/** check */
 import { defineComponent } from '@nuxtjs/composition-api'
 import BaseSelect from '@/components/atoms/BaseSelect.vue'
 
@@ -42,11 +43,9 @@ export default defineComponent({
       '9.5',
       '10.0'
     ]
-    const handleInput = (value: string): void => {
-      ctx.emit('input', value)
-    }
+    const handleInput = (value: string): void => ctx.emit('input', value)
 
-    return { points, handleInput }
+    return { handleInput, points }
   }
 })
 </script>
