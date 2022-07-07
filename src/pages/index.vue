@@ -24,7 +24,7 @@
       :is-dialog="isDialog"
       :search-option="reports.searchOption"
       @clear-year-month="clearYearMonth"
-      @close="hideDialog"
+      @hide="hideDialog"
       @input-competition-id="inputCompetitionId"
       @input-year-month="inputYearMonth"
       @input-team-id="inputTeamId"

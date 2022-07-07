@@ -94,7 +94,7 @@
       :is-loading-button="isLoadingNextFollows"
       :is-loading-update-follow="isLoadingUpdateFollow"
       :uid="loginUser ? loginUser.uid : null"
-      @close="hideFollowsDialog"
+      @hide="hideFollowsDialog"
       @follow="(userId) => updateFollow(userId, 'dialog')"
       @next="readNextFollows"
     />
@@ -106,7 +106,7 @@
       :is-loading-button="isLoadingNextFollowers"
       :is-loading-update-follow="isLoadingUpdateFollow"
       :uid="loginUser ? loginUser.uid : null"
-      @close="hideFollowersDialog"
+      @hide="hideFollowersDialog"
       @follow="(userId) => updateFollow(userId, 'dialog')"
       @next="readNextFollowers"
     />

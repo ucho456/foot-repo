@@ -60,7 +60,7 @@
       :search-option="users.searchOption"
       @input-competition-id="inputCompetitionId"
       @input-team-id="inputTeamId"
-      @close="hideDialog"
+      @hide="hideDialog"
       @search="search"
     />
   </v-container>

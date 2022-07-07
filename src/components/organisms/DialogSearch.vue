@@ -20,14 +20,14 @@
           <v-col cols="10">
             <DialogYearMonth
               :year-month="searchOption.yearMonth"
-              @input="inputYearMonth"
               @clear="clearYearMonth"
+              @input="inputYearMonth"
             />
           </v-col>
         </v-row>
       </v-container>
       <v-card-actions>
-        <v-btn color="'primary'" text @click="handleClose"> 閉じる </v-btn>
+        <v-btn color="'primary'" text @click="handleHide"> 閉じる </v-btn>
         <v-spacer></v-spacer>
         <v-btn color="'primary'" text @click="handleSearch"> 検索 </v-btn>
       </v-card-actions>
@@ -37,17 +37,17 @@
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
+import DialogYearMonth from '@/components/organisms/DialogYearMonth.vue'
 import SelectIdCompetition from '@/components/molecules/SelectIdCompetition.vue'
 import SelectIdTeam from '@/components/molecules/SelectIdTeam.vue'
-import DialogYearMonth from '@/components/organisms/DialogYearMonth.vue'
 
 export default defineComponent({
   name: 'DialogSearch',
 
   components: {
+    DialogYearMonth,
     SelectIdCompetition,
-    SelectIdTeam,
-    DialogYearMonth
+    SelectIdTeam
   },
 
   props: {
@@ -69,29 +69,19 @@ export default defineComponent({
     const inputCompetitionId = (competitionId: string): void => {
       ctx.emit('input-competition-id', competitionId)
     }
-    const inputTeamId = (teamId: string): void => {
-      ctx.emit('input-team-id', teamId)
-    }
-    const inputYearMonth = (date: string): void => {
-      ctx.emit('input-year-month', date)
-    }
-    const clearYearMonth = (): void => {
-      ctx.emit('clear-year-month')
-    }
-    const handleClose = (): void => {
-      ctx.emit('close')
-    }
-    const handleSearch = (): void => {
-      ctx.emit('search')
-    }
+    const inputTeamId = (teamId: string): void => ctx.emit('input-team-id', teamId)
+    const inputYearMonth = (date: string): void => ctx.emit('input-year-month', date)
+    const clearYearMonth = (): void => ctx.emit('clear-year-month')
+    const handleHide = (): void => ctx.emit('hide')
+    const handleSearch = (): void => ctx.emit('search')
 
     return {
+      clearYearMonth,
+      handleHide,
+      handleSearch,
       inputCompetitionId,
       inputTeamId,
-      inputYearMonth,
-      clearYearMonth,
-      handleClose,
-      handleSearch
+      inputYearMonth
     }
   }
 })

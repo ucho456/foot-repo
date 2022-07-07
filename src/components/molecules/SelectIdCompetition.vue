@@ -25,7 +25,7 @@ export default defineComponent({
 
   setup(_, ctx) {
     const competitions = [
-      { id: '', name: '未選択' },
+      { id: '', name: 'すべて' },
       { id: 'J-League', name: 'J. League' },
       { id: 'Premier-League', name: 'Premier League' },
       { id: 'La-Liga', name: 'La Liga' },

@@ -3,10 +3,10 @@
     <v-card>
       <ContainerLoading :is-loading="isLoading" />
       <v-container v-if="!isLoading">
-        <v-virtual-scroll :items="follwers" :item-height="50" height="450">
+        <v-virtual-scroll height="400" item-height="60" :items="follwers">
           <template #default="{ item }">
             <v-container>
-              <v-row style="height: 30px">
+              <v-row style="height: 36px">
                 <ColUserImageName
                   :cols="7"
                   :sm="7"
@@ -40,27 +40,28 @@
       </v-container>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="'primary'" text @click="handleClose"> 閉じる </v-btn>
+        <v-btn color="'primary'" text @click="handleHide"> 閉じる </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script lang="ts">
+/** check */
 import { defineComponent } from '@nuxtjs/composition-api'
-import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
-import ColUserImageName from '@/components/organisms/ColUserImageName.vue'
 import ButtonFollow from '@/components/molecules/ButtonFollow.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
+import ColUserImageName from '@/components/organisms/ColUserImageName.vue'
+import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 
 export default defineComponent({
   name: 'DialogFollowers',
 
   components: {
-    ContainerLoading,
-    ColUserImageName,
     ButtonFollow,
-    ButtonSubmit
+    ButtonSubmit,
+    ColUserImageName,
+    ContainerLoading
   },
 
   props: {
@@ -74,11 +75,11 @@ export default defineComponent({
   },
 
   setup(_, ctx) {
-    const handleClose = (): void => ctx.emit('close')
+    const handleHide = (): void => ctx.emit('hide')
     const handleFollow = (userId: string): void => ctx.emit('follow', userId)
     const handleNext = (): void => ctx.emit('next')
 
-    return { handleClose, handleFollow, handleNext }
+    return { handleFollow, handleHide, handleNext }
   }
 })
 </script>

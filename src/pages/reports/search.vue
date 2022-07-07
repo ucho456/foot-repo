@@ -65,7 +65,7 @@
       @input-team-id="inputTeamId"
       @input-year-month="inputYearMonth"
       @clear-year-month="clearYearMonth"
-      @close="hideDialog"
+      @hide="hideDialog"
       @search="search"
     />
     <DialogConfirmLogin

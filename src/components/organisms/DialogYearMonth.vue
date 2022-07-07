@@ -1,7 +1,15 @@
 <template>
   <v-dialog ref="dialog" v-model="datePicker" persistent width="290" :return-value.sync="yearMonth">
     <template #activator="{ on, attrs }">
-      <v-text-field v-bind="attrs" readonly :label="'試合年月'" :value="yearMonth" v-on="on" />
+      <v-text-field
+        v-bind="attrs"
+        clearable
+        readonly
+        :label="'試合年月'"
+        :value="yearMonth"
+        v-on="on"
+        @click:clear="handleClear"
+      />
     </template>
     <v-date-picker
       v-model="tmpYearMonth"
@@ -36,8 +44,9 @@ export default defineComponent({
       ctx.refs.dialog.save(props.yearMonth)
       ctx.emit('click')
     }
+    const handleClear = () => ctx.emit('clear')
 
-    return { datePicker, handleClick, inputYearMonth, tmpYearMonth }
+    return { datePicker, handleClear, handleClick, inputYearMonth, tmpYearMonth }
   }
 })
 </script>
