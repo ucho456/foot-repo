@@ -1,11 +1,5 @@
 <template>
-  <v-dialog
-    ref="dialog"
-    v-model="datePicker"
-    :persistent="true"
-    :return-value.sync="yearMonth"
-    :width="'290px'"
-  >
+  <v-dialog ref="dialog" v-model="datePicker" persistent width="290" :return-value.sync="yearMonth">
     <template #activator="{ on, attrs }">
       <v-text-field
         v-bind="attrs"

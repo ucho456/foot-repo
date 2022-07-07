@@ -1,5 +1,5 @@
 <template>
-  <v-dialog max-width="260" scrollable :value="dialog">
+  <v-dialog max-width="260" persistent :value="dialog">
     <v-card>
       <v-card-title>おめでとうございます！</v-card-title>
       <v-card-text> 選手採点をSNSで共有しましょう。 </v-card-text>

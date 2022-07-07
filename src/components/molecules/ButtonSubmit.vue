@@ -1,7 +1,7 @@
 <template>
   <BaseButton
     :block-flg="true"
-    :color="'primary'"
+    :color="color"
     :disabled="disabled"
     :is-loading="isLoading"
     :text="text"
@@ -23,6 +23,7 @@ export default defineComponent({
   },
 
   props: {
+    color: { type: String, default: 'primary' },
     disabled: { type: Boolean, default: false },
     isLoading: { type: Boolean, default: false },
     text: { type: String, default: '' }

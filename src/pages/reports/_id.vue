@@ -184,7 +184,7 @@ import RowMatchHeader from '@/components/organisms/RowMatchHeader.vue'
 import ContainerReportTable from '@/components/organisms/ContainerReportTable.vue'
 import Textarea from '@/components/molecules/Textarea.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
-import DialogConfirmLogin from '@/components/molecules/DialogConfirmLogin.vue'
+import DialogConfirmLogin from '@/components/organisms/DialogConfirmLogin.vue'
 import DialogShare from '@/components/molecules/DialogShare.vue'
 
 export default defineComponent({

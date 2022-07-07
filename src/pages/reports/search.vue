@@ -85,7 +85,7 @@ import useStore from '@/utils/useStore'
 import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
 import DialogSearch from '@/components/organisms/DialogSearch.vue'
-import DialogConfirmLogin from '@/components/molecules/DialogConfirmLogin.vue'
+import DialogConfirmLogin from '@/components/organisms/DialogConfirmLogin.vue'
 
 export default defineComponent({
   name: 'ReportSearch',

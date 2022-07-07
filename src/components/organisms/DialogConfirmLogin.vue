@@ -1,5 +1,5 @@
 <template>
-  <v-dialog :max-width="380" persistent :value="isDialog">
+  <v-dialog max-width="380" persistent :value="isDialog">
     <v-card>
       <v-card-title />
       <v-card-text class="font-weight-medium wrap">{{ text }}</v-card-text>
@@ -8,15 +8,13 @@
         <v-container>
           <v-row justify="center">
             <v-col cols="10">
-              <v-btn block color="primary" outlined @click="handleGuest"
-                >ゲストユーザーで続ける</v-btn
-              >
+              <ButtonOutlined :text="'ゲストユーザーで続ける'" @click="handleGuest" />
             </v-col>
             <v-col cols="10">
-              <v-btn block color="primary" outlined @click="pushToLogin">ログインに進む</v-btn>
+              <ButtonOutlined :text="'ログインに進む'" @click="pushToLogin" />
             </v-col>
             <v-col cols="10">
-              <v-btn block color="primary" outlined @click="pushToSignup">新規登録に進む</v-btn>
+              <ButtonOutlined :text="'新規登録に進む'" @click="pushToSignup" />
             </v-col>
           </v-row>
         </v-container>
@@ -26,10 +24,16 @@
 </template>
 
 <script lang="ts">
+/** check */
 import { defineComponent, useRouter } from '@nuxtjs/composition-api'
+import ButtonOutlined from '@/components/molecules/ButtonOutlined.vue'
 
 export default defineComponent({
   name: 'DialogConfirmLogin',
+
+  components: {
+    ButtonOutlined
+  },
 
   props: {
     isDialog: { type: Boolean, default: false },
@@ -39,9 +43,7 @@ export default defineComponent({
   setup(_, ctx) {
     const router = useRouter()
 
-    const handleGuest = (): void => {
-      ctx.emit('guest')
-    }
+    const handleGuest = (): void => ctx.emit('guest')
     const pushToLogin = (): void => {
       router.push('/login')
     }

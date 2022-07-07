@@ -83,7 +83,7 @@
       :is-dialog="isDialogDelete"
       :is-loading="isLoadingReportDelete"
       :report="targetReport"
-      @close="hideDeleteDialog"
+      @hide="hideDeleteDialog"
       @delete="trushReport"
     />
     <DialogFollowers
@@ -124,7 +124,7 @@ import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
 import ColUserImageName from '@/components/organisms/ColUserImageName.vue'
 import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 import ContainerReportTable from '@/components/organisms/ContainerReportTable.vue'
-import DialogDelete from '@/components/molecules/DialogDelete.vue'
+import DialogDelete from '@/components/organisms/DialogDelete.vue'
 import DialogFollowers from '@/components/organisms/DialogFollowers.vue'
 
 export default defineComponent({
