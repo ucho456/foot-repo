@@ -8,6 +8,7 @@
 </template>
 
 <script lang="ts">
+/** check */
 import { defineComponent } from '@nuxtjs/composition-api'
 import BaseSelectId from '@/components/atoms/BaseSelectId.vue'
 
@@ -31,9 +32,7 @@ export default defineComponent({
       { id: 'Serie-A', name: 'Serie A' },
       { id: 'Bundesliga', name: 'Bundesliga' }
     ]
-    const handleInput = (competitionId: string): void => {
-      ctx.emit('input', competitionId)
-    }
+    const handleInput = (competitionId: string): void => ctx.emit('input', competitionId)
 
     return { competitions, handleInput }
   }

@@ -8,6 +8,7 @@
 </template>
 
 <script lang="ts">
+/** check */
 import { defineComponent, computed } from '@nuxtjs/composition-api'
 import BaseSelectId from '@/components/atoms/BaseSelectId.vue'
 
@@ -44,10 +45,9 @@ export default defineComponent({
         ? makePlayers(props.awayTeamReportItems)
         : makePlayers(props.homeTeamReportItems.concat(props.awayTeamReportItems))
     })
-    const handleInput = (id: string): void => {
-      ctx.emit('input', id)
-    }
-    return { players, handleInput }
+    const handleInput = (id: string): void => ctx.emit('input', id)
+
+    return { handleInput, players }
   }
 })
 </script>

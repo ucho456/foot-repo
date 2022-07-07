@@ -11,6 +11,7 @@
 </template>
 
 <script lang="ts">
+/** check */
 import { defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
@@ -26,9 +27,7 @@ export default defineComponent({
   },
 
   setup(_, ctx) {
-    const handleInput = (id: string): void => {
-      ctx.emit('input', id)
-    }
+    const handleInput = (id: string): void => ctx.emit('input', id)
 
     return { handleInput }
   }

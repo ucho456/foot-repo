@@ -3,13 +3,14 @@
 </template>
 
 <script lang="ts">
+/** check */
 import { computed, defineComponent } from '@nuxtjs/composition-api'
 import {
+  bundesligaTeams,
   jLeagueTeams,
-  premierLeagueTeams,
   laLigaTeams,
-  serieATeams,
-  bundesligaTeams
+  premierLeagueTeams,
+  serieATeams
 } from '@/utils/selectTeams'
 import BaseSelectId from '@/components/atoms/BaseSelectId.vue'
 
@@ -39,11 +40,9 @@ export default defineComponent({
         ? bundesligaTeams
         : [{ id: '', name: 'コンペティションを選択して下さい。' }]
     })
-    const handleInput = (id: string): void => {
-      ctx.emit('input', id)
-    }
+    const handleInput = (id: string): void => ctx.emit('input', id)
 
-    return { teams, handleInput }
+    return { handleInput, teams }
   }
 })
 </script>
