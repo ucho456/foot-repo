@@ -7,11 +7,12 @@
           <v-col cols="12" class="mt-4">
             <a
               class="hover"
-              href="https://twitter.com/messages/compose?recipient_id=foot_repo"
+              href="https://twitter.com/messages/compose?recipient_id=1500667275937927171"
               target="_blank"
             >
-              Twitter公式アカウントのDMにてお問い合わせ下さい。
+              こちら
             </a>
+            よりTwitter公式アカウントのDMにてお問い合わせ下さい。
           </v-col>
           <v-col cols="10">
             <ButtonBack @click="back" />

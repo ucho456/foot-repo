@@ -16,7 +16,7 @@
             相互リンクパートナー・広告スポンサーを募集中です。
             <a
               class="hover"
-              href="https://twitter.com/messages/compose?recipient_id=foot_repo"
+              href="https://twitter.com/messages/compose?recipient_id=1500667275937927171"
               target="_blank"
             >
               こちら
