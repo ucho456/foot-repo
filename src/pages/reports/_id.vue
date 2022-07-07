@@ -163,7 +163,7 @@
     />
     <DialogShare
       :dialog="dialogShare"
-      @click="hide"
+      @hide="hide"
       @facebook="share('facebook')"
       @twitter="share('twitter')"
     />
@@ -185,7 +185,7 @@ import ContainerReportTable from '@/components/organisms/ContainerReportTable.vu
 import Textarea from '@/components/molecules/Textarea.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
 import DialogConfirmLogin from '@/components/organisms/DialogConfirmLogin.vue'
-import DialogShare from '@/components/molecules/DialogShare.vue'
+import DialogShare from '@/components/organisms/DialogShare.vue'
 
 export default defineComponent({
   name: 'ReportShow',

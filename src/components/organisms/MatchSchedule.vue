@@ -47,7 +47,7 @@
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
-import DialogYearMonth from '@/components/molecules/DialogYearMonth.vue'
+import DialogYearMonth from '@/components/organisms/DialogYearMonth.vue'
 import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 
 export default defineComponent({

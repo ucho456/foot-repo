@@ -39,7 +39,7 @@
 import { defineComponent } from '@nuxtjs/composition-api'
 import SelectIdCompetition from '@/components/molecules/SelectIdCompetition.vue'
 import SelectIdTeam from '@/components/molecules/SelectIdTeam.vue'
-import DialogYearMonth from '@/components/molecules/DialogYearMonth.vue'
+import DialogYearMonth from '@/components/organisms/DialogYearMonth.vue'
 
 export default defineComponent({
   name: 'DialogSearch',

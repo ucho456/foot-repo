@@ -18,13 +18,14 @@
       <v-divider />
       <v-card-actions>
         <v-spacer />
-        <v-btn color="primary" text @click="handleClick">閉じる</v-btn>
+        <v-btn color="primary" text @click="handleHide">閉じる</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script lang="ts">
+/** check */
 import { defineComponent } from '@nuxtjs/composition-api'
 import { mdiFacebook, mdiTwitter } from '@mdi/js'
 
@@ -36,11 +37,11 @@ export default defineComponent({
   },
 
   setup(_, ctx) {
-    const handleClick = (): void => ctx.emit('click')
+    const handleHide = (): void => ctx.emit('hide')
     const handleFacebook = (): void => ctx.emit('facebook')
     const handleTwitter = (): void => ctx.emit('twitter')
 
-    return { handleClick, handleFacebook, handleTwitter, mdiFacebook, mdiTwitter }
+    return { handleFacebook, handleHide, handleTwitter, mdiFacebook, mdiTwitter }
   }
 })
 </script>
