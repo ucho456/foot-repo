@@ -1,9 +1,9 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="9"
-        ><h2>{{ h2 }}</h2></v-col
-      >
+      <v-col cols="9">
+        <h2>{{ h2 }}</h2>
+      </v-col>
       <v-col v-if="searchButtonFlg" cols="3" class="text-right">
         <v-btn icon @click="handleSearch">
           <v-icon>{{ mdiMagnify }}</v-icon>
@@ -11,7 +11,7 @@
       </v-col>
     </v-row>
     <v-tabs v-if="tabs.length > 0" class="mb-2" fixed-tabs @change="handleTab">
-      <v-tab v-for="t in tabs" :key="t" class="tab">{{ t }}</v-tab>
+      <v-tab v-for="tab in tabs" :key="tab" class="tab">{{ tab }}</v-tab>
     </v-tabs>
     <ContainerLoading :is-loading="isLoading" />
     <v-row v-if="reports.length === 0 && !isLoading">
@@ -25,18 +25,17 @@
             <v-img v-else :src="noAvatarImage" />
           </v-list-item-avatar>
           <v-list-item-content>
-            <v-list-item-title class="title"
-              >{{ report.title
-              }}<span v-if="!report.publish" class="private">非公開</span></v-list-item-title
-            >
+            <v-list-item-title class="title">
+              {{ report.title }}<span v-if="!report.publish" class="private">非公開</span>
+            </v-list-item-title>
             <v-list-item-subtitle class="d-flex">
-              <v-img :max-height="14" :max-width="14" :src="report.homeTeam.imageUrl" />
+              <v-img max-height="14" max-width="14" :src="report.homeTeam.imageUrl" />
               <span class="mx-2">{{ report.homeTeam.shortName }}</span>
               <span>{{ report.homeTeam.score }}</span>
               <span class="mx-2">vs</span>
               <span>{{ report.awayTeam.score }}</span>
               <span class="mx-2">{{ report.awayTeam.shortName }}</span>
-              <v-img :max-height="14" :max-width="14" :src="report.awayTeam.imageUrl" />
+              <v-img max-height="14" max-width="14" :src="report.awayTeam.imageUrl" />
             </v-list-item-subtitle>
             <v-list-item-subtitle>
               {{ report.jstDate }} / {{ report.competition.name }} / {{ report.matchday }}節
@@ -60,6 +59,7 @@
 </template>
 
 <script lang="ts">
+/** check */
 import { defineComponent, useRouter } from '@nuxtjs/composition-api'
 import { mdiDelete, mdiMagnify, mdiPencil, mdiThumbUp } from '@mdi/js'
 import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
@@ -85,29 +85,23 @@ export default defineComponent({
     const router = useRouter()
     const noAvatarImage = require('@/assets/no_avatar.png')
 
-    const handleSearch = (): void => {
-      ctx.emit('search')
-    }
-    const handleTab = (index: number): void => {
-      ctx.emit('change-tab', index)
-    }
+    const handleSearch = (): void => ctx.emit('search')
+    const handleTab = (index: number): void => ctx.emit('change-tab', index)
+    const handleDelete = (report: Report): void => ctx.emit('delete', report)
     const pushToReportEdit = (reportId: string): void => {
       router.push({ path: '/reports/edit', query: { reportId } })
     }
-    const handleDelete = (report: Report): void => {
-      ctx.emit('delete', report)
-    }
 
     return {
-      noAvatarImage,
+      handleDelete,
       handleSearch,
       handleTab,
-      pushToReportEdit,
-      handleDelete,
       mdiDelete,
       mdiMagnify,
       mdiPencil,
-      mdiThumbUp
+      mdiThumbUp,
+      noAvatarImage,
+      pushToReportEdit
     }
   }
 })

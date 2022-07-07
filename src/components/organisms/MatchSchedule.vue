@@ -1,8 +1,8 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="9" sm="9" align-self="center"><h2>試合日程</h2></v-col>
-      <v-col cols="3" sm="3">
+      <v-col cols="8" sm="9" align-self="center"><h2>試合日程</h2></v-col>
+      <v-col cols="4" sm="3">
         <DialogYearMonth :year-month="value" @input="inputYearMonth" @click="handleClick" />
       </v-col>
     </v-row>
@@ -46,45 +46,33 @@
 </template>
 
 <script lang="ts">
+/** check */
 import { defineComponent } from '@nuxtjs/composition-api'
-import DialogYearMonth from '@/components/organisms/DialogYearMonth.vue'
 import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
+import DialogYearMonth from '@/components/organisms/DialogYearMonth.vue'
 
 export default defineComponent({
   name: 'MatchSchedule',
 
   components: {
-    DialogYearMonth,
-    ContainerLoading
+    ContainerLoading,
+    DialogYearMonth
   },
 
   props: {
     isLoading: { type: Boolean, default: false },
     matchSchedule: {
       type: Array as () => Match[],
-      default: () => [
-        {
-          id: '',
-          jstDate: '',
-          matchday: 0,
-          competition: { name: '' },
-          homeTeam: { id: '', name: '', imageUrl: '', score: 0 },
-          awayTeam: { id: '', name: '', imageUrl: '', score: 0 }
-        }
-      ]
+      default: () => []
     },
     value: { type: String, default: '' }
   },
 
   setup(_, ctx) {
-    const inputYearMonth = (yearMonth: string): void => {
-      ctx.emit('input', yearMonth)
-    }
-    const handleClick = (): void => {
-      ctx.emit('click')
-    }
+    const inputYearMonth = (yearMonth: string): void => ctx.emit('input', yearMonth)
+    const handleClick = (): void => ctx.emit('click')
 
-    return { inputYearMonth, handleClick }
+    return { handleClick, inputYearMonth }
   }
 })
 </script>

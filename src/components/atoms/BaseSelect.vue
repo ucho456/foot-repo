@@ -16,7 +16,7 @@ export default defineComponent({
   name: 'BaseSelect',
 
   props: {
-    items: { type: Array as () => string[], default: () => [''] },
+    items: { type: Array as () => string[], default: () => [] },
     label: { type: String, default: '' },
     value: { type: String, default: '' }
   },

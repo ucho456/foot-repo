@@ -19,6 +19,7 @@
         <v-row v-if="!hideDate" justify="center">
           <v-col cols="10">
             <DialogYearMonth
+              :clearable="true"
               :year-month="searchOption.yearMonth"
               @clear="clearYearMonth"
               @input="inputYearMonth"

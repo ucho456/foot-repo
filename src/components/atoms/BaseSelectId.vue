@@ -20,7 +20,7 @@ export default defineComponent({
   props: {
     items: {
       type: Array as () => { id: string; name: string }[],
-      default: () => [{ id: '', name: '' }]
+      default: () => []
     },
     label: { type: String, default: '' },
     value: { type: String, default: '' }

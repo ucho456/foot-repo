@@ -3,8 +3,8 @@
     <template #activator="{ on, attrs }">
       <v-text-field
         v-bind="attrs"
-        clearable
         readonly
+        :clearable="clearable"
         :label="'試合年月'"
         :value="yearMonth"
         v-on="on"
@@ -33,6 +33,7 @@ export default defineComponent({
   name: 'DialogYearMonth',
 
   props: {
+    clearable: { type: Boolean, default: false },
     yearMonth: { type: String, default: '' }
   },
 

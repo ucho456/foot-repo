@@ -7,6 +7,7 @@
 </template>
 
 <script lang="ts">
+/** check */
 import { defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({

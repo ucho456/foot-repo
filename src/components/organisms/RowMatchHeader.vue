@@ -49,20 +49,11 @@ export default defineComponent({
         score: number | null
         penalty: number | null
       },
-      default: () => {
-        return {
-          name: '',
-          imageUrl: '',
-          score: 0,
-          penalty: 0
-        }
-      }
+      default: () => {}
     },
     competition: {
       type: Object as () => { name: string },
-      default: () => {
-        return { name: '' }
-      }
+      default: () => {}
     },
     homeTeam: {
       type: Object as () => {
@@ -71,14 +62,7 @@ export default defineComponent({
         score: number | null
         penalty: number | null
       },
-      default: () => {
-        return {
-          name: '',
-          imageUrl: '',
-          score: 0,
-          penalty: 0
-        }
-      }
+      default: () => {}
     },
     jstDate: { type: String, default: '' },
     matchday: { type: Number, default: 0 },
