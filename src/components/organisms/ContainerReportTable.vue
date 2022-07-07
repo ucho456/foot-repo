@@ -21,21 +21,31 @@
       <div v-for="report in reports" :key="report.id" class="d-flex">
         <v-list-item exact router :to="{ path: `/reports/${report.id}` }">
           <v-list-item-avatar>
-            <v-img v-if="report.user.imageUrl" :src="report.user.imageUrl" />
-            <v-img v-else :src="noAvatarImage" />
+            <v-img v-if="report.user.imageUrl" :lazy-src="lazy" :src="report.user.imageUrl" />
+            <v-img v-else :lazy-src="lazy" :src="noAvatarImage" />
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title class="title">
               {{ report.title }}<span v-if="!report.publish" class="private">非公開</span>
             </v-list-item-title>
             <v-list-item-subtitle class="d-flex">
-              <v-img max-height="14" max-width="14" :src="report.homeTeam.imageUrl" />
+              <v-img
+                max-height="14"
+                max-width="14"
+                :lazy-src="lazy"
+                :src="report.homeTeam.imageUrl"
+              />
               <span class="mx-2">{{ report.homeTeam.shortName }}</span>
               <span>{{ report.homeTeam.score }}</span>
               <span class="mx-2">vs</span>
               <span>{{ report.awayTeam.score }}</span>
               <span class="mx-2">{{ report.awayTeam.shortName }}</span>
-              <v-img max-height="14" max-width="14" :src="report.awayTeam.imageUrl" />
+              <v-img
+                max-height="14"
+                max-width="14"
+                :lazy-src="lazy"
+                :src="report.awayTeam.imageUrl"
+              />
             </v-list-item-subtitle>
             <v-list-item-subtitle>
               {{ report.jstDate }} / {{ report.competition.name }} / {{ report.matchday }}節
@@ -84,6 +94,7 @@ export default defineComponent({
   setup(_, ctx) {
     const router = useRouter()
     const noAvatarImage = require('@/assets/no_avatar.png')
+    const lazy = require('@/assets/lazy.png')
 
     const handleSearch = (): void => ctx.emit('search')
     const handleTab = (index: number): void => ctx.emit('change-tab', index)
@@ -96,6 +107,7 @@ export default defineComponent({
       handleDelete,
       handleSearch,
       handleTab,
+      lazy,
       mdiDelete,
       mdiMagnify,
       mdiPencil,

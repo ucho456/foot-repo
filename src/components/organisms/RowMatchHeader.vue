@@ -7,11 +7,23 @@
       </v-row>
       <v-row class="mt-n4">
         <v-col cols="5">
-          <v-img class="mx-auto" max-height="60" max-width="60" :src="homeTeam.imageUrl" />
+          <v-img
+            class="mx-auto"
+            max-height="60"
+            max-width="60"
+            :lazy-src="lazy"
+            :src="homeTeam.imageUrl"
+          />
         </v-col>
         <v-spacer />
         <v-col cols="5">
-          <v-img class="mx-auto" max-height="60" max-width="60" :src="awayTeam.imageUrl" />
+          <v-img
+            class="mx-auto"
+            max-height="60"
+            max-width="60"
+            :lazy-src="lazy"
+            :src="awayTeam.imageUrl"
+          />
         </v-col>
       </v-row>
       <v-row class="mt-n5">
@@ -70,12 +82,14 @@ export default defineComponent({
   },
 
   setup(props) {
+    const lazy = require('@/assets/lazy.png')
+
     const isPK =
       props.homeTeam.score === props.awayTeam.score &&
       props.homeTeam.penalty !== null &&
       props.awayTeam.penalty !== null
 
-    return { isPK }
+    return { isPK, lazy }
   }
 })
 </script>

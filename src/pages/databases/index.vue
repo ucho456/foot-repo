@@ -5,7 +5,7 @@
         <v-row dense>
           <v-col v-for="competition in competitions" :key="competition.title" cols="6" sm="4">
             <v-card :to="competition.to">
-              <v-img :height="183" :src="competition.src" />
+              <v-img :height="183" :lazy-src="lazy" :src="competition.src" />
               <v-card-text class="font-weight-bold text-center" style="height: 70px">
                 {{ competition.title }}
               </v-card-text>
@@ -24,6 +24,8 @@ export default defineComponent({
   name: 'Databases',
 
   setup() {
+    const lazy = require('@/assets/lazy.png')
+
     const competitions: {
       id: string
       title: string
@@ -89,7 +91,7 @@ export default defineComponent({
       }
     ]
 
-    return { competitions }
+    return { competitions, lazy }
   }
 })
 </script>

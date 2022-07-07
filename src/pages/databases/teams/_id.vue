@@ -5,7 +5,7 @@
       <v-container v-if="team.data">
         <v-row>
           <v-col cols="3" sm="2">
-            <v-img class="emblem" :src="team.data.imageUrl" />
+            <v-img class="emblem" :lazy-src="lazy" :src="team.data.imageUrl" />
           </v-col>
           <v-col cols="9" sm="10">
             <h1>{{ team.data.name }}</h1>
@@ -31,8 +31,9 @@
                 <td class="text-center">
                   <v-img
                     v-if="competition.imageUrl"
-                    :height="40"
-                    :width="40"
+                    height="40"
+                    width="40"
+                    :lazy-src="lazy"
                     :src="competition.imageUrl"
                   />
                 </td>
@@ -86,6 +87,7 @@ export default defineComponent({
     const { isLoading, setUp, getAge } = useShow()
     const { openSnackbar } = useSnackbar()
     const { team } = useStore()
+    const lazy = require('@/assets/lazy.png')
 
     const setUpPage = async (): Promise<void> => {
       const teamId = route.value.params.id as string
@@ -98,7 +100,7 @@ export default defineComponent({
     }
     setUpPage()
 
-    return { isLoading, getAge, team }
+    return { isLoading, getAge, team, lazy }
   }
 })
 </script>

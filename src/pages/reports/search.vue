@@ -18,7 +18,7 @@
           <div v-for="match in matches.data" :key="match.id">
             <v-list-item exact router :to="{ path: 'new', query: { matchId: match.id } }">
               <v-list-item-avatar>
-                <v-img :src="match.homeTeam.imageUrl" />
+                <v-img :lazy-src="lazy" :src="match.homeTeam.imageUrl" />
               </v-list-item-avatar>
               <v-list-item-content>
                 <v-row>
@@ -41,7 +41,7 @@
                 </v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-avatar>
-                <v-img :src="match.awayTeam.imageUrl" />
+                <v-img :lazy-src="lazy" :src="match.awayTeam.imageUrl" />
               </v-list-item-avatar>
             </v-list-item>
           </div>
@@ -118,6 +118,7 @@ export default defineComponent({
     } = useSearch()
     const { openSnackbar } = useSnackbar()
     const { matches } = useStore()
+    const lazy = require('@/assets/lazy.png')
 
     confirmLogin()
 
@@ -153,7 +154,8 @@ export default defineComponent({
       inputYearMonth,
       clearYearMonth,
       matches,
-      mdiMagnify
+      mdiMagnify,
+      lazy
     }
   }
 })

@@ -26,8 +26,8 @@
                   <v-list-item-subtitle v-else> マイチーム：未設定 </v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-avatar size="36">
-                  <v-img v-if="user.imageUrl" :src="user.imageUrl" />
-                  <v-img v-else :src="noAvatarImage" />
+                  <v-img v-if="user.imageUrl" :lazy-src="lazy" :src="user.imageUrl" />
+                  <v-img v-else :lazy-src="lazy" :src="noAvatarImage" />
                 </v-list-item-avatar>
               </v-list-item>
               <v-card-actions>
@@ -106,6 +106,7 @@ export default defineComponent({
     const { loginUser } = useLoginUser()
     const { users } = useStore()
     const noAvatarImage = require('@/assets/no_avatar.png')
+    const lazy = require('@/assets/lazy.png')
 
     setUp()
 
@@ -125,7 +126,8 @@ export default defineComponent({
       search,
       showDialog,
       updateFollow,
-      users
+      users,
+      lazy
     }
   }
 })

@@ -42,6 +42,7 @@
                     v-if="item.team.imageUrl"
                     :height="30"
                     :width="30"
+                    :lazy-src="lazy"
                     :src="item.team.imageUrl"
                   />
                 </td>
@@ -125,6 +126,7 @@ export default defineComponent({
     const { isLoadingStandings, isLoadingScorers, isLoadingMatches, setUp, search } = useShow()
     const { openSnackbar } = useSnackbar()
     const { league } = useStore()
+    const lazy = require('@/assets/lazy.png')
 
     const setUpPage = async (): Promise<void> => {
       const competitionId = route.value.params.id as string
@@ -152,6 +154,7 @@ export default defineComponent({
       isLoadingStandings,
       isLoadingScorers,
       isLoadingMatches,
+      lazy,
       league,
       searchMatchSchedule,
       pushToTeamShow

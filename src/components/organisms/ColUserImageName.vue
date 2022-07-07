@@ -8,10 +8,22 @@
     @click="pushToUserShow"
   >
     <div v-if="imageUrl">
-      <v-img class="rounded-circle" :height="imageSize" :src="imageUrl" :width="imageSize" />
+      <v-img
+        class="rounded-circle"
+        :height="imageSize"
+        :lazy-src="lazy"
+        :src="imageUrl"
+        :width="imageSize"
+      />
     </div>
     <div v-else>
-      <v-img class="rounded-circle" :height="imageSize" :src="noAvatarImage" :width="imageSize" />
+      <v-img
+        class="rounded-circle"
+        :height="imageSize"
+        :lazy-src="lazy"
+        :src="noAvatarImage"
+        :width="imageSize"
+      />
     </div>
     <div class="ml-3 text-truncate" :style="{ 'line-height': `${imageSize}px` }">
       {{ name }}
@@ -39,12 +51,13 @@ export default defineComponent({
   setup(props) {
     const router = useRouter()
     const noAvatarImage = require('@/assets/no_avatar.png')
+    const lazy = require('@/assets/lazy.png')
 
     const pushToUserShow = (): void => {
       if (props.userId !== 'guest' && props.userId !== null) router.push(`/users/${props.userId}`)
     }
 
-    return { noAvatarImage, pushToUserShow, router }
+    return { lazy, noAvatarImage, pushToUserShow, router }
   }
 })
 </script>

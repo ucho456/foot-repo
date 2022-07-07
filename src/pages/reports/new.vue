@@ -17,7 +17,7 @@
         </v-row>
         <v-row v-if="inputReport.selectTeam !== 'away'">
           <v-col>
-            <v-img max-height="30" max-width="30" :src="match.homeTeam.imageUrl" />
+            <v-img max-height="30" max-width="30" :lazy-src="lazy" :src="match.homeTeam.imageUrl" />
           </v-col>
         </v-row>
         <div v-if="inputReport.selectTeam !== 'away'">
@@ -32,7 +32,7 @@
         </div>
         <v-row v-if="inputReport.selectTeam !== 'home'">
           <v-col>
-            <v-img max-height="30" max-width="30" :src="match.awayTeam.imageUrl" />
+            <v-img max-height="30" max-width="30" :lazy-src="lazy" :src="match.awayTeam.imageUrl" />
           </v-col>
         </v-row>
         <div v-if="inputReport.selectTeam !== 'home'">
@@ -109,6 +109,7 @@ export default defineComponent({
     const router = useRouter()
     const { inputReport, match, isLoadingSetUp, setUp, isLoadingSend, create, save } = useNew()
     const { openSnackbar } = useSnackbar()
+    const lazy = require('@/assets/lazy.png')
 
     const setUpPage = async () => {
       const matchId = route.value.query.matchId as string
@@ -141,7 +142,7 @@ export default defineComponent({
       }
     }
 
-    return { inputReport, match, isLoadingSetUp, isLoadingSend, submitSave, submitCreate }
+    return { inputReport, match, isLoadingSetUp, isLoadingSend, submitSave, submitCreate, lazy }
   }
 })
 </script>

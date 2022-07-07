@@ -9,7 +9,13 @@
         <v-row>
           <v-col cols="12" sm="6">
             <div class="d-flex">
-              <v-img class="mt-3 mr-3" height="30" width="30" :src="match.data.homeTeam.imageUrl" />
+              <v-img
+                class="mt-3 mr-3"
+                height="30"
+                width="30"
+                :lazy-src="lazy"
+                :src="match.data.homeTeam.imageUrl"
+              />
               <v-tabs v-model="homeTab" fixed-tabs>
                 <v-tab>スタメン</v-tab>
                 <v-tab>ベンチ</v-tab>
@@ -29,7 +35,13 @@
           </v-col>
           <v-col cols="12" sm="6">
             <div class="d-flex">
-              <v-img class="mt-3 mr-3" height="30" width="30" :src="match.data.awayTeam.imageUrl" />
+              <v-img
+                class="mt-3 mr-3"
+                height="30"
+                width="30"
+                :lazy-src="lazy"
+                :src="match.data.awayTeam.imageUrl"
+              />
               <v-tabs v-model="awayTab" fixed-tabs>
                 <v-tab>スタメン</v-tab>
                 <v-tab>ベンチ</v-tab>
@@ -183,6 +195,7 @@ export default defineComponent({
     } = useShow()
     const { openSnackbar } = useSnackbar()
     const { match } = useStore()
+    const lazy = require('@/assets/lazy.png')
 
     const matchId = route.value.params.id as string
     const setUpPage = async (): Promise<void> => {
@@ -207,7 +220,8 @@ export default defineComponent({
       homePlayers,
       awayTab,
       awayPlayers,
-      pushToReportNew
+      pushToReportNew,
+      lazy
     }
   }
 })

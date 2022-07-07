@@ -21,7 +21,7 @@
         <RowMatchHeader v-bind="match" />
         <v-row v-if="report.selectTeam !== 'away'">
           <v-col>
-            <v-img max-height="30" max-width="30" :src="match.homeTeam.imageUrl" />
+            <v-img max-height="30" max-width="30" :lazy-src="lazy" :src="match.homeTeam.imageUrl" />
           </v-col>
         </v-row>
         <v-row v-if="report.selectTeam !== 'away'">
@@ -38,7 +38,7 @@
         </v-row>
         <v-row v-if="report.selectTeam !== 'home'">
           <v-col>
-            <v-img max-height="30" max-width="30" :src="match.awayTeam.imageUrl" />
+            <v-img max-height="30" max-width="30" :lazy-src="lazy" :src="match.awayTeam.imageUrl" />
           </v-col>
         </v-row>
         <v-row v-if="report.selectTeam !== 'home'">
@@ -234,6 +234,7 @@ export default defineComponent({
     const { loginUser } = useLoginUser()
     const { openSnackbar } = useSnackbar()
     const { confirmation } = useStore()
+    const lazy = require('@/assets/lazy.png')
 
     const setUpPage = async () => {
       const reportId = route.value.params.id as string
@@ -324,7 +325,8 @@ export default defineComponent({
       hide,
       mdiFacebook,
       mdiThumbUp,
-      mdiTwitter
+      mdiTwitter,
+      lazy
     }
   }
 })

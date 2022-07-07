@@ -14,7 +14,7 @@
       <div v-for="match in matchSchedule" :key="match.id">
         <v-list-item exact router :to="{ path: `/databases/matches/${match.id}` }">
           <v-list-item-avatar>
-            <v-img :src="match.homeTeam.imageUrl" />
+            <v-img :lazy-src="lazy" :src="match.homeTeam.imageUrl" />
           </v-list-item-avatar>
           <v-list-item-content>
             <v-row>
@@ -37,7 +37,7 @@
             </v-list-item-subtitle>
           </v-list-item-content>
           <v-list-item-avatar>
-            <v-img :src="match.awayTeam.imageUrl" />
+            <v-img :lazy-src="lazy" :src="match.awayTeam.imageUrl" />
           </v-list-item-avatar>
         </v-list-item>
       </div>
@@ -69,10 +69,12 @@ export default defineComponent({
   },
 
   setup(_, ctx) {
+    const lazy = require('@/assets/lazy.png')
+
     const inputYearMonth = (yearMonth: string): void => ctx.emit('input', yearMonth)
     const handleClick = (): void => ctx.emit('click')
 
-    return { handleClick, inputYearMonth }
+    return { handleClick, inputYearMonth, lazy }
   }
 })
 </script>

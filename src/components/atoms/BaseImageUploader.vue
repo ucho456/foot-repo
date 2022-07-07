@@ -2,8 +2,8 @@
   <div class="base-file-input">
     <label for="image-input-form" :class="{ 'no-event': disabled }">
       <v-avatar :size="imageSize">
-        <v-img v-if="value" :src="value" />
-        <v-img v-else :src="noAvatarImage" />
+        <v-img v-if="value" :lazy-src="lazy" :src="value" />
+        <v-img v-else :lazy-src="lazy" :src="noAvatarImage" />
       </v-avatar>
     </label>
     <input
@@ -39,6 +39,8 @@ export default defineComponent({
 
   setup(props, ctx) {
     const noAvatarImage = require('@/assets/no_avatar.png')
+    const lazy = require('@/assets/lazy.png')
+
     const deletedTimes = ref(0)
 
     const resizeImage = async (file: File): Promise<File> => {
@@ -63,7 +65,7 @@ export default defineComponent({
       ctx.emit('clear')
     }
 
-    return { deletedTimes, handleChange, handleClear, mdiClose, noAvatarImage }
+    return { deletedTimes, handleChange, handleClear, lazy, mdiClose, noAvatarImage }
   }
 })
 </script>

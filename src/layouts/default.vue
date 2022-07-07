@@ -39,8 +39,8 @@
       <client-only>
         <v-list-item v-if="loginUser" :to="`/users/${loginUser.uid}`">
           <v-list-item-avatar>
-            <v-img v-if="loginUser.imageUrl" :src="loginUser.imageUrl" />
-            <v-img v-else :src="noAvatarImage" />
+            <v-img v-if="loginUser.imageUrl" :lazy-src="lazy" :src="loginUser.imageUrl" />
+            <v-img v-else :lazy-src="lazy" :src="noAvatarImage" />
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title v-text="loginUser.name" />
@@ -121,9 +121,10 @@ export default defineComponent({
     const auth = getAuth()
     const { loginUser } = useLoginUser()
     const { snackbar, openSnackbar } = useSnackbar()
-
     const headerLogo = require('@/assets/header_logo.png')
     const noAvatarImage = require('@/assets/no_avatar.png')
+    const lazy = require('@/assets/lazy.png')
+
     const pushToHome = (): void => {
       router.push('/')
     }
@@ -206,6 +207,7 @@ export default defineComponent({
     }
 
     return {
+      lazy,
       loginUser,
       snackbar,
       headerLogo,

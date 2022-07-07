@@ -12,7 +12,7 @@
     @click="handleClick"
   >
     <v-icon :left="leftFlg">{{ icon }}</v-icon>
-    <v-img v-if="image" class="mr-2" max-height="18" max-width="18" :src="image" />
+    <v-img v-if="image" class="mr-2" max-height="18" max-width="18" :lazy-src="lazy" :src="image" />
     {{ text }}
   </v-btn>
 </template>
@@ -40,9 +40,11 @@ export default defineComponent({
   },
 
   setup(_, ctx) {
+    const lazy = require('@/assets/lazy.png')
+
     const handleClick = (): void => ctx.emit('click')
 
-    return { handleClick }
+    return { handleClick, lazy }
   }
 })
 </script>
