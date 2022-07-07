@@ -2,7 +2,7 @@
   <ValidationProvider v-slot="{ errors }" rules="email|required">
     <BaseTextField
       :err-message="errors[0]"
-      :label="'メール'"
+      :label="'メールアドレス'"
       :maxlength="255"
       :type="'email'"
       :value="value"
@@ -12,6 +12,7 @@
 </template>
 
 <script lang="ts">
+/** check */
 import { defineComponent } from '@nuxtjs/composition-api'
 import BaseTextField from '@/components/atoms/BaseTextField.vue'
 
@@ -27,9 +28,7 @@ export default defineComponent({
   },
 
   setup(_, ctx) {
-    const handleInput = (value: string): void => {
-      ctx.emit('input', value)
-    }
+    const handleInput = (value: string): void => ctx.emit('input', value)
 
     return { handleInput }
   }

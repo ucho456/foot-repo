@@ -4,7 +4,6 @@
       :counter-flg="true"
       :disabled="disabled"
       :err-message="errors[0]"
-      :icon="icon"
       :label="label"
       :maxlength="maxlength"
       :type="'text'"
@@ -15,6 +14,7 @@
 </template>
 
 <script lang="ts">
+/** check */
 import { defineComponent } from '@nuxtjs/composition-api'
 import BaseTextField from '@/components/atoms/BaseTextField.vue'
 
@@ -27,7 +27,6 @@ export default defineComponent({
 
   props: {
     disabled: { type: Boolean, default: false },
-    icon: { type: String, default: '' },
     label: { type: String, default: '' },
     maxlength: { type: Number, default: 0 },
     rules: { type: String, default: '' },
@@ -35,9 +34,7 @@ export default defineComponent({
   },
 
   setup(_, ctx) {
-    const handleInput = (value: string): void => {
-      ctx.emit('input', value)
-    }
+    const handleInput = (value: string): void => ctx.emit('input', value)
 
     return { handleInput }
   }
