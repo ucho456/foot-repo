@@ -87,7 +87,7 @@
       <v-divider />
       <v-card-actions>
         <v-spacer />
-        <v-btn color="primary" text @click="handleClick">閉じる</v-btn>
+        <v-btn color="primary" text @click="handleHide">閉じる</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -104,12 +104,9 @@ export default defineComponent({
   },
 
   setup(_, ctx) {
-    const terms = 'あ'.repeat(500)
-    const handleClick = (): void => {
-      ctx.emit('click')
-    }
+    const handleHide = (): void => ctx.emit('hide')
 
-    return { terms, handleClick }
+    return { handleHide }
   }
 })
 </script>

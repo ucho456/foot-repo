@@ -45,7 +45,7 @@
           </v-row>
         </ValidationObserver>
       </v-container>
-      <DialogTerms :is-dialog="isDialog" @click="closeDialog" />
+      <DialogTerms :is-dialog="isDialog" @hide="closeDialog" />
     </v-card>
   </v-container>
 </template>
@@ -60,7 +60,7 @@ import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
 import ButtonTwitter from '@/components/molecules/ButtonTwitter.vue'
 import ButtonGoogle from '@/components/molecules/ButtonGoogle.vue'
 import ButtonBack from '@/components/molecules/ButtonBack.vue'
-import DialogTerms from '@/components/molecules/DialogTerms.vue'
+import DialogTerms from '@/components/organisms/DialogTerms.vue'
 
 export default defineComponent({
   name: 'Signup',

@@ -74,10 +74,10 @@
     </v-navigation-drawer>
     <Snackbar v-bind="snackbar" />
     <DialogTerms :is-dialog="dialogTerms" @click="hide('terms')" />
-    <DialogPrivacyPolicy :dialog="dialogPrivacyPolicy" @click="hide('privacy policy')" />
+    <DialogPrivacyPolicy :dialog="dialogPrivacyPolicy" @hide="hide('privacy policy')" />
     <DialogSpecifiedCommercialTransactionsLaw
       :dialog="dialogSpecifiedCommercialTransactionsLaw"
-      @click="hide('specified commercial transactions law')"
+      @hide="hide('specified commercial transactions law')"
     />
   </v-app>
 </template>
@@ -99,9 +99,9 @@ import {
 } from '@mdi/js'
 import useLoginUser from '@/utils/useLoginUser'
 import useSnackbar from '@/utils/useSnackbar'
-import DialogPrivacyPolicy from '@/components/molecules/DialogPrivacyPolicy.vue'
-import DialogSpecifiedCommercialTransactionsLaw from '@/components/molecules/DialogSpecifiedCommercialTransactionsLaw.vue'
-import DialogTerms from '@/components/molecules/DialogTerms.vue'
+import DialogPrivacyPolicy from '@/components/organisms/DialogPrivacyPolicy.vue'
+import DialogSpecifiedCommercialTransactionsLaw from '@/components/organisms/DialogSpecifiedCommercialTransactionsLaw.vue'
+import DialogTerms from '@/components/organisms/DialogTerms.vue'
 import SideContainer from '@/components/organisms/SideContainer.vue'
 import Snackbar from '@/components/molecules/Snackbar.vue'
 
