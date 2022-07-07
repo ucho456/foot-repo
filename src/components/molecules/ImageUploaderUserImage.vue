@@ -11,6 +11,7 @@
 </template>
 
 <script lang="ts">
+/** check */
 import { defineComponent } from '@nuxtjs/composition-api'
 import BaseImageUploader from '@/components/atoms/BaseImageUploader.vue'
 
@@ -27,12 +28,8 @@ export default defineComponent({
   },
 
   setup(_, ctx) {
-    const handleChange = (imageFile: File): void => {
-      ctx.emit('change', imageFile)
-    }
-    const handleClear = (): void => {
-      ctx.emit('clear')
-    }
+    const handleChange = (imageFile: File): void => ctx.emit('change', imageFile)
+    const handleClear = (): void => ctx.emit('clear')
 
     return { handleChange, handleClear }
   }

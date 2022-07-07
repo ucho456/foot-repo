@@ -9,18 +9,19 @@
     <input
       id="image-input-form"
       :key="deletedTimes"
-      :disabled="disabled"
-      type="file"
       accept="image/*"
+      type="file"
+      :disabled="disabled"
       @change="handleChange"
     />
-    <v-btn v-if="!disabled" class="button" color="black" :icon="true" @click="handleClear">
+    <v-btn v-if="!disabled" class="button" color="black" icon @click="handleClear">
       <v-icon>{{ mdiClose }}</v-icon>
     </v-btn>
   </div>
 </template>
 
 <script lang="ts">
+/** check */
 import { defineComponent, ref } from '@nuxtjs/composition-api'
 import { mdiClose } from '@mdi/js'
 import imageCompression from 'browser-image-compression'
@@ -62,7 +63,7 @@ export default defineComponent({
       ctx.emit('clear')
     }
 
-    return { noAvatarImage, deletedTimes, mdiClose, handleChange, handleClear }
+    return { deletedTimes, handleChange, handleClear, mdiClose, noAvatarImage }
   }
 })
 </script>

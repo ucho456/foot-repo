@@ -163,7 +163,7 @@
     />
     <DialogShare
       :dialog="dialogShare"
-      @click="hide('share')"
+      @click="hide"
       @facebook="share('facebook')"
       @twitter="share('twitter')"
     />
