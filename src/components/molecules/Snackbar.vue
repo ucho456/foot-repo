@@ -1,23 +1,22 @@
 <template>
-  <BaseSnackbar
+  <v-snackbar
+    centered
+    top
     :color="color"
-    :message="message"
-    :show="show"
-    :text-color="textColor"
+    :value="show"
     :timeout="-1"
-  />
+    :transition="'slide-x-reverse-transition'"
+  >
+    <span :style="`color: ${textColor}`">{{ message }}</span>
+  </v-snackbar>
 </template>
 
 <script lang="ts">
+/** check */
 import { defineComponent } from '@nuxtjs/composition-api'
-import BaseSnackbar from '@/components/atoms/BaseSnackbar.vue'
 
 export default defineComponent({
   name: 'Snackbar',
-
-  components: {
-    BaseSnackbar
-  },
 
   props: {
     color: { type: String, default: '' },
