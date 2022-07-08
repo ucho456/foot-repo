@@ -89,6 +89,12 @@ export default defineComponent({
       search,
       showDialog
     }
+  },
+
+  head() {
+    return {
+      meta: [{ hid: 'robots', name: 'robots', content: 'noindex' }]
+    }
   }
 })
 </script>

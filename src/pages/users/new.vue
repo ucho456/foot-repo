@@ -121,6 +121,12 @@ export default defineComponent({
       isLoadingSubmit,
       submit
     }
+  },
+
+  head() {
+    return {
+      meta: [{ hid: 'robots', name: 'robots', content: 'noindex' }]
+    }
   }
 })
 </script>

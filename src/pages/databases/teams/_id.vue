@@ -101,6 +101,12 @@ export default defineComponent({
     setUpPage()
 
     return { isLoading, getAge, team, lazy }
+  },
+
+  head() {
+    return {
+      meta: [{ hid: 'robots', name: 'robots', content: 'noindex' }]
+    }
   }
 })
 </script>

@@ -135,6 +135,12 @@ export default defineComponent({
       submit,
       back
     }
+  },
+
+  head() {
+    return {
+      meta: [{ hid: 'robots', name: 'robots', content: 'noindex' }]
+    }
   }
 })
 </script>

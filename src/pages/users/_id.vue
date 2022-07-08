@@ -234,6 +234,12 @@ export default defineComponent({
       updateFollow,
       user
     }
+  },
+
+  head() {
+    return {
+      meta: [{ hid: 'robots', name: 'robots', content: 'noindex' }]
+    }
   }
 })
 </script>

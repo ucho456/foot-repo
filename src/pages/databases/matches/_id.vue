@@ -223,6 +223,12 @@ export default defineComponent({
       pushToReportNew,
       lazy
     }
+  },
+
+  head() {
+    return {
+      meta: [{ hid: 'robots', name: 'robots', content: 'noindex' }]
+    }
   }
 })
 </script>

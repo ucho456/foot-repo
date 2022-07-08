@@ -159,6 +159,12 @@ export default defineComponent({
       searchMatchSchedule,
       pushToTeamShow
     }
+  },
+
+  head() {
+    return {
+      meta: [{ hid: 'robots', name: 'robots', content: 'noindex' }]
+    }
   }
 })
 </script>

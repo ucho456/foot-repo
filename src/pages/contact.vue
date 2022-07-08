@@ -44,6 +44,12 @@ export default defineComponent({
     const back = (): void => router.back()
 
     return { back, logo }
+  },
+
+  head() {
+    return {
+      meta: [{ hid: 'robots', name: 'robots', content: 'noindex' }]
+    }
   }
 })
 </script>

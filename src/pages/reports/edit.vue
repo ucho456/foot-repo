@@ -145,6 +145,12 @@ export default defineComponent({
     }
 
     return { inputReport, match, isLoadingSetUp, isLoadingSend, submitUpdate, submitSave, lazy }
+  },
+
+  head() {
+    return {
+      meta: [{ hid: 'robots', name: 'robots', content: 'noindex' }]
+    }
   }
 })
 </script>

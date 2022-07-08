@@ -157,6 +157,12 @@ export default defineComponent({
       mdiMagnify,
       lazy
     }
+  },
+
+  head() {
+    return {
+      meta: [{ hid: 'robots', name: 'robots', content: 'noindex' }]
+    }
   }
 })
 </script>
