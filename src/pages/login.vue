@@ -4,8 +4,8 @@
       <v-container>
         <v-row class="mt-3" justify="center"><v-img max-width="240" :src="logo" /></v-row>
         <ValidationObserver v-slot="{ invalid }">
-          <v-row class="mt-4" justify="center">
-            <v-col cols="10">
+          <v-row justify="center">
+            <v-col cols="10" class="mb-n6 mt-4">
               <TextFieldEmail v-model="user.email" />
             </v-col>
             <v-col cols="10">
@@ -16,21 +16,21 @@
                 :disabled="invalid"
                 :is-loading="isLoading"
                 :text="'ログイン'"
-                @click="submitEmail"
+                @click="loginEmail"
               />
             </v-col>
             <v-col cols="10">
               <ButtonTwitter
                 :is-loading="isLoading"
                 :text="'Twitterアカウントでログイン'"
-                @click="submitTwitter"
+                @click="loginTwitter"
               />
             </v-col>
             <v-col cols="10">
               <ButtonGoogle
                 :is-loading="isLoading"
                 :text="'Googleアカウントでログイン'"
-                @click="submitGoogle"
+                @click="loginGoogle"
               />
             </v-col>
             <v-col cols="10">
@@ -45,90 +45,42 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useRouter } from '@nuxtjs/composition-api'
+/** check */
+import { defineComponent } from '@nuxtjs/composition-api'
 import useLogin from '@/composables/useLogin'
-import useSnackbar from '@/utils/useSnackbar'
-import TextFieldEmail from '@/components/molecules/TextFieldEmail.vue'
-import TextFieldPassword from '@/components/molecules/TextFieldPassword.vue'
+import ButtonBack from '@/components/molecules/ButtonBack.vue'
+import ButtonGoogle from '@/components/molecules/ButtonGoogle.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
 import ButtonTwitter from '@/components/molecules/ButtonTwitter.vue'
-import ButtonGoogle from '@/components/molecules/ButtonGoogle.vue'
-import ButtonBack from '@/components/molecules/ButtonBack.vue'
+import TextFieldEmail from '@/components/molecules/TextFieldEmail.vue'
+import TextFieldPassword from '@/components/molecules/TextFieldPassword.vue'
 
 export default defineComponent({
   name: 'Login',
 
   components: {
-    TextFieldEmail,
-    TextFieldPassword,
+    ButtonBack,
+    ButtonGoogle,
     ButtonSubmit,
     ButtonTwitter,
-    ButtonGoogle,
-    ButtonBack
+    TextFieldEmail,
+    TextFieldPassword
   },
 
   layout: 'grey',
 
   setup() {
-    const router = useRouter()
-    const { user, isLoading, loginEmail, loginTwitter, loginGoogle } = useLogin()
-    const { openSnackbar } = useSnackbar()
-
+    const { back, isLoading, loginEmail, loginGoogle, loginTwitter, user } = useLogin()
     const logo = require('@/assets/signup_logo.png')
 
-    const submitEmail = async (): Promise<void> => {
-      const result = await loginEmail()
-      if (result === 'success') {
-        const message = 'ログインしました。'
-        openSnackbar(result, message)
-        router.push('/')
-      } else if (result === 'no user') {
-        const message = 'ログインしました。ユーザープロフィールが未登録なので完了させて下さい。'
-        openSnackbar('alert', message)
-        router.push('users/new')
-      } else {
-        const message =
-          result === 'wrong email or password'
-            ? 'メールアドレス又はパスワードが間違っています。'
-            : result === 'unverified'
-            ? 'メールアドレスの認証が完了していません'
-            : 'エラーが発生しました。'
-        openSnackbar(result, message)
-      }
-    }
-
-    const submitTwitter = async (): Promise<void> => {
-      const result = await loginTwitter()
-      next(result)
-    }
-
-    const submitGoogle = async (): Promise<void> => {
-      const result = await loginGoogle()
-      next(result)
-    }
-
-    const next = (result: 'success' | 'failure' | 'no user'): void => {
-      if (result === 'success' || result === 'no user') {
-        const message = result === 'success' ? 'ログインしました。' : '認証が完了しました。'
-        openSnackbar('success', message)
-        result === 'success' ? router.push('/') : router.push({ name: 'users-new' })
-      } else {
-        openSnackbar(result, 'エラーが発生しました。')
-      }
-    }
-
-    const back = (): void => {
-      router.back()
-    }
-
     return {
-      user,
+      back,
       isLoading,
+      loginEmail,
+      loginGoogle,
+      loginTwitter,
       logo,
-      submitEmail,
-      submitTwitter,
-      submitGoogle,
-      back
+      user
     }
   }
 })

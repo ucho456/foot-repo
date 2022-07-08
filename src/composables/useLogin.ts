@@ -1,4 +1,5 @@
-import { reactive, ref } from '@nuxtjs/composition-api'
+/** check */
+import { reactive, ref, useRouter } from '@nuxtjs/composition-api'
 import {
   getAuth,
   GoogleAuthProvider,
@@ -8,36 +9,45 @@ import {
   TwitterAuthProvider
 } from 'firebase/auth'
 import { fetchUser } from '@/db/users'
+import useSnackbar from '@/utils/useSnackbar'
 
 const useLogin = () => {
+  const router = useRouter()
+  const { openSnackbar } = useSnackbar()
+
   const user = reactive({ email: '', password: '' })
   const isLoading = ref(false)
 
-  const loginEmail = async (): Promise<
-    'success' | 'failure' | 'wrong email or password' | 'unverified' | 'no user'
-  > => {
+  const loginEmail = async (): Promise<void> => {
     try {
       isLoading.value = true
       const auth = getAuth()
       const userCredential = await signInWithEmailAndPassword(auth, user.email, user.password)
       if (!auth.currentUser?.emailVerified) {
         await signOut(auth)
-        return 'unverified'
+        openSnackbar('failure', 'メールアドレスの認証が完了していません。')
       }
       const uid = userCredential.user.uid
       const resUser = await fetchUser(uid)
-      return resUser ? 'success' : 'no user'
+      if (resUser) {
+        openSnackbar('success', 'ログインしました。')
+        router.push('/')
+      } else {
+        const message = 'ログインしました。ユーザープロフィールが未登録なので完了させて下さい。'
+        openSnackbar('alert', message)
+        router.push('/users/new')
+      }
     } catch (error) {
       console.log(error)
-      return error instanceof Error && error.message.includes('auth/user-not-found')
-        ? 'wrong email or password'
-        : 'failure'
+      error instanceof Error && error.message.includes('auth/user-not-found')
+        ? openSnackbar('failure', 'メールアドレス又はパスワードが間違っています。')
+        : openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoading.value = false
     }
   }
 
-  const loginTwitter = async (): Promise<'success' | 'failure' | 'no user'> => {
+  const loginTwitter = async (): Promise<void> => {
     try {
       isLoading.value = true
       const auth = getAuth()
@@ -45,16 +55,21 @@ const useLogin = () => {
       const userCredential = await signInWithPopup(auth, provider)
       const uid = userCredential.user.uid
       const resUser = await fetchUser(uid)
-      return resUser ? 'success' : 'no user'
+      if (resUser) {
+        openSnackbar('success', 'ログインしました。')
+        router.push('/')
+      } else {
+        openSnackbar('success', '認証が完了しました。')
+      }
     } catch (error) {
       console.log(error)
-      return 'failure'
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoading.value = false
     }
   }
 
-  const loginGoogle = async (): Promise<'success' | 'failure' | 'no user'> => {
+  const loginGoogle = async (): Promise<void> => {
     try {
       isLoading.value = true
       const auth = getAuth()
@@ -62,16 +77,25 @@ const useLogin = () => {
       const userCredential = await signInWithPopup(auth, provider)
       const uid = userCredential.user.uid
       const resUser = await fetchUser(uid)
-      return resUser ? 'success' : 'no user'
+      if (resUser) {
+        openSnackbar('success', 'ログインしました。')
+        router.push('/')
+      } else {
+        openSnackbar('success', '認証が完了しました。')
+      }
     } catch (error) {
       console.log(error)
-      return 'failure'
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoading.value = false
     }
   }
 
-  return { user, isLoading, loginEmail, loginTwitter, loginGoogle }
+  const back = (): void => {
+    router.back()
+  }
+
+  return { back, isLoading, loginEmail, loginGoogle, loginTwitter, user }
 }
 
 export default useLogin
