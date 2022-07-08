@@ -22,7 +22,6 @@
     "@nuxt/typescript-runtime": "^2.1.0",
     "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/composition-api": "^0.31.0",
-    "browser-image-compression": "^1.0.17",
     "core-js": "^3.15.1",
     "firebase": "^9.6.7",
     "nuxt": "^2.15.7",
