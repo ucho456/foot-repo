@@ -226,6 +226,17 @@ export default defineComponent({
       mdiLogout,
       mdiMenu
     }
+  },
+
+  head() {
+    return {
+      link: [
+        {
+          rel: 'canonical',
+          href: `https:/foot-repo.com${this.$route.path}`
+        }
+      ]
+    }
   }
 })
 </script>
