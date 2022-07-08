@@ -43,7 +43,12 @@ export default {
     '@nuxtjs/vuetify'
   ],
 
-  modules: ['@nuxtjs/axios'],
+  modules: ['@nuxtjs/axios', '@nuxtjs/sitemap'],
+
+  sitemap: {
+    path: '/sitemap.xml',
+    hostname: 'https://foot-repo.com'
+  },
 
   manifest: {
     name: 'フットレポ',
