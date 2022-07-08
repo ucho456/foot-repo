@@ -35,6 +35,7 @@ export default {
   components: true,
 
   buildModules: [
+    '@nuxtjs/pwa',
     '@nuxtjs/composition-api/module',
     '@nuxt/typescript-build',
     '@nuxtjs/stylelint-module',
@@ -43,6 +44,11 @@ export default {
   ],
 
   modules: ['@nuxtjs/axios'],
+
+  manifest: {
+    name: 'フットレポ',
+    lang: 'ja'
+  },
 
   axios: {
     proxy: true
