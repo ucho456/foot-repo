@@ -14,7 +14,7 @@
         <v-row>
           <v-col cols="8">スタジアム：{{ team.data.venue }}</v-col>
           <v-col cols="4" class="text-right">
-            <a class="hover" :href="team.data.website" target="_blank">公式サイト</a>
+            <a ref="nofollow" class="hover" :href="team.data.website" target="_blank">公式サイト</a>
           </v-col>
         </v-row>
       </v-container>

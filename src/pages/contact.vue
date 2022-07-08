@@ -6,6 +6,7 @@
           <v-img max-width="240" :src="logo" />
           <v-col cols="12" class="mt-4">
             <a
+              ref="nofollow"
               class="hover"
               href="https://twitter.com/messages/compose?recipient_id=1500667275937927171"
               target="_blank"

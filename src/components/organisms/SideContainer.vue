@@ -15,6 +15,7 @@
           <v-col>
             相互リンクパートナー・広告スポンサーを募集中です。
             <a
+              ref="nofollow"
               class="hover"
               href="https://twitter.com/messages/compose?recipient_id=1500667275937927171"
               target="_blank"
@@ -29,6 +30,7 @@
     <!-- <v-card class="mt-4" outlined>
       <v-container>
         <a
+          ref="nofollow"
           class="twitter-timeline"
           data-height="400"
           data-lang="ja"
