@@ -255,7 +255,29 @@ export default defineComponent({
     }
     setUpPage()
 
-    useMeta(() => ({ title: report.value?.title }))
+    useMeta(() => ({
+      title: report.value?.title,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: `${report.value?.homeTeam.name} vs ${report.value?.awayTeam.name} の選手採点。サッカーの選手採点共有サービス、フットレポです。各国主要リーグやワールドカップ、日本代表などの試合の選手採点を投稿したり閲覧する事が出来ます。`
+        },
+        {
+          hid: 'twitter:image',
+          name: 'twitter:image',
+          content:
+            report.value?.selectTeam !== 'away'
+              ? report.value?.homeTeam.imageUrl!
+              : report.value?.awayTeam.imageUrl!
+        },
+        {
+          hid: 'og:description',
+          property: 'og:description',
+          content: `${report.value?.homeTeam.name} vs ${report.value?.awayTeam.name} の選手採点。`
+        }
+      ]
+    }))
 
     const clickLike = async (): Promise<void> => {
       const result = await updateLike()
