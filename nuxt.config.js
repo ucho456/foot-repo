@@ -15,7 +15,31 @@ export default {
         content:
           'サッカーの選手採点共有サービスです。各国主要リーグやワールドカップ、日本代表などの試合の選手採点を投稿したり閲覧する事が出来ます。'
       },
-      { hid: 'keywords', name: 'keywords', content: 'サッカー,選手採点' }
+      { hid: 'keywords', name: 'keywords', content: 'サッカー,選手採点' },
+      { hid: 'og:site_name', property: 'og:site_name', content: 'フットレポ' },
+      { hid: 'og:type', property: 'og:type', content: 'website' },
+      { hid: 'og:url', property: 'og:url', content: 'https://foot-repo.com' },
+      { hid: 'og:title', property: 'og:title', content: 'フットレポ' },
+      {
+        hid: 'og:description',
+        property: 'og:description',
+        content:
+          'サッカーの選手採点共有サービスです。各国主要リーグやワールドカップ、日本代表などの試合の選手採点を投稿したり閲覧する事が出来ます。'
+      },
+      {
+        hid: 'og:image',
+        property: 'og:image',
+        content:
+          'https://firebasestorage.googleapis.com/v0/b/foot-repo.appspot.com/o/logo.png?alt=media&token=876c838d-843f-463b-a3b3-a86946c0e688'
+      },
+      {
+        hid: 'twitter:image',
+        name: 'twitter:image',
+        content:
+          'https://firebasestorage.googleapis.com/v0/b/foot-repo.appspot.com/o/logo.png?alt=media&token=876c838d-843f-463b-a3b3-a86946c0e688'
+      },
+      { name: 'twitter:card', content: 'summary' },
+      { hid: 'twitter:site', name: 'twitter:site', content: '@foot_repo' }
     ],
     link: [{ rel: 'icon', type: 'image/png', href: '/favicon_logo.png' }]
   },

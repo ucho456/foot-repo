@@ -171,7 +171,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeUnmount, useRoute, useRouter, ref } from '@nuxtjs/composition-api'
+import {
+  defineComponent,
+  onBeforeUnmount,
+  useMeta,
+  useRoute,
+  useRouter,
+  ref
+} from '@nuxtjs/composition-api'
 import { mdiFacebook, mdiThumbUp, mdiTwitter } from '@mdi/js'
 import useShow from '@/composables/reports/useShow'
 import useLoginUser from '@/utils/useLoginUser'
@@ -247,6 +254,8 @@ export default defineComponent({
       }
     }
     setUpPage()
+
+    useMeta(() => ({ title: report.value?.title }))
 
     const clickLike = async (): Promise<void> => {
       const result = await updateLike()
@@ -328,7 +337,9 @@ export default defineComponent({
       mdiTwitter,
       lazy
     }
-  }
+  },
+
+  head: {}
 })
 </script>
 
