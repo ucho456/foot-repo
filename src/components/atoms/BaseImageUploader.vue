@@ -20,11 +20,10 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 /** check */
 import { defineComponent, ref } from '@nuxtjs/composition-api'
 import { mdiClose } from '@mdi/js'
-import imageCompression from 'browser-image-compression'
 
 export default defineComponent({
   name: 'BaseImageUploader',
@@ -37,30 +36,42 @@ export default defineComponent({
     value: { type: String, default: null, required: false }
   },
 
-  setup(props, ctx) {
+  setup(_, ctx) {
     const noAvatarImage = require('@/assets/no_avatar.png')
     const lazy = require('@/assets/lazy.png')
 
     const deletedTimes = ref(0)
 
-    const resizeImage = async (file: File): Promise<File> => {
-      const resizedImageFile = await imageCompression(file, {
-        maxSizeMB: 1,
-        maxWidthOrHeight: props.maxWidthOrHeight
-      })
-      return resizedImageFile
+    const resizeImage = (image) => {
+      const canvas = document.createElement('canvas')
+      const ctx = canvas.getContext('2d')
+      const ratio = image.height / image.width
+      const width = 100
+      const height = width * ratio
+      canvas.width = width
+      canvas.height = height
+      ctx.drawImage(image, 0, 0, image.width, image.height, 0, 0, width, height)
+      return canvas.toDataURL('image/png')
     }
 
-    const handleChange = async (e: Event): Promise<void> => {
+    const handleChange = (e) => {
       const { target } = e
       if (!(target instanceof HTMLInputElement) || !target.files) return
       const file = target.files[0]
       if (!file.type.match(/^image\/(png|jpeg|gif)$/)) return
-      const resizedImageFile = await resizeImage(file)
-      ctx.emit('change', resizedImageFile)
+      const image = new Image()
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onload = (e) => {
+        image.src = e.target?.result
+        image.onload = () => {
+          const resizedImage = resizeImage(image)
+          ctx.emit('change', resizedImage)
+        }
+      }
     }
 
-    const handleClear = (): void => {
+    const handleClear = () => {
       deletedTimes.value++
       ctx.emit('clear')
     }

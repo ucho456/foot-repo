@@ -1,9 +1,9 @@
-import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
+import { getDownloadURL, getStorage, ref, uploadString } from 'firebase/storage'
 
-const uploadAndGetImageUrl = async (storagePath: string, imageFile: File): Promise<string> => {
+const uploadAndGetImageUrl = async (storagePath: string, image: string): Promise<string> => {
   const storage = getStorage()
   const storageRef = ref(storage, storagePath)
-  await uploadBytes(storageRef, imageFile)
+  await uploadString(storageRef, image, 'data_url')
   const imageUrl = await getDownloadURL(storageRef)
   return imageUrl
 }

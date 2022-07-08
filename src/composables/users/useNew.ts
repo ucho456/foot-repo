@@ -16,7 +16,6 @@ const useNew = () => {
     competitionId: '',
     team: { id: '', name: '' }
   })
-  const userImageFile = ref<File | null>(null)
 
   const isLoadingSetUp = ref(false)
   const setUp = async (): Promise<'success' | 'failure' | 'unauthorized access'> => {
@@ -42,13 +41,11 @@ const useNew = () => {
     }
   }
 
-  const changeImageUrl = (imageFile: File): void => {
-    inputUser.imageUrl = URL.createObjectURL(imageFile)
-    userImageFile.value = imageFile
+  const changeImageUrl = (image: string): void => {
+    inputUser.imageUrl = image
   }
   const clearImageUrl = (): void => {
     inputUser.imageUrl = null
-    userImageFile.value = null
   }
   const inputCompetitionId = (competitionId: string): void => {
     inputUser.competitionId = competitionId
@@ -62,12 +59,10 @@ const useNew = () => {
       if (inputUser.team.id) {
         inputUser.team.name = teamMap.get(inputUser.team.id)?.name!
       }
-      const imageUrl = userImageFile.value
-        ? await uploadAndGetImageUrl(`users/${inputUser.id}`, userImageFile.value)
+      const imageUrl = inputUser.imageUrl
+        ? await uploadAndGetImageUrl(`users/${inputUser.id}`, inputUser.imageUrl)
         : null
-      if (imageUrl) {
-        inputUser.imageUrl = imageUrl
-      }
+      if (imageUrl) inputUser.imageUrl = imageUrl
       await createUser(inputUser)
       setUpLoginUser(inputUser)
       return 'success'

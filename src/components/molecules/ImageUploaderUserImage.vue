@@ -28,7 +28,7 @@ export default defineComponent({
   },
 
   setup(_, ctx) {
-    const handleChange = (imageFile: File): void => ctx.emit('change', imageFile)
+    const handleChange = (image: string): void => ctx.emit('change', image)
     const handleClear = (): void => ctx.emit('clear')
 
     return { handleChange, handleClear }
