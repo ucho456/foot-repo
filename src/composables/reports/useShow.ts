@@ -8,7 +8,7 @@ import {
   updateLikeCount,
   subscribeComments
 } from '@/db/reports'
-import { fetchFollow, fetchLike, fetchUser, putFollow } from '@/db/users'
+import { fetchIsFollow, fetchIsLike, fetchUser, putFollow } from '@/db/users'
 import useLoginUser from '@/utils/useLoginUser'
 
 const useShow = () => {
@@ -36,7 +36,7 @@ const useShow = () => {
       isLoadingReport.value = true
       const { resReport, resHomeTeamReportItems, resAwayTeamReportItems } =
         await fetchReportAndItems(reportId, loginUser.value?.uid)
-      if (loginUser.value) like.value = await fetchLike(loginUser.value.uid, resReport.id)
+      if (loginUser.value) like.value = await fetchIsLike(loginUser.value.uid, resReport.id)
       report.value = resReport
       homeTeamReportItems.value = resHomeTeamReportItems
       awayTeamReportItems.value = resAwayTeamReportItems
@@ -46,7 +46,7 @@ const useShow = () => {
       isLoadingUser.value = true
       user.value = await fetchUser(resReport.user.ref.id)
       if (loginUser.value) {
-        follow.value = await fetchFollow(loginUser.value.uid, report.value?.user.id)
+        follow.value = await fetchIsFollow(loginUser.value.uid, report.value?.user.id)
       }
       isLoadingUser.value = false
 
