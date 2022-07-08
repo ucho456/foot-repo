@@ -27,26 +27,24 @@
         </v-row>
       </v-container>
     </v-card>
-    <!-- <v-card class="mt-4" outlined>
+    <v-card class="mt-4" outlined>
       <v-container>
-        <a
-          ref="nofollow"
-          class="twitter-timeline"
-          data-height="400"
-          data-lang="ja"
-          data-dnt="true"
-          href="https://twitter.com/foot_repo?ref_src=twsrc%5Etfw"
-        ></a>
+        <Timeline id="foot_repo" source-type="profile" :options="{ tweetLimit: '3' }" />
       </v-container>
-    </v-card> -->
+    </v-card>
   </v-container>
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
+import { Timeline } from 'vue-tweet-embed'
 
 export default defineComponent({
   name: 'SideContainer',
+
+  components: {
+    Timeline
+  },
 
   setup() {
     /** サンプル。詳しい設定はまたやる。 */
@@ -56,15 +54,8 @@ export default defineComponent({
     //   script.setAttribute('async', 'true')
     //   document.head.appendChild(script)
     // }
-    // const createTweetScript = (): void => {
-    //   const script = document.createElement('script')
-    //   script.setAttribute('src', 'https://platform.twitter.com/widgets.js')
-    //   script.setAttribute('async', 'true')
-    //   document.head.appendChild(script)
-    // }
     if (process.client) {
       // createGoogleSearchScript()
-      // createTweetScript()
     }
   }
 })

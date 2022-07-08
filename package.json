@@ -26,6 +26,7 @@
     "firebase": "^9.6.7",
     "nuxt": "^2.15.7",
     "vee-validate": "^3.4.14",
+    "vue-tweet-embed": "^2.4.0",
     "vuetify": "^2.5.5"
   },
   "devDependencies": {
