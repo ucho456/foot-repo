@@ -1,3 +1,4 @@
+/** check */
 import { Ref } from '@nuxtjs/composition-api'
 import {
   collection,
@@ -14,8 +15,33 @@ import {
 import type { QueryDocumentSnapshot } from 'firebase/firestore'
 import { forReportConverter, matchConverter, matchDetailConverter } from '@/utils/converters'
 import { makeSearchOption } from '@/utils/searchOption'
-
 const perPage = 10
+
+/** Matches Read */
+export const fetchMatch = async (matchId: string): Promise<Match | null> => {
+  const db = getFirestore()
+  const mRef = doc(db, 'matches', matchId).withConverter(matchConverter)
+  const mSnapshot = await getDoc(mRef)
+  return mSnapshot.exists() ? mSnapshot.data() : null
+}
+
+export const toStoreMatch = async (
+  matchId: string,
+  match: { data: Match | null; detail: MatchDetail | null }
+) => {
+  const db = getFirestore()
+  const mRef = doc(db, 'matches', matchId).withConverter(matchConverter)
+  const mSnapshot = await getDoc(mRef)
+  match.data = mSnapshot.exists() ? mSnapshot.data() : null
+  if (mSnapshot.exists()) {
+    const mdRef = doc(db, 'matches', matchId, 'match-detail', matchId).withConverter(
+      matchDetailConverter
+    )
+    const mdSnapshot = await getDoc(mdRef)
+    match.detail = mdSnapshot.exists() ? mdSnapshot.data() : null
+  }
+}
+
 export const toStoreFirstMatches = async (matches: {
   data: Match[]
   lastVisible: QueryDocumentSnapshot<Match> | null
@@ -28,11 +54,9 @@ export const toStoreFirstMatches = async (matches: {
   const q = query(mRef, ...options, orderBy('jstDate', 'desc'), limit(perPage))
   const mSnapshot = await getDocs(q)
   mSnapshot.forEach((doc) => {
-    if (doc.exists()) {
-      matches.data.push(doc.data())
-    }
+    if (doc.exists()) matches.data.push(doc.data())
   })
-  matches.lastVisible = mSnapshot.docs[mSnapshot.docs.length - 1]
+  matches.lastVisible = mSnapshot.docs[mSnapshot.size - 1]
 }
 
 export const toStoreNextMatches = async (
@@ -55,28 +79,10 @@ export const toStoreNextMatches = async (
   )
   const mSnapshot = await getDocs(q)
   mSnapshot.forEach((doc) => {
-    if (doc.exists()) {
-      matches.data.push(doc.data())
-    }
+    if (doc.exists()) matches.data.push(doc.data())
   })
-  if (mSnapshot.size === 0) {
-    hasNextPage.value = false
-  }
-  matches.lastVisible = mSnapshot.docs[mSnapshot.docs.length - 1]
-}
-
-export const fetchMatch = async (matchId: string): Promise<Match | null> => {
-  const db = getFirestore()
-  const mRef = doc(db, 'matches', matchId).withConverter(matchConverter)
-  const mSnapshot = await getDoc(mRef)
-  return mSnapshot.exists() ? mSnapshot.data() : null
-}
-
-export const fetchForReport = async (matchId: string): Promise<ForReport | null> => {
-  const db = getFirestore()
-  const frRef = doc(db, 'matches', matchId, 'for-report', matchId).withConverter(forReportConverter)
-  const frSnapshot = await getDoc(frRef)
-  return frSnapshot.exists() ? frSnapshot.data() : null
+  if (mSnapshot.size === 0) hasNextPage.value = false
+  matches.lastVisible = mSnapshot.docs[mSnapshot.size - 1]
 }
 
 export const toStoreMatchSchedule = async (league: {
@@ -95,25 +101,14 @@ export const toStoreMatchSchedule = async (league: {
   )
   const mSnapshot = await getDocs(q)
   mSnapshot.forEach((doc) => {
-    if (doc.exists()) {
-      league.matchSchedule.push(doc.data())
-    }
+    if (doc.exists()) league.matchSchedule.push(doc.data())
   })
 }
 
-export const toStoreMatch = async (
-  matchId: string,
-  match: { data: Match | null; detail: MatchDetail | null }
-) => {
+/** ForReport Read */
+export const fetchForReport = async (matchId: string): Promise<ForReport | null> => {
   const db = getFirestore()
-  const mRef = doc(db, 'matches', matchId).withConverter(matchConverter)
-  const mSnapshot = await getDoc(mRef)
-  match.data = mSnapshot.exists() ? mSnapshot.data() : null
-  if (mSnapshot.exists()) {
-    const mdRef = doc(db, 'matches', matchId, 'match-detail', matchId).withConverter(
-      matchDetailConverter
-    )
-    const mdSnapshot = await getDoc(mdRef)
-    match.detail = mdSnapshot.exists() ? mdSnapshot.data() : null
-  }
+  const frRef = doc(db, 'matches', matchId, 'for-report', matchId).withConverter(forReportConverter)
+  const frSnapshot = await getDoc(frRef)
+  return frSnapshot.exists() ? frSnapshot.data() : null
 }
