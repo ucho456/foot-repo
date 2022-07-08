@@ -1,6 +1,6 @@
 import { reactive, ref } from '@nuxtjs/composition-api'
 import { fetchUser, updateUser } from '@/db/users'
-import { teamMap } from '@/utils/selectTeams'
+import { teamMap } from '@/db/teams'
 // import uploadAndGetImageUrl from '@/utils/uploadAndGetImageUrl'
 import useLoginUser from '@/utils/useLoginUser'
 

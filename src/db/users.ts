@@ -20,7 +20,7 @@ import {
 import type { QueryDocumentSnapshot } from 'firebase/firestore'
 import { followerConverter, likeConverter, userConverter } from '@/utils/converters'
 
-export const createUser = async (inputUser: InputUser): Promise<void> => {
+export const postUser = async (inputUser: InputUser): Promise<void> => {
   const db = getFirestore()
   const uRef = doc(db, 'users', inputUser.id).withConverter(userConverter)
   await setDoc(uRef, {

@@ -1,14 +1,18 @@
-import { reactive, ref } from '@nuxtjs/composition-api'
+/** check */
+import { reactive, ref, useRouter } from '@nuxtjs/composition-api'
 import { getAuth, getIdTokenResult } from 'firebase/auth'
-import { createUser } from '@/db/users'
-import { teamMap } from '@/utils/selectTeams'
+import { postUser } from '@/db/users'
+import { teamMap } from '@/db/teams'
 import uploadAndGetImageUrl from '@/utils/uploadAndGetImageUrl'
 import useLoginUser from '@/utils/useLoginUser'
+import useSnackbar from '@/utils/useSnackbar'
 
 const useNew = () => {
+  const router = useRouter()
   const { setUpLoginUser } = useLoginUser()
+  const { openSnackbar } = useSnackbar()
 
-  const inputUser: InputUser = reactive({
+  const newUser: InputUser = reactive({
     id: '',
     name: '',
     imageUrl: null,
@@ -18,7 +22,7 @@ const useNew = () => {
   })
 
   const isLoadingSetUp = ref(false)
-  const setUp = async (): Promise<'success' | 'failure' | 'unauthorized access'> => {
+  const setUp = async (): Promise<void> => {
     try {
       isLoadingSetUp.value = true
       const auth = getAuth()
@@ -26,63 +30,62 @@ const useNew = () => {
       const idTokenResult = await getIdTokenResult(currentUser)
       const initSetting = idTokenResult.claims.initSetting as unknown as boolean
       if (!initSetting) {
-        inputUser.id = currentUser.uid
-        inputUser.name = currentUser.displayName ? currentUser.displayName.substring(0, 20) : ''
-        inputUser.imageUrl = currentUser.photoURL
+        newUser.id = currentUser.uid
+        newUser.name = currentUser.displayName ? currentUser.displayName.substring(0, 20) : ''
+        newUser.imageUrl = currentUser.photoURL
       } else {
-        return 'unauthorized access'
+        openSnackbar('alert', '不正なアクセスが発生しました。')
+        router.push('/')
       }
-      return 'success'
     } catch (error) {
       console.log(error)
-      return 'failure'
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoadingSetUp.value = false
     }
   }
 
   const changeImageUrl = (image: string): void => {
-    inputUser.imageUrl = image
+    newUser.imageUrl = image
   }
   const clearImageUrl = (): void => {
-    inputUser.imageUrl = null
+    newUser.imageUrl = null
   }
   const inputCompetitionId = (competitionId: string): void => {
-    inputUser.competitionId = competitionId
-    inputUser.team.id = ''
+    newUser.competitionId = competitionId
+    newUser.team.id = ''
   }
 
-  const isLoadingSubmit = ref(false)
-  const create = async (): Promise<'success' | 'failure'> => {
+  const isLoadingCreate = ref(false)
+  const createUser = async (): Promise<void> => {
     try {
-      isLoadingSubmit.value = true
-      if (inputUser.team.id) {
-        inputUser.team.name = teamMap.get(inputUser.team.id)?.name!
-      }
-      const imageUrl = inputUser.imageUrl
-        ? await uploadAndGetImageUrl(`users/${inputUser.id}`, inputUser.imageUrl)
+      isLoadingCreate.value = true
+      if (newUser.team.id) newUser.team.name = teamMap.get(newUser.team.id)?.name!
+      const imageUrl = newUser.imageUrl
+        ? await uploadAndGetImageUrl(`users/${newUser.id}`, newUser.imageUrl)
         : null
-      if (imageUrl) inputUser.imageUrl = imageUrl
-      await createUser(inputUser)
-      setUpLoginUser(inputUser)
-      return 'success'
+      if (imageUrl) newUser.imageUrl = imageUrl
+      await postUser(newUser)
+      setUpLoginUser(newUser)
+      openSnackbar('success', 'プロフィールを作成しました。')
+      router.push('/')
     } catch (error) {
       console.log(error)
-      return 'failure'
+      openSnackbar('failure', 'プロフィールの作成に失敗しました。')
     } finally {
-      isLoadingSubmit.value = false
+      isLoadingCreate.value = false
     }
   }
 
   return {
-    inputUser,
-    isLoadingSetUp,
-    setUp,
     changeImageUrl,
     clearImageUrl,
+    createUser,
     inputCompetitionId,
-    isLoadingSubmit,
-    create
+    isLoadingCreate,
+    isLoadingSetUp,
+    newUser,
+    setUp
   }
 }
 

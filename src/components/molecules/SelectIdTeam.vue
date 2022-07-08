@@ -11,7 +11,7 @@ import {
   laLigaTeams,
   premierLeagueTeams,
   serieATeams
-} from '@/utils/selectTeams'
+} from '@/db/teams'
 import BaseSelectId from '@/components/atoms/BaseSelectId.vue'
 
 export default defineComponent({
