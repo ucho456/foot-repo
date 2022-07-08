@@ -2,6 +2,7 @@
   <BaseButton
     :block-flg="true"
     :color="'#4285f4'"
+    :disabled="disabled"
     :image="googleIcon"
     :is-loading="isLoading"
     :text="text"
@@ -23,6 +24,7 @@ export default defineComponent({
   },
 
   props: {
+    disabled: { type: Boolean, default: false },
     isLoading: { type: Boolean, default: false },
     text: { type: String, default: '' }
   },

@@ -2,6 +2,7 @@
   <BaseButton
     :block-flg="true"
     :color="'#1da1f2'"
+    :disabled="disabled"
     :icon="mdiTwitter"
     :left-flg="true"
     :is-loading="isLoading"
@@ -25,6 +26,7 @@ export default defineComponent({
   },
 
   props: {
+    disabled: { type: Boolean, default: false },
     isLoading: { type: Boolean, default: false },
     text: { type: String, default: '' }
   },

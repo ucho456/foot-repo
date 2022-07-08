@@ -1,4 +1,5 @@
-import { reactive, ref } from '@nuxtjs/composition-api'
+/** check */
+import { reactive, ref, useRouter } from '@nuxtjs/composition-api'
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -8,29 +9,34 @@ import {
   TwitterAuthProvider
 } from 'firebase/auth'
 import { fetchUser } from '@/db/users'
+import useSnackbar from '@/utils/useSnackbar'
 
 const useSignup = () => {
-  const user = reactive({ email: '', password: '' })
-  const isLoading = ref(false)
+  const router = useRouter()
+  const { openSnackbar } = useSnackbar()
 
-  const signupEmail = async (): Promise<'success' | 'already used' | 'failure'> => {
+  const user = reactive({ email: '', password: '' })
+  const termsCheck = ref(false)
+
+  const isLoading = ref(false)
+  const signupEmail = async (): Promise<void> => {
     try {
       isLoading.value = true
       const auth = getAuth()
       const userCredential = await createUserWithEmailAndPassword(auth, user.email, user.password)
       await sendEmailVerification(userCredential.user)
-      return 'success'
+      openSnackbar('success', '認証メールを送信しました。')
     } catch (error) {
       console.log(error)
-      return error instanceof Error && error.message.includes('auth/email-already-in-use')
-        ? 'already used'
-        : 'failure'
+      error instanceof Error && error.message.includes('auth/email-already-in-use')
+        ? openSnackbar('failure', '既に使用されているメールアドレスです。')
+        : openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoading.value = false
     }
   }
 
-  const signupTwitter = async (): Promise<'success' | 'failure' | 'already exist'> => {
+  const signupTwitter = async (): Promise<void> => {
     try {
       isLoading.value = true
       const auth = getAuth()
@@ -38,16 +44,21 @@ const useSignup = () => {
       const userCredential = await signInWithPopup(auth, provider)
       const uid = userCredential.user.uid
       const user = await fetchUser(uid)
-      return !user ? 'success' : 'already exist'
+      if (!user) {
+        openSnackbar('success', '認証が完了しました。')
+        router.push({ name: 'users-new' })
+      } else {
+        openSnackbar('success', 'ログインしました。')
+      }
     } catch (error) {
       console.log(error)
-      return 'failure'
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoading.value = false
     }
   }
 
-  const signupGoogle = async (): Promise<'success' | 'failure' | 'already exist'> => {
+  const signupGoogle = async (): Promise<void> => {
     try {
       isLoading.value = true
       const auth = getAuth()
@@ -55,32 +66,43 @@ const useSignup = () => {
       const userCredential = await signInWithPopup(auth, provider)
       const uid = userCredential.user.uid
       const user = await fetchUser(uid)
-      return !user ? 'success' : 'already exist'
+      if (!user) {
+        openSnackbar('success', '認証が完了しました。')
+        router.push({ name: 'users-new' })
+      } else {
+        openSnackbar('success', 'ログインしました。')
+      }
     } catch (error) {
       console.log(error)
-      return 'failure'
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoading.value = false
     }
   }
 
   const isDialog = ref(false)
-  const openDialog = (): void => {
+  const showDialog = (): void => {
     isDialog.value = true
   }
-  const closeDialog = (): void => {
+  const hideDialog = (): void => {
     isDialog.value = false
   }
 
+  const back = (): void => {
+    router.back()
+  }
+
   return {
-    user,
-    isLoading,
-    signupEmail,
-    signupTwitter,
-    signupGoogle,
+    back,
+    hideDialog,
     isDialog,
-    openDialog,
-    closeDialog
+    isLoading,
+    showDialog,
+    signupEmail,
+    signupGoogle,
+    signupTwitter,
+    termsCheck,
+    user
   }
 }
 

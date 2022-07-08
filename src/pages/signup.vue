@@ -5,139 +5,108 @@
         <v-row class="mt-3" justify="center"><v-img max-width="240" :src="logo" /></v-row>
         <ValidationObserver v-slot="{ invalid }">
           <v-row justify="center">
-            <v-col cols="10" class="mt-4">
+            <v-col cols="10" class="mb-n6 mt-4">
               <TextFieldEmail v-model="user.email" />
             </v-col>
             <v-col cols="10">
               <TextFieldPassword v-model="user.password" />
             </v-col>
-            <v-col cols="10" class="hover terms text-center" @click="openDialog">
-              利用規約を表示する
+            <v-col cols="10" sm="8" class="d-flex my-n9">
+              <v-checkbox v-model="termsCheck" />
+              <span class="hover terms" @click="showDialog">利用規約に同意してご登録下さい。</span>
             </v-col>
             <v-col cols="10">
               <ButtonSubmit
-                :disabled="invalid"
+                :disabled="invalid || !termsCheck"
                 :is-loading="isLoading"
                 :text="'登録する'"
-                @click="submitEmail"
+                @click="signupEmail"
               />
             </v-col>
             <v-col cols="10">
               <ButtonTwitter
+                :disabled="!termsCheck"
                 :is-loading="isLoading"
                 :text="'Twitterアカウントで登録'"
-                @click="submitTwitter"
+                @click="signupTwitter"
               />
             </v-col>
             <v-col cols="10">
               <ButtonGoogle
+                :disabled="!termsCheck"
                 :is-loading="isLoading"
                 :text="'Googleアカウントで登録'"
-                @click="submitGoogle"
+                @click="signupGoogle"
               />
             </v-col>
             <v-col cols="10">
               <ButtonBack :disabled="isLoading" @click="back" />
             </v-col>
-            <NuxtLink class="text-caption hover mb-4" to="/login">
-              アカウントをお持ちの場合はログインから
+            <NuxtLink class="hover mb-4 text-caption" to="/login">
+              アカウントをお持ちの場合はこちらから
             </NuxtLink>
           </v-row>
         </ValidationObserver>
       </v-container>
-      <DialogTerms :is-dialog="isDialog" @hide="closeDialog" />
+      <DialogTerms :is-dialog="isDialog" @hide="hideDialog" />
     </v-card>
   </v-container>
 </template>
 
 <script lang="ts">
-import { defineComponent, useRouter } from '@nuxtjs/composition-api'
+/** check */
+import { defineComponent } from '@nuxtjs/composition-api'
 import useSignup from '@/composables/useSignup'
-import useSnackbar from '@/utils/useSnackbar'
-import TextFieldEmail from '@/components/molecules/TextFieldEmail.vue'
-import TextFieldPassword from '@/components/molecules/TextFieldPassword.vue'
+import ButtonBack from '@/components/molecules/ButtonBack.vue'
+import ButtonGoogle from '@/components/molecules/ButtonGoogle.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
 import ButtonTwitter from '@/components/molecules/ButtonTwitter.vue'
-import ButtonGoogle from '@/components/molecules/ButtonGoogle.vue'
-import ButtonBack from '@/components/molecules/ButtonBack.vue'
 import DialogTerms from '@/components/organisms/DialogTerms.vue'
+import TextFieldEmail from '@/components/molecules/TextFieldEmail.vue'
+import TextFieldPassword from '@/components/molecules/TextFieldPassword.vue'
 
 export default defineComponent({
   name: 'Signup',
 
   components: {
-    TextFieldEmail,
-    TextFieldPassword,
+    ButtonBack,
+    ButtonGoogle,
     ButtonSubmit,
     ButtonTwitter,
-    ButtonGoogle,
-    ButtonBack,
-    DialogTerms
+    DialogTerms,
+    TextFieldEmail,
+    TextFieldPassword
   },
 
   layout: 'grey',
 
   setup() {
-    const router = useRouter()
     const {
-      user,
-      isLoading,
-      signupEmail,
-      signupTwitter,
-      signupGoogle,
+      back,
+      hideDialog,
       isDialog,
-      openDialog,
-      closeDialog
+      isLoading,
+      showDialog,
+      signupEmail,
+      signupGoogle,
+      signupTwitter,
+      termsCheck,
+      user
     } = useSignup()
-    const { openSnackbar } = useSnackbar()
     const logo = require('@/assets/signup_logo.png')
 
-    const submitEmail = async (): Promise<void> => {
-      const result = await signupEmail()
-      const message =
-        result === 'success'
-          ? '認証メールを送信しました。'
-          : result === 'already used'
-          ? '既に使用されているメールアドレスです。'
-          : 'エラーが発生しました。'
-      openSnackbar(result, message)
-    }
-
-    const submitTwitter = async (): Promise<void> => {
-      const result = await signupTwitter()
-      next(result)
-    }
-
-    const submitGoogle = async (): Promise<void> => {
-      const result = await signupGoogle()
-      next(result)
-    }
-
-    const next = (result: 'success' | 'failure' | 'already exist'): void => {
-      if (result === 'success' || result === 'already exist') {
-        const message = result === 'success' ? '認証が完了しました。' : 'ログインしました。'
-        openSnackbar('success', message)
-        result === 'success' ? router.push({ name: 'users-new' }) : router.push('/')
-      } else {
-        openSnackbar(result, 'エラーが発生しました。')
-      }
-    }
-
-    const back = (): void => {
-      router.back()
-    }
-
     return {
-      user,
+      back,
+      hideDialog,
       isDialog,
-      openDialog,
-      closeDialog,
       isLoading,
       logo,
-      submitEmail,
-      submitTwitter,
-      submitGoogle,
-      back
+      showDialog,
+      signupEmail,
+      signupGoogle,
+      signupTwitter,
+      termsCheck,
+      user
     }
   }
 })
@@ -148,5 +117,6 @@ export default defineComponent({
   font-size: 12px;
   color: #1a237e;
   text-decoration: underline;
+  line-height: 66px;
 }
 </style>
