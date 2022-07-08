@@ -1,5 +1,5 @@
 import { ref } from '@nuxtjs/composition-api'
-import { putFollow, toStoreUsers } from '@/db/users'
+import { doFollow, toStoreUsers } from '@/db/users'
 import useLoginUser from '@/utils/useLoginUser'
 import useSnackbar from '@/utils/useSnackbar'
 import useStore from '@/utils/useStore'
@@ -77,7 +77,7 @@ const useIndex = () => {
     if (!loginUser.value) return
     try {
       isLoadingUpdateFollow.value = true
-      await putFollow(loginUser.value.uid, userId)
+      await doFollow(loginUser.value.uid, userId)
       const index = users.data.findIndex((u) => u.id === userId)
       users.data[index].follow = !users.data[index].follow
     } catch (error) {

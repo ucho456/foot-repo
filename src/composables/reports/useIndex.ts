@@ -64,7 +64,7 @@ const useIndex = () => {
       hasNextReports.value = true
       isLoadingFirst.value = true
       reports.data = []
-      await toStoreFirstReports(reports)
+      await toStoreFirstReports(reports, hasNextReports)
     } catch (error) {
       console.log(error)
       openSnackbar('failure', '選手採点の取得に失敗しました。')

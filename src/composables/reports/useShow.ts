@@ -4,11 +4,11 @@ import { fetchMatch } from '@/db/matches'
 import {
   createComment,
   fetchSameMatchReports,
-  fetchReportAndItems,
-  updateLikeCount,
+  fetchReport,
+  doLike,
   subscribeComments
 } from '@/db/reports'
-import { fetchIsFollow, fetchIsLike, fetchUser, putFollow } from '@/db/users'
+import { fetchIsFollow, fetchIsLike, fetchUser, doFollow } from '@/db/users'
 import useLoginUser from '@/utils/useLoginUser'
 
 const useShow = () => {
@@ -34,8 +34,10 @@ const useShow = () => {
   ): Promise<'success' | 'failure' | 'unauthorized access'> => {
     try {
       isLoadingReport.value = true
-      const { resReport, resHomeTeamReportItems, resAwayTeamReportItems } =
-        await fetchReportAndItems(reportId, loginUser.value?.uid)
+      const { resReport, resHomeTeamReportItems, resAwayTeamReportItems } = await fetchReport(
+        reportId,
+        loginUser.value?.uid
+      )
       if (loginUser.value) like.value = await fetchIsLike(loginUser.value.uid, resReport.id)
       report.value = resReport
       homeTeamReportItems.value = resHomeTeamReportItems
@@ -90,7 +92,7 @@ const useShow = () => {
     if (!loginUser.value || !report.value) return
     try {
       isLoadingUpdateLike.value = true
-      await updateLikeCount(loginUser.value.uid, report.value.id)
+      await doLike(loginUser.value.uid, report.value.id)
       like.value = !like.value
       if (report.value && like.value) {
         report.value.likeCount++
@@ -110,7 +112,7 @@ const useShow = () => {
     try {
       if (!loginUser.value) return
       isLoadingUpdateFollow.value = true
-      await putFollow(loginUser.value.uid, userId)
+      await doFollow(loginUser.value.uid, userId)
       follow.value = !follow.value
       return 'success'
     } catch (error) {

@@ -1,6 +1,6 @@
 import { reactive, ref, Ref, watch } from '@nuxtjs/composition-api'
 import { fetchForReport, fetchMatch } from '@/db/matches'
-import { createReport } from '@/db/reports'
+import { postReport } from '@/db/reports'
 import useLoginUser from '@/utils/useLoginUser'
 
 const useNew = () => {
@@ -53,7 +53,7 @@ const useNew = () => {
     try {
       isLoadingSend.value = true
       inputReport.publish = true
-      const reportId = await createReport(loginUser.value, inputReport, match.value!)
+      const reportId = await postReport(loginUser.value, inputReport, match.value!)
       return { result: 'success', reportId }
     } catch (error) {
       console.log(error)
@@ -67,7 +67,7 @@ const useNew = () => {
     try {
       isLoadingSend.value = true
       inputReport.publish = false
-      const reportId = await createReport(loginUser.value, inputReport, match.value!)
+      const reportId = await postReport(loginUser.value, inputReport, match.value!)
       return { result: 'success', reportId }
     } catch (error) {
       console.log(error)

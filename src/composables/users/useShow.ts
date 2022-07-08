@@ -1,7 +1,7 @@
 import { ref, Ref, useRoute, useRouter, watch } from '@nuxtjs/composition-api'
 import type { QueryDocumentSnapshot } from 'firebase/firestore'
 import { deleteReport, fetchUserLikeReports, fetchUserReports } from '@/db/reports'
-import { fetchIsFollow, fetchFollowers, fetchFollows, fetchUser, putFollow } from '@/db/users'
+import { fetchIsFollow, fetchFollowers, fetchFollows, fetchUser, doFollow } from '@/db/users'
 import useLoginUser from '@/utils/useLoginUser'
 import useSnackbar from '@/utils/useSnackbar'
 const perPage = 10
@@ -203,7 +203,7 @@ const useShow = () => {
     if (!loginUser.value) return
     try {
       isLoadingUpdateFollow.value = true
-      await putFollow(loginUser.value.uid, userId)
+      await doFollow(loginUser.value.uid, userId)
       /** adjust count */
       if (type === 'dialog') {
         if (follows.value.length > 0) {

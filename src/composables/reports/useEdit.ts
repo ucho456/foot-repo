@@ -1,6 +1,6 @@
 import { reactive, ref, Ref, watch } from '@nuxtjs/composition-api'
 import { fetchMatch } from '@/db/matches'
-import { fetchReportAndItems, updateReport } from '@/db/reports'
+import { fetchReport, putReport } from '@/db/reports'
 
 const useEdit = () => {
   const initReport: Ref<Report | null> = ref(null)
@@ -24,8 +24,10 @@ const useEdit = () => {
   ): Promise<'success' | 'failure' | 'unauthorized access'> => {
     try {
       isLoadingSetUp.value = true
-      const { resReport, resHomeTeamReportItems, resAwayTeamReportItems } =
-        await fetchReportAndItems(reportId, uid)
+      const { resReport, resHomeTeamReportItems, resAwayTeamReportItems } = await fetchReport(
+        reportId,
+        uid
+      )
       if (resReport.user.id !== uid) throw new Error('unauthorized access')
       initReport.value = resReport
       inputReport.title = resReport.title
@@ -61,7 +63,7 @@ const useEdit = () => {
     try {
       isLoadingSend.value = true
       inputReport.publish = true
-      await updateReport(inputReport, initReport.value!)
+      await putReport(inputReport, initReport.value!)
       return 'success'
     } catch (error) {
       console.log(error)
@@ -75,7 +77,7 @@ const useEdit = () => {
     try {
       isLoadingSend.value = true
       inputReport.publish = false
-      await updateReport(inputReport, initReport.value!)
+      await putReport(inputReport, initReport.value!)
       return 'success'
     } catch (error) {
       console.log(error)
