@@ -1,5 +1,5 @@
 import { ref } from '@nuxtjs/composition-api'
-import { competitionMap, toStoreScores, toStoreStandings } from '@/db/competitions'
+import { competitionMap, toStoreScorers, toStoreStandings } from '@/db/competitions'
 import { toStoreMatchSchedule } from '@/db/matches'
 import useStore from '@/utils/useStore'
 
@@ -33,7 +33,7 @@ const useShow = () => {
       isLoadingStandings.value = false
 
       isLoadingScorers.value = true
-      await toStoreScores(league)
+      await toStoreScorers(league)
       isLoadingScorers.value = false
 
       isLoadingMatches.value = true

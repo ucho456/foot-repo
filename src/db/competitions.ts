@@ -1,5 +1,42 @@
+/** check */
 import { doc, getDoc, getFirestore } from 'firebase/firestore'
 import { scorersConverter, standingsConverter } from '@/utils/converters'
+
+/** Scorers Read */
+export const toStoreScorers = async (league: {
+  competitionId: string
+  scorers: Scorers | null
+  season: string
+}): Promise<void> => {
+  const db = getFirestore()
+  const sRef = doc(
+    db,
+    'competitions',
+    league.competitionId,
+    'scorers',
+    league.season
+  ).withConverter(scorersConverter)
+  const sSnapshot = await getDoc(sRef)
+  league.scorers = sSnapshot.exists() ? sSnapshot.data() : null
+}
+
+/** Staindings Read */
+export const toStoreStandings = async (league: {
+  competitionId: string
+  standings: Standings | null
+  season: string
+}): Promise<void> => {
+  const db = getFirestore()
+  const sRef = doc(
+    db,
+    'competitions',
+    league.competitionId,
+    'standings',
+    league.season
+  ).withConverter(standingsConverter)
+  const sSnapshot = await getDoc(sRef)
+  league.standings = sSnapshot.exists() ? sSnapshot.data() : null
+}
 
 export const competitionMap = new Map([
   [
@@ -54,37 +91,3 @@ export const competitionMap = new Map([
     }
   ]
 ])
-
-export const toStoreScores = async (league: {
-  competitionId: string
-  scorers: Scorers | null
-  season: string
-}): Promise<void> => {
-  const db = getFirestore()
-  const sRef = doc(
-    db,
-    'competitions',
-    league.competitionId,
-    'scorers',
-    league.season
-  ).withConverter(scorersConverter)
-  const sSnapshot = await getDoc(sRef)
-  league.scorers = sSnapshot.exists() ? sSnapshot.data() : null
-}
-
-export const toStoreStandings = async (league: {
-  competitionId: string
-  standings: Standings | null
-  season: string
-}): Promise<void> => {
-  const db = getFirestore()
-  const sRef = doc(
-    db,
-    'competitions',
-    league.competitionId,
-    'standings',
-    league.season
-  ).withConverter(standingsConverter)
-  const sSnapshot = await getDoc(sRef)
-  league.standings = sSnapshot.exists() ? sSnapshot.data() : null
-}
