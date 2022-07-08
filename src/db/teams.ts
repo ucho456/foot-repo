@@ -1,6 +1,8 @@
+/** check */
 import { doc, getDoc, getFirestore } from 'firebase/firestore'
 import { teamConverter } from '@/utils/converters'
 
+/** Teams Read */
 export const toStoreTeam = async (teamId: string, team: { data: Team | null }) => {
   const db = getFirestore()
   const tRef = doc(db, 'teams', teamId).withConverter(teamConverter)
