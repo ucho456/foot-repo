@@ -27,24 +27,14 @@
         </v-row>
       </v-container>
     </v-card>
-    <v-card class="mt-4" outlined>
-      <v-container>
-        <Timeline id="foot_repo" source-type="profile" :options="{ tweetLimit: '3' }" />
-      </v-container>
-    </v-card>
   </v-container>
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
-import { Timeline } from 'vue-tweet-embed'
 
 export default defineComponent({
   name: 'SideContainer',
-
-  components: {
-    Timeline
-  },
 
   setup() {
     /** サンプル。詳しい設定はまたやる。 */
