@@ -64,10 +64,25 @@ export default {
     '@nuxt/typescript-build',
     '@nuxtjs/stylelint-module',
     '@nuxtjs/google-fonts',
-    '@nuxtjs/vuetify'
+    '@nuxtjs/vuetify',
+    'nuxt-compress'
   ],
 
-  modules: ['@nuxtjs/axios', '@nuxtjs/sitemap'],
+  modules: [
+    '@nuxtjs/axios',
+    '@nuxtjs/sitemap',
+    [
+      'nuxt-compress',
+      {
+        gzip: {
+          cache: true
+        },
+        brotli: {
+          threshold: 8192
+        }
+      }
+    ]
+  ],
 
   sitemap: {
     path: '/sitemap.xml',
