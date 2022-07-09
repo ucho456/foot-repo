@@ -12,7 +12,7 @@
     <v-card outlined>
       <v-container>
         <v-row>
-          <v-col>
+          <v-col cols="12">
             相互リンクパートナー・広告スポンサーを募集中です。
             <a
               ref="nofollow"
