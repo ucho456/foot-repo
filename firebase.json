@@ -14,19 +14,15 @@
     "public": "src/static",
     "rewrites": [
       {
+        "source": "/sitemap.xml",
+        "function": "buildSitemap"
+      },
+      {
         "source": "**",
         "run": {
           "serviceId": "foot-repo",
           "region": "asia-northeast1"
         }
-      },
-      {
-        "source": "/sitemap.xml",
-        "function": "buildSitemap"
-      },
-      {
-        "source": "!/sitemap.xml",
-        "function": "preRender"
       }
     ]
   },
