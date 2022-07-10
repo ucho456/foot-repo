@@ -1,6 +1,7 @@
 /** check */
 /** 8/1にJLeague以外復活予定 */
 import * as admin from 'firebase-admin'
+import buildSitemap from './calls/buildSitemap'
 import createAuth from './calls/createAuth'
 import {
   createBundesligaMatches,
@@ -10,7 +11,6 @@ import {
   createSerieAMatches
 } from './calls/createMatches'
 import createUser from './calls/createUser'
-import getSitemapPath from './calls/getSitemapPath'
 import {
   setBundesligaTeams,
   setJLeagueTeams,
@@ -32,6 +32,7 @@ import updateEmailVerified from './calls/updateEmailVerified'
 admin.initializeApp()
 
 module.exports = {
+  buildSitemap,
   createAuth,
   createBundesligaMatches,
   // createJLeagueMatches,
@@ -39,7 +40,6 @@ module.exports = {
   createPremierLeagueMatches,
   createSerieAMatches,
   createUser,
-  getSitemapPath,
   // setBundesligaMatches,
   setBundesligaTeams,
   // setJLeagueMatches,

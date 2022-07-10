@@ -1,5 +1,4 @@
 import colors from 'vuetify/es5/util/colors'
-import axios from 'axios'
 
 export default {
   head: {
@@ -71,7 +70,6 @@ export default {
 
   modules: [
     '@nuxtjs/axios',
-    '@nuxtjs/sitemap',
     [
       'nuxt-compress',
       {
@@ -84,18 +82,6 @@ export default {
       }
     ]
   ],
-
-  sitemap: {
-    path: '/sitemap.xml',
-    hostname: 'https://foot-repo.com/',
-    generate: true,
-    async routes() {
-      const res = await axios.get(
-        'https://asia-northeast1-foot-repo.cloudfunctions.net/getSitemapPath'
-      )
-      return res.data.reportRoutes
-    }
-  },
 
   manifest: {
     name: 'フットレポ',

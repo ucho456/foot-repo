@@ -19,6 +19,14 @@
           "serviceId": "foot-repo",
           "region": "asia-northeast1"
         }
+      },
+      {
+        "source": "/sitemap.xml",
+        "function": "buildSitemap"
+      },
+      {
+        "source": "!/sitemap.xml",
+        "function": "preRender"
       }
     ]
   },
