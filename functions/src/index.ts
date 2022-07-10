@@ -10,6 +10,7 @@ import {
   createSerieAMatches
 } from './calls/createMatches'
 import createUser from './calls/createUser'
+import getSitemapPath from './calls/getSitemapPath'
 import {
   setBundesligaTeams,
   setJLeagueTeams,
@@ -38,6 +39,7 @@ module.exports = {
   createPremierLeagueMatches,
   createSerieAMatches,
   createUser,
+  getSitemapPath,
   // setBundesligaMatches,
   setBundesligaTeams,
   // setJLeagueMatches,
