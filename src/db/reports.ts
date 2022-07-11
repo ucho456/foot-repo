@@ -3,7 +3,6 @@ import {
   collection,
   doc,
   documentId,
-  endAt,
   endBefore,
   getDoc,
   getDocs,
@@ -206,21 +205,18 @@ export const toStorePopularReports = async (reports: {
   data: Report[]
   lastVisible: QueryDocumentSnapshot<Report> | null
   searchOption: SearchOption
+  hasNext: boolean
 }) => {
-  reports.data = []
   const db = getFirestore()
   const rRef = collection(db, 'reports').withConverter(reportConverter)
-  const endDate = new Date()
-  endDate.setDate(endDate.getDate() + 1)
   const startDate = new Date()
   startDate.setDate(startDate.getDate() - 7)
   const q = query(
     rRef,
     where('publish', '==', true),
-    orderBy('createdAt', 'asc'),
     orderBy('likeCount', 'desc'),
+    orderBy('createdAt', 'desc'),
     startAt(startDate),
-    endAt(endDate),
     limit(perPage)
   )
   const rSnapshot = await getDocs(q)
