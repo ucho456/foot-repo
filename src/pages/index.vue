@@ -1,6 +1,7 @@
 <template>
   <v-container>
-    <v-card outlined>
+    あああ
+    <!-- <v-card outlined>
       <ContainerLoading :is-loading="isLoadingReports" />
       <ContainerReportTable
         v-if="!isLoadingReports"
@@ -29,64 +30,66 @@
       @input-year-month="inputYearMonth"
       @input-team-id="inputTeamId"
       @search="pushToReports"
-    />
+    /> -->
   </v-container>
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
-import useIndex from '@/composables/useIndex'
-import useStore from '@/utils/useStore'
-import ButtonOutlined from '@/components/molecules/ButtonOutlined.vue'
-import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
-import ContainerReportTable from '@/components/organisms/ContainerReportTable.vue'
-import DialogSearch from '@/components/organisms/DialogSearch.vue'
+// import useIndex from '@/composables/useIndex'
+// import useStore from '@/utils/useStore'
+// import ButtonOutlined from '@/components/molecules/ButtonOutlined.vue'
+// import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
+// import ContainerReportTable from '@/components/organisms/ContainerReportTable.vue'
+// import DialogSearch from '@/components/organisms/DialogSearch.vue'
 
 export default defineComponent({
   name: 'Index',
 
   components: {
-    ButtonOutlined,
-    ContainerLoading,
-    ContainerReportTable,
-    DialogSearch
+    // ButtonOutlined,
+    // ContainerLoading,
+    // ContainerReportTable,
+    // DialogSearch
   },
 
-  setup() {
-    const {
-      changeTab,
-      clearYearMonth,
-      hideDialog,
-      inputCompetitionId,
-      inputTeamId,
-      inputYearMonth,
-      isDialog,
-      isLoadingChangeReports,
-      isLoadingReports,
-      pushToReports,
-      setUp,
-      showDialog,
-      tabs
-    } = useIndex()
-    const { reports } = useStore()
+  layout: 'grey'
 
-    setUp()
+  // setup() {
+  //   const {
+  //     changeTab,
+  //     clearYearMonth,
+  //     hideDialog,
+  //     inputCompetitionId,
+  //     inputTeamId,
+  //     inputYearMonth,
+  //     isDialog,
+  //     isLoadingChangeReports,
+  //     isLoadingReports,
+  //     pushToReports,
+  //     setUp,
+  //     showDialog,
+  //     tabs
+  //   } = useIndex()
+  //   const { reports } = useStore()
 
-    return {
-      changeTab,
-      clearYearMonth,
-      hideDialog,
-      inputCompetitionId,
-      inputTeamId,
-      inputYearMonth,
-      isDialog,
-      isLoadingChangeReports,
-      isLoadingReports,
-      pushToReports,
-      reports,
-      showDialog,
-      tabs
-    }
-  }
+  //   setUp()
+
+  //   return {
+  //     changeTab,
+  //     clearYearMonth,
+  //     hideDialog,
+  //     inputCompetitionId,
+  //     inputTeamId,
+  //     inputYearMonth,
+  //     isDialog,
+  //     isLoadingChangeReports,
+  //     isLoadingReports,
+  //     pushToReports,
+  //     reports,
+  //     showDialog,
+  //     tabs
+  //   }
+  // }
 })
 </script>
