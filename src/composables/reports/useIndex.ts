@@ -1,11 +1,11 @@
 import { ref } from '@nuxtjs/composition-api'
-import { toStoreFirstReports, toStoreNextReports } from '@/db/reports'
+import { toStoreReports } from '@/db/reports'
 import useSnackbar from '@/utils/useSnackbar'
 import useStore from '@/utils/useStore'
 
 const useIndex = () => {
   const { openSnackbar } = useSnackbar()
-  const { reports } = useStore()
+  const { reports, clearReportSearchOption } = useStore()
 
   /** setUp */
   const isLoadingFirst = ref(false)
@@ -14,7 +14,7 @@ const useIndex = () => {
     try {
       isLoadingFirst.value = true
       reports.data = []
-      await toStoreFirstReports(reports, hasNextReports)
+      await toStoreReports(reports, hasNextReports)
     } catch (error) {
       console.log(error)
       openSnackbar('failure', '選手採点の取得に失敗しました。')
@@ -28,7 +28,7 @@ const useIndex = () => {
   const readNextReports = async (): Promise<void> => {
     try {
       isLoadingNext.value = true
-      await toStoreNextReports(reports, hasNextReports)
+      await toStoreReports(reports, hasNextReports)
     } catch (error) {
       console.log(error)
       openSnackbar('failure', '選手採点の取得に失敗しました。')
@@ -64,7 +64,8 @@ const useIndex = () => {
       hasNextReports.value = true
       isLoadingFirst.value = true
       reports.data = []
-      await toStoreFirstReports(reports, hasNextReports)
+      clearReportSearchOption()
+      await toStoreReports(reports, hasNextReports)
     } catch (error) {
       console.log(error)
       openSnackbar('failure', '選手採点の取得に失敗しました。')

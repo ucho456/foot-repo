@@ -170,7 +170,7 @@ export const fetchReport = async (
   }
 }
 
-export const toStoreFirstReports = async (
+export const toStoreReports = async (
   reports: {
     data: Report[]
     lastVisible: QueryDocumentSnapshot<Report> | null
@@ -181,49 +181,28 @@ export const toStoreFirstReports = async (
   const db = getFirestore()
   const rRef = collection(db, 'reports').withConverter(reportConverter)
   const options = makeSearchOption(reports.searchOption)
-  const q = query(
-    rRef,
-    ...options,
-    where('publish', '==', true),
-    orderBy('createdAt', 'desc'),
-    limit(perPage)
-  )
+  const q = reports.lastVisible
+    ? query(
+        rRef,
+        ...options,
+        where('publish', '==', true),
+        orderBy('createdAt', 'desc'),
+        startAfter(reports.lastVisible),
+        limit(perPage)
+      )
+    : query(
+        rRef,
+        ...options,
+        where('publish', '==', true),
+        orderBy('createdAt', 'desc'),
+        limit(perPage)
+      )
   const rSnapshot = await getDocs(q)
   rSnapshot.forEach((doc) => {
     if (doc.exists()) reports.data.push(doc.data())
   })
   reports.lastVisible = rSnapshot.docs[rSnapshot.size - 1]
   if (hasNextReports !== undefined && rSnapshot.size < perPage) hasNextReports.value = false
-}
-
-/** firstと統合したい。 */
-export const toStoreNextReports = async (
-  reports: {
-    data: Report[]
-    lastVisible: QueryDocumentSnapshot<Report> | null
-    searchOption: SearchOption
-  },
-  hasNextReports: Ref<boolean>
-): Promise<void> => {
-  const db = getFirestore()
-  const rRef = collection(db, 'reports').withConverter(reportConverter)
-  const options = makeSearchOption(reports.searchOption)
-  const q = query(
-    rRef,
-    ...options,
-    where('publish', '==', true),
-    orderBy('createdAt', 'desc'),
-    startAfter(reports.lastVisible),
-    limit(perPage)
-  )
-  const rSnapshot = await getDocs(q)
-  rSnapshot.forEach((doc) => {
-    if (doc.exists()) {
-      reports.data.push(doc.data())
-    }
-  })
-  if (rSnapshot.size < perPage) hasNextReports.value = false
-  reports.lastVisible = rSnapshot.docs[rSnapshot.docs.length - 1]
 }
 
 export const toStorePopularReports = async (reports: {

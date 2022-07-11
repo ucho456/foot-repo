@@ -28,8 +28,8 @@
       @clear-year-month="clearYearMonth"
       @hide="hideDialog"
       @input-competition-id="inputCompetitionId"
-      @input-year-month="inputYearMonth"
       @input-team-id="inputTeamId"
+      @input-year-month="inputYearMonth"
       @search="search"
     />
   </v-container>
@@ -39,18 +39,18 @@
 import { defineComponent } from '@nuxtjs/composition-api'
 import useIndex from '@/composables/reports/useIndex'
 import useStore from '@/utils/useStore'
+import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
 import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 import ContainerReportTable from '@/components/organisms/ContainerReportTable.vue'
-import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
 import DialogSearch from '@/components/organisms/DialogSearch.vue'
 
 export default defineComponent({
   name: 'Reports',
 
   components: {
+    ButtonSubmit,
     ContainerLoading,
     ContainerReportTable,
-    ButtonSubmit,
     DialogSearch
   },
 

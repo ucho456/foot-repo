@@ -45,6 +45,7 @@ const useStore = () => {
 
   const clearReportSearchOption = (): void => {
     store.reports.data = []
+    store.reports.lastVisible = null
     store.reports.searchOption.competitionId = ''
     store.reports.searchOption.teamId = ''
     store.reports.searchOption.yearMonth = ''
