@@ -48,6 +48,9 @@ const useIndex = () => {
     reports.searchOption.yearMonth = ''
   }
   const pushToReports = (): void => {
+    reports.data = []
+    reports.hasNext = true
+    reports.lastVisible = null
     router.push('/reports')
   }
 
@@ -55,8 +58,8 @@ const useIndex = () => {
   const tab = ref('New')
   const tabs = computed(() => {
     return loginUser.value && loginUser.value.team.id
-      ? ['New', 'Popular', 'My Team']
-      : ['New', 'Popular']
+      ? ['New', 'Top 10', 'My Team']
+      : ['New', 'Top 10']
   })
   const changeTab = (index: number): void => {
     tab.value = tabs.value[index]
@@ -69,7 +72,7 @@ const useIndex = () => {
       if (tab.value === 'New') {
         clearReportSearchOption()
         await toStoreReports(reports)
-      } else if (tab.value === 'Popular') {
+      } else if (tab.value === 'Top 10') {
         clearReportSearchOption()
         await toStorePopularReports(reports)
       } else if (tab.value === 'My Team' && loginUser.value) {

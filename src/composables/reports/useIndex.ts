@@ -1,3 +1,4 @@
+/** check */
 import { ref } from '@nuxtjs/composition-api'
 import { toStoreReports } from '@/db/reports'
 import useSnackbar from '@/utils/useSnackbar'
@@ -12,10 +13,7 @@ const useIndex = () => {
   const setUp = async () => {
     try {
       isLoadingFirst.value = true
-      if (reports.data.length === 0) {
-        clearReportSearchOption()
-        await toStoreReports(reports)
-      }
+      if (reports.data.length === 0) await toStoreReports(reports)
     } catch (error) {
       console.log(error)
       openSnackbar('failure', '選手採点の取得に失敗しました。')

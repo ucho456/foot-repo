@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-card outlined>
+    <v-card min-height="600" outlined>
       <ContainerLoading :is-loading="isLoadingFirst" />
       <ContainerReportTable
         v-if="!isLoadingFirst"
@@ -36,6 +36,7 @@
 </template>
 
 <script lang="ts">
+/** check */
 import { defineComponent } from '@nuxtjs/composition-api'
 import useIndex from '@/composables/reports/useIndex'
 import useStore from '@/utils/useStore'
