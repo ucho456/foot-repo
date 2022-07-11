@@ -2,7 +2,7 @@
   <v-dialog max-width="380" persistent :value="isDialog">
     <v-card>
       <v-card-title />
-      <v-card-text class="font-weight-medium wrap">{{ text }}</v-card-text>
+      <v-card-text class="font-weight-medium o-wrap">{{ text }}</v-card-text>
       <v-divider />
       <v-card-actions>
         <v-container>
@@ -57,7 +57,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.wrap {
+.o-wrap {
   white-space: pre-wrap;
 }
 </style>

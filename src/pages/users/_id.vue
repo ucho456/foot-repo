@@ -23,7 +23,7 @@
             />
           </v-col>
           <v-col cols="12" class="mt-n4">マイチーム：{{ user.team.name }}</v-col>
-          <v-col cols="12" class="greet mt-n4">{{ user.greet }}</v-col>
+          <v-col cols="12" class="o-greet mt-n4">{{ user.greet }}</v-col>
         </v-row>
         <v-row>
           <v-col cols="4" class="text-center">
@@ -34,7 +34,7 @@
           <v-col
             cols="4"
             class="text-center"
-            :class="{ follow: user.followCount !== 0 }"
+            :class="{ 'o-follow': user.followCount !== 0 }"
             @click="showFollowsDialog"
           >
             <v-icon large>{{ mdiAccountArrowRight }}</v-icon>
@@ -44,7 +44,7 @@
           <v-col
             cols="4"
             class="text-center"
-            :class="{ follow: user.followerCount !== 0 }"
+            :class="{ 'o-follow': user.followerCount !== 0 }"
             @click="showFollowersDialog"
           >
             <v-icon large>{{ mdiAccountArrowLeft }}</v-icon>
@@ -245,14 +245,14 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.follow {
+.o-follow {
   &:hover {
     background: #eceff1;
     opacity: 0.8;
     cursor: pointer;
   }
 }
-.greet {
+.o-greet {
   white-space: pre-wrap;
   word-wrap: break-word;
 }

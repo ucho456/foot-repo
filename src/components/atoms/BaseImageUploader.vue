@@ -1,6 +1,6 @@
 <template>
-  <div class="base-file-input">
-    <label for="image-input-form" :class="{ 'no-event': disabled }">
+  <div class="o-base-file-input">
+    <label class="o-label" for="image-input-form" :class="{ 'o-no-event': disabled }">
       <v-avatar :size="imageSize">
         <v-img v-if="value" :lazy-src="lazy" :src="value" />
         <v-img v-else :lazy-src="lazy" :src="noAvatarImage" />
@@ -9,12 +9,13 @@
     <input
       id="image-input-form"
       :key="deletedTimes"
+      class="o-input"
       accept="image/*"
       type="file"
       :disabled="disabled"
       @change="handleChange"
     />
-    <v-btn v-if="!disabled" class="button" color="black" icon @click="handleClear">
+    <v-btn v-if="!disabled" class="o-button" color="black" icon @click="handleClear">
       <v-icon>{{ mdiClose }}</v-icon>
     </v-btn>
   </div>
@@ -82,8 +83,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.base-file-input {
-  label {
+.o-base-file-input {
+  .o-label {
     display: block;
     text-align: center;
     &:hover {
@@ -91,16 +92,16 @@ export default defineComponent({
       cursor: pointer;
     }
   }
-  .no-event {
+  .o-no-event {
     opacity: 0.8;
     &:hover {
       cursor: default;
     }
   }
-  input {
+  .o-input {
     display: none;
   }
-  .button {
+  .o-button {
     display: block;
     margin: 10px auto 0;
   }

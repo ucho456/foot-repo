@@ -9,7 +9,7 @@
           </v-col>
         </v-row>
         <v-row v-if="!report.publish" justify="center">
-          <v-col cols="4" md="2" class="private"> 非公開 </v-col>
+          <v-col cols="4" md="2" class="o-private"> 非公開 </v-col>
         </v-row>
         <v-row>
           <ColUserImageName
@@ -29,7 +29,7 @@
             <v-row v-for="htrItem in homeTeamReportItems" :key="htrItem.id">
               <v-col cols="12" class="font-weight-bold">
                 {{ htrItem.position }} {{ htrItem.shirtNumber }} {{ htrItem.player.name }}
-                <span v-if="report && report.momId === htrItem.player.id" class="mom">☆MOM</span>
+                <span v-if="report && report.momId === htrItem.player.id" class="o-mom">☆MOM</span>
               </v-col>
               <v-col class="mt-n6" cols="12"> {{ htrItem.point }} </v-col>
               <v-col class="mb-5 mt-n6" cols="12">{{ htrItem.text }}</v-col>
@@ -46,7 +46,7 @@
             <v-row v-for="atrItem in awayTeamReportItems" :key="atrItem.id">
               <v-col cols="12" class="font-weight-bold">
                 {{ atrItem.position }} {{ atrItem.shirtNumber }} {{ atrItem.player.name }}
-                <span v-if="report && report.momId === atrItem.player.id" class="mom">☆MOM</span>
+                <span v-if="report && report.momId === atrItem.player.id" class="o-mom">☆MOM</span>
               </v-col>
               <v-col class="mt-n6" cols="12"> {{ atrItem.point }} </v-col>
               <v-col class="mb-5 mt-n6" cols="12">{{ atrItem.text }}</v-col>
@@ -103,7 +103,7 @@
             />
           </v-col>
           <v-col cols="12" class="mt-n4">マイチーム：{{ user.team.name }}</v-col>
-          <v-col cols="12" class="greet mt-n4">{{ user.greet }}</v-col>
+          <v-col cols="12" class="o-greet mt-n4">{{ user.greet }}</v-col>
         </v-row>
       </v-container>
     </v-card>
@@ -133,7 +133,7 @@
             :name="comment.user.name"
             :user-id="comment.user.id"
           />
-          <v-col class="comment mt-n4 pl-11">{{ comment.text }}</v-col>
+          <v-col class="o-comment mt-n4 pl-11">{{ comment.text }}</v-col>
         </v-row>
         <v-row>
           <ColUserImageName
@@ -366,19 +366,19 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.private {
+.o-private {
   color: #1a237e;
   background-color: #{$light-indigo};
   border-radius: 5px;
   text-align: center;
 }
-.mom {
+.o-mom {
   background: linear-gradient(transparent 70%, yellow 70%);
 }
-.comment {
+.o-comment {
   border-bottom: 1px solid #{$light-indigo};
 }
-.greet {
+.o-greet {
   white-space: pre-wrap;
   word-wrap: break-word;
 }

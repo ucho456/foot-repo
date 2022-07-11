@@ -2,8 +2,8 @@
   <v-dialog max-width="380" persistent :value="isDialog">
     <v-card v-if="report">
       <v-card-title />
-      <v-card-text class="wrap">以下の選手採点を削除しますか？ </v-card-text>
-      <v-card-text class="wrap">タイトル：{{ report.title }} </v-card-text>
+      <v-card-text class="o-wrap">以下の選手採点を削除しますか？ </v-card-text>
+      <v-card-text class="o-wrap">タイトル：{{ report.title }} </v-card-text>
       <v-divider />
       <v-card-actions>
         <v-container>
@@ -62,7 +62,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.wrap {
+.o-wrap {
   white-space: pre-wrap;
 }
 </style>

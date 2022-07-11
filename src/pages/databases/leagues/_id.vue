@@ -33,7 +33,7 @@
               <tr
                 v-for="item in league.standings.table"
                 :key="item.keyId"
-                class="standings"
+                class="o-standings"
                 @click="pushToTeamShow(item.team.ref.path)"
               >
                 <td class="text-center">{{ item.rank }}</td>
@@ -69,7 +69,7 @@
         <v-simple-table dense>
           <template #default>
             <thead>
-              <tr class="no-link">
+              <tr class="o-no-link">
                 <th class="text-center">Rank</th>
                 <th class="text-center">Player</th>
                 <th class="text-center">Team</th>
@@ -79,7 +79,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="item in league.scorers.table" :key="item.keyId" class="no-link">
+              <tr v-for="item in league.scorers.table" :key="item.keyId" class="o-no-link">
                 <td class="text-center">{{ item.rank }}</td>
                 <td class="text-center">{{ item.player.name }}</td>
                 <td class="text-center">{{ item.team.name }}</td>
@@ -170,12 +170,12 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.standings {
+.o-standings {
   &:hover {
     cursor: pointer;
   }
 }
-.no-link {
+.o-no-link {
   &:hover {
     background-color: transparent !important;
   }

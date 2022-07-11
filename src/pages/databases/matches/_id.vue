@@ -24,7 +24,7 @@
             <v-simple-table dence>
               <template #default>
                 <tbody>
-                  <tr v-for="player in homePlayers" :key="player.player.id" class="no-link">
+                  <tr v-for="player in homePlayers" :key="player.player.id" class="o-no-link">
                     <td class="text-center">{{ player.position }}</td>
                     <td class="text-center">{{ player.shirtNumber }}</td>
                     <td class="text-center">{{ player.player.name }}</td>
@@ -50,7 +50,7 @@
             <v-simple-table dence>
               <template #default>
                 <tbody>
-                  <tr v-for="player in awayPlayers" :key="player.player.id" class="no-link">
+                  <tr v-for="player in awayPlayers" :key="player.player.id" class="o-no-link">
                     <td class="text-center">{{ player.position }}</td>
                     <td class="text-center">{{ player.shirtNumber }}</td>
                     <td class="text-center">{{ player.player.name }}</td>
@@ -68,7 +68,7 @@
         <v-simple-table dense>
           <template #default>
             <thead>
-              <tr class="no-link">
+              <tr class="o-no-link">
                 <th class="text-center">min</th>
                 <th class="text-center">team</th>
                 <th class="text-center">scorer</th>
@@ -76,7 +76,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="item in match.detail.goals" :key="item.keyId" class="no-link">
+              <tr v-for="item in match.detail.goals" :key="item.keyId" class="o-no-link">
                 <td class="text-center">{{ item.minute }}</td>
                 <td class="text-center">{{ item.team.name }}</td>
                 <td class="text-center">{{ item.scorer.name }}</td>
@@ -93,7 +93,7 @@
         <v-simple-table dense>
           <template #default>
             <thead>
-              <tr class="no-link">
+              <tr class="o-no-link">
                 <th class="text-center">min</th>
                 <th class="text-center">team</th>
                 <th class="text-center">in</th>
@@ -101,7 +101,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="item in match.detail.substitutions" :key="item.keyId" class="no-link">
+              <tr v-for="item in match.detail.substitutions" :key="item.keyId" class="o-no-link">
                 <td class="text-center">{{ item.minute }}</td>
                 <td class="text-center">{{ item.team.name }}</td>
                 <td class="text-center">{{ item.inPlayer.name }}</td>
@@ -118,7 +118,7 @@
         <v-simple-table dense>
           <template #default>
             <thead>
-              <tr class="no-link">
+              <tr class="o-no-link">
                 <th class="text-center">min</th>
                 <th class="text-center">team</th>
                 <th class="text-center">player</th>
@@ -126,16 +126,16 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="item in match.detail.bookings" :key="item.keyId" class="no-link">
+              <tr v-for="item in match.detail.bookings" :key="item.keyId" class="o-no-link">
                 <td class="text-center">{{ item.minute }}</td>
                 <td class="text-center">{{ item.team.name }}</td>
                 <td class="text-center">{{ item.player.name }}</td>
                 <td class="text-center">
                   <div
+                    class="o-card"
                     :class="{
-                      card: true,
-                      'yellow-card': item.card === 'yellow',
-                      'red-card': item.card === 'red'
+                      'o-yellow': item.card === 'yellow',
+                      'o-red': item.card === 'red'
                     }"
                   ></div>
                 </td>
@@ -234,21 +234,21 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.no-link {
+.o-no-link {
   &:hover {
     background-color: transparent !important;
   }
 }
-.card {
+.o-card {
   margin: 0 auto;
   height: 28px;
   width: 20px;
   border-radius: 3px;
 }
-.yellow-card {
+.o-yellow {
   background: #ffd600;
 }
-.red-card {
+.o-red {
   background: red;
 }
 </style>

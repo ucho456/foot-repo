@@ -11,7 +11,7 @@
       </v-col>
     </v-row>
     <v-tabs v-if="tabs.length > 0" class="mb-2" fixed-tabs @change="handleTab">
-      <v-tab v-for="tab in tabs" :key="tab" class="tab">{{ tab }}</v-tab>
+      <v-tab v-for="tab in tabs" :key="tab" class="o-tab">{{ tab }}</v-tab>
     </v-tabs>
     <ContainerLoading :is-loading="isLoading" />
     <v-row v-if="reports.length === 0 && !isLoading">
@@ -25,8 +25,8 @@
             <v-img v-else :lazy-src="lazy" :src="noAvatarImage" />
           </v-list-item-avatar>
           <v-list-item-content>
-            <v-list-item-title class="title">
-              {{ report.title }}<span v-if="!report.publish" class="private">非公開</span>
+            <v-list-item-title class="o-title">
+              {{ report.title }}<span v-if="!report.publish" class="o-private">非公開</span>
             </v-list-item-title>
             <v-list-item-subtitle class="d-flex">
               <v-img
@@ -120,15 +120,15 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.tab {
+.o-tab {
   text-transform: none;
 }
-.title {
+.o-title {
   font-size: 15px !important;
   text-overflow: inherit;
   white-space: unset;
 }
-.private {
+.o-private {
   color: #1a237e;
   background-color: #{$light-indigo};
   border-radius: 5px;

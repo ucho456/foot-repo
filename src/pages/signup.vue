@@ -13,7 +13,9 @@
             </v-col>
             <v-col cols="10" sm="8" class="d-flex my-n9">
               <v-checkbox v-model="termsCheck" />
-              <span class="hover terms" @click="showDialog">利用規約に同意してご登録下さい。</span>
+              <span class="hover o-terms" @click="showDialog">
+                利用規約に同意してご登録下さい。
+              </span>
             </v-col>
             <v-col cols="10">
               <ButtonSubmit
@@ -113,7 +115,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.terms {
+.o-terms {
   font-size: 12px;
   color: #1a237e;
   text-decoration: underline;

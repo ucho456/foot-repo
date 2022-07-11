@@ -1,5 +1,5 @@
 <template>
-  <v-app class="light-indigo">
+  <v-app class="o-light-indigo">
     <v-app-bar class="white--text" app color="primary" fixed>
       <v-container class="align-center d-flex">
         <v-toolbar-title>
@@ -33,9 +33,9 @@
             <span>&copy; {{ new Date().getFullYear() }}</span>
           </v-col>
           <v-col class="text-right" cols="6">
-            <div class="hover font-10" @click="show('terms')">利用規約</div>
-            <div class="hover font-10" @click="show('privacy policy')">プライバシーポリシー</div>
-            <div class="hover font-10" @click="show('specified commercial transactions law')">
+            <div class="hover o-font-10" @click="show('terms')">利用規約</div>
+            <div class="hover o-font-10" @click="show('privacy policy')">プライバシーポリシー</div>
+            <div class="hover o-font-10" @click="show('specified commercial transactions law')">
               特定商取引法に基づく表示
             </div>
           </v-col>
@@ -249,10 +249,10 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.light-indigo {
+.o-light-indigo {
   background: #{$light-indigo};
 }
-.font-10 {
+.o-font-10 {
   font-size: 10px;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <v-col
     class="d-flex"
-    :class="{ hover: userId !== 'guest' && userId !== null }"
+    :class="{ 'o-hover': userId !== 'guest' && userId !== null }"
     :cols="cols"
     :sm="sm"
     :md="md"

@@ -5,7 +5,7 @@
       <v-container v-if="team.data">
         <v-row>
           <v-col cols="3" sm="2">
-            <v-img class="emblem" :lazy-src="lazy" :src="team.data.imageUrl" />
+            <v-img class="o-emblem" :lazy-src="lazy" :src="team.data.imageUrl" />
           </v-col>
           <v-col cols="9" sm="10">
             <h1>{{ team.data.name }}</h1>
@@ -26,7 +26,7 @@
               <tr
                 v-for="competition in team.data.competitions"
                 :key="competition.name"
-                class="no-link"
+                class="o-no-link"
               >
                 <td class="text-center">
                   <v-img
@@ -51,12 +51,12 @@
         <v-simple-table v-else dence>
           <template #default>
             <tbody>
-              <tr v-for="player in team.data.squad" :key="player.keyId" class="no-link">
+              <tr v-for="player in team.data.squad" :key="player.keyId" class="o-no-link">
                 <td class="text-center pl-1 pr-1">{{ player.position }}</td>
                 <td class="text-center pl-1 pr-1">{{ player.shirtNumber }}</td>
                 <td class="text-center">{{ player.player.name }}</td>
                 <td class="text-center">{{ player.nationality }}</td>
-                <td class="text-center pl-1 pr-1 td-w">
+                <td class="text-center pl-1 pr-1 o-td-w">
                   {{ getAge(player.dateOfBirth) }}
                 </td>
               </tr>
@@ -112,21 +112,21 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.no-link {
+.o-no-link {
   &:hover {
     background-color: transparent !important;
   }
 }
-.emblem {
+.o-emblem {
   width: 53px;
   height: 53px;
   margin: 0 auto;
 }
-.td-w {
+.o-td-w {
   width: 50px;
 }
 @media (max-width: $tabletBreakPoints) {
-  .emblem {
+  .o-emblem {
     top: 5px;
     width: 35px;
     height: 35px;

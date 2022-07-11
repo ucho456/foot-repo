@@ -1,5 +1,5 @@
 <template>
-  <v-app class="grey">
+  <v-app class="o-grey">
     <v-main>
       <v-container>
         <Nuxt />
@@ -29,7 +29,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.grey {
+.o-grey {
   background: #eceff1;
 }
 </style>

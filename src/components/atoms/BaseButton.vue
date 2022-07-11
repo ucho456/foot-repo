@@ -1,6 +1,6 @@
 <template>
   <v-btn
-    class="v-btn"
+    class="o-btn"
     :block="blockFlg"
     :class="{ 'white--text': whiteTextFlg }"
     :color="color"
@@ -50,7 +50,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.v-btn {
+.o-btn {
   text-transform: none;
 }
 </style>
