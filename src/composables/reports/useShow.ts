@@ -1,8 +1,8 @@
-import { ref, Ref } from '@nuxtjs/composition-api'
+import { onBeforeUnmount, ref, Ref, useRoute, useRouter } from '@nuxtjs/composition-api'
 import type { Unsubscribe } from 'firebase/firestore'
 import { fetchMatch } from '@/db/matches'
 import {
-  createComment,
+  postComment,
   fetchSameMatchReports,
   fetchReport,
   doLike,
@@ -10,9 +10,15 @@ import {
 } from '@/db/reports'
 import { fetchIsFollow, fetchIsLike, fetchUser, doFollow } from '@/db/users'
 import useLoginUser from '@/utils/useLoginUser'
+import useSnackbar from '@/utils/useSnackbar'
+import useStore from '@/utils/useStore'
 
 const useShow = () => {
+  const route = useRoute()
+  const router = useRouter()
   const { loginUser } = useLoginUser()
+  const { openSnackbar } = useSnackbar()
+  const { confirmation } = useStore()
 
   const report: Ref<Report | null> = ref(null)
   const homeTeamReportItems: Ref<ReportItem[]> = ref([])
@@ -25,47 +31,49 @@ const useShow = () => {
   const like = ref(false)
   const follow = ref(false)
 
+  /** setUp */
   const isLoadingReport = ref(false)
   const isLoadingUser = ref(false)
   const isLoadingSameMatchReports = ref(false)
   const isLoadingComments = ref(false)
-  const setUp = async (
-    reportId: string
-  ): Promise<'success' | 'failure' | 'unauthorized access'> => {
+  const setUp = async (): Promise<void> => {
     try {
       isLoadingReport.value = true
+      const reportId = route.value.params.id as string
       const { resReport, resHomeTeamReportItems, resAwayTeamReportItems } = await fetchReport(
         reportId,
-        loginUser.value?.uid
+        loginUser.value?.uid // なんか気持ち悪い
       )
-      if (loginUser.value) like.value = await fetchIsLike(loginUser.value.uid, resReport.id)
       report.value = resReport
       homeTeamReportItems.value = resHomeTeamReportItems
       awayTeamReportItems.value = resAwayTeamReportItems
-      match.value = await fetchMatch(report.value?.match.id!)
-      isLoadingReport.value = false
-
-      isLoadingUser.value = true
-      user.value = await fetchUser(resReport.user.ref.id)
-      if (loginUser.value) {
-        follow.value = await fetchIsFollow(loginUser.value.uid, report.value?.user.id)
+      if (report.value) {
+        match.value = await fetchMatch(report.value.match.id)
+        if (loginUser.value) like.value = await fetchIsLike(loginUser.value.uid, reportId)
+        isLoadingReport.value = false
+        if (report.value.user.id !== 'guest') {
+          isLoadingUser.value = true
+          user.value = await fetchUser(report.value.user.id)
+          if (loginUser.value) {
+            follow.value = await fetchIsFollow(loginUser.value.uid, report.value.user.id)
+          }
+          isLoadingUser.value = false
+        }
+        isLoadingSameMatchReports.value = true
+        sameMatchReports.value = await fetchSameMatchReports(report.value.match.id, reportId)
+        isLoadingSameMatchReports.value = false
+        isLoadingComments.value = true
+        unsubscribeComments.value = await subscribeComments(reportId, comments.value)
+        isLoadingComments.value = false
       }
-      isLoadingUser.value = false
-
-      isLoadingSameMatchReports.value = true
-      sameMatchReports.value = await fetchSameMatchReports(resReport.match.id, reportId)
-      isLoadingSameMatchReports.value = false
-
-      isLoadingComments.value = true
-      unsubscribeComments.value = await subscribeComments(reportId, comments.value)
-      isLoadingComments.value = false
-
-      return 'success'
     } catch (error) {
       console.log(error)
-      return error instanceof Error && error.message === 'unauthorized access'
-        ? 'unauthorized access'
-        : 'failure'
+      if (error instanceof Error && error.message === 'unauthorized access') {
+        openSnackbar('failure', '不正なアクセスが発生しました。')
+        router.push('/')
+      } else {
+        openSnackbar('failure', '通信エラーが発生しました。')
+      }
     } finally {
       isLoadingReport.value = false
       isLoadingUser.value = false
@@ -74,6 +82,7 @@ const useShow = () => {
     }
   }
 
+  /** sns share */
   const share = (type: 'twitter' | 'facebook'): void => {
     const shareUrl =
       type === 'twitter'
@@ -87,8 +96,9 @@ const useShow = () => {
     window.open(shareUrl)
   }
 
+  /** like */
   const isLoadingUpdateLike = ref(false)
-  const updateLike = async (): Promise<'success' | 'failure' | undefined> => {
+  const updateLike = async (): Promise<void> => {
     if (!loginUser.value || !report.value) return
     try {
       isLoadingUpdateLike.value = true
@@ -99,76 +109,85 @@ const useShow = () => {
       } else if (report.value && !like.value) {
         report.value.likeCount--
       }
-      return 'success'
-    } catch {
-      return 'failure'
+    } catch (error) {
+      console.log(error)
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoadingUpdateLike.value = false
     }
   }
 
+  /** follow */
   const isLoadingUpdateFollow = ref(false)
-  const updateFollow = async (userId: string): Promise<'success' | 'failure' | undefined> => {
+  const updateFollow = async (userId: string): Promise<void> => {
+    if (!loginUser.value) return
     try {
-      if (!loginUser.value) return
       isLoadingUpdateFollow.value = true
       await doFollow(loginUser.value.uid, userId)
       follow.value = !follow.value
-      return 'success'
     } catch (error) {
       console.log(error)
-      return 'failure'
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoadingUpdateFollow.value = false
     }
   }
 
-  const inputComment = ref('')
+  /** comments */
+  const newComment = ref('')
   const isLoadingNewComment = ref(false)
   const isDialog = ref(false)
-  const create = async (): Promise<'success' | 'failure'> => {
+  const hideDialog = (): void => {
+    confirmation.isLogin = true
+    isDialog.value = false
+  }
+  const confirmLogin = (): void => {
+    !confirmation.isLogin && !loginUser.value ? (isDialog.value = true) : createComment()
+  }
+  const createComment = async (): Promise<void> => {
+    if (!report.value) return
     try {
+      hideDialog()
       isLoadingNewComment.value = true
-      if (report.value) {
-        await createComment(report.value.id, loginUser.value, inputComment.value)
-        inputComment.value = ''
-        return 'success'
-      } else {
-        return 'failure'
-      }
+      await postComment(report.value.id, loginUser.value, newComment.value)
+      newComment.value = ''
+      openSnackbar('success', 'コメントを作成しました。')
     } catch (error) {
       console.log(error)
-      return 'failure'
+      openSnackbar('failure', 'コメントの作成に失敗しました。')
     } finally {
       isLoadingNewComment.value = false
     }
   }
+  onBeforeUnmount(() => {
+    if (unsubscribeComments.value) unsubscribeComments.value()
+  })
 
   return {
-    report,
-    homeTeamReportItems,
     awayTeamReportItems,
-    match,
-    user,
-    sameMatchReports,
     comments,
-    unsubscribeComments,
-    isLoadingReport,
-    isLoadingUser,
-    isLoadingSameMatchReports,
-    isLoadingComments,
-    setUp,
-    like,
-    updateLike,
-    share,
-    inputComment,
-    isLoadingNewComment,
-    isDialog,
-    create,
-    updateFollow,
+    confirmLogin,
+    createComment,
     follow,
+    homeTeamReportItems,
+    isDialog,
+    isLoadingComments,
+    isLoadingNewComment,
+    isLoadingReport,
+    isLoadingSameMatchReports,
     isLoadingUpdateFollow,
-    isLoadingUpdateLike
+    isLoadingUpdateLike,
+    isLoadingUser,
+    like,
+    match,
+    newComment,
+    report,
+    sameMatchReports,
+    setUp,
+    share,
+    updateFollow,
+    updateLike,
+    user
   }
 }
 

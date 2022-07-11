@@ -1,8 +1,8 @@
 <template>
   <v-container>
-    <v-card outlined>
+    <v-card min-height="600" outlined>
       <ContainerLoading :is-loading="isLoadingReport" />
-      <v-container v-if="report && match">
+      <v-container v-if="!isLoadingReport && report && match">
         <v-row>
           <v-col>
             <h1>{{ report.title }}</h1>
@@ -13,9 +13,9 @@
         </v-row>
         <v-row>
           <ColUserImageName
-            :user-id="report.user.id"
             :image-url="report.user.imageUrl"
             :name="report.user.name"
+            :user-id="report.user.id"
           />
         </v-row>
         <RowMatchHeader v-bind="match" />
@@ -54,7 +54,7 @@
           </v-container>
         </v-row>
         <v-row>
-          <v-col cols="12">総評：{{ report.summary }}</v-col>
+          <v-col cols="12" class="font-weight-bold">総評：{{ report.summary }}</v-col>
         </v-row>
         <v-row>
           <v-col>
@@ -69,7 +69,7 @@
               :color="like ? 'orange' : 'grey'"
               :disabled="!loginUser || loginUser.uid === report.user.id"
               :loading="isLoadingUpdateLike"
-              @click="clickLike"
+              @click="updateLike"
             >
               <v-icon>{{ mdiThumbUp }}</v-icon>
             </v-btn>
@@ -78,9 +78,9 @@
         </v-row>
       </v-container>
     </v-card>
-    <v-card v-if="!isLoadingReport" class="mt-4" outlined>
+    <v-card v-if="!isLoadingReport && report && report.user.id !== 'guest'" class="mt-4" outlined>
       <ContainerLoading :is-loading="isLoadingUser" />
-      <v-container v-if="user && report">
+      <v-container v-if="!isLoadingUser && user && report">
         <v-row>
           <v-col cols="12" class="mb-n6">
             <h2>投稿者</h2>
@@ -99,7 +99,7 @@
               :follow="follow"
               :is-loading="isLoadingUpdateFollow"
               :user-id="user.id"
-              @click="clickFollow"
+              @click="updateFollow"
             />
           </v-col>
           <v-col cols="12" class="mt-n4">マイチーム：{{ user.team.name }}</v-col>
@@ -144,10 +144,10 @@
           <ColUserImageName v-else :name="'Guest'" />
         </v-row>
         <v-row>
-          <v-col cols="12"> <Textarea v-model="inputComment" :maxlength="140" /></v-col>
+          <v-col cols="12"> <Textarea v-model="newComment" :maxlength="140" /></v-col>
           <v-col cols="6" class="mt-n8">
             <ButtonSubmit
-              :disabled="inputComment.length === 0"
+              :disabled="newComment.length === 0"
               :is-loading="isLoadingNewComment"
               :text="'コメントを投稿'"
               @click="confirmLogin"
@@ -159,7 +159,7 @@
     <DialogConfirmLogin
       :is-dialog="isDialog"
       :text="'ログインが完了していません。\nゲストとしてコメントを投稿しますか？'"
-      @guest="submitCreate"
+      @guest="createComment"
     />
     <DialogShare
       :dialog="dialogShare"
@@ -171,89 +171,67 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  onBeforeUnmount,
-  useMeta,
-  useRoute,
-  useRouter,
-  ref
-} from '@nuxtjs/composition-api'
+import { defineComponent, useMeta, useRoute, ref } from '@nuxtjs/composition-api'
 import { mdiFacebook, mdiThumbUp, mdiTwitter } from '@mdi/js'
 import useShow from '@/composables/reports/useShow'
 import useLoginUser from '@/utils/useLoginUser'
-import useSnackbar from '@/utils/useSnackbar'
-import useStore from '@/utils/useStore'
 import ButtonFollow from '@/components/molecules/ButtonFollow.vue'
-import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
-import ColUserImageName from '@/components/organisms/ColUserImageName.vue'
-import RowMatchHeader from '@/components/organisms/RowMatchHeader.vue'
-import ContainerReportTable from '@/components/organisms/ContainerReportTable.vue'
-import Textarea from '@/components/molecules/Textarea.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
+import ColUserImageName from '@/components/organisms/ColUserImageName.vue'
+import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
+import ContainerReportTable from '@/components/organisms/ContainerReportTable.vue'
 import DialogConfirmLogin from '@/components/organisms/DialogConfirmLogin.vue'
 import DialogShare from '@/components/organisms/DialogShare.vue'
+import RowMatchHeader from '@/components/organisms/RowMatchHeader.vue'
+import Textarea from '@/components/molecules/Textarea.vue'
 
 export default defineComponent({
   name: 'ReportShow',
 
   components: {
     ButtonFollow,
-    ContainerLoading,
-    ColUserImageName,
-    RowMatchHeader,
-    ContainerReportTable,
-    Textarea,
     ButtonSubmit,
+    ColUserImageName,
+    ContainerLoading,
+    ContainerReportTable,
     DialogConfirmLogin,
-    DialogShare
+    DialogShare,
+    RowMatchHeader,
+    Textarea
   },
 
   setup() {
     const route = useRoute()
-    const router = useRouter()
     const {
-      report,
-      homeTeamReportItems,
       awayTeamReportItems,
-      match,
-      user,
-      sameMatchReports,
       comments,
-      unsubscribeComments,
-      isLoadingReport,
-      isLoadingUser,
-      isLoadingSameMatchReports,
+      confirmLogin,
+      createComment,
+      follow,
+      homeTeamReportItems,
+      isDialog,
       isLoadingComments,
+      isLoadingNewComment,
+      isLoadingReport,
+      isLoadingSameMatchReports,
+      isLoadingUpdateFollow,
+      isLoadingUpdateLike,
+      isLoadingUser,
+      like,
+      match,
+      newComment,
+      report,
+      sameMatchReports,
       setUp,
       share,
-      like,
-      updateLike,
-      inputComment,
-      isLoadingNewComment,
-      isDialog,
-      create,
       updateFollow,
-      follow,
-      isLoadingUpdateFollow,
-      isLoadingUpdateLike
+      updateLike,
+      user
     } = useShow()
     const { loginUser } = useLoginUser()
-    const { openSnackbar } = useSnackbar()
-    const { confirmation } = useStore()
     const lazy = require('@/assets/lazy.png')
 
-    const setUpPage = async () => {
-      const reportId = route.value.params.id as string
-      const result = await setUp(reportId)
-      if (result === 'failure') {
-        openSnackbar(result, 'データの取得に失敗しました。')
-      } else if (result === 'unauthorized access') {
-        openSnackbar(result, '不正なアクセスが発生した為、ホーム画面に遷移しました。')
-        router.push('/')
-      }
-    }
-    setUpPage()
+    setUp()
 
     useMeta(() => ({
       title: report.value?.title,
@@ -279,44 +257,6 @@ export default defineComponent({
       ]
     }))
 
-    const clickLike = async (): Promise<void> => {
-      const result = await updateLike()
-      if (result === 'failure') {
-        openSnackbar(result, '通信エラーが発生しました。')
-      }
-    }
-
-    const clickFollow = async (userId: string): Promise<void> => {
-      const result = await updateFollow(userId)
-      if (result === 'failure') {
-        openSnackbar(result, '通信エラーが発生しました。')
-      }
-    }
-
-    const confirmLogin = (): void => {
-      if (!confirmation.isLogin && !loginUser.value) {
-        isDialog.value = true
-      } else {
-        confirmation.isLogin = true
-        submitCreate()
-      }
-    }
-
-    const submitCreate = async (): Promise<void> => {
-      confirmation.isLogin = true
-      isDialog.value = false
-      const result = await create()
-      const message =
-        result === 'success' ? 'コメントを作成しました。' : 'コメントの作成に失敗しました。'
-      openSnackbar(result, message)
-    }
-
-    onBeforeUnmount(() => {
-      if (unsubscribeComments.value) {
-        unsubscribeComments.value()
-      }
-    })
-
     const dialogShare = ref(false)
     const show = () => {
       if (process.client && route.value.query.publish) dialogShare.value = true
@@ -327,37 +267,37 @@ export default defineComponent({
     show()
 
     return {
-      clickFollow,
-      report,
-      homeTeamReportItems,
       awayTeamReportItems,
-      match,
-      user,
-      sameMatchReports,
       comments,
-      isLoadingReport,
-      isLoadingUser,
-      isLoadingSameMatchReports,
-      isLoadingComments,
-      share,
-      like,
-      clickLike,
-      inputComment,
-      isLoadingNewComment,
-      isDialog,
-      loginUser,
       confirmLogin,
-      submitCreate,
+      createComment,
+      dialogShare,
       follow,
+      hide,
+      homeTeamReportItems,
+      isDialog,
+      isLoadingComments,
+      isLoadingNewComment,
+      isLoadingReport,
+      isLoadingSameMatchReports,
       isLoadingUpdateFollow,
       isLoadingUpdateLike,
-      dialogShare,
-      show,
-      hide,
+      isLoadingUser,
+      lazy,
+      like,
+      loginUser,
+      match,
       mdiFacebook,
       mdiThumbUp,
       mdiTwitter,
-      lazy
+      newComment,
+      report,
+      sameMatchReports,
+      share,
+      show,
+      updateFollow,
+      updateLike,
+      user
     }
   },
 

@@ -375,11 +375,7 @@ export const deleteReport = async (reportId: string, uid: string): Promise<void>
 }
 
 /** Comments Create */
-export const createComment = async (
-  reportId: string,
-  loginUser: LoginUser | null,
-  text: string
-) => {
+export const postComment = async (reportId: string, loginUser: LoginUser | null, text: string) => {
   const db = getFirestore()
   const cColRef = collection(db, 'reports', reportId, 'comments')
   const cId = doc(cColRef).id
