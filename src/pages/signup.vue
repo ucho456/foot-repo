@@ -13,7 +13,7 @@
             </v-col>
             <v-col cols="10" sm="8" class="d-flex my-n9">
               <v-checkbox v-model="termsCheck" />
-              <span class="hover o-terms" @click="showDialog">
+              <span class="o-hover o-terms" @click="showDialog">
                 利用規約に同意してご登録下さい。
               </span>
             </v-col>
@@ -44,7 +44,7 @@
             <v-col cols="10">
               <ButtonBack :disabled="isLoading" @click="back" />
             </v-col>
-            <NuxtLink class="hover mb-4 text-caption" to="/login">
+            <NuxtLink class="o-hover mb-4 text-caption" to="/login">
               アカウントをお持ちの場合はこちらから
             </NuxtLink>
           </v-row>

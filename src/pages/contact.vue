@@ -7,7 +7,7 @@
           <v-col cols="12" class="mt-4">
             <a
               ref="nofollow"
-              class="hover"
+              class="o-hover"
               href="https://twitter.com/messages/compose?recipient_id=1500667275937927171"
               target="_blank"
             >

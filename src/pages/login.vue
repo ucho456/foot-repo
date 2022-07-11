@@ -36,7 +36,9 @@
             <v-col cols="10">
               <ButtonBack :disabled="isLoading" @click="back" />
             </v-col>
-            <NuxtLink class="text-caption hover mb-4" to="/signup"> 新規登録はこちらから </NuxtLink>
+            <NuxtLink class="text-caption o-hover mb-4" to="/signup">
+              新規登録はこちらから
+            </NuxtLink>
           </v-row>
         </ValidationObserver>
       </v-container>

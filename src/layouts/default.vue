@@ -4,7 +4,7 @@
       <v-container class="align-center d-flex">
         <v-toolbar-title>
           <img
-            class="hover"
+            class="o-hover"
             height="44"
             loading="lazy"
             width="202"
@@ -33,9 +33,11 @@
             <span>&copy; {{ new Date().getFullYear() }}</span>
           </v-col>
           <v-col class="text-right" cols="6">
-            <div class="hover o-font-10" @click="show('terms')">利用規約</div>
-            <div class="hover o-font-10" @click="show('privacy policy')">プライバシーポリシー</div>
-            <div class="hover o-font-10" @click="show('specified commercial transactions law')">
+            <div class="o-hover o-font-10" @click="show('terms')">利用規約</div>
+            <div class="o-hover o-font-10" @click="show('privacy policy')">
+              プライバシーポリシー
+            </div>
+            <div class="o-hover o-font-10" @click="show('specified commercial transactions law')">
               特定商取引法に基づく表示
             </div>
           </v-col>
