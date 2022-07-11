@@ -9,12 +9,13 @@ const useIndex = () => {
 
   /** setUp */
   const isLoadingFirst = ref(false)
-  const hasNextReports = ref(true)
   const setUp = async () => {
     try {
       isLoadingFirst.value = true
-      reports.data = []
-      await toStoreReports(reports, hasNextReports)
+      if (reports.data.length === 0) {
+        clearReportSearchOption()
+        await toStoreReports(reports)
+      }
     } catch (error) {
       console.log(error)
       openSnackbar('failure', '選手採点の取得に失敗しました。')
@@ -28,7 +29,7 @@ const useIndex = () => {
   const readNextReports = async (): Promise<void> => {
     try {
       isLoadingNext.value = true
-      await toStoreReports(reports, hasNextReports)
+      await toStoreReports(reports)
     } catch (error) {
       console.log(error)
       openSnackbar('failure', '選手採点の取得に失敗しました。')
@@ -61,11 +62,9 @@ const useIndex = () => {
   const search = async (): Promise<void> => {
     try {
       hideDialog()
-      hasNextReports.value = true
       isLoadingFirst.value = true
-      reports.data = []
       clearReportSearchOption()
-      await toStoreReports(reports, hasNextReports)
+      await toStoreReports(reports)
     } catch (error) {
       console.log(error)
       openSnackbar('failure', '選手採点の取得に失敗しました。')
@@ -76,7 +75,6 @@ const useIndex = () => {
 
   return {
     clearYearMonth,
-    hasNextReports,
     hideDialog,
     inputCompetitionId,
     inputTeamId,

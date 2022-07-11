@@ -22,6 +22,7 @@ export default defineNuxtPlugin((_, inject) => {
       data: Report[]
       lastVisible: QueryDocumentSnapshot<Report> | null
       searchOption: SearchOption
+      hasNext: boolean
     }
     league: {
       name: string
@@ -57,7 +58,8 @@ export default defineNuxtPlugin((_, inject) => {
     reports: {
       data: [],
       lastVisible: null,
-      searchOption: { status: '', competitionId: '', teamId: '', yearMonth: '' }
+      searchOption: { status: '', competitionId: '', teamId: '', yearMonth: '' },
+      hasNext: true
     },
     league: {
       name: '',
@@ -95,7 +97,8 @@ export default defineNuxtPlugin((_, inject) => {
     store.reports = {
       data: [],
       lastVisible: null,
-      searchOption: { status: '', competitionId: '', teamId: '', yearMonth: '' }
+      searchOption: { status: '', competitionId: '', teamId: '', yearMonth: '' },
+      hasNext: true
     }
     store.league = {
       name: '',

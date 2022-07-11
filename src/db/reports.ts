@@ -1,5 +1,4 @@
 /** check */
-import { Ref } from '@nuxtjs/composition-api'
 import {
   collection,
   doc,
@@ -170,14 +169,12 @@ export const fetchReport = async (
   }
 }
 
-export const toStoreReports = async (
-  reports: {
-    data: Report[]
-    lastVisible: QueryDocumentSnapshot<Report> | null
-    searchOption: SearchOption
-  },
-  hasNextReports?: Ref<boolean>
-): Promise<void> => {
+export const toStoreReports = async (reports: {
+  data: Report[]
+  lastVisible: QueryDocumentSnapshot<Report> | null
+  searchOption: SearchOption
+  hasNext: boolean
+}): Promise<void> => {
   const db = getFirestore()
   const rRef = collection(db, 'reports').withConverter(reportConverter)
   const options = makeSearchOption(reports.searchOption)
@@ -202,7 +199,7 @@ export const toStoreReports = async (
     if (doc.exists()) reports.data.push(doc.data())
   })
   reports.lastVisible = rSnapshot.docs[rSnapshot.size - 1]
-  if (hasNextReports !== undefined && rSnapshot.size < perPage) hasNextReports.value = false
+  if (rSnapshot.size < perPage) reports.hasNext = false
 }
 
 export const toStorePopularReports = async (reports: {

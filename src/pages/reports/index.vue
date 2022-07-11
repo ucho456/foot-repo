@@ -13,7 +13,7 @@
         <v-row v-if="!isLoadingFirst" justify="center">
           <v-col cols="10">
             <ButtonSubmit
-              :disabled="!hasNextReports"
+              :disabled="!reports.hasNext"
               :is-loading="isLoadingNext"
               :text="'もっと読み込む'"
               @click="readNextReports"
@@ -57,7 +57,6 @@ export default defineComponent({
   setup() {
     const {
       clearYearMonth,
-      hasNextReports,
       hideDialog,
       inputCompetitionId,
       inputTeamId,
@@ -76,7 +75,6 @@ export default defineComponent({
 
     return {
       clearYearMonth,
-      hasNextReports,
       hideDialog,
       inputCompetitionId,
       inputTeamId,

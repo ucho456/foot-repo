@@ -14,6 +14,7 @@ export const StoreKey: InjectionKey<{
     data: Report[]
     lastVisible: QueryDocumentSnapshot<Report> | null
     searchOption: SearchOption
+    hasNext: boolean
   }
   league: {
     name: string
@@ -49,6 +50,7 @@ const useStore = () => {
     store.reports.searchOption.competitionId = ''
     store.reports.searchOption.teamId = ''
     store.reports.searchOption.yearMonth = ''
+    store.reports.hasNext = true
   }
 
   return {
