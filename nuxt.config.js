@@ -74,7 +74,7 @@ export default {
   },
 
   modules: [
-    '@nuxtjs/axios',
+    // '@nuxtjs/axios',
     [
       'nuxt-compress',
       {
@@ -93,18 +93,16 @@ export default {
     lang: 'ja'
   },
 
-  axios: {
-    proxy: true
-  },
-
-  publicRuntimeConfig: {
-    footballUrl: process.env.FOOTBALL_URL,
-    footballToken: process.env.NODE_ENV !== 'production' ? process.env.FOOTBALL_TOKEN : undefined
-  },
-
-  privateRuntimeConfig: {
-    footballToken: process.env.FOOTBALL_TOKEN
-  },
+  // axios: {
+  //   proxy: true
+  // },
+  // publicRuntimeConfig: {
+  //   footballUrl: process.env.FOOTBALL_URL,
+  //   footballToken: process.env.NODE_ENV !== 'production' ? process.env.FOOTBALL_TOKEN : undefined
+  // },
+  // privateRuntimeConfig: {
+  //   footballToken: process.env.FOOTBALL_TOKEN
+  // },
 
   vuetify: {
     customVariables: ['@/assets/variables.scss'],
