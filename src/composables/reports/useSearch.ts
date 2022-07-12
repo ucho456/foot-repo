@@ -1,12 +1,16 @@
+/** check */
 import { ref } from '@nuxtjs/composition-api'
-import { toStoreFirstMatches, toStoreNextMatches } from '@/db/matches'
+import { toStoreMatches } from '@/db/matches'
 import useLoginUser from '@/utils/useLoginUser'
+import useSnackbar from '@/utils/useSnackbar'
 import useStore from '@/utils/useStore'
 
 const useSearch = () => {
   const { loginUser } = useLoginUser()
-  const { matches, confirmation } = useStore()
+  const { openSnackbar } = useSnackbar()
+  const { confirmation, matches, resetMatches } = useStore()
 
+  /** confirm login */
   const isDialogConfirmLogin = ref(false)
   const confirmLogin = (): void => {
     if (!confirmation.isLogin && !loginUser.value) {
@@ -20,59 +24,38 @@ const useSearch = () => {
     isDialogConfirmLogin.value = false
   }
 
+  /** setUp */
   const isLoadingFirst = ref(false)
-  const setUp = async (): Promise<'success' | 'failure'> => {
+  const setUp = async (): Promise<void> => {
     try {
       isLoadingFirst.value = true
       if (matches.data.length === 0) {
-        matches.lastVisible = null
-        matches.searchOption.yearMonth = ''
+        resetMatches()
+        await toStoreMatches(matches)
       }
-      matches.lastVisible = null
-      matches.searchOption.yearMonth = ''
-      if (loginUser.value) {
-        matches.searchOption.competitionId = loginUser.value.competitionId
-        matches.searchOption.teamId = loginUser.value.team.id
-      }
-      await toStoreFirstMatches(matches)
-      return 'success'
     } catch (error) {
       console.log(error)
-      return 'failure'
+      openSnackbar('failure', '試合データの取得に失敗しました。')
     } finally {
       isLoadingFirst.value = false
     }
   }
 
+  /** next matches */
   const isLoadingNext = ref(false)
-  const hasNextPage = ref(true)
-  const readMore = async (): Promise<'success' | 'failure'> => {
+  const readNextMatches = async (): Promise<void> => {
     try {
       isLoadingNext.value = true
-      await toStoreNextMatches(matches, hasNextPage)
-      return 'success'
+      await toStoreMatches(matches)
     } catch (error) {
       console.log(error)
-      return 'failure'
+      openSnackbar('failure', '試合データの取得に失敗しました。')
     } finally {
       isLoadingNext.value = false
     }
   }
 
-  const search = async (): Promise<'success' | 'failure'> => {
-    try {
-      hideDialog()
-      isLoadingFirst.value = true
-      await toStoreFirstMatches(matches)
-      return 'success'
-    } catch (error) {
-      console.log(error)
-      return 'failure'
-    } finally {
-      isLoadingFirst.value = false
-    }
-  }
-
+  /** search dialog */
   const isDialog = ref(false)
   const showDialog = (): void => {
     isDialog.value = true
@@ -80,7 +63,6 @@ const useSearch = () => {
   const hideDialog = (): void => {
     isDialog.value = false
   }
-
   const inputCompetitionId = (competitionId: string): void => {
     matches.searchOption.teamId = ''
     matches.searchOption.competitionId = competitionId
@@ -94,24 +76,38 @@ const useSearch = () => {
   const clearYearMonth = (): void => {
     matches.searchOption.yearMonth = ''
   }
+  const search = async (): Promise<void> => {
+    try {
+      hideDialog()
+      matches.data = []
+      matches.lastVisible = null
+      matches.hasNext = true
+      isLoadingFirst.value = true
+      await toStoreMatches(matches)
+    } catch (error) {
+      console.log(error)
+      openSnackbar('failure', '試合データの取得に失敗しました。')
+    } finally {
+      isLoadingFirst.value = false
+    }
+  }
 
   return {
-    isDialogConfirmLogin,
+    clearYearMonth,
     confirmLogin,
     continueGuest,
-    isLoadingFirst,
-    setUp,
-    isLoadingNext,
-    hasNextPage,
-    readMore,
-    search,
-    isDialog,
-    showDialog,
     hideDialog,
     inputCompetitionId,
     inputTeamId,
     inputYearMonth,
-    clearYearMonth
+    isDialog,
+    isDialogConfirmLogin,
+    isLoadingFirst,
+    isLoadingNext,
+    readNextMatches,
+    search,
+    setUp,
+    showDialog
   }
 }
 

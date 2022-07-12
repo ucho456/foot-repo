@@ -1,5 +1,4 @@
 /** check */
-import { Ref } from '@nuxtjs/composition-api'
 import {
   collection,
   doc,
@@ -42,47 +41,30 @@ export const toStoreMatch = async (
   }
 }
 
-export const toStoreFirstMatches = async (matches: {
+export const toStoreMatches = async (matches: {
   data: Match[]
   lastVisible: QueryDocumentSnapshot<Match> | null
   searchOption: SearchOption
+  hasNext: boolean
 }): Promise<void> => {
-  matches.data = []
   const db = getFirestore()
   const mRef = collection(db, 'matches').withConverter(matchConverter)
   const options = makeSearchOption(matches.searchOption)
-  const q = query(mRef, ...options, orderBy('jstDate', 'desc'), limit(perPage))
+  const q = matches.lastVisible
+    ? query(
+        mRef,
+        ...options,
+        orderBy('jstDate', 'desc'),
+        startAfter(matches.lastVisible),
+        limit(perPage)
+      )
+    : query(mRef, ...options, orderBy('jstDate', 'desc'), limit(perPage))
   const mSnapshot = await getDocs(q)
   mSnapshot.forEach((doc) => {
     if (doc.exists()) matches.data.push(doc.data())
   })
   matches.lastVisible = mSnapshot.docs[mSnapshot.size - 1]
-}
-
-export const toStoreNextMatches = async (
-  matches: {
-    data: Match[]
-    lastVisible: QueryDocumentSnapshot<Match> | null
-    searchOption: SearchOption
-  },
-  hasNextPage: Ref<boolean>
-): Promise<void> => {
-  const db = getFirestore()
-  const mRef = collection(db, 'matches').withConverter(matchConverter)
-  const options = makeSearchOption(matches.searchOption)
-  const q = query(
-    mRef,
-    ...options,
-    orderBy('jstDate', 'desc'),
-    startAfter(matches.lastVisible),
-    limit(perPage)
-  )
-  const mSnapshot = await getDocs(q)
-  mSnapshot.forEach((doc) => {
-    if (doc.exists()) matches.data.push(doc.data())
-  })
-  if (mSnapshot.size === 0) hasNextPage.value = false
-  matches.lastVisible = mSnapshot.docs[mSnapshot.size - 1]
+  if (mSnapshot.size < perPage) matches.hasNext = false
 }
 
 export const toStoreMatchSchedule = async (league: {

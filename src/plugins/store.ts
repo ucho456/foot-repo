@@ -17,6 +17,7 @@ export default defineNuxtPlugin((_, inject) => {
       data: Match[]
       lastVisible: QueryDocumentSnapshot<Match> | null
       searchOption: SearchOption
+      hasNext: boolean
     }
     reports: {
       data: Report[]
@@ -53,7 +54,8 @@ export default defineNuxtPlugin((_, inject) => {
     matches: {
       data: [],
       lastVisible: null,
-      searchOption: { status: 'FINISHED', competitionId: '', teamId: '', yearMonth: '' }
+      searchOption: { status: 'FINISHED', competitionId: '', teamId: '', yearMonth: '' },
+      hasNext: true
     },
     reports: {
       data: [],
@@ -92,7 +94,8 @@ export default defineNuxtPlugin((_, inject) => {
     store.matches = {
       data: [],
       lastVisible: null,
-      searchOption: { status: 'FINISHED', competitionId: '', teamId: '', yearMonth: '' }
+      searchOption: { status: 'FINISHED', competitionId: '', teamId: '', yearMonth: '' },
+      hasNext: true
     }
     store.reports = {
       data: [],

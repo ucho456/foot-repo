@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-card outlined>
+    <v-card min-height="600" outlined>
       <ContainerLoading :is-loading="isLoadingFirst" />
       <v-container v-if="!isLoadingFirst">
         <v-row>
@@ -23,14 +23,14 @@
               <v-list-item-content>
                 <v-row>
                   <v-col cols="6">
-                    <v-list-item-title class="text-right">{{
-                      match.homeTeam.name
-                    }}</v-list-item-title>
+                    <v-list-item-title class="text-right">
+                      {{ match.homeTeam.name }}
+                    </v-list-item-title>
                   </v-col>
                   <v-col cols="6">
-                    <v-list-item-title class="text-left">{{
-                      match.awayTeam.name
-                    }}</v-list-item-title>
+                    <v-list-item-title class="text-left">
+                      {{ match.awayTeam.name }}
+                    </v-list-item-title>
                   </v-col>
                 </v-row>
                 <v-list-item-subtitle class="mt-n3 text-center">
@@ -49,10 +49,10 @@
         <v-row justify="center">
           <v-col cols="10">
             <ButtonSubmit
-              :disabled="!hasNextPage"
+              :disabled="!matches.hasNext"
               :is-loading="isLoadingNext"
               :text="'もっと読み込む'"
-              @click="readMore"
+              @click="readNextMatches"
             />
           </v-col>
         </v-row>
@@ -61,101 +61,85 @@
     <DialogSearch
       :is-dialog="isDialog"
       :search-option="matches.searchOption"
+      @clear-year-month="clearYearMonth"
+      @hide="hideDialog"
       @input-competition-id="inputCompetitionId"
       @input-team-id="inputTeamId"
       @input-year-month="inputYearMonth"
-      @clear-year-month="clearYearMonth"
-      @hide="hideDialog"
       @search="search"
     />
-    <DialogConfirmLogin
-      :is-dialog="isDialogConfirmLogin"
-      :text="'ログインが完了していません。\nゲストとして選手採点を投稿しますか？'"
-      @guest="continueGuest"
-    />
+    <client-only>
+      <DialogConfirmLogin
+        :is-dialog="isDialogConfirmLogin"
+        :text="'ログインが完了していません。\nゲストとして選手採点を投稿しますか？'"
+        @guest="continueGuest"
+      />
+    </client-only>
   </v-container>
 </template>
 
 <script lang="ts">
-import { defineComponent, watch } from '@nuxtjs/composition-api'
+/** check */
+import { defineComponent } from '@nuxtjs/composition-api'
 import { mdiMagnify } from '@mdi/js'
 import useSearch from '@/composables/reports/useSearch'
-import useSnackbar from '@/utils/useSnackbar'
 import useStore from '@/utils/useStore'
-import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
-import DialogSearch from '@/components/organisms/DialogSearch.vue'
+import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 import DialogConfirmLogin from '@/components/organisms/DialogConfirmLogin.vue'
+import DialogSearch from '@/components/organisms/DialogSearch.vue'
 
 export default defineComponent({
   name: 'ReportSearch',
 
   components: {
-    ContainerLoading,
     ButtonSubmit,
-    DialogSearch,
-    DialogConfirmLogin
+    ContainerLoading,
+    DialogConfirmLogin,
+    DialogSearch
   },
 
   setup() {
     const {
-      isDialogConfirmLogin,
+      clearYearMonth,
       confirmLogin,
       continueGuest,
-      isLoadingFirst,
-      setUp,
-      isLoadingNext,
-      hasNextPage,
-      readMore,
-      search,
-      isDialog,
-      showDialog,
       hideDialog,
       inputCompetitionId,
       inputTeamId,
       inputYearMonth,
-      clearYearMonth
+      isDialog,
+      isDialogConfirmLogin,
+      isLoadingFirst,
+      isLoadingNext,
+      readNextMatches,
+      search,
+      setUp,
+      showDialog
     } = useSearch()
-    const { openSnackbar } = useSnackbar()
     const { matches } = useStore()
     const lazy = require('@/assets/lazy.png')
 
     confirmLogin()
-
-    const setUpPage = async (): Promise<void> => {
-      if (matches.data.length === 0) {
-        const result = await setUp()
-        if (result === 'failure') {
-          openSnackbar(result, 'データの取得に失敗しました。')
-        }
-      }
-    }
-    setUpPage()
-
-    watch(hasNextPage, (newVal, oldVal) => {
-      if (newVal === false && oldVal === true) {
-        openSnackbar('alert', '検索条件に合う全ての試合の取得を完了しています。')
-      }
-    })
+    setUp()
 
     return {
-      isDialogConfirmLogin,
+      clearYearMonth,
       continueGuest,
-      isLoadingFirst,
-      isLoadingNext,
-      hasNextPage,
-      readMore,
-      search,
-      isDialog,
-      showDialog,
       hideDialog,
       inputCompetitionId,
       inputTeamId,
       inputYearMonth,
-      clearYearMonth,
+      isDialog,
+      isDialogConfirmLogin,
+      isLoadingFirst,
+      isLoadingNext,
+      lazy,
       matches,
       mdiMagnify,
-      lazy
+      readNextMatches,
+      search,
+      showDialog
     }
   },
 

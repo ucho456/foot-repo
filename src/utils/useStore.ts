@@ -9,6 +9,7 @@ export const StoreKey: InjectionKey<{
     data: Match[]
     lastVisible: QueryDocumentSnapshot<Match> | null
     searchOption: SearchOption
+    hasNext: boolean
   }
   reports: {
     data: Report[]
@@ -60,6 +61,7 @@ const useStore = () => {
     store.matches.searchOption.competitionId = ''
     store.matches.searchOption.teamId = ''
     store.matches.searchOption.yearMonth = ''
+    store.matches.hasNext = true
   }
 
   return {
