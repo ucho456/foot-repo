@@ -136,10 +136,6 @@
         },
         {
           "fieldPath": "createdAt",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "likeCount",
           "order": "DESCENDING"
         }
       ]
@@ -151,6 +147,10 @@
         {
           "fieldPath": "publish",
           "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "likeCount",
+          "order": "DESCENDING"
         },
         {
           "fieldPath": "createdAt",
