@@ -13,7 +13,6 @@ const useIndex = () => {
   const setUp = async () => {
     try {
       isLoadingFirst.value = true
-      console.log(reports.searchOption)
       if (reports.data.length === 0) await toStoreReports(reports)
     } catch (error) {
       console.log(error)

@@ -156,11 +156,13 @@
         </v-row>
       </v-container>
     </v-card>
-    <DialogConfirmLogin
-      :is-dialog="isDialog"
-      :text="'ログインが完了していません。\nゲストとしてコメントを投稿しますか？'"
-      @guest="createComment"
-    />
+    <client-only>
+      <DialogConfirmLogin
+        :is-dialog="isDialog"
+        :text="'ログインが完了していません。\nゲストとしてコメントを投稿しますか？'"
+        @guest="createComment"
+      />
+    </client-only>
     <DialogShare
       :dialog="dialogShare"
       @facebook="share('facebook')"

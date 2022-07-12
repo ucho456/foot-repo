@@ -51,7 +51,6 @@ const useIndex = () => {
     reports.data = []
     reports.hasNext = true
     reports.lastVisible = null
-    console.log(reports.searchOption)
     router.push('/reports')
   }
 

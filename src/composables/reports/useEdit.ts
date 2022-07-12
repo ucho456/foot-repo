@@ -32,7 +32,6 @@ const useEdit = () => {
       const reportId = route.value.query.reportId as string
       const resReport = await fetchReport(reportId)
       if (resReport) {
-        console.log(resReport.user.id !== loginUser.value.uid)
         if (resReport.user.id !== loginUser.value.uid) throw new Error('unauthorized access')
         const { resHomeTeamReportItems, resAwayTeamReportItems } = await fetchReportItems(resReport)
         initReport.value = { ...resReport }
