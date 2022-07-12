@@ -71,7 +71,7 @@ export const toStoreUsers = async (
   const uSnapshot = await getDocs(q)
   const userIds: string[] = []
   uSnapshot.forEach((doc) => {
-    if (doc.exists() && doc.id !== 'Guest') {
+    if (doc.exists() && doc.id !== 'guest') {
       users.data.push(doc.data())
       userIds.push(doc.data().id)
     }
