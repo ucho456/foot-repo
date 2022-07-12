@@ -62,7 +62,7 @@ const useEdit = () => {
     }
   }
 
-  /** updateReport */
+  /** update report */
   const isLoadingUpdate = ref(false)
   const updateReport = async (): Promise<void> => {
     if (!initReport.value) return

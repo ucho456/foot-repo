@@ -1,12 +1,17 @@
-import { reactive, ref, watch } from '@nuxtjs/composition-api'
+/** check */
+import { reactive, ref, useRoute, useRouter, watch } from '@nuxtjs/composition-api'
 import { fetchForReport, fetchMatch } from '@/db/matches'
 import { postReport } from '@/db/reports'
 import useLoginUser from '@/utils/useLoginUser'
+import useSnackbar from '@/utils/useSnackbar'
 
 const useNew = () => {
+  const route = useRoute()
+  const router = useRouter()
   const { loginUser } = useLoginUser()
+  const { openSnackbar } = useSnackbar()
 
-  const inputReport: InputReport = reactive({
+  const newReport: InputReport = reactive({
     title: '',
     selectTeam: 'home',
     homeTeamReportItems: [],
@@ -17,67 +22,58 @@ const useNew = () => {
   })
   const match = ref<Match | null>(null)
 
+  /** setUp */
   const isLoadingSetUp = ref(false)
-  const setUp = async (matchId: string): Promise<'success' | 'failure'> => {
+  const setUp = async (): Promise<void> => {
     try {
       isLoadingSetUp.value = true
+      const matchId = route.value.query.matchId as string
       match.value = await fetchMatch(matchId)
       const forReport = await fetchForReport(matchId)
-      if (forReport) {
-        inputReport.homeTeamReportItems = forReport.homeTeamReportItems
-        inputReport.awayTeamReportItems = forReport.awayTeamReportItems
+      if (!match.value || !forReport) throw new Error('Not Found')
+      newReport.homeTeamReportItems = forReport.homeTeamReportItems
+      newReport.awayTeamReportItems = forReport.awayTeamReportItems
+      if (loginUser.value && loginUser.value.team.id === match.value.awayTeam.id) {
+        newReport.selectTeam = 'away'
       }
-      if (loginUser.value?.team.id === match.value?.awayTeam.id) {
-        inputReport.selectTeam = 'away'
-      }
-      return 'success'
     } catch (error) {
-      console.log(error)
-      return 'failure'
+      error instanceof Error && error.message === 'Not Found'
+        ? openSnackbar('failure', '試合データが見つかりませんでした。')
+        : openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoadingSetUp.value = false
     }
   }
 
   watch(
-    () => inputReport.selectTeam,
+    () => newReport.selectTeam,
     (newVal, oldVal) => {
       if ((newVal === 'home' && oldVal === 'away') || (newVal === 'away' && oldVal === 'home')) {
-        inputReport.momId = ''
+        newReport.momId = ''
       }
     }
   )
 
-  const isLoadingSend = ref(false)
-  const create = async (): Promise<{ result: string; reportId: string }> => {
+  /** create report */
+  const isLoadingCreate = ref(false)
+  const createReport = async (publish: boolean): Promise<void> => {
     try {
-      isLoadingSend.value = true
-      inputReport.publish = true
-      const reportId = await postReport(loginUser.value, inputReport, match.value!)
-      return { result: 'success', reportId }
+      if (!match.value) throw new Error('Not Found')
+      isLoadingCreate.value = true
+      newReport.publish = publish
+      const reportId = await postReport(loginUser.value, newReport, match.value)
+      openSnackbar('success', '選手採点を作成しました。')
+      router.push({ name: `reports-id`, params: { id: reportId, publish: String(publish) } })
     } catch (error) {
-      console.log(error)
-      return { result: 'failure', reportId: '' }
+      error instanceof Error && error.message === 'Not Found'
+        ? openSnackbar('failure', '試合データが見つかりませんでした。')
+        : openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
-      isLoadingSend.value = false
+      isLoadingCreate.value = false
     }
   }
 
-  const save = async (): Promise<{ result: string; reportId: string }> => {
-    try {
-      isLoadingSend.value = true
-      inputReport.publish = false
-      const reportId = await postReport(loginUser.value, inputReport, match.value!)
-      return { result: 'success', reportId }
-    } catch (error) {
-      console.log(error)
-      return { result: 'failure', reportId: '' }
-    } finally {
-      isLoadingSend.value = false
-    }
-  }
-
-  return { inputReport, match, isLoadingSetUp, setUp, isLoadingSend, create, save }
+  return { createReport, isLoadingCreate, isLoadingSetUp, match, newReport, setUp }
 }
 
 export default useNew
