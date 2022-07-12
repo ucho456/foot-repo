@@ -24,6 +24,10 @@ const useSearch = () => {
   const setUp = async (): Promise<'success' | 'failure'> => {
     try {
       isLoadingFirst.value = true
+      if (matches.data.length === 0) {
+        matches.lastVisible = null
+        matches.searchOption.yearMonth = ''
+      }
       matches.lastVisible = null
       matches.searchOption.yearMonth = ''
       if (loginUser.value) {

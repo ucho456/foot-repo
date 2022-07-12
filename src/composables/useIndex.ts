@@ -9,14 +9,14 @@ const useIndex = () => {
   const router = useRouter()
   const { loginUser } = useLoginUser()
   const { openSnackbar } = useSnackbar()
-  const { reports, clearReportSearchOption } = useStore()
+  const { reports, resetReports } = useStore()
 
   /** setUp */
   const isLoadingReports = ref(false)
   const setUp = async (): Promise<void> => {
     try {
       isLoadingReports.value = true
-      clearReportSearchOption()
+      resetReports()
       await toStoreReports(reports)
       isLoadingReports.value = false
     } catch (error) {
@@ -51,6 +51,7 @@ const useIndex = () => {
     reports.data = []
     reports.hasNext = true
     reports.lastVisible = null
+    console.log(reports.searchOption)
     router.push('/reports')
   }
 
@@ -70,13 +71,13 @@ const useIndex = () => {
     try {
       isLoadingChangeReports.value = true
       if (tab.value === 'New') {
-        clearReportSearchOption()
+        resetReports()
         await toStoreReports(reports)
       } else if (tab.value === 'Top 10') {
-        clearReportSearchOption()
+        resetReports()
         await toStorePopularReports(reports)
       } else if (tab.value === 'My Team' && loginUser.value) {
-        clearReportSearchOption()
+        resetReports()
         reports.searchOption.teamId = loginUser.value.team.id
         reports.searchOption.competitionId = loginUser.value.competitionId
         await toStoreReports(reports)

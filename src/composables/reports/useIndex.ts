@@ -6,13 +6,14 @@ import useStore from '@/utils/useStore'
 
 const useIndex = () => {
   const { openSnackbar } = useSnackbar()
-  const { reports, clearReportSearchOption } = useStore()
+  const { reports, resetReports } = useStore()
 
   /** setUp */
   const isLoadingFirst = ref(false)
   const setUp = async () => {
     try {
       isLoadingFirst.value = true
+      console.log(reports.searchOption)
       if (reports.data.length === 0) await toStoreReports(reports)
     } catch (error) {
       console.log(error)
@@ -61,7 +62,7 @@ const useIndex = () => {
     try {
       hideDialog()
       isLoadingFirst.value = true
-      clearReportSearchOption()
+      resetReports()
       await toStoreReports(reports)
     } catch (error) {
       console.log(error)
