@@ -3,14 +3,7 @@
     <v-app-bar class="white--text" app color="primary" fixed>
       <v-container class="align-center d-flex">
         <v-toolbar-title>
-          <img
-            class="o-hover"
-            height="44"
-            loading="lazy"
-            width="202"
-            :src="headerLogo"
-            @click="pushToHome"
-          />
+          <img class="o-hover" height="44" width="202" :src="headerLogo" @click="pushToHome" />
         </v-toolbar-title>
         <v-spacer />
         <v-btn icon @click.stop="showDrawer"
