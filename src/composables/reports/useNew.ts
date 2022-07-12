@@ -57,17 +57,17 @@ const useNew = () => {
   /** create report */
   const isLoadingCreate = ref(false)
   const createReport = async (publish: boolean): Promise<void> => {
+    if (!match.value) return
     try {
-      if (!match.value) throw new Error('Not Found')
       isLoadingCreate.value = true
       newReport.publish = publish
       const reportId = await postReport(loginUser.value, newReport, match.value)
-      openSnackbar('success', '選手採点を作成しました。')
+      const message = publish ? '選手採点を作成しました。' : '選手採点を一時保存しました。'
+      openSnackbar('success', message)
       router.push({ name: `reports-id`, params: { id: reportId, publish: String(publish) } })
     } catch (error) {
-      error instanceof Error && error.message === 'Not Found'
-        ? openSnackbar('failure', '試合データが見つかりませんでした。')
-        : openSnackbar('failure', '通信エラーが発生しました。')
+      console.log(error)
+      openSnackbar('failure', '選手採点の作成に失敗しました。')
     } finally {
       isLoadingCreate.value = false
     }

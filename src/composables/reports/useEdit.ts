@@ -64,14 +64,18 @@ const useEdit = () => {
 
   /** update report */
   const isLoadingUpdate = ref(false)
-  const updateReport = async (): Promise<void> => {
+  const updateReport = async (publish: boolean): Promise<void> => {
     if (!initReport.value) return
     try {
       isLoadingUpdate.value = true
-      editReport.publish = true
+      editReport.publish = publish
       await putReport(editReport, initReport.value!)
-      openSnackbar('success', '選手採点を更新しました。')
-      router.push({ name: 'reports-id', params: { id: initReport.value.id, publish: 'true' } })
+      const message = publish ? '選手採点を更新しました。' : '選手採点を一時保存しました。'
+      openSnackbar('success', message)
+      router.push({
+        name: 'reports-id',
+        params: { id: initReport.value.id, publish: String(publish) }
+      })
     } catch (error) {
       console.log(error)
       openSnackbar('failure', '選手採点の更新に失敗しました。')
@@ -79,23 +83,8 @@ const useEdit = () => {
       isLoadingUpdate.value = false
     }
   }
-  const saveReport = async (): Promise<void> => {
-    if (!initReport.value) return
-    try {
-      isLoadingUpdate.value = true
-      editReport.publish = false
-      await putReport(editReport, initReport.value!)
-      openSnackbar('success', '選手採点を一時保存しました。')
-      router.push(`/reports/${initReport.value.id}`)
-    } catch (error) {
-      console.log(error)
-      openSnackbar('failure', '選手採点の一時保存に失敗しました。')
-    } finally {
-      isLoadingUpdate.value = false
-    }
-  }
 
-  return { editReport, match, isLoadingSetUp, setUp, isLoadingUpdate, updateReport, saveReport }
+  return { editReport, isLoadingSetUp, isLoadingUpdate, match, setUp, updateReport }
 }
 
 export default useEdit

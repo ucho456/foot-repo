@@ -59,7 +59,7 @@
             <ButtonSubmit
               :text="editReport.publish ? '更新する' : '更新して公開する'"
               :is-loading="isLoadingUpdate"
-              @click="updateReport"
+              @click="updateReport(true)"
             />
           </v-col>
           <v-col cols="10" sm="6">
@@ -67,7 +67,7 @@
               :disabled="editReport.publish"
               :text="'非公開にして一時保存する'"
               :is-loading="isLoadingUpdate"
-              @click="saveReport"
+              @click="updateReport(false)"
             />
           </v-col>
         </v-row>
@@ -102,13 +102,12 @@ export default defineComponent({
   },
 
   setup() {
-    const { editReport, isLoadingSetUp, isLoadingUpdate, match, saveReport, setUp, updateReport } =
-      useEdit()
+    const { editReport, isLoadingSetUp, isLoadingUpdate, match, setUp, updateReport } = useEdit()
     const lazy = require('@/assets/lazy.png')
 
     setUp()
 
-    return { editReport, isLoadingSetUp, isLoadingUpdate, lazy, match, saveReport, updateReport }
+    return { editReport, isLoadingSetUp, isLoadingUpdate, lazy, match, updateReport }
   },
 
   head() {
