@@ -5,6 +5,7 @@
         <v-row class="mt-3" justify="center">
           <v-img max-width="240" :src="logo" />
           <v-col cols="12" class="mt-4">
+            ご意見・ご要望につきましては、
             <a
               ref="nofollow"
               class="o-hover"
@@ -25,6 +26,7 @@
 </template>
 
 <script lang="ts">
+/** check */
 import { defineComponent, useRouter } from '@nuxtjs/composition-api'
 import ButtonBack from '@/components/molecules/ButtonBack.vue'
 
