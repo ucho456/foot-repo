@@ -65,8 +65,13 @@ export default {
     '@nuxtjs/stylelint-module',
     '@nuxtjs/google-fonts',
     '@nuxtjs/vuetify',
-    'nuxt-compress'
+    'nuxt-compress',
+    'nuxt-delay-hydration'
   ],
+
+  delayHydration: {
+    mode: 'init'
+  },
 
   modules: [
     '@nuxtjs/axios',
