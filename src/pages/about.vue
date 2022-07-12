@@ -49,10 +49,13 @@
           <v-col cols="10" class="text-center">
             <h3>あなたのご参加を楽しみにしています！</h3>
           </v-col>
-          <v-col cols="10" sm="8">
+          <v-col cols="10" sm="4">
             <ButtonOutlined :text="'新規会員登録'" @click="pushToSignup" />
           </v-col>
-          <v-col cols="10" sm="8">
+          <v-col cols="10" sm="4">
+            <ButtonOutlined :text="'ログイン'" @click="pushToLogin" />
+          </v-col>
+          <v-col cols="10" sm="4">
             <ButtonBack @click="back" />
           </v-col>
         </v-row>
@@ -62,6 +65,7 @@
 </template>
 
 <script lang="ts">
+/** check */
 import { defineComponent, useRouter } from '@nuxtjs/composition-api'
 import ButtonBack from '@/components/molecules/ButtonBack.vue'
 import ButtonOutlined from '@/components/molecules/ButtonOutlined.vue'
@@ -83,9 +87,12 @@ export default defineComponent({
     const pushToSignup = (): void => {
       router.push('/signup')
     }
+    const pushToLogin = (): void => {
+      router.push('/login')
+    }
     const back = (): void => router.back()
 
-    return { back, logo, pushToSignup }
+    return { back, logo, pushToLogin, pushToSignup }
   },
 
   head() {
