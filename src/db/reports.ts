@@ -118,54 +118,51 @@ export const postReport = async (
 }
 
 /** Reports Read */
-export const fetchReport = async (
-  reportId: string,
-  uid?: string
+export const fetchReport = async (reportId: string): Promise<Report | null> => {
+  const db = getFirestore()
+  const rRef = doc(db, 'reports', reportId).withConverter(reportConverter)
+  const rShapshot = await getDoc(rRef)
+  return rShapshot.exists() ? rShapshot.data() : null
+}
+
+export const fetchReportItems = async (
+  report: Report
 ): Promise<{
-  resReport: Report
   resHomeTeamReportItems: ReportItem[]
   resAwayTeamReportItems: ReportItem[]
 }> => {
   const db = getFirestore()
-  const rRef = doc(db, 'reports', reportId).withConverter(reportConverter)
-  const rShapshot = await getDoc(rRef)
-  if (rShapshot.exists()) {
-    const resReport = rShapshot.data()
-    if (!resReport.publish && resReport.user.id !== uid) throw new Error('unauthorized access')
-    const resHomeTeamReportItems: ReportItem[] = []
-    const resAwayTeamReportItems: ReportItem[] = []
-    const htriRef = collection(db, 'reports', reportId, 'home-team-report-items').withConverter(
-      reportItemConverter
-    )
-    const htriQ = query(htriRef, orderBy('order', 'asc'))
-    const atriRef = collection(db, 'reports', reportId, 'away-team-report-items').withConverter(
-      reportItemConverter
-    )
-    const atriQ = query(atriRef, orderBy('order', 'asc'))
-    if (resReport.selectTeam === 'home') {
-      const htriSnapshot = await getDocs(htriQ)
-      htriSnapshot.forEach((doc) => {
-        if (doc.exists()) resHomeTeamReportItems.push(doc.data())
-      })
-    } else if (resReport.selectTeam === 'away') {
-      const atriSnapshot = await getDocs(atriQ)
-      atriSnapshot.forEach((doc) => {
-        if (doc.exists()) resAwayTeamReportItems.push(doc.data())
-      })
-    } else {
-      const htriSnapshot = await getDocs(htriQ)
-      htriSnapshot.forEach((doc) => {
-        if (doc.exists()) resHomeTeamReportItems.push(doc.data())
-      })
-      const atriSnapshot = await getDocs(atriQ)
-      atriSnapshot.forEach((doc) => {
-        if (doc.exists()) resAwayTeamReportItems.push(doc.data())
-      })
-    }
-    return { resReport, resHomeTeamReportItems, resAwayTeamReportItems }
+  const resHomeTeamReportItems: ReportItem[] = []
+  const resAwayTeamReportItems: ReportItem[] = []
+  const htriRef = collection(db, 'reports', report.id, 'home-team-report-items').withConverter(
+    reportItemConverter
+  )
+  const htriQ = query(htriRef, orderBy('order', 'asc'))
+  const atriRef = collection(db, 'reports', report.id, 'away-team-report-items').withConverter(
+    reportItemConverter
+  )
+  const atriQ = query(atriRef, orderBy('order', 'asc'))
+  if (report.selectTeam === 'home') {
+    const htriSnapshot = await getDocs(htriQ)
+    htriSnapshot.forEach((doc) => {
+      if (doc.exists()) resHomeTeamReportItems.push(doc.data())
+    })
+  } else if (report.selectTeam === 'away') {
+    const atriSnapshot = await getDocs(atriQ)
+    atriSnapshot.forEach((doc) => {
+      if (doc.exists()) resAwayTeamReportItems.push(doc.data())
+    })
   } else {
-    throw new Error('Not Found')
+    const htriSnapshot = await getDocs(htriQ)
+    htriSnapshot.forEach((doc) => {
+      if (doc.exists()) resHomeTeamReportItems.push(doc.data())
+    })
+    const atriSnapshot = await getDocs(atriQ)
+    atriSnapshot.forEach((doc) => {
+      if (doc.exists()) resAwayTeamReportItems.push(doc.data())
+    })
   }
+  return { resHomeTeamReportItems, resAwayTeamReportItems }
 }
 
 export const toStoreReports = async (reports: {

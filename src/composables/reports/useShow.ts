@@ -5,6 +5,7 @@ import { fetchMatch } from '@/db/matches'
 import {
   doLike,
   fetchReport,
+  fetchReportItems,
   fetchSameMatchReports,
   postComment,
   subscribeComments
@@ -41,14 +42,14 @@ const useShow = () => {
     try {
       isLoadingReport.value = true
       const reportId = route.value.params.id as string
-      const { resReport, resHomeTeamReportItems, resAwayTeamReportItems } = await fetchReport(
-        reportId,
-        loginUser.value?.uid // なんか気持ち悪い
-      )
-      report.value = resReport
-      homeTeamReportItems.value = resHomeTeamReportItems
-      awayTeamReportItems.value = resAwayTeamReportItems
-      if (report.value) {
+      const resReport = await fetchReport(reportId)
+      if (resReport) {
+        const uid = loginUser.value?.uid
+        if (!resReport.publish && resReport.user.id !== uid) throw new Error('unauthorized access')
+        const { resHomeTeamReportItems, resAwayTeamReportItems } = await fetchReportItems(resReport)
+        report.value = resReport
+        homeTeamReportItems.value = resHomeTeamReportItems
+        awayTeamReportItems.value = resAwayTeamReportItems
         match.value = await fetchMatch(report.value.match.id)
         if (loginUser.value) like.value = await fetchIsLike(loginUser.value.uid, reportId)
         isLoadingReport.value = false
@@ -66,12 +67,16 @@ const useShow = () => {
         isLoadingComments.value = true
         unsubscribeComments.value = await subscribeComments(reportId, comments.value)
         isLoadingComments.value = false
+      } else {
+        throw new Error('Not Found')
       }
     } catch (error) {
       console.log(error)
       if (error instanceof Error && error.message === 'unauthorized access') {
         openSnackbar('failure', '不正なアクセスが発生しました。')
         router.push('/')
+      } else if (error instanceof Error && error.message === 'Not Found') {
+        openSnackbar('failure', '対象の選手採点は見つかりませんでした。')
       } else {
         openSnackbar('failure', '通信エラーが発生しました。')
       }

@@ -1,7 +1,7 @@
 /** check */
 import { reactive, ref, useRoute, useRouter } from '@nuxtjs/composition-api'
 import { fetchMatch } from '@/db/matches'
-import { fetchReport, putReport } from '@/db/reports'
+import { fetchReport, fetchReportItems, putReport } from '@/db/reports'
 import useLoginUser from '@/utils/useLoginUser'
 import useSnackbar from '@/utils/useSnackbar'
 
@@ -26,29 +26,34 @@ const useEdit = () => {
   /** setUp */
   const isLoadingSetUp = ref(false)
   const setUp = async (): Promise<void> => {
-    if (!loginUser.value) return
     try {
+      if (!loginUser.value) throw new Error('unauthorized access')
       isLoadingSetUp.value = true
       const reportId = route.value.query.reportId as string
-      const { resReport, resHomeTeamReportItems, resAwayTeamReportItems } = await fetchReport(
-        reportId,
-        loginUser.value.uid
-      )
-      if (resReport.user.id !== loginUser.value.uid) throw new Error('unauthorized access')
-      initReport.value = { ...resReport }
-      editReport.title = resReport.title
-      editReport.selectTeam = resReport.selectTeam
-      editReport.homeTeamReportItems = resHomeTeamReportItems
-      editReport.awayTeamReportItems = resAwayTeamReportItems
-      editReport.summary = resReport.summary
-      editReport.momId = resReport.momId
-      editReport.publish = resReport.publish
-      match.value = await fetchMatch(resReport.match.id)
+      const resReport = await fetchReport(reportId)
+      if (resReport) {
+        console.log(resReport.user.id !== loginUser.value.uid)
+        if (resReport.user.id !== loginUser.value.uid) throw new Error('unauthorized access')
+        const { resHomeTeamReportItems, resAwayTeamReportItems } = await fetchReportItems(resReport)
+        initReport.value = { ...resReport }
+        editReport.title = resReport.title
+        editReport.selectTeam = resReport.selectTeam
+        editReport.homeTeamReportItems = resHomeTeamReportItems
+        editReport.awayTeamReportItems = resAwayTeamReportItems
+        editReport.summary = resReport.summary
+        editReport.momId = resReport.momId
+        editReport.publish = resReport.publish
+        match.value = await fetchMatch(resReport.match.id)
+      } else {
+        throw new Error('Not Found')
+      }
     } catch (error) {
       console.log(error)
       if (error instanceof Error && error.message === 'unauthorized access') {
         openSnackbar('failure', '不正なアクセスが発生しました。')
         router.push('/')
+      } else if (error instanceof Error && error.message === 'Not Found') {
+        openSnackbar('failure', '見つかりませんでした。')
       } else {
         openSnackbar('failure', 'データの取得に失敗しました。')
       }
