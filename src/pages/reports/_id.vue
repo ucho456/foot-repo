@@ -163,15 +163,16 @@
     />
     <DialogShare
       :dialog="dialogShare"
-      @hide="hide"
       @facebook="share('facebook')"
+      @hide="hideDialogShare"
       @twitter="share('twitter')"
     />
   </v-container>
 </template>
 
 <script lang="ts">
-import { defineComponent, useMeta, useRoute, ref } from '@nuxtjs/composition-api'
+/** check */
+import { defineComponent, useMeta } from '@nuxtjs/composition-api'
 import { mdiFacebook, mdiThumbUp, mdiTwitter } from '@mdi/js'
 import useShow from '@/composables/reports/useShow'
 import useLoginUser from '@/utils/useLoginUser'
@@ -201,13 +202,14 @@ export default defineComponent({
   },
 
   setup() {
-    const route = useRoute()
     const {
       awayTeamReportItems,
       comments,
       confirmLogin,
       createComment,
+      dialogShare,
       follow,
+      hideDialogShare,
       homeTeamReportItems,
       isDialog,
       isLoadingComments,
@@ -224,6 +226,7 @@ export default defineComponent({
       sameMatchReports,
       setUp,
       share,
+      showDialogShare,
       updateFollow,
       updateLike,
       user
@@ -232,6 +235,7 @@ export default defineComponent({
     const lazy = require('@/assets/lazy.png')
 
     setUp()
+    showDialogShare()
 
     useMeta(() => ({
       title: report.value?.title,
@@ -257,15 +261,6 @@ export default defineComponent({
       ]
     }))
 
-    const dialogShare = ref(false)
-    const show = () => {
-      if (process.client && route.value.query.publish) dialogShare.value = true
-    }
-    const hide = () => {
-      dialogShare.value = false
-    }
-    show()
-
     return {
       awayTeamReportItems,
       comments,
@@ -273,7 +268,7 @@ export default defineComponent({
       createComment,
       dialogShare,
       follow,
-      hide,
+      hideDialogShare,
       homeTeamReportItems,
       isDialog,
       isLoadingComments,
@@ -294,7 +289,6 @@ export default defineComponent({
       report,
       sameMatchReports,
       share,
-      show,
       updateFollow,
       updateLike,
       user

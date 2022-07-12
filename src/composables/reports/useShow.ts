@@ -1,14 +1,15 @@
-import { onBeforeUnmount, ref, Ref, useRoute, useRouter } from '@nuxtjs/composition-api'
+/** check */
+import { onBeforeUnmount, ref, useRoute, useRouter } from '@nuxtjs/composition-api'
 import type { Unsubscribe } from 'firebase/firestore'
 import { fetchMatch } from '@/db/matches'
 import {
-  postComment,
-  fetchSameMatchReports,
-  fetchReport,
   doLike,
+  fetchReport,
+  fetchSameMatchReports,
+  postComment,
   subscribeComments
 } from '@/db/reports'
-import { fetchIsFollow, fetchIsLike, fetchUser, doFollow } from '@/db/users'
+import { doFollow, fetchIsFollow, fetchIsLike, fetchUser } from '@/db/users'
 import useLoginUser from '@/utils/useLoginUser'
 import useSnackbar from '@/utils/useSnackbar'
 import useStore from '@/utils/useStore'
@@ -20,14 +21,14 @@ const useShow = () => {
   const { openSnackbar } = useSnackbar()
   const { confirmation } = useStore()
 
-  const report: Ref<Report | null> = ref(null)
-  const homeTeamReportItems: Ref<ReportItem[]> = ref([])
-  const awayTeamReportItems: Ref<ReportItem[]> = ref([])
-  const match: Ref<Match | null> = ref(null)
-  const user: Ref<User | null> = ref(null)
-  const sameMatchReports: Ref<Report[]> = ref([])
-  const comments: Ref<ReportComment[]> = ref([])
-  const unsubscribeComments: Ref<Unsubscribe | null> = ref(null)
+  const report = ref<Report | null>(null)
+  const homeTeamReportItems = ref<ReportItem[]>([])
+  const awayTeamReportItems = ref<ReportItem[]>([])
+  const match = ref<Match | null>(null)
+  const user = ref<User | null>(null)
+  const sameMatchReports = ref<Report[]>([])
+  const comments = ref<ReportComment[]>([])
+  const unsubscribeComments = ref<Unsubscribe | null>(null)
   const like = ref(false)
   const follow = ref(false)
 
@@ -83,6 +84,13 @@ const useShow = () => {
   }
 
   /** sns share */
+  const dialogShare = ref(false)
+  const showDialogShare = (): void => {
+    if (process.client && route.value.params.publish === 'true') dialogShare.value = true
+  }
+  const hideDialogShare = (): void => {
+    dialogShare.value = false
+  }
   const share = (type: 'twitter' | 'facebook'): void => {
     const shareUrl =
       type === 'twitter'
@@ -168,7 +176,9 @@ const useShow = () => {
     comments,
     confirmLogin,
     createComment,
+    dialogShare,
     follow,
+    hideDialogShare,
     homeTeamReportItems,
     isDialog,
     isLoadingComments,
@@ -185,6 +195,7 @@ const useShow = () => {
     sameMatchReports,
     setUp,
     share,
+    showDialogShare,
     updateFollow,
     updateLike,
     user
