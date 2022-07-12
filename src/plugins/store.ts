@@ -46,6 +46,7 @@ export default defineNuxtPlugin((_, inject) => {
       data: User[]
       lastVisible: QueryDocumentSnapshot<User> | null
       searchOption: SearchOption
+      hasNext: boolean
     }
   } = reactive({
     confirmation: {
@@ -83,7 +84,8 @@ export default defineNuxtPlugin((_, inject) => {
     users: {
       data: [],
       lastVisible: null,
-      searchOption: { status: '', competitionId: '', teamId: '', yearMonth: '' }
+      searchOption: { status: '', competitionId: '', teamId: '', yearMonth: '' },
+      hasNext: true
     }
   })
 
@@ -121,7 +123,8 @@ export default defineNuxtPlugin((_, inject) => {
     store.users = {
       data: [],
       lastVisible: null,
-      searchOption: { status: '', competitionId: '', teamId: '', yearMonth: '' }
+      searchOption: { status: '', competitionId: '', teamId: '', yearMonth: '' },
+      hasNext: true
     }
   }
 

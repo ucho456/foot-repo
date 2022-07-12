@@ -1,3 +1,4 @@
+/** check */
 import { ref } from '@nuxtjs/composition-api'
 import { doFollow, toStoreUsers } from '@/db/users'
 import useLoginUser from '@/utils/useLoginUser'
@@ -11,13 +12,10 @@ const useIndex = () => {
 
   /** setUp */
   const isLoadingSetUp = ref(false)
-  const hasNextUsers = ref(true)
   const setUp = async () => {
     try {
       isLoadingSetUp.value = true
-      if (users.data.length === 0) {
-        await toStoreUsers(users, loginUser.value, hasNextUsers)
-      }
+      if (users.data.length === 0) await toStoreUsers(users, loginUser.value)
     } catch (error) {
       console.log(error)
       openSnackbar('failure', 'ユーザーの取得に失敗しました。')
@@ -26,12 +24,12 @@ const useIndex = () => {
     }
   }
 
-  /** more read */
+  /** next users */
   const isLoadingNextUsers = ref(false)
   const readNextUsers = async (): Promise<void> => {
     try {
       isLoadingNextUsers.value = true
-      await toStoreUsers(users, loginUser.value, hasNextUsers)
+      await toStoreUsers(users, loginUser.value)
     } catch (error) {
       console.log(error)
       openSnackbar('failure', 'ユーザーの取得に失敗しました。')
@@ -61,8 +59,8 @@ const useIndex = () => {
       hideDialog()
       users.data = []
       users.lastVisible = null
-      hasNextUsers.value = true
-      await toStoreUsers(users, loginUser.value, hasNextUsers)
+      users.hasNext = true
+      await toStoreUsers(users, loginUser.value)
     } catch (error) {
       console.log(error)
       openSnackbar('failure', 'ユーザーの取得に失敗しました。')
@@ -89,7 +87,6 @@ const useIndex = () => {
   }
 
   return {
-    hasNextUsers,
     hideDialog,
     inputCompetitionId,
     inputTeamId,

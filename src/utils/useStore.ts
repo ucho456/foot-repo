@@ -38,6 +38,7 @@ export const StoreKey: InjectionKey<{
     data: User[]
     lastVisible: QueryDocumentSnapshot<User> | null
     searchOption: SearchOption
+    hasNext: boolean
   }
 }> = Symbol('store')
 

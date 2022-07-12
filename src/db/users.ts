@@ -1,5 +1,4 @@
 /** check */
-import { Ref } from '@nuxtjs/composition-api'
 import {
   collection,
   doc,
@@ -52,19 +51,23 @@ export const toStoreUsers = async (
     data: User[]
     lastVisible: QueryDocumentSnapshot<User> | null
     searchOption: SearchOption
+    hasNext: boolean
   },
-  loginUser: LoginUser | null,
-  hasNextUsers: Ref<boolean>
+  loginUser: LoginUser | null
 ): Promise<void> => {
   const db = getFirestore()
   const uRef = collection(db, 'users').withConverter(userConverter)
-  const teamId = users.searchOption.teamId
-    ? [where('team.id', '==', users.searchOption.teamId)]
-    : []
-  const besidesMe = loginUser ? [where(documentId(), '!=', loginUser.uid)] : []
+  const options = []
+  if (users.searchOption.competitionId) {
+    options.push(where('competitionId', '==', users.searchOption.competitionId))
+  }
+  if (users.searchOption.teamId) {
+    options.push(where('team.id', '==', users.searchOption.teamId))
+  }
+  if (loginUser) options.push(where(documentId(), '!=', loginUser.uid))
   const q = users.lastVisible
-    ? query(uRef, ...teamId, ...besidesMe, startAfter(users.lastVisible), limit(perPage))
-    : query(uRef, ...teamId, ...besidesMe, limit(perPage))
+    ? query(uRef, ...options, startAfter(users.lastVisible), limit(perPage))
+    : query(uRef, ...options, limit(perPage))
   const uSnapshot = await getDocs(q)
   const userIds: string[] = []
   uSnapshot.forEach((doc) => {
@@ -74,7 +77,7 @@ export const toStoreUsers = async (
     }
   })
   users.lastVisible = uSnapshot.docs[uSnapshot.size - 1]
-  if (userIds.length < perPage) hasNextUsers.value = false
+  if (userIds.length < perPage) users.hasNext = false
   if (loginUser && userIds.length > 0) {
     const fRef = collection(db, 'users', loginUser.uid, 'follows').withConverter(followerConverter)
     const q = query(fRef, where(documentId(), 'in', userIds))

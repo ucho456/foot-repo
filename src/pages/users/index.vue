@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-card outlined>
+    <v-card min-height="600" outlined>
       <ContainerLoading :is-loading="isLoadingSetUp" />
       <v-container v-if="!isLoadingSetUp">
         <v-row>
@@ -45,7 +45,7 @@
         <v-row justify="center">
           <v-col cols="10">
             <ButtonSubmit
-              :disabled="!hasNextUsers"
+              :disabled="!users.hasNext"
               :is-loading="isLoadingNextUsers"
               :text="'もっと読み込む'"
               @click="readNextUsers"
@@ -67,6 +67,7 @@
 </template>
 
 <script lang="ts">
+/** check */
 import { defineComponent } from '@nuxtjs/composition-api'
 import { mdiMagnify } from '@mdi/js'
 import useIndex from '@/composables/users/useIndex'
@@ -89,7 +90,6 @@ export default defineComponent({
 
   setup() {
     const {
-      hasNextUsers,
       hideDialog,
       inputCompetitionId,
       inputTeamId,
@@ -111,7 +111,6 @@ export default defineComponent({
     setUp()
 
     return {
-      hasNextUsers,
       hideDialog,
       inputCompetitionId,
       inputTeamId,
