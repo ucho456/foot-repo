@@ -1,4 +1,4 @@
-import { reactive, ref, Ref, watch } from '@nuxtjs/composition-api'
+import { reactive, ref, watch } from '@nuxtjs/composition-api'
 import { fetchForReport, fetchMatch } from '@/db/matches'
 import { postReport } from '@/db/reports'
 import useLoginUser from '@/utils/useLoginUser'
@@ -15,7 +15,7 @@ const useNew = () => {
     momId: '',
     publish: true
   })
-  const match: Ref<Match | null> = ref(null)
+  const match = ref<Match | null>(null)
 
   const isLoadingSetUp = ref(false)
   const setUp = async (matchId: string): Promise<'success' | 'failure'> => {

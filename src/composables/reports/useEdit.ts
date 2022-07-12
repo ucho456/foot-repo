@@ -1,11 +1,11 @@
-import { reactive, ref, Ref, watch } from '@nuxtjs/composition-api'
+import { reactive, ref, watch } from '@nuxtjs/composition-api'
 import { fetchMatch } from '@/db/matches'
 import { fetchReport, putReport } from '@/db/reports'
 
 const useEdit = () => {
-  const initReport: Ref<Report | null> = ref(null)
-  // const initHomeTeamReportItems: Ref<ReportItem[]> = ref([])
-  // const initAwayTeamReportItems: Ref<ReportItem[]> = ref([])
+  const initReport = ref<Report | null>(null)
+  // const initHomeTeamReportItems<ReportItem[]> = ref([])
+  // const initAwayTeamReportItems<ReportItem[]> = ref([])
   const inputReport: InputReport = reactive({
     title: '',
     selectTeam: 'both',
@@ -15,7 +15,7 @@ const useEdit = () => {
     momId: '',
     publish: true
   })
-  const match: Ref<Match | null> = ref(null)
+  const match = ref<Match | null>(null)
 
   const isLoadingSetUp = ref(false)
   const setUp = async (
