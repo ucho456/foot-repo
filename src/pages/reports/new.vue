@@ -26,7 +26,7 @@
             <v-col cols="9">{{ reportItem.player.name }}</v-col>
             <v-col class="mt-n3" cols="3"><SelectPoint v-model="reportItem.point" /></v-col>
             <v-col class="mt-n5" cols="9">
-              <Textarea v-model="reportItem.text" :maxlength="140" />
+              <Textarea v-model="reportItem.text" :maxlength="300" />
             </v-col>
           </v-row>
         </div>
@@ -41,7 +41,7 @@
             <v-col cols="9">{{ reportItem.player.name }}</v-col>
             <v-col class="mt-n3" cols="3"><SelectPoint v-model="reportItem.point" /></v-col>
             <v-col class="mt-n5" cols="9">
-              <Textarea v-model="reportItem.text" :maxlength="140" />
+              <Textarea v-model="reportItem.text" :maxlength="300" />
             </v-col>
           </v-row>
         </div>
