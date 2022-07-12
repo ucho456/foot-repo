@@ -7,6 +7,7 @@
 </template>
 
 <script lang="ts">
+/** check */
 import { defineComponent, useRoute, useRouter } from '@nuxtjs/composition-api'
 import { getAuth } from 'firebase/auth'
 import { getFunctions, httpsCallable } from 'firebase/functions'
