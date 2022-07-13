@@ -1,22 +1,25 @@
-import { ref } from '@nuxtjs/composition-api'
+/** check */
+import { ref, useRoute } from '@nuxtjs/composition-api'
 import { toStoreTeam } from '@/db/teams'
+import useSnackbar from '@/utils/useSnackbar'
 import useStore from '@/utils/useStore'
+
 const useShow = () => {
-  const { team } = useStore()
+  const route = useRoute()
+  const { openSnackbar } = useSnackbar()
+  const { team, resetTeam } = useStore()
 
   const isLoading = ref(false)
-  const resetTeam = (): void => {
-    team.data = null
-  }
-  const setUp = async (teamId: string): Promise<'success' | 'failure'> => {
+  const setUp = async (): Promise<void> => {
+    const teamId = route.value.params.id as string
+    if (team.data && team.data.id === teamId) return
     try {
       isLoading.value = true
       resetTeam()
       await toStoreTeam(teamId, team)
-      return 'success'
     } catch (error) {
       console.log(error)
-      return 'failure'
+      openSnackbar('failure', 'チームデータの取得に失敗しました。')
     } finally {
       isLoading.value = false
     }

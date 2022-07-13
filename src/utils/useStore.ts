@@ -79,6 +79,16 @@ const useStore = () => {
     store.league.yearMonth = ''
   }
 
+  const resetMatch = (): void => {
+    store.match.data = null
+    store.match.detail = null
+    store.match.reports = []
+  }
+
+  const resetTeam = (): void => {
+    store.team.data = null
+  }
+
   return {
     confirmation: store.confirmation,
     league: store.league,
@@ -86,8 +96,10 @@ const useStore = () => {
     matches: store.matches,
     reports: store.reports,
     resetLeague,
+    resetMatch,
     resetMatches,
     resetReports,
+    resetTeam,
     team: store.team,
     users: store.users
   }

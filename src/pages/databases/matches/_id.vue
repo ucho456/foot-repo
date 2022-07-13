@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-card outlined>
+    <v-card min-height="600" outlined>
       <ContainerLoading :is-loading="isLoadingMatch" />
       <v-container v-if="match.data && !isLoadingMatch">
         <RowMatchHeader v-bind="match.data" />
@@ -10,7 +10,7 @@
           <v-col cols="12" sm="6">
             <div class="d-flex">
               <v-img
-                class="mt-3 mr-3"
+                class="mr-3 mt-3"
                 height="30"
                 width="30"
                 :lazy-src="lazy"
@@ -36,7 +36,7 @@
           <v-col cols="12" sm="6">
             <div class="d-flex">
               <v-img
-                class="mt-3 mr-3"
+                class="mr-3 mt-3"
                 height="30"
                 width="30"
                 :lazy-src="lazy"
@@ -133,11 +133,8 @@
                 <td class="text-center">
                   <div
                     class="o-card"
-                    :class="{
-                      'o-yellow': item.card === 'yellow',
-                      'o-red': item.card === 'red'
-                    }"
-                  ></div>
+                    :class="{ 'o-yellow': item.card === 'yellow', 'o-red': item.card === 'red' }"
+                  />
                 </td>
               </tr>
             </tbody>
@@ -162,66 +159,51 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useRoute, useRouter } from '@nuxtjs/composition-api'
+/** check */
+import { defineComponent } from '@nuxtjs/composition-api'
 import useShow from '@/composables/databases/matches/useShow'
-import useSnackbar from '@/utils/useSnackbar'
 import useStore from '@/utils/useStore'
-import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
-import RowMatchHeader from '@/components/organisms/RowMatchHeader.vue'
 import ButtonOutlined from '@/components/molecules/ButtonOutlined.vue'
+import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 import ContainerReportTable from '@/components/organisms/ContainerReportTable.vue'
+import RowMatchHeader from '@/components/organisms/RowMatchHeader.vue'
 
 export default defineComponent({
   name: 'MatchShow',
 
   components: {
-    ContainerLoading,
-    RowMatchHeader,
     ButtonOutlined,
-    ContainerReportTable
+    ContainerLoading,
+    ContainerReportTable,
+    RowMatchHeader
   },
 
   setup() {
-    const route = useRoute()
-    const router = useRouter()
     const {
+      awayPlayers,
+      awayTab,
+      homePlayers,
+      homeTab,
       isLoadingMatch,
       isLoadingSameMatchReports,
-      setUp,
-      homeTab,
-      homePlayers,
-      awayTab,
-      awayPlayers
+      pushToReportNew,
+      setUp
     } = useShow()
-    const { openSnackbar } = useSnackbar()
     const { match } = useStore()
     const lazy = require('@/assets/lazy.png')
 
-    const matchId = route.value.params.id as string
-    const setUpPage = async (): Promise<void> => {
-      if (!match.data || (match.data && match.data.id !== matchId)) {
-        const result = await setUp(matchId)
-        if (result === 'failure') {
-          openSnackbar(result, 'データの取得に失敗しました。')
-        }
-      }
-    }
-    setUpPage()
-
-    const pushToReportNew = (): void => {
-      router.push(`/reports/new?matchId=${matchId}`)
-    }
+    setUp()
 
     return {
+      awayPlayers,
+      awayTab,
+      homePlayers,
+      homeTab,
       isLoadingMatch,
       isLoadingSameMatchReports,
+      lazy,
       match,
-      homeTab,
-      homePlayers,
-      awayTab,
-      awayPlayers,
-      pushToReportNew,
-      lazy
+      pushToReportNew
     }
   },
 

@@ -56,7 +56,7 @@
                 <td class="text-center pl-1 pr-1">{{ player.shirtNumber }}</td>
                 <td class="text-center">{{ player.player.name }}</td>
                 <td class="text-center">{{ player.nationality }}</td>
-                <td class="text-center pl-1 pr-1 o-td-w">
+                <td class="text-center o-td-w pl-1 pr-1">
                   {{ getAge(player.dateOfBirth) }}
                 </td>
               </tr>
@@ -69,9 +69,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useRoute } from '@nuxtjs/composition-api'
+/** check */
+import { defineComponent } from '@nuxtjs/composition-api'
 import useShow from '@/composables/databases/teams/useShow'
-import useSnackbar from '@/utils/useSnackbar'
 import useStore from '@/utils/useStore'
 import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 
@@ -83,22 +83,11 @@ export default defineComponent({
   },
 
   setup() {
-    const route = useRoute()
     const { isLoading, setUp, getAge } = useShow()
-    const { openSnackbar } = useSnackbar()
     const { team } = useStore()
     const lazy = require('@/assets/lazy.png')
 
-    const setUpPage = async (): Promise<void> => {
-      const teamId = route.value.params.id as string
-      if (!team.data || (team.data && team.data.id !== teamId)) {
-        const result = await setUp(teamId)
-        if (result === 'failure') {
-          openSnackbar(result, 'データの取得に失敗しました。')
-        }
-      }
-    }
-    setUpPage()
+    setUp()
 
     return { isLoading, getAge, team, lazy }
   },
