@@ -23,7 +23,7 @@
           >
             送信
           </v-btn>
-          <v-btn color="primary" text @click="handleHide">閉じる</v-btn>
+          <v-btn color="primary" :disabled="isLoading" text @click="handleHide">閉じる</v-btn>
         </v-card-actions>
       </ValidationObserver>
     </v-card>

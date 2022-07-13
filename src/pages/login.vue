@@ -36,9 +36,9 @@
             <v-col cols="10">
               <ButtonBack :disabled="isLoading" @click="back" />
             </v-col>
-            <v-col cols="10">
-              <span class="o-hover o-reset-password text-center" @click="showDialog">
-                パスワードを忘れてしまった場合はこちら
+            <v-col cols="10" class="my-n6 text-center">
+              <span class="o-hover o-reset-password" @click="showDialog">
+                パスワードを忘れてしまった場合はこちらから
               </span>
             </v-col>
             <NuxtLink class="text-caption o-hover mb-4" to="/signup">
