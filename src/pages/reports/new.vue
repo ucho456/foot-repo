@@ -12,7 +12,7 @@
         <v-row>
           <v-col cols="11" sm="6">
             <SelectHomeAway v-model="newReport.selectTeam" />
-            <span class="o-note">後から変更ができませんのでご注意ください。</span>
+            <span class="o-note">※チーム選択は後から変更ができません。</span>
           </v-col>
         </v-row>
         <v-row v-if="newReport.selectTeam !== 'away'">

@@ -59,7 +59,8 @@ const useLogin = () => {
         openSnackbar('success', 'ログインしました。')
         router.push('/')
       } else {
-        openSnackbar('success', '認証が完了しました。')
+        openSnackbar('alert', 'プロフィールの作成がまだ完了していません。')
+        router.push('/users/new')
       }
     } catch (error) {
       console.log(error)
@@ -81,7 +82,8 @@ const useLogin = () => {
         openSnackbar('success', 'ログインしました。')
         router.push('/')
       } else {
-        openSnackbar('success', '認証が完了しました。')
+        openSnackbar('success', 'プロフィールの作成がまだ完了していません。')
+        router.push('/users/new')
       }
     } catch (error) {
       console.log(error)

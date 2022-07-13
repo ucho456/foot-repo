@@ -26,20 +26,26 @@ const useNew = () => {
     try {
       isLoadingSetUp.value = true
       const auth = getAuth()
-      const currentUser = auth.currentUser!
+      const currentUser = auth.currentUser
+      if (!currentUser) throw new Error('unauthorized access')
       const idTokenResult = await getIdTokenResult(currentUser)
+      if (!idTokenResult) throw new Error('unauthorized access')
       const initSetting = idTokenResult.claims.initSetting as unknown as boolean
       if (!initSetting) {
         newUser.id = currentUser.uid
         newUser.name = currentUser.displayName ? currentUser.displayName.substring(0, 20) : ''
         newUser.imageUrl = currentUser.photoURL
       } else {
-        openSnackbar('alert', '不正なアクセスが発生しました。')
-        router.push('/')
+        throw new Error('unauthorized access')
       }
     } catch (error) {
       console.log(error)
-      openSnackbar('failure', '通信エラーが発生しました。')
+      if (error instanceof Error && error.message.includes('unauthorized access')) {
+        openSnackbar('failure', '不正なアクセスが発生しました。')
+        router.push('/')
+      } else {
+        openSnackbar('failure', '通信エラーが発生しました。')
+      }
     } finally {
       isLoadingSetUp.value = false
     }

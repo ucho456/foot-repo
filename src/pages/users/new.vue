@@ -8,8 +8,9 @@
             <h1>プロフィール登録</h1>
           </v-col>
         </v-row>
+        <span class="o-note"> ※プロフィール写真とニックネームは後から変更ができません。 </span>
         <ValidationObserver v-slot="{ invalid }">
-          <v-row class="mb-10" justify="center">
+          <v-row class="mb-10 mt-4" justify="center">
             <v-col cols="3" sm="2">
               <ImageUploaderUserImage
                 :value="newUser.imageUrl"
@@ -109,3 +110,10 @@ export default defineComponent({
   }
 })
 </script>
+
+<style lang="scss" scoped>
+.o-note {
+  font-size: 12px;
+  color: red;
+}
+</style>

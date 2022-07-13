@@ -49,6 +49,7 @@ const useSignup = () => {
         router.push('/users/new')
       } else {
         openSnackbar('success', 'ログインしました。')
+        router.push('/')
       }
     } catch (error) {
       console.log(error)
@@ -71,6 +72,7 @@ const useSignup = () => {
         router.push({ name: 'users-new' })
       } else {
         openSnackbar('success', 'ログインしました。')
+        router.push('/')
       }
     } catch (error) {
       console.log(error)
