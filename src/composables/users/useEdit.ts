@@ -1,13 +1,16 @@
-import { reactive, ref } from '@nuxtjs/composition-api'
-import { fetchUser, updateUser } from '@/db/users'
+/** check */
+import { reactive, ref, useRouter } from '@nuxtjs/composition-api'
+import { putUser } from '@/db/users'
 import { teamMap } from '@/db/teams'
-// import uploadAndGetImageUrl from '@/utils/uploadAndGetImageUrl'
 import useLoginUser from '@/utils/useLoginUser'
+import useSnackbar from '@/utils/useSnackbar'
 
 const useEdit = () => {
+  const router = useRouter()
   const { loginUser, setUpLoginUser } = useLoginUser()
+  const { openSnackbar } = useSnackbar()
 
-  const inputUser: InputUser = reactive({
+  const editUser: InputUser = reactive({
     id: '',
     name: '',
     imageUrl: null,
@@ -15,86 +18,57 @@ const useEdit = () => {
     competitionId: '',
     team: { id: '', name: '' }
   })
-  const userImageFile = ref<File | null>(null)
 
-  const isLoadingSetUp = ref(false)
-  const setUp = async (): Promise<'success' | 'failure' | 'unauthorized access'> => {
+  /** setUp */
+  const setUp = (): void => {
     try {
-      isLoadingSetUp.value = true
-      if (loginUser.value) {
-        const user = await fetchUser(loginUser.value.uid)
-        if (user) {
-          inputUser.id = user.id
-          inputUser.name = user.name
-          inputUser.imageUrl = user.imageUrl
-          inputUser.greet = user.greet
-          inputUser.competitionId = user.competitionId
-          inputUser.team = user.team
-        } else {
-          throw new Error('unauthorized access')
-        }
-      } else {
-        throw new Error('unauthorized access')
-      }
-      return 'success'
+      if (!loginUser.value) throw new Error('unauthorized access')
+      editUser.id = loginUser.value.uid
+      editUser.name = loginUser.value.name
+      editUser.imageUrl = loginUser.value.imageUrl
+      editUser.greet = loginUser.value.greet
+      editUser.competitionId = loginUser.value.competitionId
+      editUser.team = loginUser.value.team
     } catch (error) {
       console.log(error)
-      return error instanceof Error && error.message.includes('unauthorized access')
-        ? 'unauthorized access'
-        : 'failure'
-    } finally {
-      isLoadingSetUp.value = false
+      if (error instanceof Error && error.message.includes('unauthorized access')) {
+        openSnackbar('failure', '不正なアクセスが発生しました。')
+        router.push('/')
+      }
     }
   }
 
-  const changeImageUrl = (imageFile: File): void => {
-    inputUser.imageUrl = URL.createObjectURL(imageFile)
-    userImageFile.value = imageFile
-  }
-  const clearImageUrl = (): void => {
-    inputUser.imageUrl = null
-    userImageFile.value = null
-  }
   const inputCompetitionId = (competitionId: string): void => {
-    inputUser.competitionId = competitionId
-    inputUser.team.id = ''
-    inputUser.team.name = ''
+    editUser.competitionId = competitionId
+    editUser.team.id = ''
+    editUser.team.name = ''
   }
 
   const isLoadingSubmit = ref(false)
-  const update = async (): Promise<'success' | 'failure'> => {
+  const updateUser = async (): Promise<void> => {
+    if (!loginUser.value) return
     try {
       isLoadingSubmit.value = true
-      if (inputUser.team.id) {
-        inputUser.team.name = teamMap.get(inputUser.team.id)?.name!
+      if (editUser.team.id) {
+        editUser.team.name = teamMap.get(editUser.team.id)?.name!
       }
-      // const imageUrl = userImageFile.value
-      //   ? await uploadAndGetImageUrl(`users/${inputUser.id}`, userImageFile.value)
-      //   : null
-      // if (imageUrl) {
-      //   inputUser.imageUrl = imageUrl
-      // }
-      await updateUser(inputUser)
-      setUpLoginUser(inputUser)
-      return 'success'
+      await putUser(editUser)
+      setUpLoginUser(editUser)
+      openSnackbar('success', 'プロフィールを更新しました。')
+      router.push(`/users/${loginUser.value.uid}`)
     } catch (error) {
       console.log(error)
-      return 'failure'
+      openSnackbar('failure', 'プロフィールの更新に失敗しました。')
     } finally {
       isLoadingSubmit.value = false
     }
   }
 
-  return {
-    inputUser,
-    isLoadingSetUp,
-    setUp,
-    changeImageUrl,
-    clearImageUrl,
-    inputCompetitionId,
-    isLoadingSubmit,
-    update
+  const back = (): void => {
+    router.back()
   }
+
+  return { back, editUser, inputCompetitionId, isLoadingSubmit, setUp, updateUser }
 }
 
 export default useEdit

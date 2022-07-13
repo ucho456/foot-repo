@@ -12,6 +12,7 @@ type LoginUser = {
     id: string
     name: string
   }
+  greet: string
 }
 
 type HomeAway = 'home' | 'away' | 'both'

@@ -93,7 +93,7 @@ export const toStoreUsers = async (
 }
 
 /** Users Update */
-export const updateUser = async (editUser: InputUser): Promise<void> => {
+export const putUser = async (editUser: InputUser): Promise<void> => {
   const db = getFirestore()
   const uRef = doc(db, 'users', editUser.id).withConverter(userConverter)
   await updateDoc(uRef, {

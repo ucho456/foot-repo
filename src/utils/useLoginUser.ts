@@ -15,7 +15,8 @@ const useLoginUser = () => {
         name: inputUser.name,
         imageUrl: inputUser.imageUrl,
         competitionId: inputUser.competitionId,
-        team: inputUser.team
+        team: inputUser.team,
+        greet: inputUser.greet
       }
     } else {
       loginUser.value = null

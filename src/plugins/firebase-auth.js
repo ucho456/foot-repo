@@ -19,7 +19,8 @@ export default defineNuxtPlugin(async (_, inject) => {
               name: user.name,
               imageUrl: user.imageUrl,
               competitionId: user.competitionId,
-              team: user.team
+              team: user.team,
+              greet: user.greet
             }
           : null
       } else {
