@@ -40,8 +40,8 @@
                 <td class="text-center">
                   <v-img
                     v-if="item.team.imageUrl"
-                    :height="30"
-                    :width="30"
+                    height="30"
+                    width="30"
                     :lazy-src="lazy"
                     :src="item.team.imageUrl"
                   />
@@ -98,16 +98,16 @@
         v-model="league.yearMonth"
         :is-loading="isLoadingMatches"
         :match-schedule="league.matchSchedule"
-        @click="searchMatchSchedule"
+        @click="readMatchSchedule"
       />
     </v-card>
   </v-container>
 </template>
 
 <script lang="ts">
-import { defineComponent, useRoute, useRouter } from '@nuxtjs/composition-api'
+/** check */
+import { defineComponent } from '@nuxtjs/composition-api'
 import useShow from '@/composables/databases/leagues/useShow'
-import useSnackbar from '@/utils/useSnackbar'
 import useStore from '@/utils/useStore'
 import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 import MatchSchedule from '@/components/organisms/MatchSchedule.vue'
@@ -121,43 +121,27 @@ export default defineComponent({
   },
 
   setup() {
-    const route = useRoute()
-    const router = useRouter()
-    const { isLoadingStandings, isLoadingScorers, isLoadingMatches, setUp, search } = useShow()
-    const { openSnackbar } = useSnackbar()
+    const {
+      isLoadingMatches,
+      isLoadingScorers,
+      isLoadingStandings,
+      pushToTeamShow,
+      readMatchSchedule,
+      setUp
+    } = useShow()
     const { league } = useStore()
     const lazy = require('@/assets/lazy.png')
 
-    const setUpPage = async (): Promise<void> => {
-      const competitionId = route.value.params.id as string
-      if (league.competitionId !== competitionId) {
-        const result = await setUp(competitionId)
-        if (result === 'failure') {
-          openSnackbar(result, 'データの取得に失敗しました。')
-        }
-      }
-    }
-    setUpPage()
-
-    const pushToTeamShow = (path: string): void => {
-      router.push(`/databases/${path}`)
-    }
-
-    const searchMatchSchedule = async (): Promise<void> => {
-      const result = await search()
-      if (result === 'failure') {
-        openSnackbar(result, 'データの取得に失敗しました。')
-      }
-    }
+    setUp()
 
     return {
-      isLoadingStandings,
-      isLoadingScorers,
       isLoadingMatches,
+      isLoadingScorers,
+      isLoadingStandings,
       lazy,
       league,
-      searchMatchSchedule,
-      pushToTeamShow
+      pushToTeamShow,
+      readMatchSchedule
     }
   },
 
