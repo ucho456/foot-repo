@@ -1,10 +1,4 @@
-import {
-  defineNuxtPlugin,
-  onGlobalSetup,
-  onUnmounted,
-  reactive,
-  provide
-} from '@nuxtjs/composition-api'
+import { defineNuxtPlugin, onGlobalSetup, provide, reactive } from '@nuxtjs/composition-api'
 import type { QueryDocumentSnapshot } from 'firebase/firestore'
 import { StoreKey } from '@/utils/useStore'
 
@@ -95,47 +89,7 @@ export default defineNuxtPlugin((_, inject) => {
 
   inject('store', store)
 
-  const unsubscribe = () => {
-    store.confirmation = { isLogin: false }
-    store.matches = {
-      data: [],
-      lastVisible: null,
-      searchOption: { status: 'FINISHED', competitionId: '', teamId: '', yearMonth: '' },
-      hasNext: true
-    }
-    store.reports = {
-      data: [],
-      lastVisible: null,
-      searchOption: { status: '', competitionId: '', teamId: '', yearMonth: '' },
-      hasNext: true
-    }
-    store.league = {
-      name: '',
-      competitionId: '',
-      standings: null,
-      scorers: null,
-      matchSchedule: [],
-      lastVisible: null,
-      hasNext: true,
-      season: '',
-      yearMonth: ''
-    }
-    store.team = { data: null }
-    store.match = {
-      data: null,
-      detail: null,
-      reports: []
-    }
-    store.users = {
-      data: [],
-      lastVisible: null,
-      searchOption: { status: '', competitionId: '', teamId: '', yearMonth: '' },
-      hasNext: true
-    }
-  }
-
   onGlobalSetup(() => {
     provide(StoreKey, store)
-    onUnmounted(unsubscribe)
   })
 })

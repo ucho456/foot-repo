@@ -1,10 +1,4 @@
-import {
-  defineNuxtPlugin,
-  onGlobalSetup,
-  onUnmounted,
-  reactive,
-  provide
-} from '@nuxtjs/composition-api'
+import { defineNuxtPlugin, onGlobalSetup, provide, reactive } from '@nuxtjs/composition-api'
 import { SnackbarKey } from '@/utils/useSnackbar'
 
 export default defineNuxtPlugin((_, inject) => {
@@ -17,15 +11,7 @@ export default defineNuxtPlugin((_, inject) => {
 
   inject('snackbar', snackbar)
 
-  const unsubscribe = () => {
-    snackbar.color = ''
-    snackbar.message = ''
-    snackbar.show = false
-    snackbar.textColor = ''
-  }
-
   onGlobalSetup(() => {
     provide(SnackbarKey, snackbar)
-    onUnmounted(unsubscribe)
   })
 })
