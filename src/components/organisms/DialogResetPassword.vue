@@ -14,7 +14,15 @@
         <v-divider />
         <v-card-actions>
           <v-spacer />
-          <v-btn color="primary" text :disabled="invalid" @click="resetPassword">送信</v-btn>
+          <v-btn
+            color="primary"
+            text
+            :disabled="invalid"
+            :loading="isLoading"
+            @click="resetPassword"
+          >
+            送信
+          </v-btn>
           <v-btn color="primary" text @click="handleHide">閉じる</v-btn>
         </v-card-actions>
       </ValidationObserver>
@@ -23,6 +31,7 @@
 </template>
 
 <script lang="ts">
+/** check */
 import { defineComponent, ref } from '@nuxtjs/composition-api'
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth'
 import useSnackbar from '@/utils/useSnackbar'
@@ -42,16 +51,27 @@ export default defineComponent({
   setup(_, ctx) {
     const { openSnackbar } = useSnackbar()
 
-    const email = ref('')
-    const resetPassword = () => {
-      const auth = getAuth()
-      sendPasswordResetEmail(auth, email.value)
-        .then(() => openSnackbar('success', '成功'))
-        .catch(() => openSnackbar('failure', '失敗'))
-    }
     const handleHide = (): void => ctx.emit('hide')
 
-    return { email, handleHide, resetPassword }
+    const email = ref('')
+    const isLoading = ref(false)
+    const resetPassword = async () => {
+      try {
+        isLoading.value = true
+        const auth = getAuth()
+        await sendPasswordResetEmail(auth, email.value)
+        openSnackbar('success', 'パスワード再設定メールを送信しました。')
+      } catch (error) {
+        error instanceof Error && error.message.includes('auth/user-not-found')
+          ? openSnackbar('failure', '登録されていないメールアドレスです。')
+          : openSnackbar('failure', '通信エラーが発生しました。')
+      } finally {
+        isLoading.value = false
+        handleHide()
+      }
+    }
+
+    return { email, handleHide, isLoading, resetPassword }
   }
 })
 </script>
