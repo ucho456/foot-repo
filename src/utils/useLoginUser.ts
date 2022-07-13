@@ -1,3 +1,4 @@
+/** check */
 import { inject, InjectionKey, Ref } from '@nuxtjs/composition-api'
 import { getAuth } from 'firebase/auth'
 

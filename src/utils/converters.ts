@@ -1,13 +1,11 @@
 import type {
   DocumentData,
   FirestoreDataConverter,
-  SnapshotOptions,
-  QueryDocumentSnapshot
+  QueryDocumentSnapshot,
+  SnapshotOptions
 } from 'firebase/firestore'
 
-/*
-  competitions
-*/
+/** competitions */
 export const scorersConverter: FirestoreDataConverter<Scorers> = {
   toFirestore(scorers: Scorers): DocumentData {
     return {
@@ -42,9 +40,7 @@ export const standingsConverter: FirestoreDataConverter<Standings> = {
   }
 }
 
-/*
-  matches
-*/
+/** matches */
 export const matchConverter: FirestoreDataConverter<Match> = {
   toFirestore(match: Match): DocumentData {
     return {
@@ -127,9 +123,7 @@ export const forReportConverter: FirestoreDataConverter<ForReport> = {
   }
 }
 
-/*
-  reports
-*/
+/** reports */
 export const reportConverter: FirestoreDataConverter<Report> = {
   toFirestore(report: Report): DocumentData {
     return {
@@ -223,9 +217,7 @@ export const commentConverter: FirestoreDataConverter<ReportComment> = {
   }
 }
 
-/*
-  teams
-*/
+/** teams */
 export const teamConverter: FirestoreDataConverter<Team> = {
   toFirestore(team: Team): DocumentData {
     return {
@@ -253,9 +245,7 @@ export const teamConverter: FirestoreDataConverter<Team> = {
   }
 }
 
-/*
-  users
-*/
+/** users */
 export const userConverter: FirestoreDataConverter<User> = {
   toFirestore(user: User): DocumentData {
     return {

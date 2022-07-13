@@ -1,3 +1,4 @@
+/** check */
 import { inject, InjectionKey } from '@nuxtjs/composition-api'
 
 export const SnackbarKey: InjectionKey<Snackbar> = Symbol('snackbar')
@@ -6,9 +7,8 @@ const useSnackbar = () => {
   const snackbar = inject(SnackbarKey)
   if (snackbar === undefined) throw new Error('snackbar is no provided')
 
-  const openSnackbar = (result: string, message: string): void => {
-    const color = result === 'success' ? 'success' : result === 'alert' ? 'alert' : 'failure'
-    snackbar.color = color
+  const openSnackbar = (result: 'success' | 'failure' | 'alert', message: string): void => {
+    snackbar.color = result
     snackbar.message = message
     snackbar.show = true
     snackbar.textColor = result === 'alert' ? 'black' : 'white'

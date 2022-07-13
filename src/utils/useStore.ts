@@ -48,15 +48,6 @@ const useStore = () => {
   const store = inject(StoreKey)
   if (store === undefined) throw new Error('store is no provided')
 
-  const resetReports = (): void => {
-    store.reports.data = []
-    store.reports.lastVisible = null
-    store.reports.searchOption.competitionId = ''
-    store.reports.searchOption.teamId = ''
-    store.reports.searchOption.yearMonth = ''
-    store.reports.hasNext = true
-  }
-
   const resetMatches = (): void => {
     store.matches.data = []
     store.matches.lastVisible = null
@@ -65,6 +56,15 @@ const useStore = () => {
     store.matches.searchOption.teamId = ''
     store.matches.searchOption.yearMonth = ''
     store.matches.hasNext = true
+  }
+
+  const resetReports = (): void => {
+    store.reports.data = []
+    store.reports.lastVisible = null
+    store.reports.searchOption.competitionId = ''
+    store.reports.searchOption.teamId = ''
+    store.reports.searchOption.yearMonth = ''
+    store.reports.hasNext = true
   }
 
   const resetLeague = (): void => {
@@ -79,14 +79,14 @@ const useStore = () => {
     store.league.yearMonth = ''
   }
 
+  const resetTeam = (): void => {
+    store.team.data = null
+  }
+
   const resetMatch = (): void => {
     store.match.data = null
     store.match.detail = null
     store.match.reports = []
-  }
-
-  const resetTeam = (): void => {
-    store.team.data = null
   }
 
   return {
