@@ -71,20 +71,33 @@ export const toStoreMatchSchedule = async (league: {
   competitionId: string
   matchSchedule: Match[]
   yearMonth: string
+  lastVisible: QueryDocumentSnapshot<Match> | null
+  hasNext: boolean
 }) => {
-  league.matchSchedule = []
   const db = getFirestore()
   const mRef = collection(db, 'matches').withConverter(matchConverter)
-  const q = query(
-    mRef,
-    where('competition.id', '==', league.competitionId),
-    where('yearMonth', '==', league.yearMonth),
-    orderBy('jstDate', 'desc')
-  )
+  const q = league.lastVisible
+    ? query(
+        mRef,
+        where('competition.id', '==', league.competitionId),
+        where('yearMonth', '==', league.yearMonth),
+        orderBy('jstDate', 'desc'),
+        startAfter(league.lastVisible),
+        limit(perPage)
+      )
+    : query(
+        mRef,
+        where('competition.id', '==', league.competitionId),
+        where('yearMonth', '==', league.yearMonth),
+        orderBy('jstDate', 'desc'),
+        limit(perPage)
+      )
   const mSnapshot = await getDocs(q)
   mSnapshot.forEach((doc) => {
     if (doc.exists()) league.matchSchedule.push(doc.data())
   })
+  league.lastVisible = mSnapshot.docs[mSnapshot.size - 1]
+  if (mSnapshot.size < perPage) league.hasNext = false
 }
 
 /** ForReport Read */

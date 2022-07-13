@@ -31,6 +31,8 @@ export default defineNuxtPlugin((_, inject) => {
       standings: Standings | null
       scorers: Scorers | null
       matchSchedule: Match[]
+      lastVisible: QueryDocumentSnapshot<Match> | null
+      hasNext: boolean
       season: string
       yearMonth: string
     }
@@ -70,6 +72,8 @@ export default defineNuxtPlugin((_, inject) => {
       standings: null,
       scorers: null,
       matchSchedule: [],
+      lastVisible: null,
+      hasNext: true,
       season: '',
       yearMonth: ''
     },
@@ -111,6 +115,8 @@ export default defineNuxtPlugin((_, inject) => {
       standings: null,
       scorers: null,
       matchSchedule: [],
+      lastVisible: null,
+      hasNext: true,
       season: '',
       yearMonth: ''
     }

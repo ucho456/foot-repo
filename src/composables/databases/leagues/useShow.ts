@@ -5,29 +5,11 @@ import { toStoreMatchSchedule } from '@/db/matches'
 import useSnackbar from '@/utils/useSnackbar'
 import useStore from '@/utils/useStore'
 
-const resetLeague = (league: {
-  name: string
-  competitionId: string
-  standings: Standings | null
-  scorers: Scorers | null
-  matchSchedule: Match[]
-  season: string
-  yearMonth: string
-}): void => {
-  league.name = ''
-  league.competitionId = ''
-  league.standings = null
-  league.scorers = null
-  league.matchSchedule = []
-  league.season = ''
-  league.yearMonth = ''
-}
-
 const useShow = () => {
   const route = useRoute()
   const router = useRouter()
   const { openSnackbar } = useSnackbar()
-  const { league } = useStore()
+  const { league, resetLeague } = useStore()
 
   /** setUp */
   const isLoadingStandings = ref(false)
@@ -38,7 +20,7 @@ const useShow = () => {
     if (league.competitionId === competitionId) return
     try {
       isLoadingStandings.value = true
-      resetLeague(league)
+      resetLeague()
       league.name = competitionMap.get(competitionId)?.name!
       league.competitionId = competitionId
       const today = new Date()
@@ -75,6 +57,9 @@ const useShow = () => {
   const readMatchSchedule = async (): Promise<void> => {
     try {
       isLoadingMatches.value = true
+      league.matchSchedule = []
+      league.lastVisible = null
+      league.hasNext = true
       await toStoreMatchSchedule(league)
     } catch (error) {
       console.log(error)
@@ -83,13 +68,28 @@ const useShow = () => {
       isLoadingMatches.value = false
     }
   }
+  /** read next match schedule */
+  const isLoadingNextMatchSchedule = ref(false)
+  const readNextMatchSchedule = async (): Promise<void> => {
+    try {
+      isLoadingNextMatchSchedule.value = true
+      await toStoreMatchSchedule(league)
+    } catch (error) {
+      console.log(error)
+      openSnackbar('failure', '試合予定の取得に失敗しました。')
+    } finally {
+      isLoadingNextMatchSchedule.value = false
+    }
+  }
 
   return {
     isLoadingMatches,
+    isLoadingNextMatchSchedule,
     isLoadingScorers,
     isLoadingStandings,
     pushToTeamShow,
     readMatchSchedule,
+    readNextMatchSchedule,
     setUp
   }
 }

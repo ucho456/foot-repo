@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-card outlined>
+    <v-card min-height="228" outlined>
       <ContainerLoading :is-loading="isLoadingUser" />
       <v-container v-if="!isLoadingUser && user">
         <v-row>

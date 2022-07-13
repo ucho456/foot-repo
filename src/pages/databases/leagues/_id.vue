@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-card outlined>
+    <v-card min-height="600" outlined>
       <v-container>
         <v-row>
           <v-col>
@@ -100,6 +100,18 @@
         :match-schedule="league.matchSchedule"
         @click="readMatchSchedule"
       />
+      <v-container>
+        <v-row justify="center">
+          <v-col cols="10">
+            <ButtonSubmit
+              :disabled="!league.hasNext"
+              :is-loading="isLoadingNextMatchSchedule"
+              :text="'もっと読み込む'"
+              @click="readNextMatchSchedule"
+            />
+          </v-col>
+        </v-row>
+      </v-container>
     </v-card>
   </v-container>
 </template>
@@ -109,6 +121,7 @@
 import { defineComponent } from '@nuxtjs/composition-api'
 import useShow from '@/composables/databases/leagues/useShow'
 import useStore from '@/utils/useStore'
+import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
 import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 import MatchSchedule from '@/components/organisms/MatchSchedule.vue'
 
@@ -116,6 +129,7 @@ export default defineComponent({
   name: 'LeagueShow',
 
   components: {
+    ButtonSubmit,
     ContainerLoading,
     MatchSchedule
   },
@@ -123,10 +137,12 @@ export default defineComponent({
   setup() {
     const {
       isLoadingMatches,
+      isLoadingNextMatchSchedule,
       isLoadingScorers,
       isLoadingStandings,
       pushToTeamShow,
       readMatchSchedule,
+      readNextMatchSchedule,
       setUp
     } = useShow()
     const { league } = useStore()
@@ -136,12 +152,14 @@ export default defineComponent({
 
     return {
       isLoadingMatches,
+      isLoadingNextMatchSchedule,
       isLoadingScorers,
       isLoadingStandings,
       lazy,
       league,
       pushToTeamShow,
-      readMatchSchedule
+      readMatchSchedule,
+      readNextMatchSchedule
     }
   },
 
