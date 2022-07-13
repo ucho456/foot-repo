@@ -11,6 +11,7 @@
 </template>
 
 <script>
+/** check */
 export default {
   layout: 'empty',
   props: {

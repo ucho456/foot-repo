@@ -10,6 +10,7 @@
 </template>
 
 <script lang="ts">
+/** check */
 import { defineComponent } from '@nuxtjs/composition-api'
 import useSnackbar from '@/utils/useSnackbar'
 import Snackbar from '@/components/molecules/Snackbar.vue'

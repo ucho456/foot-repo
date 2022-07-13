@@ -6,9 +6,9 @@
           <img class="o-hover" height="44" width="202" :src="headerLogo" @click="pushToHome" />
         </v-toolbar-title>
         <v-spacer />
-        <v-btn icon @click.stop="showDrawer"
-          ><v-icon color="white">{{ mdiMenu }}</v-icon></v-btn
-        >
+        <v-btn icon @click.stop="showDrawer">
+          <v-icon color="white">{{ mdiMenu }}</v-icon>
+        </v-btn>
       </v-container>
     </v-app-bar>
     <v-main>
@@ -52,9 +52,9 @@
           <v-list-item
             v-for="item in navigationDrawerItems"
             :key="item.id"
-            :to="item.to"
             exact
             router
+            :to="item.to"
           >
             <v-list-item-action>
               <v-icon>{{ item.icon }}</v-icon>
@@ -85,7 +85,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, useRouter } from '@nuxtjs/composition-api'
+/** check */
+import { computed, defineComponent, ref, useRouter } from '@nuxtjs/composition-api'
 import { getAuth, signOut } from 'firebase/auth'
 import {
   mdiAccountPlus,
@@ -120,7 +121,6 @@ export default defineComponent({
 
   setup() {
     const router = useRouter()
-    const auth = getAuth()
     const { loginUser } = useLoginUser()
     const { snackbar, openSnackbar } = useSnackbar()
     const headerLogo = require('@/assets/header_logo.png')
@@ -172,6 +172,7 @@ export default defineComponent({
     }
 
     const logout = (): void => {
+      const auth = getAuth()
       signOut(auth)
         .then(() => {
           hideDrawer()
@@ -209,24 +210,24 @@ export default defineComponent({
     }
 
     return {
-      lazy,
-      loginUser,
-      snackbar,
-      headerLogo,
-      noAvatarImage,
-      pushToHome,
-      navigationDrawerItems,
-      isDrawer,
-      showDrawer,
-      logout,
-      drawer,
-      dialogTerms,
       dialogPrivacyPolicy,
       dialogSpecifiedCommercialTransactionsLaw,
-      show,
+      dialogTerms,
+      drawer,
+      headerLogo,
       hide,
+      isDrawer,
+      lazy,
+      loginUser,
+      logout,
       mdiLogout,
-      mdiMenu
+      mdiMenu,
+      navigationDrawerItems,
+      noAvatarImage,
+      pushToHome,
+      show,
+      showDrawer,
+      snackbar
     }
   },
 
