@@ -3,14 +3,15 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { LoginUserKey } from '@/utils/useLoginUser'
 import { fetchUser } from '@/db/users'
 
-export default defineNuxtPlugin(async (_, inject) => {
+export default defineNuxtPlugin((_, inject) => {
   const loginUser = ref(null)
 
   inject('loginUser', loginUser)
 
-  const unsubscribe = await new Promise((resolve) => {
+  let unsubscribe
+  if (process.client) {
     const auth = getAuth()
-    const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
+    unsubscribe = onAuthStateChanged(auth, async (authUser) => {
       if (authUser) {
         const user = await fetchUser(authUser.uid)
         loginUser.value = user
@@ -26,9 +27,8 @@ export default defineNuxtPlugin(async (_, inject) => {
       } else {
         loginUser.value = null
       }
-      resolve(unsubscribe)
     })
-  })
+  }
 
   onGlobalSetup(() => {
     provide(LoginUserKey, loginUser)
