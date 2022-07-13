@@ -114,6 +114,7 @@
 </template>
 
 <script lang="ts">
+/** check */
 import { defineComponent } from '@nuxtjs/composition-api'
 import { mdiAccountArrowLeft, mdiAccountArrowRight, mdiTextBoxEdit } from '@mdi/js'
 import useShow from '@/composables/users/useShow'

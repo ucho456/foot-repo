@@ -1,3 +1,4 @@
+/** check */
 import { ref, Ref, useRoute, useRouter, watch } from '@nuxtjs/composition-api'
 import type { QueryDocumentSnapshot } from 'firebase/firestore'
 import { deleteReport, fetchUserLikeReports, fetchUserReports } from '@/db/reports'
