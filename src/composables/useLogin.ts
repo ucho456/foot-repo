@@ -93,11 +93,31 @@ const useLogin = () => {
     }
   }
 
+  /** password reset dialog */
+  const dialog = ref(false)
+  const showDialog = (): void => {
+    console.log('show')
+    dialog.value = true
+  }
+  const hideDialog = (): void => {
+    dialog.value = false
+  }
+
   const back = (): void => {
     router.back()
   }
 
-  return { back, isLoading, loginEmail, loginGoogle, loginTwitter, user }
+  return {
+    back,
+    dialog,
+    hideDialog,
+    isLoading,
+    loginEmail,
+    loginGoogle,
+    loginTwitter,
+    showDialog,
+    user
+  }
 }
 
 export default useLogin

@@ -36,6 +36,11 @@
             <v-col cols="10">
               <ButtonBack :disabled="isLoading" @click="back" />
             </v-col>
+            <v-col cols="10">
+              <span class="o-hover o-reset-password text-center" @click="showDialog">
+                パスワードを忘れてしまった場合はこちら
+              </span>
+            </v-col>
             <NuxtLink class="text-caption o-hover mb-4" to="/signup">
               新規登録はこちらから
             </NuxtLink>
@@ -43,6 +48,7 @@
         </ValidationObserver>
       </v-container>
     </v-card>
+    <DialogResetPassword :is-dialog="dialog" @hide="hideDialog" />
   </v-container>
 </template>
 
@@ -54,6 +60,7 @@ import ButtonBack from '@/components/molecules/ButtonBack.vue'
 import ButtonGoogle from '@/components/molecules/ButtonGoogle.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
 import ButtonTwitter from '@/components/molecules/ButtonTwitter.vue'
+import DialogResetPassword from '@/components/organisms/DialogResetPassword.vue'
 import TextFieldEmail from '@/components/molecules/TextFieldEmail.vue'
 import TextFieldPassword from '@/components/molecules/TextFieldPassword.vue'
 
@@ -65,6 +72,7 @@ export default defineComponent({
     ButtonGoogle,
     ButtonSubmit,
     ButtonTwitter,
+    DialogResetPassword,
     TextFieldEmail,
     TextFieldPassword
   },
@@ -72,18 +80,40 @@ export default defineComponent({
   layout: 'grey',
 
   setup() {
-    const { back, isLoading, loginEmail, loginGoogle, loginTwitter, user } = useLogin()
+    const {
+      back,
+      dialog,
+      hideDialog,
+      isLoading,
+      loginEmail,
+      loginGoogle,
+      loginTwitter,
+      showDialog,
+      user
+    } = useLogin()
     const logo = require('@/assets/signup_logo.png')
 
     return {
       back,
+      dialog,
+      hideDialog,
       isLoading,
       loginEmail,
       loginGoogle,
       loginTwitter,
       logo,
+      showDialog,
       user
     }
   }
 })
 </script>
+
+<style lang="scss" scoped>
+.o-reset-password {
+  font-size: 12px;
+  color: #1a237e;
+  text-decoration: underline;
+  line-height: 66px;
+}
+</style>
