@@ -13,6 +13,12 @@
     </v-app-bar>
     <v-main>
       <v-container>
+        <div v-if="showable">
+          <v-btn-toggle v-model="networkStatus" tile color="primary" group>
+            <v-btn value="enable" @click="handleEnableNetwork"> オンラインモード </v-btn>
+            <v-btn value="disable" @click="handleDisableNetwork"> オフラインモード </v-btn>
+          </v-btn-toggle>
+        </div>
         <v-row>
           <v-col cols="12" sm="8"><Nuxt /></v-col>
           <v-col cols="12" sm="4"><SideContainer /></v-col>
@@ -88,6 +94,7 @@
 /** check */
 import { computed, defineComponent, ref, useRouter } from '@nuxtjs/composition-api'
 import { getAuth, signOut } from 'firebase/auth'
+import { disableNetwork, enableNetwork, getFirestore } from 'firebase/firestore'
 import {
   mdiAccountPlus,
   mdiAccountSearch,
@@ -209,6 +216,19 @@ export default defineComponent({
         : (dialogSpecifiedCommercialTransactionsLaw.value = false)
     }
 
+    const showable = ref(process.env.NODE_ENV === 'development')
+    const networkStatus = ref('enable')
+    const handleEnableNetwork = async () => {
+      const db = getFirestore()
+      await enableNetwork(db)
+      console.log('enable')
+    }
+    const handleDisableNetwork = async () => {
+      const db = getFirestore()
+      await disableNetwork(db)
+      console.log('disable')
+    }
+
     return {
       dialogPrivacyPolicy,
       dialogSpecifiedCommercialTransactionsLaw,
@@ -227,7 +247,11 @@ export default defineComponent({
       pushToHome,
       show,
       showDrawer,
-      snackbar
+      snackbar,
+      showable,
+      networkStatus,
+      handleEnableNetwork,
+      handleDisableNetwork
     }
   },
 
