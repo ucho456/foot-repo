@@ -55,6 +55,14 @@
               @click="readNextMatches"
             />
           </v-col>
+          <client-only>
+            <v-col v-if="loginUser" cols="10">
+              <ButtonOutlined
+                :text="'試合が見つからない場合はこちら'"
+                @click="pushToPromptUpdate"
+              />
+            </v-col>
+          </client-only>
         </v-row>
       </v-container>
     </v-card>
@@ -83,7 +91,9 @@
 import { defineComponent } from '@nuxtjs/composition-api'
 import { mdiMagnify } from '@mdi/js'
 import useSearch from '@/composables/reports/useSearch'
+import useLoginUser from '@/utils/useLoginUser'
 import useStore from '@/utils/useStore'
+import ButtonOutlined from '@/components/molecules/ButtonOutlined.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
 import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 import DialogConfirmLogin from '@/components/organisms/DialogConfirmLogin.vue'
@@ -93,6 +103,7 @@ export default defineComponent({
   name: 'ReportSearch',
 
   components: {
+    ButtonOutlined,
     ButtonSubmit,
     ContainerLoading,
     DialogConfirmLogin,
@@ -112,11 +123,13 @@ export default defineComponent({
       isDialogConfirmLogin,
       isLoadingFirst,
       isLoadingNext,
+      pushToPromptUpdate,
       readNextMatches,
       search,
       setUp,
       showDialog
     } = useSearch()
+    const { loginUser } = useLoginUser()
     const { matches } = useStore()
     const lazy = require('@/assets/lazy.png')
 
@@ -135,8 +148,10 @@ export default defineComponent({
       isLoadingFirst,
       isLoadingNext,
       lazy,
+      loginUser,
       matches,
       mdiMagnify,
+      pushToPromptUpdate,
       readNextMatches,
       search,
       showDialog

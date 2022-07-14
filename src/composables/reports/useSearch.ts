@@ -1,11 +1,12 @@
 /** check */
-import { ref } from '@nuxtjs/composition-api'
+import { ref, useRouter } from '@nuxtjs/composition-api'
 import { toStoreMatches } from '@/db/matches'
 import useLoginUser from '@/utils/useLoginUser'
 import useSnackbar from '@/utils/useSnackbar'
 import useStore from '@/utils/useStore'
 
 const useSearch = () => {
+  const router = useRouter()
   const { loginUser } = useLoginUser()
   const { openSnackbar } = useSnackbar()
   const { confirmation, matches, resetMatches } = useStore()
@@ -92,6 +93,10 @@ const useSearch = () => {
     }
   }
 
+  const pushToPromptUpdate = (): void => {
+    router.push('/reports/prompt-update')
+  }
+
   return {
     clearYearMonth,
     confirmLogin,
@@ -104,6 +109,7 @@ const useSearch = () => {
     isDialogConfirmLogin,
     isLoadingFirst,
     isLoadingNext,
+    pushToPromptUpdate,
     readNextMatches,
     search,
     setUp,
