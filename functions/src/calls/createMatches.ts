@@ -58,7 +58,8 @@ export const makeMatch = (fbMatch: FbMatch, competition: Competition): Match => 
       score: fbMatch.score.fullTime.away,
       penalty: fbMatch.score.penalties ? fbMatch.score.penalties.away : null
     },
-    lastUpdated: fbMatch.lastUpdated
+    lastUpdated: fbMatch.lastUpdated,
+    promptUpdateTime: admin.firestore.Timestamp.now()
   }
 }
 

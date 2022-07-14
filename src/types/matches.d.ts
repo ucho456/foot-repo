@@ -33,6 +33,7 @@ type Match = {
     penalty: number | null
   }
   lastUpdated: string
+  promptUpdateTime: import('firebase/firestore').FieldValue
 }
 
 type MatchDetail = {

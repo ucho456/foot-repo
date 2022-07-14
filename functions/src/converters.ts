@@ -54,7 +54,8 @@ export const matchConverter: FirestoreDataConverter<Match> = {
       competition: match.competition,
       homeTeam: match.homeTeam,
       awayTeam: match.awayTeam,
-      lastUpdated: match.lastUpdated
+      lastUpdated: match.lastUpdated,
+      promptUpdateTime: match.promptUpdateTime
     }
   },
   fromFirestore(snapshot: QueryDocumentSnapshot): Match {
@@ -71,7 +72,8 @@ export const matchConverter: FirestoreDataConverter<Match> = {
       competition: data.competition,
       homeTeam: data.homeTeam,
       awayTeam: data.awayTeam,
-      lastUpdated: data.lastUpdated
+      lastUpdated: data.lastUpdated,
+      promptUpdateTime: data.promptUpdateTime
     }
   }
 }
