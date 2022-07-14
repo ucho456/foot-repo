@@ -27,13 +27,13 @@ const getMatchInfos = async (
   return matchInfos
 }
 
-const getFbMatch = async (matchId: string): Promise<FbMatch> => {
+export const getFbMatch = async (matchId: string): Promise<FbMatch> => {
   const res: AxiosResponse<any, any> = await axios.get(footballUrl + `matches/${matchId}`, config)
   const fbMatch = res.data as FbMatch
   return fbMatch
 }
 
-const makeMatchDetail = (fbMatch: FbMatch): MatchDetail => {
+export const makeMatchDetail = (fbMatch: FbMatch): MatchDetail => {
   const homeLineup: Player[] = fbMatch.homeTeam.lineup.map((l) => {
     return {
       player: {
@@ -155,7 +155,7 @@ const makeMatchDetail = (fbMatch: FbMatch): MatchDetail => {
   }
 }
 
-const makeForReport = (fbMatch: FbMatch): ForReport => {
+export const makeForReport = (fbMatch: FbMatch): ForReport => {
   const inPlayerIds = fbMatch.substitutions.map((s) => s.playerIn.id)
   const homelineup: ReportItem[] = fbMatch.homeTeam.lineup.map((l) => {
     return {

@@ -11,6 +11,7 @@ import {
   createSerieAMatches
 } from './calls/createMatches'
 import createUser from './calls/createUser'
+import { promptUpdateMatch } from './calls/promptUpdateMatch'
 import {
   setBundesligaTeams,
   setJLeagueTeams,
@@ -40,6 +41,7 @@ module.exports = {
   createPremierLeagueMatches,
   createSerieAMatches,
   createUser,
+  promptUpdateMatch,
   // setBundesligaMatches,
   setBundesligaTeams,
   // setJLeagueMatches,
