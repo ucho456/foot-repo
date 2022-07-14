@@ -13,8 +13,8 @@ const usePromptUpdate = () => {
   const matches = ref<Match[]>([])
   const isLoadingSetUp = ref(false)
   const setUp = async (): Promise<void> => {
-    if (!loginUser.value) throw new Error('unauthorized access')
     try {
+      if (!loginUser.value) throw new Error('unauthorized access')
       isLoadingSetUp.value = true
       matches.value = await fetchUpdateCandidateMatches()
     } catch (error) {
@@ -43,6 +43,7 @@ const usePromptUpdate = () => {
         openSnackbar('success', '試合データを更新しました。選手採点の作成をご利用下さい。')
         router.push({ path: '/reports/new', query: { matchId } })
       } else if (message === 'not yet') {
+        matches.value = matches.value.filter((m) => m.id !== matchId)
         openSnackbar(
           'failure',
           '試合データを更新できませんでした。暫くお待ち頂いてからご利用下さい。'

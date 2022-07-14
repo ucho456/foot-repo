@@ -11,14 +11,18 @@ export const promptUpdateMatch = functions
     if (!ctx.auth || ctx.auth.uid) return 'failure'
     const matchId = data.matchId as string
     const fbMatch = await getFbMatch(matchId)
+    const mRef = admin.firestore().doc(`matches/${fbMatch.id}`).withConverter(matchConverter)
+    const mSnapshot = await mRef.get()
+    const matchData = mSnapshot.data()
+    if (!matchData) return 'failure'
+    const batch = admin.firestore().batch()
     if (fbMatch.status === 'SCHEDULED') {
+      const tmpTime = new Date()
+      tmpTime.setMinutes(tmpTime.getMinutes() + 30)
+      batch.update(mRef, { [`promptUpdateTime`]: tmpTime })
+      await batch.commit()
       return 'not yet'
     } else {
-      const batch = admin.firestore().batch()
-      const mRef = admin.firestore().doc(`matches/${fbMatch.id}`).withConverter(matchConverter)
-      const mSnapshot = await mRef.get()
-      const matchData = mSnapshot.data()
-      if (!matchData) return 'failure'
       if (matchData.status === 'FINISHED') return 'already updated'
       const competition = {
         id: 0,

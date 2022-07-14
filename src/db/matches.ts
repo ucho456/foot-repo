@@ -10,6 +10,7 @@ import {
   orderBy,
   query,
   startAfter,
+  Timestamp,
   where
 } from 'firebase/firestore'
 import type { QueryDocumentSnapshot } from 'firebase/firestore'
@@ -104,7 +105,15 @@ export const toStoreMatchSchedule = async (league: {
 export const fetchUpdateCandidateMatches = async (): Promise<Match[]> => {
   const db = getFirestore()
   const mRef = collection(db, 'matches').withConverter(matchConverter)
-  const q = query(mRef, where('status', '==', 'SCHEDULED'), where('jstDate', '==', '2022-05-24'))
+  // const today = new Date()
+  // const jstDate = `${today.getFullYear()}-${today.getMonth() - 1}-${today.getDate()}`
+  const promptUpdateTime = Timestamp.fromDate(new Date())
+  const q = query(
+    mRef,
+    where('status', '==', 'SCHEDULED'),
+    where('jstDate', '==', '2022-05-24'),
+    where('promptUpdateTime', '<=', promptUpdateTime)
+  )
   const mSnapshot = await getDocsFromServer(q)
   const matches: Match[] = []
   mSnapshot.forEach((doc) => {
