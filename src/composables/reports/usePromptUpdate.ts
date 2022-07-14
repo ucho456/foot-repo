@@ -23,7 +23,7 @@ const usePromptUpdate = () => {
         openSnackbar('failure', '不正なアクセスが発生しました。')
         router.push('/')
       } else {
-        openSnackbar('failure', '試合データの取得に失敗しました。')
+        openSnackbar('failure', '試合データの取得に失敗しました。通信状況をお確かめ下さい。')
       }
     } finally {
       isLoadingSetUp.value = false
@@ -53,7 +53,7 @@ const usePromptUpdate = () => {
     } catch (error) {
       error instanceof Error && error.message === 'failure'
         ? openSnackbar('failure', '不正なアクセスが発生しました。')
-        : openSnackbar('failure', '通信エラーが発生しました。')
+        : openSnackbar('failure', '通信エラーが発生しました。通信状況をお確かめ下さい。')
     } finally {
       isLoadingUpdate.value = false
     }

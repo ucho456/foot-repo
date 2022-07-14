@@ -4,6 +4,7 @@ import {
   doc,
   getDoc,
   getDocs,
+  getDocsFromServer,
   getFirestore,
   limit,
   orderBy,
@@ -104,7 +105,7 @@ export const fetchUpdateCandidateMatches = async (): Promise<Match[]> => {
   const db = getFirestore()
   const mRef = collection(db, 'matches').withConverter(matchConverter)
   const q = query(mRef, where('status', '==', 'SCHEDULED'), where('jstDate', '==', '2022-05-24'))
-  const mSnapshot = await getDocs(q)
+  const mSnapshot = await getDocsFromServer(q)
   const matches: Match[] = []
   mSnapshot.forEach((doc) => {
     if (doc.exists()) matches.push(doc.data())
