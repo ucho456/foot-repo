@@ -100,6 +100,18 @@ export const toStoreMatchSchedule = async (league: {
   if (mSnapshot.size < perPage) league.hasNext = false
 }
 
+export const fetchUpdateCandidateMatches = async (): Promise<Match[]> => {
+  const db = getFirestore()
+  const mRef = collection(db, 'matches').withConverter(matchConverter)
+  const q = query(mRef, where('status', '==', 'SCHEDULED'), where('jstDate', '==', '2022-05-24'))
+  const mSnapshot = await getDocs(q)
+  const matches: Match[] = []
+  mSnapshot.forEach((doc) => {
+    if (doc.exists()) matches.push(doc.data())
+  })
+  return matches
+}
+
 /** ForReport Read */
 export const fetchForReport = async (matchId: string): Promise<ForReport | null> => {
   const db = getFirestore()
