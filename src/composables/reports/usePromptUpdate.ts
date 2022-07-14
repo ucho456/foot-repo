@@ -41,6 +41,7 @@ const usePromptUpdate = () => {
       const message = res.data as 'success' | 'already updated' | 'not yet' | 'failure'
       if (message === 'success' || message === 'already updated') {
         openSnackbar('success', '試合データを更新しました。選手採点の作成をご利用下さい。')
+        router.push({ path: '/reports/new', query: { matchId } })
       } else if (message === 'not yet') {
         openSnackbar(
           'failure',
