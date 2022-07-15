@@ -31,7 +31,7 @@ export const makeMatch = (fbMatch: FbMatch, competition: Competition): Match => 
     jstDate: convertJST(fbMatch.utcDate),
     yearMonth: convertYearMonth(fbMatch.utcDate),
     matchday: fbMatch.matchday,
-    status: fbMatch.status,
+    status: fbMatch.status === 'FINISHED' ? 'FINISHED' : 'SCHEDULED',
     venue: fbMatch.venue,
     teamIds: [String(fbMatch.homeTeam.id), String(fbMatch.awayTeam.id)],
     competition: {
@@ -67,9 +67,12 @@ const setMatches = async (
   competition: Competition,
   req: functions.https.Request
 ): Promise<void> => {
-  if (process.env.NODE_ENV === 'production' && req.body.secret !== env.secret) {
-    throw new Error('Unauthorized')
-  }
+  functions.logger.log('あああ, NODE_ENV', process.env.NODE_ENV)
+  functions.logger.log('いいい, req.secret', req.body.secret)
+  functions.logger.log('ううう, env.secret', env.secret)
+  // if (process.env.NODE_ENV === 'production' && req.body.secret !== env.secret) {
+  //   throw new Error('Unauthorized')
+  // }
   const fbMatches = await getFbMatches(competition.id)
   const batch = admin.firestore().batch()
   for (const fbMatch of fbMatches) {
