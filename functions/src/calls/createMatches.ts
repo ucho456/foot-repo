@@ -67,12 +67,9 @@ const setMatches = async (
   competition: Competition,
   req: functions.https.Request
 ): Promise<void> => {
-  functions.logger.log('あああ, NODE_ENV', process.env.NODE_ENV)
-  functions.logger.log('いいい, req.secret', req.body.secret)
-  functions.logger.log('ううう, env.secret', env.secret)
-  // if (process.env.NODE_ENV === 'production' && req.body.secret !== env.secret) {
-  //   throw new Error('Unauthorized')
-  // }
+  if (process.env.NODE_ENV === 'production' && req.query.secret !== env.secret) {
+    throw new Error('Unauthorized')
+  }
   const fbMatches = await getFbMatches(competition.id)
   const batch = admin.firestore().batch()
   for (const fbMatch of fbMatches) {
