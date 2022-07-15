@@ -39,7 +39,7 @@ type InputUser = {
   }
 }
 
-type MatchStatus = 'SCHEDULED' | 'FINISHED'
+type MatchStatus = string | 'FINISHED'
 
 type Point =
   | ''
