@@ -63,12 +63,12 @@ const useEdit = () => {
 
   /** update report */
   const isLoadingUpdate = ref(false)
-  const updateReport = async (publish: boolean): Promise<void> => {
+  const updateReport = (publish: boolean) => {
     if (!initReport.value) return
     try {
       isLoadingUpdate.value = true
       editReport.publish = publish
-      await putReport(editReport, initReport.value!)
+      putReport(editReport, initReport.value!)
       const message = publish ? '選手採点を更新しました。' : '選手採点を一時保存しました。'
       openSnackbar('success', message)
       router.push({
