@@ -290,12 +290,12 @@ const useShow = () => {
     targetReport.value = null
   }
   const isLoadingReportDelete = ref(false)
-  const trushReport = async (): Promise<void> => {
+  const trushReport = () => {
     if (!targetReport.value || !loginUser.value) return
     try {
       isLoadingReportDelete.value = true
       const reportId = targetReport.value.id
-      await deleteReport(reportId, loginUser.value.uid)
+      deleteReport(reportId, loginUser.value.uid)
       myReports.value = myReports.value.filter((r) => r.id !== reportId)
       if (user.value) user.value.reportCount -= 1
       openSnackbar('success', '削除に成功しました。')
