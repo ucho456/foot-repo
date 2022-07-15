@@ -94,7 +94,6 @@
 /** check */
 import { computed, defineComponent, ref, useRouter } from '@nuxtjs/composition-api'
 import { getAuth, signOut } from 'firebase/auth'
-import { disableNetwork, enableNetwork, getFirestore } from 'firebase/firestore'
 import {
   mdiAccountPlus,
   mdiAccountSearch,
@@ -109,6 +108,7 @@ import {
 } from '@mdi/js'
 import useLoginUser from '@/utils/useLoginUser'
 import useSnackbar from '@/utils/useSnackbar'
+import useToggleOffline from '@/utils/useToggleOffline'
 import DialogPrivacyPolicy from '@/components/organisms/DialogPrivacyPolicy.vue'
 import DialogSpecifiedCommercialTransactionsLaw from '@/components/organisms/DialogSpecifiedCommercialTransactionsLaw.vue'
 import DialogTerms from '@/components/organisms/DialogTerms.vue'
@@ -130,6 +130,8 @@ export default defineComponent({
     const router = useRouter()
     const { loginUser } = useLoginUser()
     const { snackbar, openSnackbar } = useSnackbar()
+    const { handleDisableNetwork, handleEnableNetwork, networkStatus, showable } =
+      useToggleOffline()
     const headerLogo = require('@/assets/header_logo.png')
     const noAvatarImage = require('@/assets/no_avatar.png')
     const lazy = require('@/assets/lazy.png')
@@ -214,19 +216,6 @@ export default defineComponent({
         : type === 'privacy policy'
         ? (dialogPrivacyPolicy.value = false)
         : (dialogSpecifiedCommercialTransactionsLaw.value = false)
-    }
-
-    const showable = ref(process.env.NODE_ENV === 'development')
-    const networkStatus = ref('enable')
-    const handleEnableNetwork = async () => {
-      const db = getFirestore()
-      await enableNetwork(db)
-      console.log('enable')
-    }
-    const handleDisableNetwork = async () => {
-      const db = getFirestore()
-      await disableNetwork(db)
-      console.log('disable')
     }
 
     return {
