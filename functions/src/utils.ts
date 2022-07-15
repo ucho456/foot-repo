@@ -17,18 +17,10 @@ export const leagueCompetitions = [
 ]
 
 export const convertJST = (utcDate: string): string => {
-  functions.logger.log('あああ utcDate', utcDate)
   const time = new Date(utcDate)
   time.setHours(time.getHours() + 9)
-  functions.logger.log('いいい time', time)
-  functions.logger.log(
-    'ううう jstDate',
-    `${time.getFullYear()}-${String(time.getMonth() + 1).padStart(2, '0')}-${String(
-      time.getDate() + 1
-    ).padStart(2, '0')}`
-  )
   return `${time.getFullYear()}-${String(time.getMonth() + 1).padStart(2, '0')}-${String(
-    time.getDate() + 1
+    time.getDate()
   ).padStart(2, '0')}`
 }
 
