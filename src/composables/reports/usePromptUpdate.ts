@@ -32,13 +32,14 @@ const usePromptUpdate = () => {
 
   /** prompt update match */
   const isLoadingUpdate = ref(false)
-  const promptUpdateMatch = async (matchId: string) => {
+  const requestMatchIds = ref<string[]>([])
+  const promptUpdateMatch = async (matchId: string): Promise<void> => {
+    if (requestMatchIds.value.includes(matchId)) return
     try {
       isLoadingUpdate.value = true
       const functions = getFunctions(undefined, 'asia-northeast1')
       const promptUpdateMatch = httpsCallable(functions, 'promptUpdateMatch')
       const res = await promptUpdateMatch({ matchId })
-      console.log({ res })
       const message = res.data as 'success' | 'already updated' | 'not yet' | 'failure'
       if (message === 'success' || message === 'already updated') {
         openSnackbar('success', '試合データを更新しました。選手採点の作成をご利用下さい。')
@@ -57,6 +58,7 @@ const usePromptUpdate = () => {
         ? openSnackbar('failure', '不正なアクセスが発生しました。')
         : openSnackbar('failure', '通信エラーが発生しました。通信状況をお確かめ下さい。')
     } finally {
+      requestMatchIds.value.push(matchId)
       isLoadingUpdate.value = false
     }
   }

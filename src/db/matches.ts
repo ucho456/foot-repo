@@ -111,7 +111,7 @@ export const fetchUpdateCandidateMatches = async (): Promise<Match[]> => {
   const q = query(
     mRef,
     where('status', '!=', 'FINISHED'),
-    where('jstDate', '==', '2022-05-24'),
+    where('jstDate', '==', '2022-08-07'),
     where('promptUpdateTime', '<=', promptUpdateTime)
   )
   const mSnapshot = await getDocsFromServer(q)
