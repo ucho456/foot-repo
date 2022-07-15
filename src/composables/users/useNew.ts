@@ -65,6 +65,7 @@ const useNew = () => {
   const isLoadingCreate = ref(false)
   const createUser = async (): Promise<void> => {
     try {
+      if (!window.navigator.onLine) throw new Error('offline')
       isLoadingCreate.value = true
       if (newUser.team.id) newUser.team.name = teamMap.get(newUser.team.id)?.name!
       const imageUrl = newUser.imageUrl
