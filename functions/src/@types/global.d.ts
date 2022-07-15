@@ -3,7 +3,7 @@ type Card = 'red' | 'yellow'
 
 type HomeAway = 'home' | 'away' | 'both'
 
-type MatchStatus = string | 'FINISHED'
+type MatchStatus = 'SCHEDULED' | 'FINISHED'
 
 type Position = 'GK' | 'DF' | 'MF' | 'FW' | 'HC' | null
 

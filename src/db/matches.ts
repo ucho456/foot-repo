@@ -110,7 +110,7 @@ export const fetchUpdateCandidateMatches = async (): Promise<Match[]> => {
   const promptUpdateTime = Timestamp.fromDate(new Date())
   const q = query(
     mRef,
-    where('status', '!=', 'FINISHED'),
+    where('status', '==', 'SCHEDULED'),
     where('jstDate', '==', '2022-08-07'),
     where('promptUpdateTime', '<=', promptUpdateTime)
   )
