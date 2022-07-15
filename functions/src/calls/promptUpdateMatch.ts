@@ -8,21 +8,28 @@ import { getFbMatch, makeForReport, makeMatchDetail } from '../crons/setMatches'
 export const promptUpdateMatch = functions
   .region('asia-northeast1')
   .https.onCall(async (data, ctx) => {
+    console.log(ctx.auth)
+    console.log(ctx.auth?.uid)
     if (!ctx.auth || ctx.auth.uid) return 'failure'
     const matchId = data.matchId as string
+    console.log({ matchId })
     const fbMatch = await getFbMatch(matchId)
     const mRef = admin.firestore().doc(`matches/${fbMatch.id}`).withConverter(matchConverter)
     const mSnapshot = await mRef.get()
     const matchData = mSnapshot.data()
+    console.log({ matchData })
     if (!matchData) return 'failure'
     const batch = admin.firestore().batch()
     if (fbMatch.status === 'SCHEDULED') {
+      console.log('fbMatch SCHEDULED')
       const tmpTime = new Date()
-      tmpTime.setMinutes(tmpTime.getMinutes() + 30)
-      batch.update(mRef, { [`promptUpdateTime`]: tmpTime })
+      const milliseconds = tmpTime.setMinutes(tmpTime.getMinutes() + 30) / 1000
+      const timestamp = new admin.firestore.Timestamp(milliseconds, 0)
+      batch.update(mRef, { [`promptUpdateTime`]: timestamp })
       await batch.commit()
       return 'not yet'
     } else {
+      console.log('fbMatch FINISHED')
       if (matchData.status === 'FINISHED') return 'already updated'
       const competition = {
         id: 0,
@@ -30,6 +37,7 @@ export const promptUpdateMatch = functions
         name: matchData.competition.name
       }
       const match = makeMatch(fbMatch, competition)
+      console.log({ match })
       batch.set(mRef, match)
       const mdRef = admin
         .firestore()

@@ -38,6 +38,7 @@ const usePromptUpdate = () => {
       const functions = getFunctions(undefined, 'asia-northeast1')
       const promptUpdateMatch = httpsCallable(functions, 'promptUpdateMatch')
       const res = await promptUpdateMatch({ matchId })
+      console.log({ res })
       const message = res.data as 'success' | 'already updated' | 'not yet' | 'failure'
       if (message === 'success' || message === 'already updated') {
         openSnackbar('success', '試合データを更新しました。選手採点の作成をご利用下さい。')
