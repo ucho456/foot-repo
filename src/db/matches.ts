@@ -105,13 +105,16 @@ export const toStoreMatchSchedule = async (league: {
 export const fetchUpdateCandidateMatches = async (): Promise<Match[]> => {
   const db = getFirestore()
   const mRef = collection(db, 'matches').withConverter(matchConverter)
-  // const today = new Date()
-  // const jstDate = `${today.getFullYear()}-${today.getMonth() - 1}-${today.getDate()}`
+  const today = new Date()
+  const jstDate =
+    process.env.NODE_ENV === 'production'
+      ? `${today.getFullYear()}-${today.getMonth() - 1}-${today.getDate()}`
+      : '2022-05-23'
   const promptUpdateTime = Timestamp.fromDate(new Date())
   const q = query(
     mRef,
     where('status', '==', 'SCHEDULED'),
-    where('jstDate', '==', '2022-08-07'),
+    where('jstDate', '==', jstDate),
     where('promptUpdateTime', '<=', promptUpdateTime)
   )
   const mSnapshot = await getDocsFromServer(q)
