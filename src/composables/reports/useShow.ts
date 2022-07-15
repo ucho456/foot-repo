@@ -124,7 +124,7 @@ const useShow = () => {
       }
     } catch (error) {
       console.log(error)
-      openSnackbar('failure', '通信エラーが発生しました。')
+      openSnackbar('failure', '通信エラーが発生しました。通信状況をお確かめ下さい。')
     } finally {
       isLoadingUpdateLike.value = false
     }
@@ -157,14 +157,19 @@ const useShow = () => {
   const confirmLogin = (): void => {
     !confirmation.isLogin && !loginUser.value ? (isDialog.value = true) : createComment()
   }
-  const createComment = async (): Promise<void> => {
+  const createComment = () => {
     if (!report.value) return
     try {
       hideDialog()
       isLoadingNewComment.value = true
-      await postComment(report.value.id, loginUser.value, newComment.value)
+      postComment(report.value.id, loginUser.value, newComment.value)
       newComment.value = ''
-      openSnackbar('success', 'コメントを作成しました。')
+      window.navigator.onLine
+        ? openSnackbar('success', 'コメントを作成しました。')
+        : openSnackbar(
+            'success',
+            'オフラインでコメントを作成しました。オンラインに接続されると自動的にコメントが反映されます。'
+          )
     } catch (error) {
       console.log(error)
       openSnackbar('failure', 'コメントの作成に失敗しました。')
