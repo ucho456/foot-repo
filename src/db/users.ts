@@ -190,7 +190,7 @@ export const fetchIsFollow = async (uid: string, userId: string): Promise<boolea
   return uSnapshot.exists()
 }
 
-/** Follow */
+/** Follow (not support offline) */
 export const doFollow = async (uid: string, userId: string): Promise<void> => {
   const db = getFirestore()
   const meRef = doc(db, 'users', uid).withConverter(userConverter)

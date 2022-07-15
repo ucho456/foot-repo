@@ -140,7 +140,7 @@ const useShow = () => {
       follow.value = !follow.value
     } catch (error) {
       console.log(error)
-      openSnackbar('failure', '通信エラーが発生しました。')
+      openSnackbar('failure', '通信エラーが発生しました。通信状況をお確かめ下さい。')
     } finally {
       isLoadingUpdateFollow.value = false
     }
