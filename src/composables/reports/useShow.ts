@@ -10,7 +10,7 @@ import {
   postComment,
   subscribeComments
 } from '@/db/reports'
-import { doFollow, fetchIsFollow, fetchIsLike, fetchUser } from '@/db/users'
+import { doFollow, fetchIsFollow, fetchIsLike, fetchUserPriorityFromCashe } from '@/db/users'
 import useLoginUser from '@/utils/useLoginUser'
 import useSnackbar from '@/utils/useSnackbar'
 import useStore from '@/utils/useStore'
@@ -55,7 +55,7 @@ const useShow = () => {
         isLoadingReport.value = false
         if (report.value.user.id !== 'guest') {
           isLoadingUser.value = true
-          user.value = await fetchUser(report.value.user.id)
+          user.value = await fetchUserPriorityFromCashe(report.value.user.id)
           if (loginUser.value) {
             follow.value = await fetchIsFollow(loginUser.value.uid, report.value.user.id)
           }

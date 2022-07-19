@@ -44,20 +44,13 @@ export const postUser = async (newUser: InputUser): Promise<void> => {
 export const fetchUserPriorityFromCashe = async (userId: string): Promise<User | null> => {
   const db = getFirestore()
   const uRef = doc(db, 'users', userId).withConverter(userConverter)
-  const uSnapshot = await getDocFromCache(uRef)
-  if (uSnapshot.exists()) {
-    return uSnapshot.data()
-  } else {
+  try {
+    const uSnapshot = await getDocFromCache(uRef)
+    return uSnapshot.exists() ? uSnapshot.data() : null
+  } catch {
     const uSnapshot = await getDocFromServer(uRef)
     return uSnapshot.exists() ? uSnapshot.data() : null
   }
-}
-
-export const fetchUser = async (userId: string): Promise<User | null> => {
-  const db = getFirestore()
-  const uRef = doc(db, 'users', userId).withConverter(userConverter)
-  const uSnapshot = await getDoc(uRef)
-  return uSnapshot.exists() ? uSnapshot.data() : null
 }
 
 export const toStoreUsers = async (

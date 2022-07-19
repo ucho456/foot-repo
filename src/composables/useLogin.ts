@@ -8,7 +8,7 @@ import {
   signOut,
   TwitterAuthProvider
 } from 'firebase/auth'
-import { fetchUser } from '@/db/users'
+import { fetchUserPriorityFromCashe } from '@/db/users'
 import useSnackbar from '@/utils/useSnackbar'
 
 const useLogin = () => {
@@ -28,7 +28,7 @@ const useLogin = () => {
         openSnackbar('failure', 'メールアドレスの認証が完了していません。')
       }
       const uid = userCredential.user.uid
-      const resUser = await fetchUser(uid)
+      const resUser = await fetchUserPriorityFromCashe(uid)
       if (resUser) {
         openSnackbar('success', 'ログインしました。')
         router.push('/')
@@ -54,7 +54,7 @@ const useLogin = () => {
       const provider = new TwitterAuthProvider()
       const userCredential = await signInWithPopup(auth, provider)
       const uid = userCredential.user.uid
-      const resUser = await fetchUser(uid)
+      const resUser = await fetchUserPriorityFromCashe(uid)
       if (resUser) {
         openSnackbar('success', 'ログインしました。')
         router.push('/')
@@ -77,7 +77,7 @@ const useLogin = () => {
       const provider = new GoogleAuthProvider()
       const userCredential = await signInWithPopup(auth, provider)
       const uid = userCredential.user.uid
-      const resUser = await fetchUser(uid)
+      const resUser = await fetchUserPriorityFromCashe(uid)
       if (resUser) {
         openSnackbar('success', 'ログインしました。')
         router.push('/')
