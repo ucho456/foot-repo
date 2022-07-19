@@ -12,17 +12,23 @@ const useSnackbar = () => {
     snackbar.message = message
     snackbar.show = true
     snackbar.textColor = result === 'alert' ? 'black' : 'white'
-    const seconds = result === 'success' ? 2 : 5
     const id = setTimeout(() => {
       snackbar.color = ''
       snackbar.message = ''
       snackbar.show = false
       snackbar.textColor = ''
       clearTimeout(id)
-    }, seconds * 1000)
+    }, 5 * 1000)
   }
 
-  return { snackbar, openSnackbar }
+  const closeSnackbar = (): void => {
+    snackbar.color = ''
+    snackbar.message = ''
+    snackbar.show = false
+    snackbar.textColor = ''
+  }
+
+  return { closeSnackbar, openSnackbar, snackbar }
 }
 
 export default useSnackbar
