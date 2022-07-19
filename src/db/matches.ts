@@ -41,8 +41,15 @@ export const toStoreMatch = async (
     const mdRef = doc(db, 'matches', matchId, 'match-detail', matchId).withConverter(
       matchDetailConverter
     )
-    const mdSnapshot = await getDoc(mdRef)
-    match.detail = mdSnapshot.exists() ? mdSnapshot.data() : null
+    try {
+      const mdSnapshot = await getDocFromCache(mdRef)
+      match.detail = mdSnapshot.exists() ? mdSnapshot.data() : null
+    } catch (error) {
+      if (error instanceof FirebaseError && error.code === 'unavailable') {
+        const mdSnapshot = await getDocFromServer(mdRef)
+        match.detail = mdSnapshot.exists() ? mdSnapshot.data() : null
+      }
+    }
   }
 }
 
