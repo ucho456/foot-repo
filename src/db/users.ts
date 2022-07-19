@@ -1,4 +1,5 @@
 /** check */
+import { FirebaseError } from 'firebase/app'
 import {
   collection,
   doc,
@@ -47,9 +48,13 @@ export const fetchUserPriorityFromCashe = async (userId: string): Promise<User |
   try {
     const uSnapshot = await getDocFromCache(uRef)
     return uSnapshot.exists() ? uSnapshot.data() : null
-  } catch {
-    const uSnapshot = await getDocFromServer(uRef)
-    return uSnapshot.exists() ? uSnapshot.data() : null
+  } catch (error) {
+    if (error instanceof FirebaseError && error.code === 'unavailable') {
+      const uSnapshot = await getDocFromServer(uRef)
+      return uSnapshot.exists() ? uSnapshot.data() : null
+    } else {
+      return null
+    }
   }
 }
 

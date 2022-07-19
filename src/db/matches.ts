@@ -1,8 +1,11 @@
 /** check */
+import { FirebaseError } from 'firebase/app'
 import {
   collection,
   doc,
   getDoc,
+  getDocFromCache,
+  getDocFromServer,
   getDocs,
   getDocsFromServer,
   getFirestore,
@@ -126,9 +129,20 @@ export const fetchUpdateCandidateMatches = async (): Promise<Match[]> => {
 }
 
 /** ForReport Read */
-export const fetchForReport = async (matchId: string): Promise<ForReport | null> => {
+export const fetchForReportPriorityFromCashe = async (
+  matchId: string
+): Promise<ForReport | null> => {
   const db = getFirestore()
   const frRef = doc(db, 'matches', matchId, 'for-report', matchId).withConverter(forReportConverter)
-  const frSnapshot = await getDoc(frRef)
-  return frSnapshot.exists() ? frSnapshot.data() : null
+  try {
+    const frSnapshot = await getDocFromCache(frRef)
+    return frSnapshot.exists() ? frSnapshot.data() : null
+  } catch (error) {
+    if (error instanceof FirebaseError && error.code === 'unavailable') {
+      const frSnapshot = await getDocFromServer(frRef)
+      return frSnapshot.exists() ? frSnapshot.data() : null
+    } else {
+      return null
+    }
+  }
 }
