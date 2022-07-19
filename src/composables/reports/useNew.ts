@@ -65,7 +65,10 @@ const useNew = () => {
       const reportId = await postReport(loginUser.value, newReport, match.value)
       const message = publish ? '選手採点を作成しました。' : '選手採点を一時保存しました。'
       openSnackbar('success', message)
-      router.push({ name: `reports-id`, params: { id: reportId, publish: String(publish) } })
+      router.push({
+        name: `reports-id`,
+        params: { id: reportId, publish: String(publish), cashe: 'true' }
+      })
     } catch (error) {
       error instanceof Error && error.message.includes('offline')
         ? openSnackbar('failure', '通信エラーが発生しました。通信状況をお確かめ下さい。')

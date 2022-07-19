@@ -1,11 +1,16 @@
 /** check */
+import { FirebaseError } from 'firebase/app'
 import {
   collection,
   doc,
   documentId,
   endBefore,
   getDoc,
+  getDocFromCache,
+  getDocFromServer,
   getDocs,
+  getDocsFromCache,
+  getDocsFromServer,
   getFirestore,
   increment,
   limit,
@@ -118,15 +123,33 @@ export const postReport = async (
 }
 
 /** Reports Read */
-export const fetchReport = async (reportId: string): Promise<Report | null> => {
+export const fetchReport = async (
+  reportId: string,
+  cashe: 'true' | undefined
+): Promise<Report | null> => {
   const db = getFirestore()
   const rRef = doc(db, 'reports', reportId).withConverter(reportConverter)
-  const rShapshot = await getDoc(rRef)
-  return rShapshot.exists() ? rShapshot.data() : null
+  if (cashe === 'true') {
+    try {
+      const rShapshot = await getDocFromCache(rRef)
+      return rShapshot.exists() ? rShapshot.data() : null
+    } catch (error) {
+      if (error instanceof FirebaseError && error.code === 'unavailable') {
+        const rSnapshot = await getDocFromServer(rRef)
+        return rSnapshot.exists() ? rSnapshot.data() : null
+      } else {
+        return null
+      }
+    }
+  } else {
+    const rShapshot = await getDoc(rRef)
+    return rShapshot.exists() ? rShapshot.data() : null
+  }
 }
 
 export const fetchReportItems = async (
-  report: Report
+  report: Report,
+  cashe: 'true' | undefined
 ): Promise<{
   resHomeTeamReportItems: ReportItem[]
   resAwayTeamReportItems: ReportItem[]
@@ -142,27 +165,49 @@ export const fetchReportItems = async (
     reportItemConverter
   )
   const atriQ = query(atriRef, orderBy('order', 'asc'))
-  if (report.selectTeam === 'home') {
-    const htriSnapshot = await getDocs(htriQ)
-    htriSnapshot.forEach((doc) => {
-      if (doc.exists()) resHomeTeamReportItems.push(doc.data())
-    })
-  } else if (report.selectTeam === 'away') {
-    const atriSnapshot = await getDocs(atriQ)
-    atriSnapshot.forEach((doc) => {
-      if (doc.exists()) resAwayTeamReportItems.push(doc.data())
-    })
+  if (cashe === 'true') {
+    if (report.selectTeam !== 'away') {
+      const htriSnapshot = await getDocsFromCache(htriQ)
+      if (!htriSnapshot.empty) {
+        htriSnapshot.forEach((doc) => {
+          if (doc.exists()) resHomeTeamReportItems.push(doc.data())
+        })
+      } else {
+        const htriSnapshot = await getDocsFromServer(htriQ)
+        htriSnapshot.forEach((doc) => {
+          if (doc.exists()) resHomeTeamReportItems.push(doc.data())
+        })
+      }
+    }
+    if (report.selectTeam !== 'home') {
+      const atriSnapshot = await getDocsFromCache(atriQ)
+      if (!atriSnapshot.empty) {
+        atriSnapshot.forEach((doc) => {
+          if (doc.exists()) resAwayTeamReportItems.push(doc.data())
+        })
+      } else {
+        const atriSnapshot = await getDocsFromServer(atriQ)
+        atriSnapshot.forEach((doc) => {
+          if (doc.exists()) resAwayTeamReportItems.push(doc.data())
+        })
+      }
+    }
+    return { resHomeTeamReportItems, resAwayTeamReportItems }
   } else {
-    const htriSnapshot = await getDocs(htriQ)
-    htriSnapshot.forEach((doc) => {
-      if (doc.exists()) resHomeTeamReportItems.push(doc.data())
-    })
-    const atriSnapshot = await getDocs(atriQ)
-    atriSnapshot.forEach((doc) => {
-      if (doc.exists()) resAwayTeamReportItems.push(doc.data())
-    })
+    if (report.selectTeam !== 'away') {
+      const htriSnapshot = await getDocs(htriQ)
+      htriSnapshot.forEach((doc) => {
+        if (doc.exists()) resHomeTeamReportItems.push(doc.data())
+      })
+    }
+    if (report.selectTeam !== 'home') {
+      const atriSnapshot = await getDocs(atriQ)
+      atriSnapshot.forEach((doc) => {
+        if (doc.exists()) resAwayTeamReportItems.push(doc.data())
+      })
+    }
+    return { resHomeTeamReportItems, resAwayTeamReportItems }
   }
-  return { resHomeTeamReportItems, resAwayTeamReportItems }
 }
 
 export const toStoreReports = async (reports: {

@@ -30,10 +30,13 @@ const useEdit = () => {
       if (!loginUser.value) throw new Error('unauthorized access')
       isLoadingSetUp.value = true
       const reportId = route.value.query.reportId as string
-      const resReport = await fetchReport(reportId)
+      const resReport = await fetchReport(reportId, 'true')
       if (resReport) {
         if (resReport.user.id !== loginUser.value.uid) throw new Error('unauthorized access')
-        const { resHomeTeamReportItems, resAwayTeamReportItems } = await fetchReportItems(resReport)
+        const { resHomeTeamReportItems, resAwayTeamReportItems } = await fetchReportItems(
+          resReport,
+          'true'
+        )
         initReport.value = { ...resReport }
         editReport.title = resReport.title
         editReport.selectTeam = resReport.selectTeam
@@ -73,7 +76,7 @@ const useEdit = () => {
       openSnackbar('success', message)
       router.push({
         name: 'reports-id',
-        params: { id: initReport.value.id, publish: String(publish) }
+        params: { id: initReport.value.id, publish: String(publish), cashe: 'true' }
       })
     } catch (error) {
       console.log(error)

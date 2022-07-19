@@ -42,11 +42,15 @@ const useShow = () => {
     try {
       isLoadingReport.value = true
       const reportId = route.value.params.id as string
-      const resReport = await fetchReport(reportId)
+      const cashe = route.value.params.cashe as 'true' | undefined
+      const resReport = await fetchReport(reportId, cashe)
       if (resReport) {
         const uid = loginUser.value?.uid
         if (!resReport.publish && resReport.user.id !== uid) throw new Error('unauthorized access')
-        const { resHomeTeamReportItems, resAwayTeamReportItems } = await fetchReportItems(resReport)
+        const { resHomeTeamReportItems, resAwayTeamReportItems } = await fetchReportItems(
+          resReport,
+          cashe
+        )
         report.value = resReport
         homeTeamReportItems.value = resHomeTeamReportItems
         awayTeamReportItems.value = resAwayTeamReportItems
