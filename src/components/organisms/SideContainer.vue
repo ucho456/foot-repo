@@ -27,6 +27,25 @@
         </v-row>
       </v-container>
     </v-card>
+    <v-card class="mt-4" outlined>
+      <v-container>
+        <v-row>
+          <v-col cols="12">
+            <h3>お知らせ</h3>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12">
+            今後のアップデート予定について<br /><br />
+            CLの試合データ更新（8月末）<br />
+            W杯の試合データ更新（11月）<br />
+            日本代表戦の試合データ更新（11月）<br />
+            Jリーグの試合データ更新（23年～）<br /><br />
+            を予定しております。今後とも宜しくお願い致します。
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-card>
   </v-container>
 </template>
 
