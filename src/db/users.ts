@@ -4,6 +4,8 @@ import {
   doc,
   documentId,
   getDoc,
+  getDocFromCache,
+  getDocFromServer,
   getDocs,
   getFirestore,
   increment,
@@ -39,6 +41,18 @@ export const postUser = async (newUser: InputUser): Promise<void> => {
 }
 
 /** Users Read */
+export const fetchUserPriorityFromCashe = async (userId: string): Promise<User | null> => {
+  const db = getFirestore()
+  const uRef = doc(db, 'users', userId).withConverter(userConverter)
+  const uSnapshot = await getDocFromCache(uRef)
+  if (uSnapshot.exists()) {
+    return uSnapshot.data()
+  } else {
+    const uSnapshot = await getDocFromServer(uRef)
+    return uSnapshot.exists() ? uSnapshot.data() : null
+  }
+}
+
 export const fetchUser = async (userId: string): Promise<User | null> => {
   const db = getFirestore()
   const uRef = doc(db, 'users', userId).withConverter(userConverter)

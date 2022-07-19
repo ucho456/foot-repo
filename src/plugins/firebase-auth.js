@@ -1,7 +1,7 @@
 import { defineNuxtPlugin, onGlobalSetup, onUnmounted, provide, ref } from '@nuxtjs/composition-api'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { LoginUserKey } from '@/utils/useLoginUser'
-import { fetchUser } from '@/db/users'
+import { fetchUserPriorityFromCashe } from '@/db/users'
 
 export default defineNuxtPlugin((_, inject) => {
   const loginUser = ref(null)
@@ -11,7 +11,8 @@ export default defineNuxtPlugin((_, inject) => {
   const auth = getAuth()
   const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
     if (authUser) {
-      const user = await fetchUser(authUser.uid)
+      const p0 = performance.now()
+      const user = await fetchUserPriorityFromCashe(authUser.uid)
       loginUser.value = user
         ? {
             uid: user.id,
@@ -22,30 +23,12 @@ export default defineNuxtPlugin((_, inject) => {
             greet: user.greet
           }
         : null
+      const p1 = performance.now()
+      console.log('performance', p1 - p0)
     } else {
       loginUser.value = null
     }
   })
-  // if (process.client) {
-  //   const auth = getAuth()
-  //   unsubscribe = onAuthStateChanged(auth, async (authUser) => {
-  //     if (authUser) {
-  //       const user = await fetchUser(authUser.uid)
-  //       loginUser.value = user
-  //         ? {
-  //             uid: user.id,
-  //             name: user.name,
-  //             imageUrl: user.imageUrl,
-  //             competitionId: user.competitionId,
-  //             team: user.team,
-  //             greet: user.greet
-  //           }
-  //         : null
-  //     } else {
-  //       loginUser.value = null
-  //     }
-  //   })
-  // }
 
   onGlobalSetup(() => {
     provide(LoginUserKey, loginUser)
