@@ -142,7 +142,7 @@
         </v-simple-table>
       </v-container>
     </v-card>
-    <v-card class="mt-4" outlined>
+    <v-card v-if="match.data && match.data.status === 'FINISHED'" class="mt-4" outlined>
       <v-container>
         <v-row justify="center">
           <v-col cols="10" md="6">

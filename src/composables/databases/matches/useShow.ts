@@ -23,7 +23,9 @@ const useShow = () => {
       await toStoreMatch(matchId, match)
       isLoadingMatch.value = false
       isLoadingSameMatchReports.value = true
-      await toStoreSameMatchReports(matchId, match)
+      if (match.data && match.data.status === 'FINISHED') {
+        await toStoreSameMatchReports(matchId, match)
+      }
       isLoadingSameMatchReports.value = false
     } catch (error) {
       console.log(error)
