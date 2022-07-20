@@ -8,7 +8,7 @@ import {
   signInWithPopup,
   TwitterAuthProvider
 } from 'firebase/auth'
-import { fetchUserPriorityFromCashe } from '@/db/users'
+import { fetchUser } from '@/db/users'
 import useSnackbar from '@/utils/useSnackbar'
 
 const useSignup = () => {
@@ -43,7 +43,7 @@ const useSignup = () => {
       const provider = new TwitterAuthProvider()
       const userCredential = await signInWithPopup(auth, provider)
       const uid = userCredential.user.uid
-      const user = await fetchUserPriorityFromCashe(uid)
+      const user = await fetchUser(uid)
       if (!user) {
         openSnackbar('success', '認証が完了しました。')
         router.push('/users/new')
@@ -66,7 +66,7 @@ const useSignup = () => {
       const provider = new GoogleAuthProvider()
       const userCredential = await signInWithPopup(auth, provider)
       const uid = userCredential.user.uid
-      const user = await fetchUserPriorityFromCashe(uid)
+      const user = await fetchUser(uid)
       if (!user) {
         openSnackbar('success', '認証が完了しました。')
         router.push({ name: 'users-new' })

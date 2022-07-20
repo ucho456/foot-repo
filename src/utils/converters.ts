@@ -1,9 +1,8 @@
 import type {
   DocumentData,
   FirestoreDataConverter,
-  QueryDocumentSnapshot,
-  SnapshotOptions
-} from 'firebase/firestore'
+  QueryDocumentSnapshot
+} from 'firebase/firestore/lite'
 
 /** competitions */
 export const scorersConverter: FirestoreDataConverter<Scorers> = {
@@ -57,8 +56,8 @@ export const matchConverter: FirestoreDataConverter<Match> = {
       promptUpdateTime: match.promptUpdateTime
     }
   },
-  fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions): Match {
-    const data = snapshot.data(options)
+  fromFirestore(snapshot: QueryDocumentSnapshot): Match {
+    const data = snapshot.data()
     return {
       id: snapshot.id,
       season: data.season,
@@ -148,8 +147,8 @@ export const reportConverter: FirestoreDataConverter<Report> = {
       createdAt: report.createdAt
     }
   },
-  fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions): Report {
-    const data = snapshot.data(options)
+  fromFirestore(snapshot: QueryDocumentSnapshot): Report {
+    const data = snapshot.data()
     return {
       id: snapshot.id,
       title: data.title,
@@ -185,8 +184,8 @@ export const reportItemConverter: FirestoreDataConverter<ReportItem> = {
       order: reportItem.order
     }
   },
-  fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions): ReportItem {
-    const data = snapshot.data(options)
+  fromFirestore(snapshot: QueryDocumentSnapshot): ReportItem {
+    const data = snapshot.data()
     return {
       id: snapshot.id,
       user: data.user,
@@ -208,8 +207,8 @@ export const commentConverter: FirestoreDataConverter<ReportComment> = {
       createdAt: comment.createdAt
     }
   },
-  fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions): ReportComment {
-    const data = snapshot.data(options)
+  fromFirestore(snapshot: QueryDocumentSnapshot): ReportComment {
+    const data = snapshot.data()
     return {
       id: snapshot.id,
       user: data.user,
@@ -261,8 +260,8 @@ export const userConverter: FirestoreDataConverter<User> = {
       followerCount: user.followerCount
     }
   },
-  fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions): User {
-    const data = snapshot.data(options)
+  fromFirestore(snapshot: QueryDocumentSnapshot): User {
+    const data = snapshot.data()
     return {
       id: snapshot.id,
       name: data.name,
@@ -284,8 +283,8 @@ export const likeConverter: FirestoreDataConverter<Like> = {
       createdAt: like.createdAt
     }
   },
-  fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions): Like {
-    const data = snapshot.data(options)
+  fromFirestore(snapshot: QueryDocumentSnapshot): Like {
+    const data = snapshot.data()
     return {
       id: snapshot.id,
       report: data.report,
@@ -301,8 +300,8 @@ export const followerConverter: FirestoreDataConverter<Follower> = {
       createdAt: follower.createdAt
     }
   },
-  fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions): Follower {
-    const data = snapshot.data(options)
+  fromFirestore(snapshot: QueryDocumentSnapshot): Follower {
+    const data = snapshot.data()
     return {
       id: snapshot.id,
       user: data.user,

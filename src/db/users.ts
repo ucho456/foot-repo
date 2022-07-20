@@ -1,12 +1,9 @@
 /** check */
-import { FirebaseError } from 'firebase/app'
 import {
   collection,
   doc,
   documentId,
   getDoc,
-  getDocFromCache,
-  getDocFromServer,
   getDocs,
   getFirestore,
   increment,
@@ -19,8 +16,8 @@ import {
   updateDoc,
   where,
   writeBatch
-} from 'firebase/firestore'
-import type { QueryDocumentSnapshot } from 'firebase/firestore'
+} from 'firebase/firestore/lite'
+import type { QueryDocumentSnapshot } from 'firebase/firestore/lite'
 import { followerConverter, likeConverter, userConverter } from '@/utils/converters'
 const perPage = 10
 
@@ -42,20 +39,11 @@ export const postUser = async (newUser: InputUser): Promise<void> => {
 }
 
 /** Users Read */
-export const fetchUserPriorityFromCashe = async (userId: string): Promise<User | null> => {
+export const fetchUser = async (userId: string): Promise<User | null> => {
   const db = getFirestore()
   const uRef = doc(db, 'users', userId).withConverter(userConverter)
-  try {
-    const uSnapshot = await getDocFromCache(uRef)
-    return uSnapshot.exists() ? uSnapshot.data() : null
-  } catch (error) {
-    if (error instanceof FirebaseError && error.code === 'unavailable') {
-      const uSnapshot = await getDocFromServer(uRef)
-      return uSnapshot.exists() ? uSnapshot.data() : null
-    } else {
-      return null
-    }
-  }
+  const uSnapshot = await getDoc(uRef)
+  return uSnapshot.exists() ? uSnapshot.data() : null
 }
 
 export const toStoreUsers = async (

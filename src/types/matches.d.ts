@@ -10,13 +10,13 @@ type Match = {
   teamIds: string[]
   competition: {
     id: string
-    ref: import('firebase/firestore').DocumentReference
+    ref: import('firebase/firestore/lite').DocumentReference
     name: string
     imageUrl: string
   }
   homeTeam: {
     id: string
-    ref: import('firebase/firestore').DocumentReference
+    ref: import('firebase/firestore/lite').DocumentReference
     name: string
     shortName: string
     imageUrl: string
@@ -25,7 +25,7 @@ type Match = {
   }
   awayTeam: {
     id: string
-    ref: import('firebase/firestore').DocumentReference
+    ref: import('firebase/firestore/lite').DocumentReference
     name: string
     shortName: string
     imageUrl: string
@@ -33,7 +33,7 @@ type Match = {
     penalty: number | null
   }
   lastUpdated: string
-  promptUpdateTime: import('firebase/firestore').FieldValue
+  promptUpdateTime: import('firebase/firestore/lite').FieldValue
 }
 
 type MatchDetail = {
@@ -47,7 +47,7 @@ type MatchDetail = {
     minute: number
     team: {
       id: string
-      ref: import('firebase/firestore').DocumentReference
+      ref: import('firebase/firestore/lite').DocumentReference
       name: string
     }
     scorer: {
@@ -64,7 +64,7 @@ type MatchDetail = {
     minute: number
     team: {
       id: string
-      ref: import('firebase/firestore').DocumentReference
+      ref: import('firebase/firestore/lite').DocumentReference
       name: string
     }
     player: {
@@ -78,7 +78,7 @@ type MatchDetail = {
     minute: number
     team: {
       id: string
-      ref: import('firebase/firestore').DocumentReference
+      ref: import('firebase/firestore/lite').DocumentReference
       name: string
     }
     outPlayer: {

@@ -71,7 +71,7 @@ const useNew = () => {
         ? await uploadAndGetImageUrl(`users/${newUser.id}`, newUser.imageUrl)
         : null
       if (imageUrl) newUser.imageUrl = imageUrl
-      postUser(newUser)
+      await postUser(newUser)
       setUpLoginUser(newUser)
       openSnackbar('success', 'プロフィールを作成しました。')
       router.push('/')

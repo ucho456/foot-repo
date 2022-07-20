@@ -1,20 +1,13 @@
 /** check */
-import { FirebaseError } from 'firebase/app'
 import {
   collection,
   doc,
   documentId,
-  endBefore,
   getDoc,
-  getDocFromCache,
-  getDocFromServer,
   getDocs,
-  getDocsFromCache,
-  getDocsFromServer,
   getFirestore,
   increment,
   limit,
-  onSnapshot,
   orderBy,
   query,
   serverTimestamp,
@@ -23,8 +16,8 @@ import {
   startAt,
   where,
   writeBatch
-} from 'firebase/firestore'
-import type { QueryDocumentSnapshot, Unsubscribe } from 'firebase/firestore'
+} from 'firebase/firestore/lite'
+import type { QueryDocumentSnapshot } from 'firebase/firestore/lite'
 import {
   commentConverter,
   likeConverter,
@@ -123,33 +116,15 @@ export const postReport = async (
 }
 
 /** Reports Read */
-export const fetchReport = async (
-  reportId: string,
-  cashe: 'true' | undefined
-): Promise<Report | null> => {
+export const fetchReport = async (reportId: string): Promise<Report | null> => {
   const db = getFirestore()
   const rRef = doc(db, 'reports', reportId).withConverter(reportConverter)
-  if (cashe === 'true') {
-    try {
-      const rShapshot = await getDocFromCache(rRef)
-      return rShapshot.exists() ? rShapshot.data() : null
-    } catch (error) {
-      if (error instanceof FirebaseError && error.code === 'unavailable') {
-        const rSnapshot = await getDocFromServer(rRef)
-        return rSnapshot.exists() ? rSnapshot.data() : null
-      } else {
-        return null
-      }
-    }
-  } else {
-    const rShapshot = await getDoc(rRef)
-    return rShapshot.exists() ? rShapshot.data() : null
-  }
+  const rShapshot = await getDoc(rRef)
+  return rShapshot.exists() ? rShapshot.data() : null
 }
 
 export const fetchReportItems = async (
-  report: Report,
-  cashe: 'true' | undefined
+  report: Report
 ): Promise<{
   resHomeTeamReportItems: ReportItem[]
   resAwayTeamReportItems: ReportItem[]
@@ -165,49 +140,19 @@ export const fetchReportItems = async (
     reportItemConverter
   )
   const atriQ = query(atriRef, orderBy('order', 'asc'))
-  if (cashe === 'true') {
-    if (report.selectTeam !== 'away') {
-      const htriSnapshot = await getDocsFromCache(htriQ)
-      if (!htriSnapshot.empty) {
-        htriSnapshot.forEach((doc) => {
-          if (doc.exists()) resHomeTeamReportItems.push(doc.data())
-        })
-      } else {
-        const htriSnapshot = await getDocsFromServer(htriQ)
-        htriSnapshot.forEach((doc) => {
-          if (doc.exists()) resHomeTeamReportItems.push(doc.data())
-        })
-      }
-    }
-    if (report.selectTeam !== 'home') {
-      const atriSnapshot = await getDocsFromCache(atriQ)
-      if (!atriSnapshot.empty) {
-        atriSnapshot.forEach((doc) => {
-          if (doc.exists()) resAwayTeamReportItems.push(doc.data())
-        })
-      } else {
-        const atriSnapshot = await getDocsFromServer(atriQ)
-        atriSnapshot.forEach((doc) => {
-          if (doc.exists()) resAwayTeamReportItems.push(doc.data())
-        })
-      }
-    }
-    return { resHomeTeamReportItems, resAwayTeamReportItems }
-  } else {
-    if (report.selectTeam !== 'away') {
-      const htriSnapshot = await getDocs(htriQ)
-      htriSnapshot.forEach((doc) => {
-        if (doc.exists()) resHomeTeamReportItems.push(doc.data())
-      })
-    }
-    if (report.selectTeam !== 'home') {
-      const atriSnapshot = await getDocs(atriQ)
-      atriSnapshot.forEach((doc) => {
-        if (doc.exists()) resAwayTeamReportItems.push(doc.data())
-      })
-    }
-    return { resHomeTeamReportItems, resAwayTeamReportItems }
+  if (report.selectTeam !== 'away') {
+    const htriSnapshot = await getDocs(htriQ)
+    htriSnapshot.forEach((doc) => {
+      if (doc.exists()) resHomeTeamReportItems.push(doc.data())
+    })
   }
+  if (report.selectTeam !== 'home') {
+    const atriSnapshot = await getDocs(atriQ)
+    atriSnapshot.forEach((doc) => {
+      if (doc.exists()) resAwayTeamReportItems.push(doc.data())
+    })
+  }
+  return { resHomeTeamReportItems, resAwayTeamReportItems }
 }
 
 export const toStoreReports = async (reports: {
@@ -439,35 +384,35 @@ export const postComment = async (reportId: string, loginUser: LoginUser | null,
 }
 
 /** Comments Read */
-export const subscribeComments = async (
-  reportId: string,
-  comments: ReportComment[]
-): Promise<Unsubscribe> => {
-  const db = getFirestore()
-  const cColRef = collection(db, 'reports', reportId, 'comments').withConverter(commentConverter)
-  const firstQuery = query(cColRef, orderBy('createdAt', 'desc'), limit(30))
-  const cShanpshot = await getDocs(firstQuery)
-  cShanpshot.forEach((doc) => {
-    if (doc.exists()) comments.unshift(doc.data())
-  })
-  let unsubscribe: Unsubscribe
-  if (comments.length === 0) {
-    unsubscribe = onSnapshot(firstQuery, (snapshot) => {
-      snapshot.docChanges().forEach((change) => {
-        if (change.type === 'modified') comments.push(change.doc.data())
-      })
-    })
-  } else {
-    const latestData = comments[comments.length - 1]
-    const addQuery = query(cColRef, orderBy('createdAt', 'desc'), endBefore(latestData.createdAt))
-    unsubscribe = onSnapshot(addQuery, (snapshot) => {
-      snapshot.docChanges().forEach((change) => {
-        if (change.type === 'modified') comments.push(change.doc.data())
-      })
-    })
-  }
-  return unsubscribe
-}
+// export const subscribeComments = async (
+//   reportId: string,
+//   comments: ReportComment[]
+// ): Promise<Unsubscribe> => {
+//   const db = getFirestore()
+//   const cColRef = collection(db, 'reports', reportId, 'comments').withConverter(commentConverter)
+//   const firstQuery = query(cColRef, orderBy('createdAt', 'desc'), limit(30))
+//   const cShanpshot = await getDocs(firstQuery)
+//   cShanpshot.forEach((doc) => {
+//     if (doc.exists()) comments.unshift(doc.data())
+//   })
+//   let unsubscribe: Unsubscribe
+//   if (comments.length === 0) {
+//     unsubscribe = onSnapshot(firstQuery, (snapshot) => {
+//       snapshot.docChanges().forEach((change) => {
+//         if (change.type === 'modified') comments.push(change.doc.data())
+//       })
+//     })
+//   } else {
+//     const latestData = comments[comments.length - 1]
+//     const addQuery = query(cColRef, orderBy('createdAt', 'desc'), endBefore(latestData.createdAt))
+//     unsubscribe = onSnapshot(addQuery, (snapshot) => {
+//       snapshot.docChanges().forEach((change) => {
+//         if (change.type === 'modified') comments.push(change.doc.data())
+//       })
+//     })
+//   }
+//   return unsubscribe
+// }
 
 /** Like */
 export const doLike = async (uid: string, reportId: string) => {

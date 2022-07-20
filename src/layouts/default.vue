@@ -20,12 +20,6 @@
     </v-app-bar>
     <v-main>
       <v-container>
-        <div v-if="showable">
-          <v-btn-toggle v-model="networkStatus" tile color="primary" group>
-            <v-btn value="enable" @click="handleEnableNetwork"> オンラインモード </v-btn>
-            <v-btn value="disable" @click="handleDisableNetwork"> オフラインモード </v-btn>
-          </v-btn-toggle>
-        </div>
         <v-row>
           <v-col cols="12" sm="8"><Nuxt /></v-col>
           <v-col cols="12" sm="4"><SideContainer /></v-col>
@@ -115,7 +109,6 @@ import {
 } from '@mdi/js'
 import useLoginUser from '@/utils/useLoginUser'
 import useSnackbar from '@/utils/useSnackbar'
-import useToggleOffline from '@/utils/useToggleOffline'
 import DialogPrivacyPolicy from '@/components/organisms/DialogPrivacyPolicy.vue'
 import DialogSpecifiedCommercialTransactionsLaw from '@/components/organisms/DialogSpecifiedCommercialTransactionsLaw.vue'
 import DialogTerms from '@/components/organisms/DialogTerms.vue'
@@ -137,8 +130,6 @@ export default defineComponent({
     const router = useRouter()
     const { loginUser } = useLoginUser()
     const { snackbar, openSnackbar } = useSnackbar()
-    const { handleDisableNetwork, handleEnableNetwork, networkStatus, showable } =
-      useToggleOffline()
     const headerLogo = require('@/assets/header_logo.png')
     const noAvatarImage = require('@/assets/no_avatar.png')
     const lazy = require('@/assets/lazy.png')
@@ -243,11 +234,7 @@ export default defineComponent({
       pushToHome,
       show,
       showDrawer,
-      snackbar,
-      showable,
-      networkStatus,
-      handleEnableNetwork,
-      handleDisableNetwork
+      snackbar
     }
   },
 

@@ -45,12 +45,12 @@ const useEdit = () => {
   }
 
   const isLoadingSubmit = ref(false)
-  const updateUser = (): void => {
+  const updateUser = async (): Promise<void> => {
     if (!loginUser.value) return
     try {
       isLoadingSubmit.value = true
       if (editUser.team.id) editUser.team.name = teamMap.get(editUser.team.id)?.name!
-      putUser(editUser)
+      await putUser(editUser)
       setUpLoginUser(editUser)
       openSnackbar('success', 'プロフィールを更新しました。')
       router.push(`/users/${loginUser.value.uid}`)

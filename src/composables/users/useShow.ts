@@ -1,14 +1,8 @@
 /** check */
 import { ref, Ref, useRoute, useRouter, watch } from '@nuxtjs/composition-api'
-import type { QueryDocumentSnapshot } from 'firebase/firestore'
+import type { QueryDocumentSnapshot } from 'firebase/firestore/lite'
 import { deleteReport, fetchUserLikeReports, fetchUserReports } from '@/db/reports'
-import {
-  fetchIsFollow,
-  fetchFollowers,
-  fetchFollows,
-  fetchUserPriorityFromCashe,
-  doFollow
-} from '@/db/users'
+import { fetchIsFollow, fetchFollowers, fetchFollows, fetchUser, doFollow } from '@/db/users'
 import useLoginUser from '@/utils/useLoginUser'
 import useSnackbar from '@/utils/useSnackbar'
 const perPage = 10
@@ -87,7 +81,7 @@ const useShow = () => {
     try {
       isLoadingUser.value = true
       const userId = route.value.params.id
-      user.value = await fetchUserPriorityFromCashe(userId)
+      user.value = await fetchUser(userId)
       if (loginUser.value && user.value && loginUser.value.uid !== userId) {
         follow.value = await fetchIsFollow(loginUser.value.uid, user.value.id)
       }

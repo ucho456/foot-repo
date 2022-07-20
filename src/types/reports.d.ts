@@ -4,13 +4,13 @@ type Report = {
   title: string
   user: {
     id: string
-    ref: import('firebase/firestore').DocumentReference
+    ref: import('firebase/firestore/lite').DocumentReference
     name: string
     imageUrl: string | null
   }
   homeTeam: {
     id: string
-    ref: import('firebase/firestore').DocumentReference
+    ref: import('firebase/firestore/lite').DocumentReference
     name: string
     shortName: string
     imageUrl: string
@@ -18,7 +18,7 @@ type Report = {
   }
   awayTeam: {
     id: string
-    ref: import('firebase/firestore').DocumentReference
+    ref: import('firebase/firestore/lite').DocumentReference
     name: string
     shortName: string
     imageUrl: string
@@ -26,14 +26,14 @@ type Report = {
   }
   competition: {
     id: string
-    ref: import('firebase/firestore').DocumentReference
+    ref: import('firebase/firestore/lite').DocumentReference
     name: string
   }
   jstDate: string
   yearMonth: string
   match: {
     id: string
-    ref: import('firebase/firestore').DocumentReference
+    ref: import('firebase/firestore/lite').DocumentReference
   }
   matchday: number
   selectTeam: HomeAway
@@ -43,14 +43,14 @@ type Report = {
   publish: boolean
   frozen: boolean
   likeCount: number
-  createdAt: import('firebase/firestore').FieldValue
+  createdAt: import('firebase/firestore/lite').FieldValue
 }
 
 type ReportItem = {
   id: string
   user: {
     id: string
-    ref: import('firebase/firestore').DocumentReference
+    ref: import('firebase/firestore/lite').DocumentReference
   }
   player: {
     id: string
@@ -67,10 +67,10 @@ type ReportComment = {
   id: string
   user: {
     id: string
-    ref: import('firebase/firestore').DocumentReference
+    ref: import('firebase/firestore/lite').DocumentReference
     name: string
     imageUrl: string | null
   }
   text: string
-  createdAt: import('firebase/firestore').FieldValue
+  createdAt: import('firebase/firestore/lite').FieldValue
 }

@@ -30,13 +30,10 @@ const useEdit = () => {
       if (!loginUser.value) throw new Error('unauthorized access')
       isLoadingSetUp.value = true
       const reportId = route.value.query.reportId as string
-      const resReport = await fetchReport(reportId, 'true')
+      const resReport = await fetchReport(reportId)
       if (resReport) {
         if (resReport.user.id !== loginUser.value.uid) throw new Error('unauthorized access')
-        const { resHomeTeamReportItems, resAwayTeamReportItems } = await fetchReportItems(
-          resReport,
-          'true'
-        )
+        const { resHomeTeamReportItems, resAwayTeamReportItems } = await fetchReportItems(resReport)
         initReport.value = { ...resReport }
         editReport.title = resReport.title
         editReport.selectTeam = resReport.selectTeam
@@ -66,17 +63,17 @@ const useEdit = () => {
 
   /** update report */
   const isLoadingUpdate = ref(false)
-  const updateReport = (publish: boolean) => {
+  const updateReport = async (publish: boolean): Promise<void> => {
     if (!initReport.value) return
     try {
       isLoadingUpdate.value = true
       editReport.publish = publish
-      putReport(editReport, initReport.value!)
+      await putReport(editReport, initReport.value!)
       const message = publish ? '選手採点を更新しました。' : '選手採点を一時保存しました。'
       openSnackbar('success', message)
       router.push({
         name: 'reports-id',
-        params: { id: initReport.value.id, publish: String(publish), cashe: 'true' }
+        params: { id: initReport.value.id, publish: String(publish) }
       })
     } catch (error) {
       console.log(error)

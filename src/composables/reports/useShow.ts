@@ -1,16 +1,15 @@
 /** check */
-import { onBeforeUnmount, ref, useRoute, useRouter } from '@nuxtjs/composition-api'
-import type { Unsubscribe } from 'firebase/firestore'
+import { ref, useRoute, useRouter } from '@nuxtjs/composition-api'
 import { fetchMatch } from '@/db/matches'
 import {
   doLike,
   fetchReport,
   fetchReportItems,
   fetchSameMatchReports,
-  postComment,
-  subscribeComments
+  postComment
+  // subscribeComments
 } from '@/db/reports'
-import { doFollow, fetchIsFollow, fetchIsLike, fetchUserPriorityFromCashe } from '@/db/users'
+import { doFollow, fetchIsFollow, fetchIsLike, fetchUser } from '@/db/users'
 import useLoginUser from '@/utils/useLoginUser'
 import useSnackbar from '@/utils/useSnackbar'
 import useStore from '@/utils/useStore'
@@ -29,7 +28,7 @@ const useShow = () => {
   const user = ref<User | null>(null)
   const sameMatchReports = ref<Report[]>([])
   const comments = ref<ReportComment[]>([])
-  const unsubscribeComments = ref<Unsubscribe | null>(null)
+  // const unsubscribeComments = ref<Unsubscribe | null>(null)
   const like = ref(false)
   const follow = ref(false)
 
@@ -42,15 +41,11 @@ const useShow = () => {
     try {
       isLoadingReport.value = true
       const reportId = route.value.params.id as string
-      const cashe = route.value.params.cashe as 'true' | undefined
-      const resReport = await fetchReport(reportId, cashe)
+      const resReport = await fetchReport(reportId)
       if (resReport) {
         const uid = loginUser.value?.uid
         if (!resReport.publish && resReport.user.id !== uid) throw new Error('unauthorized access')
-        const { resHomeTeamReportItems, resAwayTeamReportItems } = await fetchReportItems(
-          resReport,
-          cashe
-        )
+        const { resHomeTeamReportItems, resAwayTeamReportItems } = await fetchReportItems(resReport)
         report.value = resReport
         homeTeamReportItems.value = resHomeTeamReportItems
         awayTeamReportItems.value = resAwayTeamReportItems
@@ -59,7 +54,7 @@ const useShow = () => {
         isLoadingReport.value = false
         if (report.value.user.id !== 'guest') {
           isLoadingUser.value = true
-          user.value = await fetchUserPriorityFromCashe(report.value.user.id)
+          user.value = await fetchUser(report.value.user.id)
           if (loginUser.value) {
             follow.value = await fetchIsFollow(loginUser.value.uid, report.value.user.id)
           }
@@ -69,7 +64,7 @@ const useShow = () => {
         sameMatchReports.value = await fetchSameMatchReports(report.value.match.id, reportId)
         isLoadingSameMatchReports.value = false
         isLoadingComments.value = true
-        unsubscribeComments.value = await subscribeComments(reportId, comments.value)
+        // unsubscribeComments.value = await subscribeComments(reportId, comments.value)
         isLoadingComments.value = false
       } else {
         throw new Error('Not Found')
@@ -181,9 +176,9 @@ const useShow = () => {
       isLoadingNewComment.value = false
     }
   }
-  onBeforeUnmount(() => {
-    if (unsubscribeComments.value) unsubscribeComments.value()
-  })
+  // onBeforeUnmount(() => {
+  //   if (unsubscribeComments.value) unsubscribeComments.value()
+  // })
 
   return {
     awayTeamReportItems,

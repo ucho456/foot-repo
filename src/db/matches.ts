@@ -1,13 +1,9 @@
 /** check */
-import { FirebaseError } from 'firebase/app'
 import {
   collection,
   doc,
   getDoc,
-  getDocFromCache,
-  getDocFromServer,
   getDocs,
-  getDocsFromServer,
   getFirestore,
   limit,
   orderBy,
@@ -15,8 +11,8 @@ import {
   startAfter,
   Timestamp,
   where
-} from 'firebase/firestore'
-import type { QueryDocumentSnapshot } from 'firebase/firestore'
+} from 'firebase/firestore/lite'
+import type { QueryDocumentSnapshot } from 'firebase/firestore/lite'
 import { forReportConverter, matchConverter, matchDetailConverter } from '@/utils/converters'
 import { makeSearchOption } from '@/utils/searchOption'
 const perPage = 10
@@ -41,15 +37,8 @@ export const toStoreMatch = async (
     const mdRef = doc(db, 'matches', matchId, 'match-detail', matchId).withConverter(
       matchDetailConverter
     )
-    try {
-      const mdSnapshot = await getDocFromCache(mdRef)
-      match.detail = mdSnapshot.exists() ? mdSnapshot.data() : null
-    } catch (error) {
-      if (error instanceof FirebaseError && error.code === 'unavailable') {
-        const mdSnapshot = await getDocFromServer(mdRef)
-        match.detail = mdSnapshot.exists() ? mdSnapshot.data() : null
-      }
-    }
+    const mdSnapshot = await getDoc(mdRef)
+    match.detail = mdSnapshot.exists() ? mdSnapshot.data() : null
   }
 }
 
@@ -127,7 +116,7 @@ export const fetchUpdateCandidateMatches = async (): Promise<Match[]> => {
     where('jstDate', '==', jstDate),
     where('promptUpdateTime', '<=', promptUpdateTime)
   )
-  const mSnapshot = await getDocsFromServer(q)
+  const mSnapshot = await getDocs(q)
   const matches: Match[] = []
   mSnapshot.forEach((doc) => {
     if (doc.exists()) matches.push(doc.data())
@@ -136,20 +125,9 @@ export const fetchUpdateCandidateMatches = async (): Promise<Match[]> => {
 }
 
 /** ForReport Read */
-export const fetchForReportPriorityFromCashe = async (
-  matchId: string
-): Promise<ForReport | null> => {
+export const fetchForReport = async (matchId: string): Promise<ForReport | null> => {
   const db = getFirestore()
   const frRef = doc(db, 'matches', matchId, 'for-report', matchId).withConverter(forReportConverter)
-  try {
-    const frSnapshot = await getDocFromCache(frRef)
-    return frSnapshot.exists() ? frSnapshot.data() : null
-  } catch (error) {
-    if (error instanceof FirebaseError && error.code === 'unavailable') {
-      const frSnapshot = await getDocFromServer(frRef)
-      return frSnapshot.exists() ? frSnapshot.data() : null
-    } else {
-      return null
-    }
-  }
+  const frSnapshot = await getDoc(frRef)
+  return frSnapshot.exists() ? frSnapshot.data() : null
 }

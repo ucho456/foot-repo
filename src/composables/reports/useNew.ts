@@ -1,6 +1,6 @@
 /** check */
 import { reactive, ref, useRoute, useRouter, watch } from '@nuxtjs/composition-api'
-import { fetchForReportPriorityFromCashe, fetchMatch } from '@/db/matches'
+import { fetchForReport, fetchMatch } from '@/db/matches'
 import { postReport } from '@/db/reports'
 import useLoginUser from '@/utils/useLoginUser'
 import useSnackbar from '@/utils/useSnackbar'
@@ -29,7 +29,7 @@ const useNew = () => {
       isLoadingSetUp.value = true
       const matchId = route.value.query.matchId as string
       match.value = await fetchMatch(matchId)
-      const forReport = await fetchForReportPriorityFromCashe(matchId)
+      const forReport = await fetchForReport(matchId)
       if (!match.value || !forReport) throw new Error('Not Found')
       newReport.homeTeamReportItems = forReport.homeTeamReportItems
       newReport.awayTeamReportItems = forReport.awayTeamReportItems
@@ -67,7 +67,7 @@ const useNew = () => {
       openSnackbar('success', message)
       router.push({
         name: `reports-id`,
-        params: { id: reportId, publish: String(publish), cashe: 'true' }
+        params: { id: reportId, publish: String(publish) }
       })
     } catch (error) {
       error instanceof Error && error.message.includes('offline')
