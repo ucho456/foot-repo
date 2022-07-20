@@ -13,7 +13,7 @@
           />
         </v-toolbar-title>
         <v-spacer />
-        <v-btn icon @click.stop="showDrawer">
+        <v-btn aria-label="メニュー" icon @click.stop="showDrawer">
           <v-icon color="white">{{ mdiMenu }}</v-icon>
         </v-btn>
       </v-container>

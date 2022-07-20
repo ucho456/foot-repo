@@ -1,7 +1,7 @@
 <template>
   <v-container v-if="isLoading" class="pb-10 pt-10">
     <v-row justify="center">
-      <v-progress-circular color="primary" indeterminate />
+      <v-progress-circular aria-label="読込中" color="primary" indeterminate />
     </v-row>
   </v-container>
 </template>
