@@ -239,11 +239,17 @@ export default defineComponent({
   },
 
   head() {
+    const headerLogo = require('@/assets/header_logo.png')
     return {
       link: [
         {
           rel: 'canonical',
           href: `https:/foot-repo.com${this.$route.path}`
+        },
+        {
+          rel: 'preload',
+          href: headerLogo,
+          as: 'image'
         }
       ]
     }

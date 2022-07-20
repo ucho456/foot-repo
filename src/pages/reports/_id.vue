@@ -271,9 +271,7 @@ export default defineComponent({
       updateLike,
       user
     }
-  },
-
-  head: {}
+  }
 })
 </script>
 
