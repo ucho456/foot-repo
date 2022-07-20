@@ -1,6 +1,6 @@
 <template>
   <v-app class="o-light-indigo">
-    <v-app-bar class="white--text" app color="primary" fixed>
+    <v-app-bar class="white--text" app color="primary" fixed height="56">
       <v-container class="align-center d-flex">
         <v-toolbar-title>
           <img class="o-hover" height="44" width="202" :src="headerLogo" @click="pushToHome" />
@@ -44,41 +44,41 @@
       </v-container>
     </v-footer>
     <v-navigation-drawer v-model="isDrawer" fixed right temporary>
-      <client-only>
-        <v-list-item v-if="loginUser" :to="`/users/${loginUser.uid}`">
-          <v-list-item-avatar>
-            <v-img v-if="loginUser.imageUrl" :lazy-src="lazy" :src="loginUser.imageUrl" />
-            <v-img v-else :lazy-src="lazy" :src="noAvatarImage" />
-          </v-list-item-avatar>
+      <!-- <client-only> -->
+      <v-list-item v-if="loginUser" :to="`/users/${loginUser.uid}`">
+        <v-list-item-avatar>
+          <v-img v-if="loginUser.imageUrl" :lazy-src="lazy" :src="loginUser.imageUrl" />
+          <v-img v-else :lazy-src="lazy" :src="noAvatarImage" />
+        </v-list-item-avatar>
+        <v-list-item-content>
+          <v-list-item-title v-text="loginUser.name" />
+        </v-list-item-content>
+      </v-list-item>
+      <v-list>
+        <v-list-item
+          v-for="item in navigationDrawerItems"
+          :key="item.id"
+          exact
+          router
+          :to="item.to"
+        >
+          <v-list-item-action>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title v-text="loginUser.name" />
+            <v-list-item-title v-text="item.title" />
           </v-list-item-content>
         </v-list-item>
-        <v-list>
-          <v-list-item
-            v-for="item in navigationDrawerItems"
-            :key="item.id"
-            exact
-            router
-            :to="item.to"
-          >
-            <v-list-item-action>
-              <v-icon>{{ item.icon }}</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title v-text="item.title" />
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item v-if="loginUser" class="ml-2 px-2" @click="logout">
-            <v-list-item-action>
-              <v-icon>{{ mdiLogout }}</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title v-text="'ログアウト'" />
-            </v-list-item-content>
-          </v-list-item>
-        </v-list>
-      </client-only>
+        <v-list-item v-if="loginUser" class="ml-2 px-2" @click="logout">
+          <v-list-item-action>
+            <v-icon>{{ mdiLogout }}</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title v-text="'ログアウト'" />
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+      <!-- </client-only> -->
     </v-navigation-drawer>
     <Snackbar v-bind="snackbar" />
     <DialogTerms :is-dialog="dialogTerms" @click="hide('terms')" />
