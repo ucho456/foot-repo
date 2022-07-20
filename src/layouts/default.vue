@@ -3,7 +3,7 @@
     <v-app-bar class="white--text" app color="primary" fixed height="56">
       <v-container class="align-center d-flex">
         <v-toolbar-title>
-          <img
+          <v-img
             alt="フットレポ"
             class="o-hover"
             height="44"
