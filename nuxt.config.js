@@ -1,5 +1,3 @@
-import colors from 'vuetify/es5/util/colors'
-
 export default {
   head: {
     title: 'フットレポ',
@@ -105,19 +103,7 @@ export default {
       font: false,
       icons: 'mdiSvg'
     },
-    treeShake: true,
-    theme: {
-      themes: {
-        light: {
-          primary: colors.indigo.darken4,
-          accent: colors.indigo.accent4,
-          fotter: colors.blueGrey.darken4,
-          success: colors.green,
-          alert: colors.yellow,
-          failure: colors.pink
-        }
-      }
-    }
+    treeShake: true
   },
 
   webfontloader: {

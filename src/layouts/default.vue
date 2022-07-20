@@ -1,6 +1,6 @@
 <template>
   <v-app class="o-light-indigo">
-    <v-app-bar class="white--text" app color="primary" fixed height="56">
+    <v-app-bar class="white--text" app color="#1a237e" fixed height="56">
       <v-container class="align-center d-flex">
         <v-toolbar-title>
           <img
@@ -26,7 +26,7 @@
         </v-row>
       </v-container>
     </v-main>
-    <v-footer class="white--text" absolute app color="fotter">
+    <v-footer class="white--text" absolute app color="#263238">
       <v-container>
         <v-row>
           <v-col cols="6">

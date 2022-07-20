@@ -28,9 +28,9 @@
         </v-row>
       </v-container>
       <v-card-actions>
-        <v-btn color="'primary'" text @click="handleHide"> 閉じる </v-btn>
+        <v-btn color="#1a237e" text @click="handleHide"> 閉じる </v-btn>
         <v-spacer></v-spacer>
-        <v-btn color="'primary'" text @click="handleSearch"> 検索 </v-btn>
+        <v-btn color="#1a237e" text @click="handleSearch"> 検索 </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

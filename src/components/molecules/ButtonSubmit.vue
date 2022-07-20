@@ -23,7 +23,7 @@ export default defineComponent({
   },
 
   props: {
-    color: { type: String, default: 'primary' },
+    color: { type: String, default: '#1a237e' },
     disabled: { type: Boolean, default: false },
     isLoading: { type: Boolean, default: false },
     text: { type: String, default: '' }

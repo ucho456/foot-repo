@@ -1,7 +1,7 @@
 <template>
   <BaseButton
     :block-flg="true"
-    :color="'primary'"
+    :color="'#1a237e'"
     :outlined-flg="true"
     :text="text"
     @click="handleClick"

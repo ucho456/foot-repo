@@ -15,7 +15,7 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            color="primary"
+            color="#1a237e"
             text
             :disabled="invalid"
             :loading="isLoading"
@@ -23,7 +23,7 @@
           >
             送信
           </v-btn>
-          <v-btn color="primary" :disabled="isLoading" text @click="handleHide">閉じる</v-btn>
+          <v-btn color="#1a237e" :disabled="isLoading" text @click="handleHide">閉じる</v-btn>
         </v-card-actions>
       </ValidationObserver>
     </v-card>

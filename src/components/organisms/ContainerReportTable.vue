@@ -57,10 +57,10 @@
         </v-list-item>
         <v-list-item-action v-if="actionFlg && report.user.id === uid">
           <v-btn icon>
-            <v-icon color="primary" @click="pushToReportEdit(report.id)">{{ mdiPencil }}</v-icon>
+            <v-icon color="#1a237e" @click="pushToReportEdit(report.id)">{{ mdiPencil }}</v-icon>
           </v-btn>
           <v-btn icon>
-            <v-icon color="failure" @click="handleDelete(report)">{{ mdiDelete }}</v-icon>
+            <v-icon color="pink" @click="handleDelete(report)">{{ mdiDelete }}</v-icon>
           </v-btn>
         </v-list-item-action>
       </div>

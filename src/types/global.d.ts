@@ -83,7 +83,7 @@ type SearchOption = {
   yearMonth: string
 }
 
-type SnackbarColor = '' | 'success' | 'failure' | 'alert'
+type SnackbarColor = '' | 'green' | 'pink' | 'yellow'
 
 type SnackbarTextColor = '' | 'black' | 'white'
 

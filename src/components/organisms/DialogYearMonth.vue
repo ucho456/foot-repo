@@ -20,7 +20,7 @@
       @input="inputYearMonth"
     >
       <v-spacer />
-      <v-btn color="primary" text @click="handleClick"> 決定 </v-btn>
+      <v-btn color="#1a237e" text @click="handleClick"> 決定 </v-btn>
     </v-date-picker>
   </v-dialog>
 </template>

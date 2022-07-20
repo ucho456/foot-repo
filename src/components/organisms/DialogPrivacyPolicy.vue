@@ -6,7 +6,7 @@
       <v-divider />
       <v-card-actions>
         <v-spacer />
-        <v-btn color="primary" text @click="handleHide">閉じる</v-btn>
+        <v-btn color="#1a237e" text @click="handleHide">閉じる</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
