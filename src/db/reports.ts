@@ -380,39 +380,23 @@ export const postComment = async (reportId: string, loginUser: LoginUser | null,
         name: 'Guest',
         imageUrl: null
       }
-  await setDoc(cRef, { id: cId, user, text, createdAt: serverTimestamp() })
+  const newComment = { id: cId, user, text, createdAt: serverTimestamp() }
+  await setDoc(cRef, newComment)
+  return newComment
 }
 
 /** Comments Read */
-// export const subscribeComments = async (
-//   reportId: string,
-//   comments: ReportComment[]
-// ): Promise<Unsubscribe> => {
-//   const db = getFirestore()
-//   const cColRef = collection(db, 'reports', reportId, 'comments').withConverter(commentConverter)
-//   const firstQuery = query(cColRef, orderBy('createdAt', 'desc'), limit(30))
-//   const cShanpshot = await getDocs(firstQuery)
-//   cShanpshot.forEach((doc) => {
-//     if (doc.exists()) comments.unshift(doc.data())
-//   })
-//   let unsubscribe: Unsubscribe
-//   if (comments.length === 0) {
-//     unsubscribe = onSnapshot(firstQuery, (snapshot) => {
-//       snapshot.docChanges().forEach((change) => {
-//         if (change.type === 'modified') comments.push(change.doc.data())
-//       })
-//     })
-//   } else {
-//     const latestData = comments[comments.length - 1]
-//     const addQuery = query(cColRef, orderBy('createdAt', 'desc'), endBefore(latestData.createdAt))
-//     unsubscribe = onSnapshot(addQuery, (snapshot) => {
-//       snapshot.docChanges().forEach((change) => {
-//         if (change.type === 'modified') comments.push(change.doc.data())
-//       })
-//     })
-//   }
-//   return unsubscribe
-// }
+export const fetchComments = async (reportId: string): Promise<ReportComment[]> => {
+  const db = getFirestore()
+  const cColRef = collection(db, 'reports', reportId, 'comments').withConverter(commentConverter)
+  const firstQuery = query(cColRef, orderBy('createdAt', 'desc'), limit(30))
+  const cShanpshot = await getDocs(firstQuery)
+  const comments: ReportComment[] = []
+  cShanpshot.forEach((doc) => {
+    if (doc.exists()) comments.unshift(doc.data())
+  })
+  return comments
+}
 
 /** Like */
 export const doLike = async (uid: string, reportId: string) => {

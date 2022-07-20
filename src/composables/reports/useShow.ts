@@ -3,11 +3,11 @@ import { ref, useRoute, useRouter } from '@nuxtjs/composition-api'
 import { fetchMatch } from '@/db/matches'
 import {
   doLike,
+  fetchComments,
   fetchReport,
   fetchReportItems,
   fetchSameMatchReports,
   postComment
-  // subscribeComments
 } from '@/db/reports'
 import { doFollow, fetchIsFollow, fetchIsLike, fetchUser } from '@/db/users'
 import useLoginUser from '@/utils/useLoginUser'
@@ -28,7 +28,6 @@ const useShow = () => {
   const user = ref<User | null>(null)
   const sameMatchReports = ref<Report[]>([])
   const comments = ref<ReportComment[]>([])
-  // const unsubscribeComments = ref<Unsubscribe | null>(null)
   const like = ref(false)
   const follow = ref(false)
 
@@ -64,7 +63,7 @@ const useShow = () => {
         sameMatchReports.value = await fetchSameMatchReports(report.value.match.id, reportId)
         isLoadingSameMatchReports.value = false
         isLoadingComments.value = true
-        // unsubscribeComments.value = await subscribeComments(reportId, comments.value)
+        comments.value = await fetchComments(reportId)
         isLoadingComments.value = false
       } else {
         throw new Error('Not Found')
@@ -156,19 +155,15 @@ const useShow = () => {
   const confirmLogin = (): void => {
     !confirmation.isLogin && !loginUser.value ? (isDialog.value = true) : createComment()
   }
-  const createComment = () => {
+  const createComment = async (): Promise<void> => {
     if (!report.value) return
     try {
       hideDialog()
       isLoadingNewComment.value = true
-      postComment(report.value.id, loginUser.value, newComment.value)
+      const resNewComment = await postComment(report.value.id, loginUser.value, newComment.value)
+      comments.value.push(resNewComment)
       newComment.value = ''
-      window.navigator.onLine
-        ? openSnackbar('success', 'コメントを作成しました。')
-        : openSnackbar(
-            'success',
-            'オフラインでコメントを作成しました。オンラインに接続されると自動的にコメントが反映されます。'
-          )
+      openSnackbar('success', 'コメントを作成しました。')
     } catch (error) {
       console.log(error)
       openSnackbar('failure', 'コメントの作成に失敗しました。')
@@ -176,9 +171,6 @@ const useShow = () => {
       isLoadingNewComment.value = false
     }
   }
-  // onBeforeUnmount(() => {
-  //   if (unsubscribeComments.value) unsubscribeComments.value()
-  // })
 
   return {
     awayTeamReportItems,
