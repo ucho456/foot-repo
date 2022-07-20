@@ -13,7 +13,8 @@ export const leagueCompetitions = [
   { id: 2021, collectionId: 'Premier-League', name: 'Premier League' },
   { id: 2014, collectionId: 'La-Liga', name: 'La Liga' },
   { id: 2019, collectionId: 'Serie-A', name: 'Serie A' },
-  { id: 2002, collectionId: 'Bundesliga', name: 'Bundesliga' }
+  { id: 2002, collectionId: 'Bundesliga', name: 'Bundesliga' },
+  { id: 2015, collectionId: 'Ligue-1', name: 'Ligue 1' }
 ]
 
 export const convertJST = (utcDate: string): string => {

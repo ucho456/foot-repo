@@ -76,6 +76,13 @@ export default defineComponent({
         type: 'league'
       },
       {
+        id: 'Ligue-1',
+        title: 'Ligue 1',
+        src: 'https://crests.football-data.org/FL1.png',
+        to: '/databases/leagues/Ligue-1',
+        type: 'league'
+      },
+      {
         id: 'Champions-League',
         title: 'UEFA Champions League（準備中）',
         src: 'https://crests.football-data.org/CL.png',

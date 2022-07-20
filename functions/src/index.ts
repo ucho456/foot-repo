@@ -7,6 +7,7 @@ import {
   createBundesligaMatches,
   // createJLeagueMatches,
   createLaLigaMatches,
+  createLigue1Matches,
   createPremierLeagueMatches,
   createSerieAMatches
 } from './calls/createMatches'
@@ -16,6 +17,7 @@ import {
   setBundesligaTeams,
   setJLeagueTeams,
   setLaLigaTeams,
+  setLigue1Teams,
   setPremierLeagueTeams,
   setSerieATeams
 } from './calls/setTeams'
@@ -24,6 +26,7 @@ import updateEmailVerified from './calls/updateEmailVerified'
 // setBundesligaMatches,
 // setJLeagueMatches,
 // setLaLigaMatches,
+// setLigue1Matches,
 // setPremierLeagueMatches,
 // setSerieAMatches
 // } from './crons/setMatches'
@@ -38,6 +41,7 @@ module.exports = {
   createBundesligaMatches,
   // createJLeagueMatches,
   createLaLigaMatches,
+  createLigue1Matches,
   createPremierLeagueMatches,
   createSerieAMatches,
   createUser,
@@ -48,6 +52,8 @@ module.exports = {
   setJLeagueTeams,
   // setLaLigaMatches,
   setLaLigaTeams,
+  // setLigue1Matches,
+  setLigue1Teams,
   // setPremierLeagueMatches,
   setPremierLeagueTeams,
   // setScorers,

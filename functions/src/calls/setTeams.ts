@@ -88,6 +88,13 @@ export const setLaLigaTeams = functions
     res.sendStatus(200)
   })
 
+export const setLigue1Teams = functions
+  .region('asia-northeast1')
+  .https.onRequest(async (req, res) => {
+    await setTeams(leagueCompetitions[5], req)
+    res.sendStatus(200)
+  })
+
 export const setPremierLeagueTeams = functions
   .region('asia-northeast1')
   .https.onRequest(async (req, res) => {

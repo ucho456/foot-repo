@@ -5,7 +5,13 @@
 <script lang="ts">
 /** check */
 import { computed, defineComponent } from '@nuxtjs/composition-api'
-import { bundesligaTeams, laLigaTeams, premierLeagueTeams, serieATeams } from '@/db/teams'
+import {
+  bundesligaTeams,
+  laLigaTeams,
+  ligue1Teams,
+  premierLeagueTeams,
+  serieATeams
+} from '@/db/teams'
 import BaseSelectId from '@/components/atoms/BaseSelectId.vue'
 
 export default defineComponent({
@@ -30,6 +36,8 @@ export default defineComponent({
         ? serieATeams
         : props.competitionId === 'Bundesliga'
         ? bundesligaTeams
+        : props.competitionId === 'Ligue-1'
+        ? ligue1Teams
         : [{ id: '', name: 'コンペティションを選択して下さい。' }]
     })
     const handleInput = (id: string): void => ctx.emit('input', id)

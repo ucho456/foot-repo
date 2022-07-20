@@ -109,6 +109,13 @@ export const createLaLigaMatches = functions
     res.sendStatus(200)
   })
 
+export const createLigue1Matches = functions
+  .region('asia-northeast1')
+  .https.onRequest(async (req, res) => {
+    await setMatches(leagueCompetitions[5], req)
+    res.sendStatus(200)
+  })
+
 export const createPremierLeagueMatches = functions
   .region('asia-northeast1')
   .https.onRequest(async (req, res) => {

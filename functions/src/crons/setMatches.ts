@@ -319,6 +319,14 @@ export const setLaLigaMatches = functions
     return null
   })
 
+export const setLigue1Matches = functions
+  .region('asia-northeast1')
+  .pubsub.schedule('15 */1 * * *')
+  .onRun(async () => {
+    await setMatches(leagueCompetitions[5])
+    return null
+  })
+
 export const setPremierLeagueMatches = functions
   .region('asia-northeast1')
   .pubsub.schedule('6 */1 * * *')
