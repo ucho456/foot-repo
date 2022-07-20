@@ -46,8 +46,6 @@ export default {
 
   srcDir: 'src',
 
-  css: [],
-
   plugins: [
     '@/plugins/firebase',
     '@/plugins/firebase-auth',
@@ -74,7 +72,6 @@ export default {
   },
 
   modules: [
-    // '@nuxtjs/axios',
     [
       'nuxt-compress',
       {
@@ -90,7 +87,16 @@ export default {
 
   manifest: {
     name: 'フットレポ',
-    lang: 'ja'
+    lang: 'ja',
+    short_name: 'フットレポ',
+    title: 'フットレポ',
+    'og:title': 'フットレポ',
+    description:
+      'サッカーの選手採点共有サービスです。ヨーロッパの主要リーグやワールドカップ、日本代表などの試合の選手採点を投稿したり閲覧する事が出来ます。',
+    'og:description':
+      'サッカーの選手採点共有サービスです。ヨーロッパの主要リーグやワールドカップ、日本代表などの試合の選手採点を投稿したり閲覧する事が出来ます。',
+    theme_color: '#1a237e',
+    background_color: '#1a237e'
   },
 
   vuetify: {
