@@ -183,8 +183,6 @@ import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
 import ColUserImageName from '@/components/organisms/ColUserImageName.vue'
 import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 import ContainerReportTable from '@/components/organisms/ContainerReportTable.vue'
-import DialogConfirmLogin from '@/components/organisms/DialogConfirmLogin.vue'
-import DialogShare from '@/components/organisms/DialogShare.vue'
 import RowMatchHeader from '@/components/organisms/RowMatchHeader.vue'
 import Textarea from '@/components/molecules/Textarea.vue'
 
@@ -197,8 +195,8 @@ export default defineComponent({
     ColUserImageName,
     ContainerLoading,
     ContainerReportTable,
-    DialogConfirmLogin,
-    DialogShare,
+    DialogConfirmLogin: () => import('@/components/organisms/DialogConfirmLogin.vue'),
+    DialogShare: () => import('@/components/organisms/DialogShare.vue'),
     RowMatchHeader,
     Textarea
   },

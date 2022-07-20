@@ -1,5 +1,5 @@
 <template>
-  <v-dialog max-width="380" scrollable :value="isDialog">
+  <v-dialog max-width="380" persistent scrollable :value="isDialog">
     <v-card>
       <v-card-title>利用規約</v-card-title>
       <v-card-text>

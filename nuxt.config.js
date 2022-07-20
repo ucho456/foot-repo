@@ -114,7 +114,7 @@ export default {
   },
 
   build: {
-    transpile: ['vee-validate/dist/rules']
-    // analyze: true
+    transpile: ['vee-validate/dist/rules'],
+    analyze: true
   }
 }

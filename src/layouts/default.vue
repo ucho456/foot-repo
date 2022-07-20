@@ -82,7 +82,7 @@
       </client-only>
     </v-navigation-drawer>
     <Snackbar v-bind="snackbar" />
-    <DialogTerms :is-dialog="dialogTerms" @click="hide('terms')" />
+    <DialogTerms :is-dialog="dialogTerms" @hide="hide('terms')" />
     <DialogPrivacyPolicy :dialog="dialogPrivacyPolicy" @hide="hide('privacy policy')" />
     <DialogSpecifiedCommercialTransactionsLaw
       :dialog="dialogSpecifiedCommercialTransactionsLaw"
@@ -109,21 +109,18 @@ import {
 } from '@mdi/js'
 import useLoginUser from '@/utils/useLoginUser'
 import useSnackbar from '@/utils/useSnackbar'
-import DialogPrivacyPolicy from '@/components/organisms/DialogPrivacyPolicy.vue'
-import DialogSpecifiedCommercialTransactionsLaw from '@/components/organisms/DialogSpecifiedCommercialTransactionsLaw.vue'
-import DialogTerms from '@/components/organisms/DialogTerms.vue'
 import SideContainer from '@/components/organisms/SideContainer.vue'
-import Snackbar from '@/components/molecules/Snackbar.vue'
 
 export default defineComponent({
   name: 'Default',
 
   components: {
-    DialogPrivacyPolicy,
-    DialogSpecifiedCommercialTransactionsLaw,
-    DialogTerms,
+    DialogPrivacyPolicy: () => import('@/components/organisms/DialogPrivacyPolicy.vue'),
+    DialogSpecifiedCommercialTransactionsLaw: () =>
+      import('@/components/organisms/DialogPrivacyPolicy.vue'),
+    DialogTerms: () => import('@/components/organisms/DialogTerms.vue'),
     SideContainer,
-    Snackbar
+    Snackbar: () => import('@/components/molecules/Snackbar.vue')
   },
 
   setup() {

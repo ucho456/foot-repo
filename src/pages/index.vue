@@ -41,7 +41,6 @@ import useStore from '@/utils/useStore'
 import ButtonOutlined from '@/components/molecules/ButtonOutlined.vue'
 import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
 import ContainerReportTable from '@/components/organisms/ContainerReportTable.vue'
-import DialogSearch from '@/components/organisms/DialogSearch.vue'
 
 export default defineComponent({
   name: 'Index',
@@ -50,7 +49,7 @@ export default defineComponent({
     ButtonOutlined,
     ContainerLoading,
     ContainerReportTable,
-    DialogSearch
+    DialogSearch: () => import('@/components/organisms/DialogSearch.vue')
   },
 
   setup() {
