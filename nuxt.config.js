@@ -61,8 +61,8 @@ export default {
     '@nuxtjs/composition-api/module',
     '@nuxt/typescript-build',
     '@nuxtjs/stylelint-module',
-    '@nuxtjs/google-fonts',
     '@nuxtjs/vuetify',
+    'nuxt-webfontloader',
     'nuxt-compress',
     'nuxt-delay-hydration'
   ],
@@ -120,11 +120,10 @@ export default {
     }
   },
 
-  googleFonts: {
-    families: {
-      Roboto: [500, 700],
-      download: true,
-      inject: true
+  webfontloader: {
+    custom: {
+      families: ['Roboto:n3,n4,n5,n7'],
+      urls: ['https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap']
     }
   },
 
