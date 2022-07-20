@@ -3,7 +3,14 @@
     <v-app-bar class="white--text" app color="primary" fixed height="56">
       <v-container class="align-center d-flex">
         <v-toolbar-title>
-          <img class="o-hover" height="44" width="202" :src="headerLogo" @click="pushToHome" />
+          <img
+            alt="フットレポ"
+            class="o-hover"
+            height="44"
+            width="202"
+            :src="headerLogo"
+            @click="pushToHome"
+          />
         </v-toolbar-title>
         <v-spacer />
         <v-btn icon @click.stop="showDrawer">

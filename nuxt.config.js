@@ -13,7 +13,7 @@ export default {
         hid: 'description',
         name: 'description',
         content:
-          'サッカーの選手採点共有サービスです。各国主要リーグやワールドカップ、日本代表などの試合の選手採点を投稿したり閲覧する事が出来ます。'
+          'サッカーの選手採点共有サービスです。ヨーロッパの主要リーグやワールドカップ、日本代表などの試合の選手採点を投稿したり閲覧する事が出来ます。'
       },
       { hid: 'keywords', name: 'keywords', content: 'サッカー,選手採点' },
       { hid: 'og:site_name', property: 'og:site_name', content: 'フットレポ' },
@@ -24,7 +24,7 @@ export default {
         hid: 'og:description',
         property: 'og:description',
         content:
-          'サッカーの選手採点共有サービスです。各国主要リーグやワールドカップ、日本代表などの試合の選手採点を投稿したり閲覧する事が出来ます。'
+          'サッカーの選手採点共有サービスです。ヨーロッパの主要リーグやワールドカップ、日本代表などの試合の選手採点を投稿したり閲覧する事が出来ます。'
       },
       {
         hid: 'og:image',
