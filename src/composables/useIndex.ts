@@ -20,7 +20,7 @@ const useIndex = () => {
       await toStoreReports(reports)
       isLoadingReports.value = false
     } catch (error) {
-      openSnackbar('failure', '選手採点の取得に失敗しました。')
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoadingReports.value = false
     }
@@ -83,7 +83,7 @@ const useIndex = () => {
       }
     } catch (error) {
       console.log(error)
-      openSnackbar('failure', '選手採点の取得に失敗しました。')
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoadingChangeReports.value = false
     }

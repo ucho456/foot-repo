@@ -36,7 +36,7 @@ const useSearch = () => {
       }
     } catch (error) {
       console.log(error)
-      openSnackbar('failure', '試合データの取得に失敗しました。')
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoadingFirst.value = false
     }
@@ -50,7 +50,7 @@ const useSearch = () => {
       await toStoreMatches(matches)
     } catch (error) {
       console.log(error)
-      openSnackbar('failure', '試合データの取得に失敗しました。')
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoadingNext.value = false
     }
@@ -87,7 +87,7 @@ const useSearch = () => {
       await toStoreMatches(matches)
     } catch (error) {
       console.log(error)
-      openSnackbar('failure', '試合データの取得に失敗しました。')
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoadingFirst.value = false
     }

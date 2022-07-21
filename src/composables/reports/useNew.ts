@@ -38,7 +38,7 @@ const useNew = () => {
       }
     } catch (error) {
       error instanceof Error && error.message === 'Not Found'
-        ? openSnackbar('failure', '試合データが見つかりませんでした。')
+        ? openSnackbar('failure', 'データが見つかりませんでした。')
         : openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoadingSetUp.value = false
@@ -59,7 +59,6 @@ const useNew = () => {
   const createReport = async (publish: boolean): Promise<void> => {
     if (!match.value) return
     try {
-      if (!window.navigator.onLine) throw new Error('offline')
       isLoadingCreate.value = true
       newReport.publish = publish
       const reportId = await postReport(loginUser.value, newReport, match.value)
@@ -70,9 +69,8 @@ const useNew = () => {
         params: { id: reportId, publish: String(publish) }
       })
     } catch (error) {
-      error instanceof Error && error.message.includes('offline')
-        ? openSnackbar('failure', '通信エラーが発生しました。通信状況をお確かめ下さい。')
-        : openSnackbar('failure', '選手採点の作成に失敗しました。')
+      console.log(error)
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoadingCreate.value = false
     }

@@ -38,12 +38,10 @@
             </v-col>
             <v-col cols="10" class="my-n6 text-center">
               <span class="o-hover o-reset-password" @click="showDialog">
-                パスワードを忘れてしまった場合はこちらから
+                パスワードを忘れてしまった場合はこちら
               </span>
             </v-col>
-            <NuxtLink class="text-caption o-hover mb-4" to="/signup">
-              新規登録はこちらから
-            </NuxtLink>
+            <NuxtLink class="text-caption o-hover mb-4" to="/signup"> 新規登録はこちら </NuxtLink>
           </v-row>
         </ValidationObserver>
       </v-container>

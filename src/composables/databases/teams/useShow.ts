@@ -19,7 +19,7 @@ const useShow = () => {
       await toStoreTeam(teamId, team)
     } catch (error) {
       console.log(error)
-      openSnackbar('failure', 'チームデータの取得に失敗しました。')
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoading.value = false
     }

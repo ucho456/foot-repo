@@ -77,7 +77,7 @@ const useNew = () => {
       router.push('/')
     } catch (error) {
       console.log(error)
-      openSnackbar('failure', 'プロフィールの作成に失敗しました。')
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoadingCreate.value = false
     }

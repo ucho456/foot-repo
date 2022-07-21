@@ -174,7 +174,7 @@ export default defineComponent({
           router.push('/')
           openSnackbar('success', 'ログアウトしました。')
         })
-        .catch(() => openSnackbar('failure', 'ログアウトに失敗しました。'))
+        .catch(() => openSnackbar('failure', '通信エラーが発生しました。'))
     }
 
     const drawer = ref(false)

@@ -52,9 +52,9 @@ const useEdit = () => {
         openSnackbar('failure', '不正なアクセスが発生しました。')
         router.push('/')
       } else if (error instanceof Error && error.message === 'Not Found') {
-        openSnackbar('failure', '見つかりませんでした。')
+        openSnackbar('failure', 'データが見つかりませんでした。')
       } else {
-        openSnackbar('failure', 'データの取得に失敗しました。')
+        openSnackbar('failure', '通信エラーが発生しました。')
       }
     } finally {
       isLoadingSetUp.value = false
@@ -77,7 +77,7 @@ const useEdit = () => {
       })
     } catch (error) {
       console.log(error)
-      openSnackbar('failure', '選手採点の更新に失敗しました。')
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoadingUpdate.value = false
     }

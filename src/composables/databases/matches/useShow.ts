@@ -29,7 +29,7 @@ const useShow = () => {
       isLoadingSameMatchReports.value = false
     } catch (error) {
       console.log(error)
-      openSnackbar('failure', '試合データの取得に失敗しました。')
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoadingMatch.value = false
       isLoadingSameMatchReports.value = false

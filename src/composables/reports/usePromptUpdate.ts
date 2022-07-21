@@ -23,7 +23,7 @@ const usePromptUpdate = () => {
         openSnackbar('failure', '不正なアクセスが発生しました。')
         router.push('/')
       } else {
-        openSnackbar('failure', '試合データの取得に失敗しました。通信状況をお確かめ下さい。')
+        openSnackbar('failure', '通信エラーが発生しました。')
       }
     } finally {
       isLoadingSetUp.value = false
@@ -48,7 +48,7 @@ const usePromptUpdate = () => {
         matches.value = matches.value.filter((m) => m.id !== matchId)
         openSnackbar(
           'failure',
-          '試合データを更新できませんでした。暫くお待ち頂いてからご利用下さい。'
+          '情報元の試合データが更新されていませんでした。暫くお待ち頂いてからご利用下さい。'
         )
       } else if (message === 'failure') {
         throw new Error('error')
@@ -56,7 +56,7 @@ const usePromptUpdate = () => {
     } catch (error) {
       error instanceof Error && error.message === 'failure'
         ? openSnackbar('failure', '不正なアクセスが発生しました。')
-        : openSnackbar('failure', '通信エラーが発生しました。通信状況をお確かめ下さい。')
+        : openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       requestMatchIds.value.push(matchId)
       isLoadingUpdate.value = false

@@ -45,7 +45,7 @@ const useSignup = () => {
       const uid = userCredential.user.uid
       const user = await fetchUser(uid)
       if (!user) {
-        openSnackbar('success', '認証が完了しました。')
+        openSnackbar('success', '認証が完了しました。続けてユーザープロフィールを登録して下さい。')
         router.push('/users/new')
       } else {
         openSnackbar('success', 'ログインしました。')
@@ -68,7 +68,7 @@ const useSignup = () => {
       const uid = userCredential.user.uid
       const user = await fetchUser(uid)
       if (!user) {
-        openSnackbar('success', '認証が完了しました。')
+        openSnackbar('success', '認証が完了しました。続けてユーザープロフィールを登録して下さい。')
         router.push({ name: 'users-new' })
       } else {
         openSnackbar('success', 'ログインしました。')

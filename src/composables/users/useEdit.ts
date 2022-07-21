@@ -56,7 +56,7 @@ const useEdit = () => {
       router.push(`/users/${loginUser.value.uid}`)
     } catch (error) {
       console.log(error)
-      openSnackbar('failure', 'プロフィールの更新に失敗しました。')
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoadingSubmit.value = false
     }

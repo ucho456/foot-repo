@@ -62,7 +62,10 @@ export default defineComponent({
           const updateEmailVerified = httpsCallable(functions, 'updateEmailVerified')
           await updateEmailVerified()
           await getAuth().currentUser?.reload()
-          openSnackbar('success', 'メール認証が完了しました。')
+          openSnackbar(
+            'success',
+            'メール認証が完了しました。続けてユーザープロフィールを登録して下さい。'
+          )
           router.push('/users/new')
         } catch {
           openSnackbar('failure', 'メール認証に失敗しました。')

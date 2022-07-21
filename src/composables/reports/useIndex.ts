@@ -16,7 +16,7 @@ const useIndex = () => {
       if (reports.data.length === 0) await toStoreReports(reports)
     } catch (error) {
       console.log(error)
-      openSnackbar('failure', '選手採点の取得に失敗しました。')
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoadingFirst.value = false
     }
@@ -30,7 +30,7 @@ const useIndex = () => {
       await toStoreReports(reports)
     } catch (error) {
       console.log(error)
-      openSnackbar('failure', '選手採点の取得に失敗しました。')
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoadingNext.value = false
     }
@@ -67,7 +67,7 @@ const useIndex = () => {
       await toStoreReports(reports)
     } catch (error) {
       console.log(error)
-      openSnackbar('failure', '選手採点の取得に失敗しました。')
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoadingFirst.value = false
     }

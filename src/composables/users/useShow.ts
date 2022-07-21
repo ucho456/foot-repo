@@ -126,7 +126,7 @@ const useShow = () => {
       }
     } catch (error) {
       console.log(error)
-      openSnackbar('failure', 'フォローの取得に失敗しました。')
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoadingFollows.value = false
     }
@@ -142,7 +142,7 @@ const useShow = () => {
       await readFollows(user.value.id, lastVisibleFollow, loginUser.value, hasNextFollows, follows)
     } catch (error) {
       console.log(error)
-      openSnackbar('failure', 'フォローの取得に失敗しました。')
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoadingNextFollows.value = false
     }
@@ -170,7 +170,7 @@ const useShow = () => {
       }
     } catch (error) {
       console.log(error)
-      openSnackbar('failure', 'フォロワーの取得に失敗しました。')
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoadingFollowers.value = false
     }
@@ -192,7 +192,7 @@ const useShow = () => {
       )
     } catch (error) {
       console.log(error)
-      openSnackbar('failure', 'フォロワーの取得に失敗しました。')
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoadingNextFollowers.value = false
     }
@@ -231,7 +231,7 @@ const useShow = () => {
       }
     } catch (error) {
       console.log(error)
-      openSnackbar('failure', '通信エラーが発生しました。通信状況をお確かめ下さい。')
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoadingUpdateFollow.value = false
     }
@@ -254,7 +254,7 @@ const useShow = () => {
       await readLikeReports(user.value.id, lastVisibleLike, hasNextLikeReports, likeReports)
     } catch (error) {
       console.log(error)
-      openSnackbar('failure', '選手採点の取得に失敗しました。')
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoadingChangeReports.value = false
     }
@@ -272,7 +272,7 @@ const useShow = () => {
       }
     } catch (error) {
       console.log(error)
-      openSnackbar('failure', '選手採点の取得に失敗しました。')
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoadingNextReports.value = false
     }
@@ -301,7 +301,7 @@ const useShow = () => {
       openSnackbar('success', '削除に成功しました。')
     } catch (error) {
       console.log(error)
-      openSnackbar('failure', '削除に失敗しました。')
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       hideDeleteDialog()
       isLoadingReportDelete.value = false

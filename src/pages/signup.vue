@@ -45,7 +45,7 @@
               <ButtonBack :disabled="isLoading" @click="back" />
             </v-col>
             <NuxtLink class="o-hover mb-4 text-caption" to="/login">
-              アカウントをお持ちの場合はこちらから
+              アカウントをお持ちの場合はこちら
             </NuxtLink>
           </v-row>
         </ValidationObserver>

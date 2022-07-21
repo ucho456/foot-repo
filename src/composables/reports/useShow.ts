@@ -73,8 +73,6 @@ const useShow = () => {
       if (error instanceof Error && error.message === 'unauthorized access') {
         openSnackbar('failure', '不正なアクセスが発生しました。')
         router.push('/')
-      } else if (error instanceof Error && error.message === 'Not Found') {
-        openSnackbar('failure', '対象の選手採点は見つかりませんでした。')
       } else {
         openSnackbar('failure', '通信エラーが発生しました。')
       }
@@ -122,7 +120,7 @@ const useShow = () => {
       }
     } catch (error) {
       console.log(error)
-      openSnackbar('failure', '通信エラーが発生しました。通信状況をお確かめ下さい。')
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoadingUpdateLike.value = false
     }
@@ -138,7 +136,7 @@ const useShow = () => {
       follow.value = !follow.value
     } catch (error) {
       console.log(error)
-      openSnackbar('failure', '通信エラーが発生しました。通信状況をお確かめ下さい。')
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoadingUpdateFollow.value = false
     }
@@ -166,7 +164,7 @@ const useShow = () => {
       openSnackbar('success', 'コメントを作成しました。')
     } catch (error) {
       console.log(error)
-      openSnackbar('failure', 'コメントの作成に失敗しました。')
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoadingNewComment.value = false
     }

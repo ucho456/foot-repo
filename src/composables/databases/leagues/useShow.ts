@@ -40,7 +40,7 @@ const useShow = () => {
       isLoadingMatches.value = false
     } catch (error) {
       console.log(error)
-      openSnackbar('failure', 'データの取得に失敗しました。')
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoadingStandings.value = false
       isLoadingScorers.value = false
@@ -63,7 +63,7 @@ const useShow = () => {
       await toStoreMatchSchedule(league)
     } catch (error) {
       console.log(error)
-      openSnackbar('failure', '試合予定の取得に失敗しました。')
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoadingMatches.value = false
     }
@@ -76,7 +76,7 @@ const useShow = () => {
       await toStoreMatchSchedule(league)
     } catch (error) {
       console.log(error)
-      openSnackbar('failure', '試合予定の取得に失敗しました。')
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoadingNextMatchSchedule.value = false
     }

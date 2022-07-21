@@ -18,7 +18,7 @@ const useIndex = () => {
       if (users.data.length === 0) await toStoreUsers(users, loginUser.value)
     } catch (error) {
       console.log(error)
-      openSnackbar('failure', 'ユーザーの取得に失敗しました。')
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoadingSetUp.value = false
     }
@@ -32,7 +32,7 @@ const useIndex = () => {
       await toStoreUsers(users, loginUser.value)
     } catch (error) {
       console.log(error)
-      openSnackbar('failure', 'ユーザーの取得に失敗しました。')
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoadingNextUsers.value = false
     }
@@ -63,7 +63,7 @@ const useIndex = () => {
       await toStoreUsers(users, loginUser.value)
     } catch (error) {
       console.log(error)
-      openSnackbar('failure', 'ユーザーの取得に失敗しました。')
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoadingSetUp.value = false
     }
@@ -80,7 +80,7 @@ const useIndex = () => {
       users.data[index].follow = !users.data[index].follow
     } catch (error) {
       console.log(error)
-      openSnackbar('failure', '通信エラーが発生しました。通信状況をお確かめ下さい。')
+      openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoadingUpdateFollow.value = false
     }
