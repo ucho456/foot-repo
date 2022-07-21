@@ -66,7 +66,7 @@
             </v-btn>
             <v-btn
               icon
-              :color="like ? 'orange' : 'grey'"
+              :color="like ? '#ff9800' : '#9e9e9e'"
               :disabled="!loginUser || loginUser.uid === report.user.id"
               :loading="isLoadingUpdateLike"
               @click="updateLike"

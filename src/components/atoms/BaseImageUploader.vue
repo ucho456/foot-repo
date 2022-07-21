@@ -15,7 +15,7 @@
       :disabled="disabled"
       @change="handleChange"
     />
-    <v-btn v-if="!disabled" class="o-button" color="black" icon @click="handleClear">
+    <v-btn v-if="!disabled" class="o-button" color="#000000" icon @click="handleClear">
       <v-icon>{{ mdiClose }}</v-icon>
     </v-btn>
   </div>

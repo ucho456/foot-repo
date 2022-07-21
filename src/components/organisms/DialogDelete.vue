@@ -10,7 +10,7 @@
           <v-row justify="center">
             <v-col cols="10">
               <ButtonSubmit
-                :color="'pink'"
+                :color="'#e91e63'"
                 :is-loading="isLoading"
                 :text="'削除する'"
                 @click="handleDelete"

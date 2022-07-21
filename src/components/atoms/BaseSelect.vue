@@ -1,6 +1,6 @@
 <template>
   <v-select
-    :background-color="'white'"
+    :background-color="'#ffffff'"
     :items="items"
     :label="label"
     :value="value"

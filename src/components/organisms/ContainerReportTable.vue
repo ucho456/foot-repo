@@ -51,7 +51,7 @@
               {{ report.jstDate }} / {{ report.competition.name }} / {{ report.matchday }}節
             </v-list-item-subtitle>
             <v-list-item-subtitle>
-              <v-icon color="orange" size="13px">{{ mdiThumbUp }}</v-icon> {{ report.likeCount }}
+              <v-icon color="#ff9800" size="13px">{{ mdiThumbUp }}</v-icon> {{ report.likeCount }}
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
@@ -60,7 +60,7 @@
             <v-icon color="#1a237e" @click="pushToReportEdit(report.id)">{{ mdiPencil }}</v-icon>
           </v-btn>
           <v-btn icon>
-            <v-icon color="pink" @click="handleDelete(report)">{{ mdiDelete }}</v-icon>
+            <v-icon color="#e91e63" @click="handleDelete(report)">{{ mdiDelete }}</v-icon>
           </v-btn>
         </v-list-item-action>
       </div>
