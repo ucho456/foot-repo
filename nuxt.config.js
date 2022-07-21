@@ -61,7 +61,8 @@ export default {
     '@nuxtjs/stylelint-module',
     '@nuxtjs/vuetify',
     'nuxt-compress',
-    'nuxt-delay-hydration'
+    'nuxt-delay-hydration',
+    'nuxt-purgecss'
   ],
 
   delayHydration: {
@@ -103,6 +104,40 @@ export default {
       icons: 'mdiSvg'
     },
     treeShake: true
+  },
+
+  purgeCSS: {
+    enabled: true,
+    paths: ['node_modules/vuetify/src/**/*.ts'],
+    whitelist: [
+      'v-application',
+      'v-application--wrap',
+      'layout',
+      'container',
+      'row',
+      'col',
+      'button',
+      'textarea'
+    ],
+    whitelistPatterns: [
+      /^v-((?!application).)*$/,
+      /^theme--*/,
+      /.*-transition/,
+      /^justify-*/,
+      /^m*-auto/,
+      /^m*-[0-9]/,
+      /^m*-[n][0-9]/,
+      /^p*-auto/,
+      /^p*-[0-9]/,
+      /^p*-[n][0-9]/,
+      /^text--*/,
+      /--text$/,
+      /^row-*/,
+      /^col-*/,
+      /^d-*/,
+      /^spacer/
+    ],
+    whitelistPatternsChildren: [/^v-((?!application).)*$/, /^theme--*/]
   },
 
   build: {
