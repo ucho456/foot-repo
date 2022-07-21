@@ -60,7 +60,6 @@ export default {
     '@nuxt/typescript-build',
     '@nuxtjs/stylelint-module',
     '@nuxtjs/vuetify',
-    'nuxt-webfontloader',
     'nuxt-compress',
     'nuxt-delay-hydration'
   ],
@@ -106,15 +105,7 @@ export default {
     treeShake: true
   },
 
-  webfontloader: {
-    custom: {
-      families: ['Roboto:n3,n4,n5,n7'],
-      urls: ['https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap']
-    }
-  },
-
   build: {
-    transpile: ['vee-validate/dist/rules'],
-    analyze: true
+    transpile: ['vee-validate/dist/rules']
   }
 }
