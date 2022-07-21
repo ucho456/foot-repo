@@ -8,7 +8,7 @@ const useSnackbar = () => {
   if (snackbar === undefined) throw new Error('snackbar is no provided')
 
   const openSnackbar = (result: 'success' | 'failure' | 'alert', message: string): void => {
-    snackbar.color = result === 'success' ? 'green' : result === 'failure' ? 'pink' : 'yellow'
+    snackbar.color = result === 'success' ? '#4caf50' : result === 'failure' ? '#e91e63' : '#ffeb3b'
     snackbar.message = message
     snackbar.show = true
     snackbar.textColor = result === 'alert' ? 'black' : 'white'
