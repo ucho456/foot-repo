@@ -35,7 +35,7 @@
                 :lazy-src="lazy"
                 :src="match.homeTeam.imageUrl"
               />
-              <v-list-item-content>
+              <v-list-item-content class="ml-3 mr-3">
                 <v-row>
                   <v-col cols="6">
                     <v-list-item-title class="text-right">

@@ -24,7 +24,7 @@
             <v-img v-if="report.user.imageUrl" :lazy-src="lazy" :src="report.user.imageUrl" />
             <v-img v-else :lazy-src="lazy" :src="noAvatarImage" />
           </v-list-item-avatar>
-          <v-list-item-content>
+          <v-list-item-content class="ml-3">
             <v-list-item-title class="o-title">
               {{ report.title }}<span v-if="!report.publish" class="o-private">非公開</span>
             </v-list-item-title>
