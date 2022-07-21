@@ -3,7 +3,7 @@ import * as admin from 'firebase-admin'
 import * as functions from 'firebase-functions'
 import axios, { AxiosResponse } from 'axios'
 import { standingsConverter } from '../converters'
-import { config, footballUrl, leagueCompetitions } from '../utils'
+import { config, footballUrl, competitions } from '../utils'
 
 const getStandings = async (competition: {
   id: number
@@ -46,7 +46,7 @@ const setStandings = functions
   .pubsub.schedule('21 5 * * *')
   .onRun(async () => {
     const batch = admin.firestore().batch()
-    for (const competition of leagueCompetitions) {
+    for (const competition of competitions) {
       const standings = await getStandings(competition)
       const sRef = admin
         .firestore()

@@ -5,30 +5,36 @@ import buildSitemap from './calls/buildSitemap'
 import createAuth from './calls/createAuth'
 import {
   createBundesligaMatches,
+  createChampionsLeagueMatches,
   // createJLeagueMatches,
   createLaLigaMatches,
   createLigue1Matches,
   createPremierLeagueMatches,
-  createSerieAMatches
+  createSerieAMatches,
+  createWorldCupMatches
 } from './calls/createMatches'
 import createUser from './calls/createUser'
 import { promptUpdateMatch } from './calls/promptUpdateMatch'
 import {
   setBundesligaTeams,
+  setChampionsLeagueTeams,
   setJLeagueTeams,
   setLaLigaTeams,
   setLigue1Teams,
   setPremierLeagueTeams,
-  setSerieATeams
+  setSerieATeams,
+  setWorldCupTeams
 } from './calls/setTeams'
 import updateEmailVerified from './calls/updateEmailVerified'
 // import {
 // setBundesligaMatches,
+// setChampionsLeagueMatches,
 // setJLeagueMatches,
 // setLaLigaMatches,
 // setLigue1Matches,
 // setPremierLeagueMatches,
-// setSerieAMatches
+// setSerieAMatches,
+// setWorldCupMatches
 // } from './crons/setMatches'
 // import setScorers from './crons/setScorers'
 // import setStandings from './crons/setStandings'
@@ -39,15 +45,19 @@ module.exports = {
   buildSitemap,
   createAuth,
   createBundesligaMatches,
+  createChampionsLeagueMatches,
   // createJLeagueMatches,
   createLaLigaMatches,
   createLigue1Matches,
   createPremierLeagueMatches,
   createSerieAMatches,
   createUser,
+  createWorldCupMatches,
   promptUpdateMatch,
   // setBundesligaMatches,
   setBundesligaTeams,
+  // setChampionsLeagueMatches,
+  setChampionsLeagueTeams,
   // setJLeagueMatches,
   setJLeagueTeams,
   // setLaLigaMatches,
@@ -60,5 +70,7 @@ module.exports = {
   // setSerieAMatches,
   setSerieATeams,
   // setStandings,
+  // setWorldCupMatches,
+  setWorldCupTeams,
   updateEmailVerified
 }

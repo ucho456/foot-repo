@@ -4,14 +4,7 @@ import * as admin from 'firebase-admin'
 import * as functions from 'firebase-functions'
 import axios, { AxiosResponse } from 'axios'
 import { matchConverter } from '../converters'
-import {
-  config,
-  convertJST,
-  convertYearMonth,
-  env,
-  footballUrl,
-  leagueCompetitions
-} from '../utils'
+import { competitionMap, config, convertJST, convertYearMonth, env, footballUrl } from '../utils'
 
 type Competition = { id: number; collectionId: string; name: string }
 
@@ -21,7 +14,17 @@ const getFbMatches = async (competitionId: number): Promise<FbMatch[]> => {
     config
   )
   const fbMatches = res.data.matches as FbMatch[]
-  return fbMatches
+  const filteredFbMatches = fbMatches.filter(
+    (m) =>
+      m.stage === 'REGULAR_SEASON' ||
+      m.stage === 'GROUP_STAGE' ||
+      m.stage === 'LAST_16' ||
+      m.stage === 'QUARTER_FINALS' ||
+      m.stage === 'SEMI_FINALS' ||
+      m.stage === 'THIRD_PLACE' ||
+      m.stage === 'FINAL'
+  )
+  return filteredFbMatches
 }
 
 export const makeMatch = (fbMatch: FbMatch, competition: Competition): Match => {
@@ -91,41 +94,63 @@ const setMatches = async (
 export const createBundesligaMatches = functions
   .region('asia-northeast1')
   .https.onRequest(async (req, res) => {
-    await setMatches(leagueCompetitions[4], req)
+    const competition = competitionMap.get('Bundesliga')!
+    await setMatches(competition, req)
+    res.sendStatus(200)
+  })
+
+export const createChampionsLeagueMatches = functions
+  .region('asia-northeast1')
+  .https.onRequest(async (req, res) => {
+    const competition = competitionMap.get('Champions-League')!
+    await setMatches(competition, req)
     res.sendStatus(200)
   })
 
 export const createJLeagueMatches = functions
   .region('asia-northeast1')
   .https.onRequest(async (req, res) => {
-    await setMatches(leagueCompetitions[0], req)
+    const competition = competitionMap.get('J-League')!
+    await setMatches(competition, req)
     res.sendStatus(200)
   })
 
 export const createLaLigaMatches = functions
   .region('asia-northeast1')
   .https.onRequest(async (req, res) => {
-    await setMatches(leagueCompetitions[2], req)
+    const competition = competitionMap.get('La-Liga')!
+    await setMatches(competition, req)
     res.sendStatus(200)
   })
 
 export const createLigue1Matches = functions
   .region('asia-northeast1')
   .https.onRequest(async (req, res) => {
-    await setMatches(leagueCompetitions[5], req)
+    const competition = competitionMap.get('Ligue-1')!
+    await setMatches(competition, req)
     res.sendStatus(200)
   })
 
 export const createPremierLeagueMatches = functions
   .region('asia-northeast1')
   .https.onRequest(async (req, res) => {
-    await setMatches(leagueCompetitions[1], req)
+    const competition = competitionMap.get('Premier-League')!
+    await setMatches(competition, req)
     res.sendStatus(200)
   })
 
 export const createSerieAMatches = functions
   .region('asia-northeast1')
   .https.onRequest(async (req, res) => {
-    await setMatches(leagueCompetitions[3], req)
+    const competition = competitionMap.get('Serie-A')!
+    await setMatches(competition, req)
+    res.sendStatus(200)
+  })
+
+export const createWorldCupMatches = functions
+  .region('asia-northeast1')
+  .https.onRequest(async (req, res) => {
+    const competition = competitionMap.get('World-Cup')!
+    await setMatches(competition, req)
     res.sendStatus(200)
   })

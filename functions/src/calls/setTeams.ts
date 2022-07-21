@@ -3,7 +3,7 @@ import * as admin from 'firebase-admin'
 import * as functions from 'firebase-functions'
 import axios, { AxiosResponse } from 'axios'
 import { teamConverter } from '../converters'
-import { config, convertPosition, env, footballUrl, leagueCompetitions } from '../utils'
+import { competitionMap, config, convertPosition, env, footballUrl } from '../utils'
 
 const getTeamIds = async (competitionId: number): Promise<number[]> => {
   const res: AxiosResponse<any, any> = await axios.get(
@@ -70,41 +70,63 @@ const setTeams = async (
 export const setBundesligaTeams = functions
   .region('asia-northeast1')
   .https.onRequest(async (req, res) => {
-    await setTeams(leagueCompetitions[4], req)
+    const competition = competitionMap.get('Bundesliga')!
+    await setTeams(competition, req)
+    res.sendStatus(200)
+  })
+
+export const setChampionsLeagueTeams = functions
+  .region('asia-northeast1')
+  .https.onRequest(async (req, res) => {
+    const competition = competitionMap.get('Champions-League')!
+    await setTeams(competition, req)
     res.sendStatus(200)
   })
 
 export const setJLeagueTeams = functions
   .region('asia-northeast1')
   .https.onRequest(async (req, res) => {
-    await setTeams(leagueCompetitions[0], req)
+    const competition = competitionMap.get('J-League')!
+    await setTeams(competition, req)
     res.sendStatus(200)
   })
 
 export const setLaLigaTeams = functions
   .region('asia-northeast1')
   .https.onRequest(async (req, res) => {
-    await setTeams(leagueCompetitions[2], req)
+    const competition = competitionMap.get('La-Liga')!
+    await setTeams(competition, req)
     res.sendStatus(200)
   })
 
 export const setLigue1Teams = functions
   .region('asia-northeast1')
   .https.onRequest(async (req, res) => {
-    await setTeams(leagueCompetitions[5], req)
+    const competition = competitionMap.get('Ligue-1')!
+    await setTeams(competition, req)
     res.sendStatus(200)
   })
 
 export const setPremierLeagueTeams = functions
   .region('asia-northeast1')
   .https.onRequest(async (req, res) => {
-    await setTeams(leagueCompetitions[1], req)
+    const competition = competitionMap.get('Premier-League')!
+    await setTeams(competition, req)
     res.sendStatus(200)
   })
 
 export const setSerieATeams = functions
   .region('asia-northeast1')
   .https.onRequest(async (req, res) => {
-    await setTeams(leagueCompetitions[3], req)
+    const competition = competitionMap.get('Serie-A')!
+    await setTeams(competition, req)
+    res.sendStatus(200)
+  })
+
+export const setWorldCupTeams = functions
+  .region('asia-northeast1')
+  .https.onRequest(async (req, res) => {
+    const competition = competitionMap.get('World-Cup')!
+    await setTeams(competition, req)
     res.sendStatus(200)
   })

@@ -5,7 +5,7 @@ import * as functions from 'firebase-functions'
 import axios, { AxiosResponse } from 'axios'
 import { makeMatch } from '../calls/createMatches'
 import { forReportConverter, matchConverter, matchDetailConverter } from '../converters'
-import { config, convertPosition, footballUrl, leagueCompetitions } from '../utils'
+import { competitionMap, config, convertPosition, footballUrl } from '../utils'
 
 const getMatchInfos = async (
   competitionId: number
@@ -21,7 +21,18 @@ const getMatchInfos = async (
     config
   )
   const matches = res.data.matches as FbMatch[]
-  const matchInfos = matches.map((m) => {
+  const matchInfos = matches.flatMap((m) => {
+    if (
+      m.stage !== 'REGULAR_SEASON' &&
+      m.stage !== 'GROUP_STAGE' &&
+      m.stage !== 'LAST_16' &&
+      m.stage !== 'QUARTER_FINALS' &&
+      m.stage !== 'SEMI_FINALS' &&
+      m.stage !== 'THIRD_PLACE' &&
+      m.stage !== 'FINAL'
+    ) {
+      return []
+    }
     return { id: String(m.id), status: m.status, lastUpdated: m.lastUpdated }
   })
   return matchInfos
@@ -297,25 +308,38 @@ const setMatches = async (competition: { id: number; collectionId: string; name:
 
 export const setBundesligaMatches = functions
   .region('asia-northeast1')
-  .pubsub.schedule('15 */1 * * *')
+  .pubsub.schedule('3 */1 * * *')
   .onRun(async () => {
-    await setMatches(leagueCompetitions[4])
+    const competition = competitionMap.get('Bundesliga')!
+    await setMatches(competition)
+    return null
+  })
+
+export const setChampionsLeagueMatches = functions
+  .region('asia-northeast1')
+  .pubsub.schedule('6 */1 * * *')
+  .onRun(async () => {
+    const competition = competitionMap.get('Champions-League')!
+    await setMatches(competition)
     return null
   })
 
 export const setJLeagueMatches = functions
   .region('asia-northeast1')
-  .pubsub.schedule('3 */1 * * *')
+  .pubsub.schedule('9 */1 * * *')
   .onRun(async () => {
-    await setMatches(leagueCompetitions[0])
+    const competition = competitionMap.get('J-League')!
+    await setMatches(competition)
     return null
   })
 
 export const setLaLigaMatches = functions
   .region('asia-northeast1')
-  .pubsub.schedule('9 */1 * * *')
+  .pubsub.schedule('12 */1 * * *')
   .onRun(async () => {
-    await setMatches(leagueCompetitions[2])
+    const competition = competitionMap.get('La-Liga')!
+
+    await setMatches(competition)
     return null
   })
 
@@ -323,22 +347,34 @@ export const setLigue1Matches = functions
   .region('asia-northeast1')
   .pubsub.schedule('15 */1 * * *')
   .onRun(async () => {
-    await setMatches(leagueCompetitions[5])
+    const competition = competitionMap.get('Ligue-1')!
+    await setMatches(competition)
     return null
   })
 
 export const setPremierLeagueMatches = functions
   .region('asia-northeast1')
-  .pubsub.schedule('6 */1 * * *')
+  .pubsub.schedule('18 */1 * * *')
   .onRun(async () => {
-    await setMatches(leagueCompetitions[1])
+    const competition = competitionMap.get('Premier-League')!
+    await setMatches(competition)
     return null
   })
 
 export const setSerieAMatches = functions
   .region('asia-northeast1')
-  .pubsub.schedule('12 */1 * * *')
+  .pubsub.schedule('21 */1 * * *')
   .onRun(async () => {
-    await setMatches(leagueCompetitions[3])
+    const competition = competitionMap.get('Serie-A')!
+    await setMatches(competition)
+    return null
+  })
+
+export const setWorldCupMatches = functions
+  .region('asia-northeast1')
+  .pubsub.schedule('24 */1 * * *')
+  .onRun(async () => {
+    const competition = competitionMap.get('World-Cup')!
+    await setMatches(competition)
     return null
   })

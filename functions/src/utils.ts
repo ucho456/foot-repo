@@ -8,14 +8,18 @@ export const config: AxiosRequestConfig<any> = { headers: { 'X-Auth-Token': env.
 
 export const footballUrl = env.football_url
 
-export const leagueCompetitions = [
+export const competitions = [
   { id: 2119, collectionId: 'J-League', name: 'J. League' },
   { id: 2021, collectionId: 'Premier-League', name: 'Premier League' },
   { id: 2014, collectionId: 'La-Liga', name: 'La Liga' },
   { id: 2019, collectionId: 'Serie-A', name: 'Serie A' },
   { id: 2002, collectionId: 'Bundesliga', name: 'Bundesliga' },
-  { id: 2015, collectionId: 'Ligue-1', name: 'Ligue 1' }
+  { id: 2015, collectionId: 'Ligue-1', name: 'Ligue 1' },
+  { id: 2001, collectionId: 'Champions-League', name: 'Champions League' },
+  { id: 2000, collectionId: 'World-Cup', name: 'World Cup' }
 ]
+
+export const competitionMap = new Map(competitions.map((c) => [c.collectionId, c]))
 
 export const convertJST = (utcDate: string): string => {
   const time = new Date(utcDate)
