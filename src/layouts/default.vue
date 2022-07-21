@@ -37,9 +37,6 @@
             <div class="o-hover o-font-10" @click="show('privacy policy')">
               プライバシーポリシー
             </div>
-            <div class="o-hover o-font-10" @click="show('specified commercial transactions law')">
-              特定商取引法に基づく表示
-            </div>
           </v-col>
         </v-row>
       </v-container>
@@ -84,10 +81,6 @@
     <Snackbar v-bind="snackbar" />
     <DialogTerms :is-dialog="dialogTerms" @hide="hide('terms')" />
     <DialogPrivacyPolicy :dialog="dialogPrivacyPolicy" @hide="hide('privacy policy')" />
-    <DialogSpecifiedCommercialTransactionsLaw
-      :dialog="dialogSpecifiedCommercialTransactionsLaw"
-      @hide="hide('specified commercial transactions law')"
-    />
   </v-app>
 </template>
 
@@ -116,8 +109,6 @@ export default defineComponent({
 
   components: {
     DialogPrivacyPolicy: () => import('@/components/organisms/DialogPrivacyPolicy.vue'),
-    DialogSpecifiedCommercialTransactionsLaw: () =>
-      import('@/components/organisms/DialogPrivacyPolicy.vue'),
     DialogTerms: () => import('@/components/organisms/DialogTerms.vue'),
     SideContainer,
     Snackbar: () => import('@/components/molecules/Snackbar.vue')
@@ -189,33 +180,23 @@ export default defineComponent({
     const drawer = ref(false)
     const dialogTerms = ref(false)
     const dialogPrivacyPolicy = ref(false)
-    const dialogSpecifiedCommercialTransactionsLaw = ref(false)
-    const show = (
-      type: 'drawer' | 'terms' | 'privacy policy' | 'specified commercial transactions law'
-    ): void => {
+    const show = (type: 'drawer' | 'terms' | 'privacy policy'): void => {
       type === 'drawer'
         ? (drawer.value = true)
         : type === 'terms'
         ? (dialogTerms.value = true)
-        : type === 'privacy policy'
-        ? (dialogPrivacyPolicy.value = true)
-        : (dialogSpecifiedCommercialTransactionsLaw.value = true)
+        : (dialogPrivacyPolicy.value = true)
     }
-    const hide = (
-      type: 'drawer' | 'terms' | 'privacy policy' | 'specified commercial transactions law'
-    ): void => {
+    const hide = (type: 'drawer' | 'terms' | 'privacy policy'): void => {
       type === 'drawer'
         ? (drawer.value = false)
         : type === 'terms'
         ? (dialogTerms.value = false)
-        : type === 'privacy policy'
-        ? (dialogPrivacyPolicy.value = false)
-        : (dialogSpecifiedCommercialTransactionsLaw.value = false)
+        : (dialogPrivacyPolicy.value = false)
     }
 
     return {
       dialogPrivacyPolicy,
-      dialogSpecifiedCommercialTransactionsLaw,
       dialogTerms,
       drawer,
       headerLogo,
