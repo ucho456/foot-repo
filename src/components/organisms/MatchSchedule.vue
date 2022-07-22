@@ -30,8 +30,11 @@
             <v-list-item-subtitle class="mt-n3 text-center">
               {{ match.homeTeam.score }} - {{ match.awayTeam.score }}
             </v-list-item-subtitle>
-            <v-list-item-subtitle class="text-center">
+            <v-list-item-subtitle v-if="match.stage === 'REGULAR_SEASON'" class="text-center">
               {{ match.jstDate }} / {{ match.competition.name }} / {{ match.matchday }}節
+            </v-list-item-subtitle>
+            <v-list-item-subtitle v-else class="text-center">
+              {{ match.jstDate }} / {{ match.competition.name }} / {{ match.stage }}
             </v-list-item-subtitle>
           </v-list-item-content>
           <v-img max-height="40" max-width="40" :lazy-src="lazy" :src="match.awayTeam.imageUrl" />

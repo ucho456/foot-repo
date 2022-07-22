@@ -2,7 +2,10 @@
   <v-row class="text-center text-truncate">
     <v-container>
       <v-row>
-        <v-col cols="12"> {{ jstDate }} / {{ competition.name }} / {{ matchday }}節 </v-col>
+        <v-col v-if="stage === 'REGULAR_SEASON'" cols="12">
+          {{ jstDate }} / {{ competition.name }} / {{ matchday }}節
+        </v-col>
+        <v-col v-else cols="12"> {{ jstDate }} / {{ competition.name }} / {{ stage }} </v-col>
         <v-col class="mt-n7" cols="12"> {{ venue }}</v-col>
       </v-row>
       <v-row class="mt-n4">
@@ -78,6 +81,7 @@ export default defineComponent({
     },
     jstDate: { type: String, default: '' },
     matchday: { type: Number, default: 0 },
+    stage: { type: String as () => MatchStage, default: '' },
     venue: { type: String, default: '' }
   },
 

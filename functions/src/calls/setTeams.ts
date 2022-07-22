@@ -5,19 +5,16 @@ import axios, { AxiosResponse } from 'axios'
 import { teamConverter } from '../converters'
 import { competitionMap, config, convertPosition, env, footballUrl } from '../utils'
 
-const getTeamIds = async (competitionId: number): Promise<number[]> => {
+const getFbTeams = async (competitionId: number): Promise<FbTeam[]> => {
   const res: AxiosResponse<any, any> = await axios.get(
     footballUrl + `competitions/${competitionId}/teams`,
     config
   )
-  const resData = res.data as { teams: { id: number }[] }
-  const teamIds = resData.teams.map((t) => t.id)
-  return teamIds
+  const fbTeams = res.data.teams as FbTeam[]
+  return fbTeams
 }
 
-const getTeam = async (teamId: number): Promise<Team> => {
-  const res: AxiosResponse<any, any> = await axios.get(footballUrl + `teams/${teamId}`, config)
-  const fbTeam = res.data as FbTeam
+const getTeam = (fbTeam: FbTeam): Team => {
   return {
     id: String(fbTeam.id),
     name: fbTeam.name,
@@ -51,11 +48,11 @@ const setTeams = async (
   if (process.env.NODE_ENV === 'production' && req.body.secret !== env.secret) {
     throw new Error('Unauthorized')
   }
-  const teamIds = await getTeamIds(competition.id)
+  const fbTeams = await getFbTeams(competition.id)
   const batch = admin.firestore().batch()
-  for (const teamId of teamIds) {
-    const team = await getTeam(teamId)
-    const tRef = admin.firestore().doc(`teams/${teamId}`).withConverter(teamConverter)
+  for (const fbTeam of fbTeams) {
+    const team = await getTeam(fbTeam)
+    const tRef = admin.firestore().doc(`teams/${team.id}`).withConverter(teamConverter)
     const tSnapshot = await tRef.get()
     if (tSnapshot.exists) {
       const lastUpdated = tSnapshot.data()?.lastUpdated

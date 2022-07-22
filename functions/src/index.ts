@@ -33,7 +33,7 @@ import updateEmailVerified from './calls/updateEmailVerified'
 // setLaLigaMatches,
 // setLigue1Matches,
 // setPremierLeagueMatches,
-// setSerieAMatches,
+// setSerieAMatches
 // setWorldCupMatches
 // } from './crons/setMatches'
 // import setScorers from './crons/setScorers'

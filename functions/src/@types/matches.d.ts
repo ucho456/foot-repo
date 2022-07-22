@@ -5,6 +5,7 @@ type Match = {
   jstDate: string
   yearMonth: string
   matchday: number
+  stage: MatchStage
   status: MatchStatus
   venue: string
   teamIds: string[]

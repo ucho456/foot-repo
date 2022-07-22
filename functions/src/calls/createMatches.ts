@@ -35,6 +35,7 @@ export const makeMatch = (fbMatch: FbMatch, competition: Competition): Match => 
     yearMonth: convertYearMonth(fbMatch.utcDate),
     matchday: fbMatch.matchday,
     status: fbMatch.status === 'FINISHED' ? 'FINISHED' : 'SCHEDULED',
+    stage: fbMatch.stage,
     venue: fbMatch.venue,
     teamIds: [String(fbMatch.homeTeam.id), String(fbMatch.awayTeam.id)],
     competition: {

@@ -29,15 +29,7 @@ type FbMatch = {
   utcDate: string
   status: 'SCHEDULED' | 'FINISHED'
   matchday: number
-  stage:
-    | 'REGULAR_SEASON'
-    | 'GROUP_STAGE'
-    | 'LAST_16'
-    | 'QUARTER_FINALS'
-    | 'SEMI_FINALS'
-    | 'THIRD_PLACE'
-    | 'FINAL'
-    | string
+  stage: MatchStage
   venue: string
   score: {
     fullTime: {
