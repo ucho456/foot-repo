@@ -26,7 +26,11 @@
             </v-col>
             <v-col cols="10"> マイチーム </v-col>
             <v-col cols="10" sm="5">
-              <SelectIdCompetition :value="editUser.competitionId" @input="inputCompetitionId" />
+              <SelectIdCompetition
+                :league-only="true"
+                :value="editUser.competitionId"
+                @input="inputCompetitionId"
+              />
             </v-col>
             <v-col cols="10" sm="5">
               <SelectIdTeam v-model="editUser.team.id" :competition-id="editUser.competitionId" />

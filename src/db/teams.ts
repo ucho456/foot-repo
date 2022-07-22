@@ -10,6 +10,10 @@ export const toStoreTeam = async (teamId: string, team: { data: Team | null }) =
   team.data = tShanpshot.exists() ? tShanpshot.data() : null
 }
 
+export const worldCupTeams = [{ id: '', name: '未選択' }]
+
+export const championsLeagueTeams = [{ id: '', name: '未選択' }]
+
 export const premierLeagueTeams = [
   { id: '', name: '未選択' },
   { id: '1044', name: 'AFC Bournemouth' },
@@ -128,5 +132,10 @@ export const ligue1Teams = [
   { id: '511', name: 'Toulouse FC' }
 ]
 
-const allTeams = premierLeagueTeams.concat(laLigaTeams).concat(serieATeams).concat(bundesligaTeams)
+const allTeams = worldCupTeams
+  .concat(championsLeagueTeams)
+  .concat(premierLeagueTeams)
+  .concat(laLigaTeams)
+  .concat(serieATeams)
+  .concat(bundesligaTeams)
 export const teamMap = new Map(allTeams.map((t) => [t.id, t]))

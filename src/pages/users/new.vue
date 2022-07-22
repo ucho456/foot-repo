@@ -31,7 +31,11 @@
             </v-col>
             <v-col cols="10"> マイチーム </v-col>
             <v-col cols="10" sm="5">
-              <SelectIdCompetition :value="newUser.competitionId" @input="inputCompetitionId" />
+              <SelectIdCompetition
+                :league-only="true"
+                :value="newUser.competitionId"
+                @input="inputCompetitionId"
+              />
             </v-col>
             <v-col cols="10" sm="5">
               <SelectIdTeam v-model="newUser.team.id" :competition-id="newUser.competitionId" />

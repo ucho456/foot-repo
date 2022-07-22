@@ -7,10 +7,12 @@
 import { computed, defineComponent } from '@nuxtjs/composition-api'
 import {
   bundesligaTeams,
+  championsLeagueTeams,
   laLigaTeams,
   ligue1Teams,
   premierLeagueTeams,
-  serieATeams
+  serieATeams,
+  worldCupTeams
 } from '@/db/teams'
 import BaseSelectId from '@/components/atoms/BaseSelectId.vue'
 
@@ -28,7 +30,11 @@ export default defineComponent({
 
   setup(props, ctx) {
     const teams = computed(() => {
-      return props.competitionId === 'Premier-League'
+      return props.competitionId === 'Champions-League'
+        ? championsLeagueTeams
+        : props.competitionId === 'World-Cup'
+        ? worldCupTeams
+        : props.competitionId === 'Premier-League'
         ? premierLeagueTeams
         : props.competitionId === 'La-Liga'
         ? laLigaTeams
