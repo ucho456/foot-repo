@@ -4,7 +4,11 @@
       <v-container>
         <v-row justify="center">
           <v-col cols="10">
-            <SelectIdCompetition :value="searchOption.competitionId" @input="inputCompetitionId" />
+            <SelectIdCompetition
+              :league-only="true"
+              :value="searchOption.competitionId"
+              @input="inputCompetitionId"
+            />
           </v-col>
         </v-row>
         <v-row justify="center">
@@ -54,6 +58,7 @@ export default defineComponent({
   props: {
     hideDate: { type: Boolean, default: false },
     isDialog: { type: Boolean, default: false },
+    leagueOnly: { type: Boolean, default: false },
     searchOption: {
       type: Object as () => SearchOption,
       default: () => {

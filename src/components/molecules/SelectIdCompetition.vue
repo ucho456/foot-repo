@@ -27,7 +27,7 @@ export default defineComponent({
   setup(props, ctx) {
     const competitions = props.leagueOnly
       ? [
-          { id: '', name: '未設定' },
+          { id: '', name: 'すべて' },
           // { id: 'J-League', name: 'J. League' },
           { id: 'Premier-League', name: 'Premier League' },
           { id: 'La-Liga', name: 'La Liga' },

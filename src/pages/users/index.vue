@@ -57,6 +57,7 @@
     <DialogSearch
       :hide-date="true"
       :is-dialog="isDialog"
+      :league-only="true"
       :search-option="users.searchOption"
       @input-competition-id="inputCompetitionId"
       @input-team-id="inputTeamId"
