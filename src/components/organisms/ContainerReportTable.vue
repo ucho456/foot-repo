@@ -47,8 +47,11 @@
                 :src="report.awayTeam.imageUrl"
               />
             </v-list-item-subtitle>
-            <v-list-item-subtitle>
+            <v-list-item-subtitle v-if="report.stage === 'REGULAR_SEASON'">
               {{ report.jstDate }} / {{ report.competition.name }} / {{ report.matchday }}節
+            </v-list-item-subtitle>
+            <v-list-item-subtitle v-else>
+              {{ report.jstDate }} / {{ report.competition.name }} / {{ report.stage }}
             </v-list-item-subtitle>
             <v-list-item-subtitle>
               <v-icon color="#ff9800" size="13px">{{ mdiThumbUp }}</v-icon> {{ report.likeCount }}

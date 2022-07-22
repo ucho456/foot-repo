@@ -78,6 +78,7 @@ export const postReport = async (
     jstDate: match.jstDate,
     yearMonth: match.jstDate.substring(0, 7),
     matchday: match.matchday,
+    stage: match.stage,
     match: {
       id: match.id,
       ref: doc(db, 'matches', match.id)

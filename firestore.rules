@@ -70,7 +70,7 @@ service cloud.firestore {
 
     // reports
     function isValidReport(report) {
-      return report.size() == 17
+      return report.size() == 18
       && 'title' in report && report.title is string
       && 'user' in report && report.user is map
       && 'homeTeam' in report && report.homeTeam is map
@@ -80,6 +80,7 @@ service cloud.firestore {
       && 'yearMonth' in report && report.yearMonth is string
       && 'match' in report && report.match is map
       && 'matchday' in report && report.matchday is int
+      && 'stage' in report && report.stage is string
       && 'selectTeam' in report && report.selectTeam is string
       && 'momId' in report && report.momId is string
       && 'summary' in report && report.summary is string
@@ -137,6 +138,7 @@ service cloud.firestore {
       && isValidString(newData().match.id, 1, 20)
       && exists(newData().match.ref)
       && isValidInt(newData().matchday, 1, 100)
+      && isValidString(newData().stage, 1, 20)
       && isValidSelectTeam(newData().selectTeam)
       && isValidString(newData().momId, 0, 20)
       && isValidString(newData().summary, 0, 300)
@@ -170,6 +172,7 @@ service cloud.firestore {
       && newData().match.id == oldData().match.id
       && newData().match.ref == oldData().match.ref
       && newData().matchday == oldData().matchday
+      && newData().stage == oldData().stage
       && newData().selectTeam == oldData().selectTeam
       && isValidString(newData().momId, 0, 20)
       && isValidString(newData().summary, 0, 300)
@@ -201,6 +204,7 @@ service cloud.firestore {
       && newData().match.id == oldData().match.id
       && newData().match.ref == oldData().match.ref
       && newData().matchday == oldData().matchday
+      && newData().stage == oldData().stage
       && newData().selectTeam == oldData().selectTeam
       && newData().momId == oldData().momId
       && newData().summary == oldData().summary

@@ -36,6 +36,7 @@ type Report = {
     ref: import('firebase-admin/firestore').DocumentReference
   }
   matchday: number
+  stage: string
   selectTeam: HomeAway
   momId: string
   summary: string

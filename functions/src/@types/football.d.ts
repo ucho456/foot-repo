@@ -29,7 +29,7 @@ type FbMatch = {
   utcDate: string
   status: 'SCHEDULED' | 'FINISHED'
   matchday: number
-  stage: MatchStage
+  stage: string
   venue: string
   score: {
     fullTime: {

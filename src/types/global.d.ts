@@ -41,15 +41,6 @@ type InputUser = {
 
 type MatchStatus = 'SCHEDULED' | 'FINISHED'
 
-type MatchStage =
-  | 'REGULAR_SEASON'
-  | 'GROUP_STAGE'
-  | 'LAST_16'
-  | 'QUARTER_FINALS'
-  | 'SEMI_FINALS'
-  | 'THIRD_PLACE'
-  | 'FINAL'
-
 type Point =
   | ''
   | '0.0'

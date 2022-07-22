@@ -6,7 +6,7 @@ type Match = {
   yearMonth: string
   matchday: number
   status: MatchStatus
-  stage: MatchStage
+  stage: string
   venue: string
   teamIds: string[]
   competition: {

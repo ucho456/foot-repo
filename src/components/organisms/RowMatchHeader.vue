@@ -81,7 +81,7 @@ export default defineComponent({
     },
     jstDate: { type: String, default: '' },
     matchday: { type: Number, default: 0 },
-    stage: { type: String as () => MatchStage, default: '' },
+    stage: { type: String, default: '' },
     venue: { type: String, default: '' }
   },
 
