@@ -84,16 +84,16 @@ export default defineComponent({
       },
       {
         id: 'Champions-League',
-        title: 'UEFA Champions League（準備中）',
+        title: 'UEFA Champions League',
         src: 'https://crests.football-data.org/CL.png',
-        // to: '/databases/leagues/Bundesliga',
+        to: '/databases/cups/Champions-League',
         type: 'cup'
       },
       {
         id: 'World-Cup',
-        title: 'World Cup（準備中）',
+        title: 'World Cup',
         src: 'https://crests.football-data.org/qatar.png',
-        // to: '/databases/leagues/Bundesliga',
+        to: '/databases/cups/World-Cup',
         type: 'cup'
       }
     ]

@@ -89,5 +89,35 @@ export const competitionMap = new Map([
       type: 'league',
       to: '/databases/leagues/Bundesliga'
     }
+  ],
+  [
+    'Ligue-1',
+    {
+      id: 'Ligue-1',
+      name: 'Ligue 1',
+      imageUrl: 'https://crests.football-data.org/FL1.png',
+      type: 'league',
+      to: '/databases/leagues/Ligue-1'
+    }
+  ],
+  [
+    'Champions-League',
+    {
+      id: 'Champions-League',
+      name: 'Champions League',
+      imageUrl: 'https://crests.football-data.org/CL.png',
+      type: 'cup',
+      to: '/databases/cups/Champions-League'
+    }
+  ],
+  [
+    'World-Cup',
+    {
+      id: 'World-Cup',
+      name: 'World Cup',
+      imageUrl: 'https://crests.football-data.org/qatar.png',
+      type: 'cup',
+      to: '/databases/cups/World-Cup'
+    }
   ]
 ])

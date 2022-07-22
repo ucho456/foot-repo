@@ -28,6 +28,17 @@ export const StoreKey: InjectionKey<{
     season: string
     yearMonth: string
   }
+  cup: {
+    name: string
+    competitionId: string
+    standings: Standings | null
+    scorers: Scorers | null
+    matchSchedule: Match[]
+    lastVisible: QueryDocumentSnapshot<Match> | null
+    hasNext: boolean
+    season: string
+    yearMonth: string
+  }
   team: {
     data: Team | null
   }
@@ -79,6 +90,18 @@ const useStore = () => {
     store.league.yearMonth = ''
   }
 
+  const resetCup = (): void => {
+    store.cup.name = ''
+    store.cup.competitionId = ''
+    store.cup.standings = null
+    store.cup.scorers = null
+    store.cup.matchSchedule = []
+    store.cup.lastVisible = null
+    store.cup.hasNext = true
+    store.cup.season = ''
+    store.cup.yearMonth = ''
+  }
+
   const resetTeam = (): void => {
     store.team.data = null
   }
@@ -91,10 +114,12 @@ const useStore = () => {
 
   return {
     confirmation: store.confirmation,
+    cup: store.cup,
     league: store.league,
     match: store.match,
     matches: store.matches,
     reports: store.reports,
+    resetCup,
     resetLeague,
     resetMatch,
     resetMatches,

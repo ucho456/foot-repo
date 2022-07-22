@@ -30,6 +30,17 @@ export default defineNuxtPlugin((_, inject) => {
       season: string
       yearMonth: string
     }
+    cup: {
+      name: string
+      competitionId: string
+      standings: Standings | null
+      scorers: Scorers | null
+      matchSchedule: Match[]
+      lastVisible: QueryDocumentSnapshot<Match> | null
+      hasNext: boolean
+      season: string
+      yearMonth: string
+    }
     team: {
       data: Team | null
     }
@@ -61,6 +72,17 @@ export default defineNuxtPlugin((_, inject) => {
       hasNext: true
     },
     league: {
+      name: '',
+      competitionId: '',
+      standings: null,
+      scorers: null,
+      matchSchedule: [],
+      lastVisible: null,
+      hasNext: true,
+      season: '',
+      yearMonth: ''
+    },
+    cup: {
       name: '',
       competitionId: '',
       standings: null,
