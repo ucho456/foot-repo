@@ -45,12 +45,14 @@ const setScorers = functions
   .onRun(async () => {
     const batch = admin.firestore().batch()
     for (const competition of competitions) {
-      const scorers = await getScorers(competition)
-      const sRef = admin
-        .firestore()
-        .doc(`competitions/${competition.collectionId}/scorers/${scorers.season}`)
-        .withConverter(scorersConverter)
-      batch.set(sRef, scorers)
+      try {
+        const scorers = await getScorers(competition)
+        const sRef = admin
+          .firestore()
+          .doc(`competitions/${competition.collectionId}/scorers/${scorers.season}`)
+          .withConverter(scorersConverter)
+        batch.set(sRef, scorers)
+      } catch {}
     }
     await batch.commit()
     return null
