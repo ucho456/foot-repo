@@ -16,7 +16,7 @@
         </v-row>
         <div v-if="editReport.selectTeam !== 'away'">
           <v-row v-for="reportItem in editReport.homeTeamReportItems" :key="reportItem.id">
-            <v-col cols="3"> {{ reportItem.position }}. {{ reportItem.shirtNumber }} </v-col>
+            <v-col cols="3"> {{ reportItem.position }} {{ reportItem.shirtNumber }} </v-col>
             <v-col cols="9">{{ reportItem.player.name }}</v-col>
             <v-col class="mt-n3" cols="3"><SelectPoint v-model="reportItem.point" /></v-col>
             <v-col class="mt-n5" cols="9">
