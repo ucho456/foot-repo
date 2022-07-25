@@ -10,7 +10,7 @@ const getStandings = async (competition: {
   collectionId: string
 }): Promise<Standings> => {
   const res: AxiosResponse<any, any> = await axios.get(
-    footballUrl + `competitions/${competition.id}/standings`,
+    footballUrl + `competitions/${competition.id}/standings?season=2021`,
     config
   )
   const fbStandings = res.data as FbStandings
