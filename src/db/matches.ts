@@ -101,6 +101,24 @@ export const toStoreMatchSchedule = async (league: {
   if (mSnapshot.size < perPage) league.hasNext = false
 }
 
+export const toStoreJapanMatchSchedule = async (japan: {
+  matchSchedule: Match[]
+  season: string
+}) => {
+  const db = getFirestore()
+  const mRef = collection(db, 'matches').withConverter(matchConverter)
+  const q = query(
+    mRef,
+    where('competition.id', '==', 'Japan'),
+    where('season', '==', japan.season),
+    orderBy('jstDate', 'desc')
+  )
+  const mSnapshot = await getDocs(q)
+  mSnapshot.forEach((doc) => {
+    if (doc.exists()) japan.matchSchedule.push(doc.data())
+  })
+}
+
 export const fetchUpdateCandidateMatches = async (): Promise<Match[]> => {
   const db = getFirestore()
   const mRef = collection(db, 'matches').withConverter(matchConverter)

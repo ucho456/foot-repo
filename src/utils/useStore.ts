@@ -39,6 +39,10 @@ export const StoreKey: InjectionKey<{
     season: string
     yearMonth: string
   }
+  japan: {
+    matchSchedule: Match[]
+    season: string
+  }
   team: {
     data: Team | null
   }
@@ -115,6 +119,7 @@ const useStore = () => {
   return {
     confirmation: store.confirmation,
     cup: store.cup,
+    japan: store.japan,
     league: store.league,
     match: store.match,
     matches: store.matches,

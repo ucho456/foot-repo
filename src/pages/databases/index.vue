@@ -35,9 +35,9 @@ export default defineComponent({
     }[] = [
       {
         id: 'Japan',
-        title: '日本代表（準備中）',
+        title: '日本代表',
         src: 'https://upload.wikimedia.org/wikipedia/commons/9/9e/Flag_of_Japan.svg',
-        // to: '/databases/leagues/J-League',
+        to: '/databases/japan',
         type: 'japan'
       },
       {

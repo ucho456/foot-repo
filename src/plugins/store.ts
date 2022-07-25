@@ -41,6 +41,10 @@ export default defineNuxtPlugin((_, inject) => {
       season: string
       yearMonth: string
     }
+    japan: {
+      matchSchedule: Match[]
+      season: string
+    }
     team: {
       data: Team | null
     }
@@ -92,6 +96,10 @@ export default defineNuxtPlugin((_, inject) => {
       hasNext: true,
       season: '',
       yearMonth: ''
+    },
+    japan: {
+      matchSchedule: [],
+      season: String(new Date().getFullYear())
     },
     team: {
       data: null

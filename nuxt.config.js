@@ -106,37 +106,37 @@ export default {
     treeShake: true
   },
 
-  purgeCSS: {
-    enabled: true,
-    paths: ['node_modules/vuetify/src/**/*.ts'],
-    whitelist: [
-      'v-application',
-      'v-application--wrap',
-      'layout',
-      'container',
-      'row',
-      'col',
-      'button',
-      'textarea'
-    ],
-    whitelistPatterns: [
-      /^v-((?!application).)*$/,
-      /^theme--*/,
-      /.*-transition/,
-      /^justify-*/,
-      /^m*-auto/,
-      /^m*-[0-9]/,
-      /^m*-[n][0-9]/,
-      /^p*-auto/,
-      /^p*-[0-9]/,
-      /^p*-[n][0-9]/,
-      /^row-*/,
-      /^col-*/,
-      /^d-*/,
-      /^spacer/
-    ],
-    whitelistPatternsChildren: [/^v-((?!application).)*$/, /^theme--*/]
-  },
+  // purgeCSS: {
+  //   enabled: true,
+  //   paths: ['node_modules/vuetify/src/**/*.ts'],
+  //   whitelist: [
+  //     'v-application',
+  //     'v-application--wrap',
+  //     'layout',
+  //     'container',
+  //     'row',
+  //     'col',
+  //     'button',
+  //     'textarea'
+  //   ],
+  //   whitelistPatterns: [
+  //     /^v-((?!application).)*$/,
+  //     /^theme--*/,
+  //     /.*-transition/,
+  //     /^justify-*/,
+  //     /^m*-auto/,
+  //     /^m*-[0-9]/,
+  //     /^m*-[n][0-9]/,
+  //     /^p*-auto/,
+  //     /^p*-[0-9]/,
+  //     /^p*-[n][0-9]/,
+  //     /^row-*/,
+  //     /^col-*/,
+  //     /^d-*/,
+  //     /^spacer/
+  //   ],
+  //   whitelistPatternsChildren: [/^v-((?!application).)*$/, /^theme--*/]
+  // },
 
   build: {
     transpile: ['vee-validate/dist/rules']
