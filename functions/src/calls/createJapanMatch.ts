@@ -5,7 +5,7 @@ import { forReportConverter, matchConverter, matchDetailConverter } from '../con
 import { env } from '../utils'
 
 /** change here */
-import { forReport, match, matchDetail, matchId } from '../japan/20220719japan'
+import useJapanMatchData from '../japan/20220719japan'
 
 export const createJapanMatch = functions
   .region('asia-northeast1')
@@ -13,6 +13,7 @@ export const createJapanMatch = functions
     if (process.env.NODE_ENV === 'production' && req.query.secret !== env.secret) {
       throw new Error('Unauthorized')
     }
+    const { forReport, match, matchDetail, matchId } = useJapanMatchData()
     const batch = admin.firestore().batch()
     const mRef = admin.firestore().doc(`matches/${matchId}`).withConverter(matchConverter)
     batch.set(mRef, match)
