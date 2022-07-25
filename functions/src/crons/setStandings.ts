@@ -47,12 +47,14 @@ const setStandings = functions
   .onRun(async () => {
     const batch = admin.firestore().batch()
     for (const competition of competitions) {
-      const standings = await getStandings(competition)
-      const sRef = admin
-        .firestore()
-        .doc(`competitions/${competition.collectionId}/standings/${standings.season}`)
-        .withConverter(standingsConverter)
-      batch.set(sRef, standings)
+      try {
+        const standings = await getStandings(competition)
+        const sRef = admin
+          .firestore()
+          .doc(`competitions/${competition.collectionId}/standings/${standings.season}`)
+          .withConverter(standingsConverter)
+        batch.set(sRef, standings)
+      } catch {}
     }
     await batch.commit()
     return null

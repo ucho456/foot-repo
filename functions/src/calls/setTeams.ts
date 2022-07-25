@@ -46,7 +46,7 @@ const setTeams = async (
   competition: { id: number; collectionId: string },
   req: functions.https.Request
 ): Promise<void> => {
-  if (process.env.NODE_ENV === 'production' && req.body.secret !== env.secret) {
+  if (process.env.NODE_ENV === 'production' && req.query.secret !== env.secret) {
     throw new Error('Unauthorized')
   }
   const fbTeams = await getFbTeams(competition.id)
