@@ -43,7 +43,9 @@ const useJapanMatchData = () => {
     { player: { id: '10', name: '岩崎 悠人' }, position: 'FW', shirtNumber: 10 },
     { player: { id: '17', name: '宮市 亮' }, position: 'FW', shirtNumber: 17 },
     { player: { id: '20', name: '	細谷 真大' }, position: 'FW', shirtNumber: 20 },
-    { player: { id: '21', name: '満田 誠' }, position: 'FW', shirtNumber: 21 },
+    { player: { id: '21', name: '満田 誠' }, position: 'FW', shirtNumber: 21 }
+  ]
+  const japanCoach: Player[] = [
     { player: { id: '0', name: '森保 一' }, position: 'HC', shirtNumber: null }
   ]
 
@@ -84,7 +86,9 @@ const useJapanMatchData = () => {
     { player: { id: '11', name: 'チェン チンルン' }, position: 'MF', shirtNumber: 11 },
     { player: { id: '25', name: '市川 聡悟' }, position: 'MF', shirtNumber: 25 },
     { player: { id: '16', name: 'チェン シウクワン' }, position: 'FW', shirtNumber: 16 },
-    { player: { id: '17', name: 'ジャハーンギール カーン' }, position: 'FW', shirtNumber: 17 },
+    { player: { id: '17', name: 'ジャハーンギール カーン' }, position: 'FW', shirtNumber: 17 }
+  ]
+  const enemyCoach: Player[] = [
     { player: { id: '0', name: 'ヨルン アンデルセン' }, position: 'HC', shirtNumber: null }
   ]
 
@@ -96,7 +100,7 @@ const useJapanMatchData = () => {
     yearMonth: '2022-07',
     matchday: 1 /** all 1 */,
     status: 'FINISHED',
-    stage: '日本代表戦',
+    stage: 'EAFF E-1フットボールチャンピオンシップ',
     venue: 'カシマスタジアム',
     teamIds: ['Japan'],
     competition: {
@@ -125,9 +129,9 @@ const useJapanMatchData = () => {
   const matchDetail: MatchDetail = {
     id: matchId,
     homeLineup: japanLineup,
-    homeBench: japanBench,
+    homeBench: japanBench.concat(japanCoach),
     awayLineup: enemyLineup,
-    awayBench: enemyBench,
+    awayBench: enemyBench.concat(enemyCoach),
     goals: [
       {
         keyId: '1',
@@ -257,12 +261,18 @@ const useJapanMatchData = () => {
   }
   const forReport: ForReport = {
     id: matchId,
-    homeTeamReportItems: japanLineup.concat(japanSubstitutions).map((p, i) => {
-      return { id: p.player.id, ...p, point: '6.0', text: '', order: i + 1 }
-    }),
-    awayTeamReportItems: enemyLineup.concat(enemySubstitutions).map((p, i) => {
-      return { id: p.player.id, ...p, point: '6.0', text: '', order: i + 1 }
-    }),
+    homeTeamReportItems: japanLineup
+      .concat(japanSubstitutions)
+      .concat(japanCoach)
+      .map((p, i) => {
+        return { id: p.player.id, ...p, point: '6.0', text: '', order: i + 1 }
+      }),
+    awayTeamReportItems: enemyLineup
+      .concat(enemySubstitutions)
+      .concat(enemyCoach)
+      .map((p, i) => {
+        return { id: p.player.id, ...p, point: '6.0', text: '', order: i + 1 }
+      }),
     lastUpdated
   }
 

@@ -7,7 +7,7 @@ import { createJapanMatch } from './calls/createJapanMatch'
 import {
   createBundesligaMatches,
   createChampionsLeagueMatches,
-  createJLeagueMatches,
+  // createJLeagueMatches,
   createLaLigaMatches,
   createLigue1Matches,
   createPremierLeagueMatches,
@@ -27,18 +27,18 @@ import {
   setWorldCupTeams
 } from './calls/setTeams'
 import updateEmailVerified from './calls/updateEmailVerified'
-import {
-  setBundesligaMatches,
-  setChampionsLeagueMatches,
-  setJLeagueMatches,
-  setLaLigaMatches,
-  setLigue1Matches,
-  setPremierLeagueMatches,
-  setSerieAMatches,
-  setWorldCupMatches
-} from './crons/setMatches'
-import setScorers from './crons/setScorers'
-import setStandings from './crons/setStandings'
+// import {
+//   setBundesligaMatches,
+//   setChampionsLeagueMatches,
+//   setJLeagueMatches,
+//   setLaLigaMatches,
+//   setLigue1Matches,
+//   setPremierLeagueMatches,
+//   setSerieAMatches,
+//   setWorldCupMatches
+// } from './crons/setMatches'
+// import setScorers from './crons/setScorers'
+// import setStandings from './crons/setStandings'
 
 admin.initializeApp()
 
@@ -47,7 +47,7 @@ module.exports = {
   createAuth,
   createBundesligaMatches,
   createChampionsLeagueMatches,
-  createJLeagueMatches,
+  // createJLeagueMatches,
   createJapanMatch,
   createLaLigaMatches,
   createLigue1Matches,
@@ -56,23 +56,23 @@ module.exports = {
   createUser,
   createWorldCupMatches,
   promptUpdateMatch,
-  setBundesligaMatches,
+  // setBundesligaMatches,
   setBundesligaTeams,
-  setChampionsLeagueMatches,
+  // setChampionsLeagueMatches,
   setChampionsLeagueTeams,
-  setJLeagueMatches,
+  // setJLeagueMatches,
   setJLeagueTeams,
-  setLaLigaMatches,
+  // setLaLigaMatches,
   setLaLigaTeams,
-  setLigue1Matches,
+  // setLigue1Matches,
   setLigue1Teams,
-  setPremierLeagueMatches,
+  // setPremierLeagueMatches,
   setPremierLeagueTeams,
-  setScorers,
-  setSerieAMatches,
+  // setScorers,
+  // setSerieAMatches,
   setSerieATeams,
-  setStandings,
-  setWorldCupMatches,
+  // setStandings,
+  // setWorldCupMatches,
   setWorldCupTeams,
   updateEmailVerified
 }

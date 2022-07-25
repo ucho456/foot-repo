@@ -5,7 +5,7 @@
         <v-row justify="center">
           <v-col cols="10">
             <SelectIdCompetition
-              :league-only="true"
+              :league-only="leagueOnly"
               :value="searchOption.competitionId"
               @input="inputCompetitionId"
             />

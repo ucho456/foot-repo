@@ -38,6 +38,7 @@ export default defineComponent({
       : [
           { id: '', name: 'すべて' },
           // { id: 'J-League', name: 'J. League' },
+          { id: 'Japan', name: '日本代表戦' },
           { id: 'World-Cup', name: 'World Cup' },
           { id: 'Champions-League', name: 'Champions League' },
           { id: 'Premier-League', name: 'Premier League' },
