@@ -3,6 +3,7 @@
 import * as admin from 'firebase-admin'
 import buildSitemap from './calls/buildSitemap'
 import createAuth from './calls/createAuth'
+import { createJapanMatch } from './calls/createJapanMatch'
 import {
   createBundesligaMatches,
   createChampionsLeagueMatches,
@@ -47,6 +48,7 @@ module.exports = {
   createBundesligaMatches,
   createChampionsLeagueMatches,
   // createJLeagueMatches,
+  createJapanMatch,
   createLaLigaMatches,
   createLigue1Matches,
   createPremierLeagueMatches,
