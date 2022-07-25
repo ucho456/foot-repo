@@ -1,6 +1,6 @@
 /** check */
 import { ref, Ref, useRoute, useRouter, watch } from '@nuxtjs/composition-api'
-import type { QueryDocumentSnapshot } from 'firebase/firestore/lite'
+import type { QueryDocumentSnapshot } from 'firebase/firestore'
 import { deleteReport, fetchUserLikeReports, fetchUserReports } from '@/db/reports'
 import { fetchIsFollow, fetchFollowers, fetchFollows, fetchUser, doFollow } from '@/db/users'
 import useLoginUser from '@/utils/useLoginUser'

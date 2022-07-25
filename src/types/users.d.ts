@@ -19,26 +19,26 @@ type Like = {
   id: string
   report: {
     id: string
-    ref: import('firebase/firestore/lite').DocumentReference
+    ref: import('firebase/firestore').DocumentReference
   }
-  createdAt: import('firebase/firestore/lite').FieldValue
+  createdAt: import('firebase/firestore').FieldValue
 }
 
 type Follower = {
   id: string
   user: {
     id: string
-    ref: import('firebase/firestore/lite').DocumentReference
+    ref: import('firebase/firestore').DocumentReference
     name: string
     imageUrl: string | null
   }
-  createdAt: import('firebase/firestore/lite').FieldValue
+  createdAt: import('firebase/firestore').FieldValue
   follow?: boolean
 }
 
 type ViolationReporter = {
   user: {
     id: string
-    ref: import('firebase/firestore/lite').DocumentReference
+    ref: import('firebase/firestore').DocumentReference
   }
 }

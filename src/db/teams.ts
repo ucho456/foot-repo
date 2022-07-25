@@ -1,5 +1,5 @@
 /** check */
-import { doc, getDoc, getFirestore } from 'firebase/firestore/lite'
+import { doc, getDoc, getFirestore } from 'firebase/firestore'
 import { teamConverter } from '@/utils/converters'
 
 /** Teams Read */

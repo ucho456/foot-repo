@@ -1,7 +1,7 @@
 import { defineNuxtPlugin } from '@nuxtjs/composition-api'
 import { getApp, getApps, initializeApp } from 'firebase/app'
 import { connectAuthEmulator, getAuth } from 'firebase/auth'
-import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore/lite'
+import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore'
 import { connectStorageEmulator, getStorage } from 'firebase/storage'
 import { connectFunctionsEmulator, getFunctions } from 'firebase/functions'
 import { getAnalytics, logEvent } from 'firebase/analytics'

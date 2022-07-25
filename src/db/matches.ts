@@ -11,8 +11,8 @@ import {
   startAfter,
   Timestamp,
   where
-} from 'firebase/firestore/lite'
-import type { QueryDocumentSnapshot } from 'firebase/firestore/lite'
+} from 'firebase/firestore'
+import type { QueryDocumentSnapshot } from 'firebase/firestore'
 import { forReportConverter, matchConverter, matchDetailConverter } from '@/utils/converters'
 import { makeSearchOption } from '@/utils/searchOption'
 const perPage = 10

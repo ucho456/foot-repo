@@ -1,6 +1,6 @@
 /** check */
-import { where } from 'firebase/firestore/lite'
-import type { QueryConstraint } from 'firebase/firestore/lite'
+import { where } from 'firebase/firestore'
+import type { QueryConstraint } from 'firebase/firestore'
 
 export const makeSearchOption = (searchOption: {
   status: string

@@ -16,8 +16,8 @@ import {
   startAt,
   where,
   writeBatch
-} from 'firebase/firestore/lite'
-import type { QueryDocumentSnapshot } from 'firebase/firestore/lite'
+} from 'firebase/firestore'
+import type { QueryDocumentSnapshot } from 'firebase/firestore'
 import {
   commentConverter,
   likeConverter,

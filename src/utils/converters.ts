@@ -2,7 +2,7 @@ import type {
   DocumentData,
   FirestoreDataConverter,
   QueryDocumentSnapshot
-} from 'firebase/firestore/lite'
+} from 'firebase/firestore'
 
 /** competitions */
 export const scorersConverter: FirestoreDataConverter<Scorers> = {
