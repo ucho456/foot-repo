@@ -127,9 +127,15 @@ export const fetchReport = async (reportId: string): Promise<Report | null> => {
 
 export const fetchReportFromFunctions = async (reportId: string) => {
   const functions = getFunctions(undefined, 'asia-northeast1')
-  const fetchReport = httpsCallable(functions, 'fetchReport')
-  const res = await fetchReport({ reportId })
-  return res.data as Report
+  const fetchSSR = httpsCallable(functions, 'fetchSSR')
+  const res = await fetchSSR({ reportId })
+  return res.data as {
+    result: 'success' | 'failure'
+    resReport: Report
+    resHomeTeamReportItems: ReportItem[]
+    resAwayTeamReportItems: ReportItem[]
+    resMatch: Match
+  }
 }
 
 export const fetchReportItems = async (
@@ -166,8 +172,8 @@ export const fetchReportItems = async (
 
 export const toStoreReportsFromFunctions = async (reports: { data: Report[] }): Promise<void> => {
   const functions = getFunctions(undefined, 'asia-northeast1')
-  const fetchReports = httpsCallable(functions, 'fetchReports')
-  const res = await fetchReports()
+  const fetchSSR = httpsCallable(functions, 'fetchSSR')
+  const res = await fetchSSR({ reportId: null })
   const resReports = res.data as Report[]
   reports.data = resReports
 }

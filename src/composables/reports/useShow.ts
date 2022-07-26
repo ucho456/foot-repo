@@ -5,6 +5,7 @@ import {
   doLike,
   fetchComments,
   fetchReport,
+  fetchReportFromFunctions,
   fetchReportItems,
   fetchSameMatchReports,
   postComment
@@ -21,53 +22,93 @@ const useShow = () => {
   const { openSnackbar } = useSnackbar()
   const { confirmation } = useStore()
 
+  /** setUp */
   const report = ref<Report | null>(null)
   const homeTeamReportItems = ref<ReportItem[]>([])
   const awayTeamReportItems = ref<ReportItem[]>([])
   const match = ref<Match | null>(null)
-  const user = ref<User | null>(null)
-  const sameMatchReports = ref<Report[]>([])
-  const comments = ref<ReportComment[]>([])
-  const like = ref(false)
-  const follow = ref(false)
+  const ssrSetUp = async () => {
+    const reportId = route.value.params.id as string
+    const { result, resReport, resHomeTeamReportItems, resAwayTeamReportItems, resMatch } =
+      await fetchReportFromFunctions(reportId)
+    if (result === 'success') {
+      report.value = resReport
+      homeTeamReportItems.value = resHomeTeamReportItems
+      awayTeamReportItems.value = resAwayTeamReportItems
+      match.value = resMatch
+    } else {
+      openSnackbar('failure', 'ページが見つかりませんでした。ホーム画面に遷移します。')
+      router.push('/')
+    }
+  }
 
-  /** setUp */
   const isLoadingReport = ref(false)
-  const isLoadingUser = ref(false)
-  const isLoadingSameMatchReports = ref(false)
-  const isLoadingComments = ref(false)
-  const setUp = async (): Promise<void> => {
+  const csrSetUp = async () => {
     try {
       isLoadingReport.value = true
       const reportId = route.value.params.id as string
       const resReport = await fetchReport(reportId)
       if (resReport) {
-        const uid = loginUser.value?.uid
-        if (!resReport.publish && resReport.user.id !== uid) throw new Error('unauthorized access')
         const { resHomeTeamReportItems, resAwayTeamReportItems } = await fetchReportItems(resReport)
         report.value = resReport
         homeTeamReportItems.value = resHomeTeamReportItems
         awayTeamReportItems.value = resAwayTeamReportItems
         match.value = await fetchMatch(report.value.match.id)
-        if (loginUser.value) like.value = await fetchIsLike(loginUser.value.uid, reportId)
-        isLoadingReport.value = false
-        if (report.value.user.id !== 'guest') {
-          isLoadingUser.value = true
-          user.value = await fetchUser(report.value.user.id)
-          if (loginUser.value) {
-            follow.value = await fetchIsFollow(loginUser.value.uid, report.value.user.id)
-          }
-          isLoadingUser.value = false
-        }
-        isLoadingSameMatchReports.value = true
-        sameMatchReports.value = await fetchSameMatchReports(report.value.match.id, reportId)
-        isLoadingSameMatchReports.value = false
-        isLoadingComments.value = true
-        comments.value = await fetchComments(reportId)
-        isLoadingComments.value = false
-      } else {
-        throw new Error('Not Found')
       }
+    } catch (error) {
+      console.log(error)
+      openSnackbar('failure', 'ページが見つかりませんでした。ホーム画面に遷移します。')
+      router.push('/')
+    } finally {
+      isLoadingReport.value = false
+    }
+  }
+
+  const user = ref<User | null>(null)
+  const sameMatchReports = ref<Report[]>([])
+  const comments = ref<ReportComment[]>([])
+  const like = ref(false)
+  const follow = ref(false)
+  const disabledLikeButton = ref(false)
+  const showFollowButton = ref(false)
+  const commentUser = ref<{ name: string; imageUrl: string | null }>({
+    name: 'Guest',
+    imageUrl: null
+  })
+  const isLoadingUser = ref(false)
+  const isLoadingSameMatchReports = ref(false)
+  const isLoadingComments = ref(false)
+  const commonSetUp = async () => {
+    if (!report.value) return
+    try {
+      const uid = loginUser.value?.uid
+      if (!report.value.publish && report.value.user.id !== uid) {
+        throw new Error('unauthorized access')
+      }
+      const reportId = route.value.params.id as string
+      if (!loginUser.value || loginUser.value.uid === report.value.user.id) {
+        disabledLikeButton.value = true
+      }
+      if (loginUser.value) like.value = await fetchIsLike(loginUser.value.uid, reportId)
+      if (report.value.user.id !== 'guest') {
+        isLoadingUser.value = true
+        user.value = await fetchUser(report.value.user.id)
+        if (loginUser.value && loginUser.value.uid !== report.value.user.id) {
+          follow.value = await fetchIsFollow(loginUser.value.uid, report.value.user.id)
+          showFollowButton.value = true
+        }
+        isLoadingUser.value = false
+      }
+      isLoadingSameMatchReports.value = true
+      sameMatchReports.value = await fetchSameMatchReports(report.value.match.id, reportId)
+      isLoadingSameMatchReports.value = false
+      isLoadingComments.value = true
+      comments.value = await fetchComments(reportId)
+      if (loginUser.value) {
+        commentUser.value.name = loginUser.value.name
+        commentUser.value.imageUrl = loginUser.value.imageUrl
+      }
+      isLoadingComments.value = false
     } catch (error) {
       console.log(error)
       if (error instanceof Error && error.message === 'unauthorized access') {
@@ -77,7 +118,6 @@ const useShow = () => {
         openSnackbar('failure', '通信エラーが発生しました。')
       }
     } finally {
-      isLoadingReport.value = false
       isLoadingUser.value = false
       isLoadingSameMatchReports.value = false
       isLoadingComments.value = false
@@ -173,9 +213,13 @@ const useShow = () => {
   return {
     awayTeamReportItems,
     comments,
+    commentUser,
+    commonSetUp,
     confirmLogin,
     createComment,
+    csrSetUp,
     dialogShare,
+    disabledLikeButton,
     follow,
     hideDialogShare,
     homeTeamReportItems,
@@ -192,9 +236,10 @@ const useShow = () => {
     newComment,
     report,
     sameMatchReports,
-    setUp,
     share,
     showDialogShare,
+    showFollowButton,
+    ssrSetUp,
     updateFollow,
     updateLike,
     user

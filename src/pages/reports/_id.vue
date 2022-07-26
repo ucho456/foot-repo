@@ -56,107 +56,106 @@
         <v-row>
           <v-col cols="12" class="font-weight-bold">総評：{{ report.summary }}</v-col>
         </v-row>
-        <v-row>
-          <v-col>
-            <v-btn icon color="#1da1f2" @click="share('twitter')">
-              <v-icon>{{ mdiTwitter }}</v-icon>
-            </v-btn>
-            <v-btn icon color="#3b5998" @click="share('facebook')">
-              <v-icon>{{ mdiFacebook }}</v-icon>
-            </v-btn>
-            <v-btn
-              icon
-              :color="like ? '#ff9800' : '#9e9e9e'"
-              :disabled="!loginUser || loginUser.uid === report.user.id"
-              :loading="isLoadingUpdateLike"
-              @click="updateLike"
-            >
-              <v-icon>{{ mdiThumbUp }}</v-icon>
-            </v-btn>
-            {{ report.likeCount }}
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-card>
-    <v-card v-if="!isLoadingReport && report && report.user.id !== 'guest'" class="mt-4" outlined>
-      <ContainerLoading :is-loading="isLoadingUser" />
-      <v-container v-if="!isLoadingUser && user && report">
-        <v-row>
-          <v-col cols="12" class="mb-n6">
-            <h2>投稿者</h2>
-          </v-col>
-          <ColUserImageName
-            :cols="7"
-            :sm="9"
-            :md="9"
-            :image-url="user.imageUrl"
-            :name="user.name"
-            :user-id="user.id"
-          />
-          <v-col cols="5" sm="3">
-            <ButtonFollow
-              v-if="loginUser && loginUser.uid !== user.id"
-              :follow="follow"
-              :is-loading="isLoadingUpdateFollow"
-              :user-id="user.id"
-              @click="updateFollow"
-            />
-          </v-col>
-          <v-col cols="12" class="mt-n4">マイチーム：{{ user.team.name }}</v-col>
-          <v-col cols="12" class="o-greet mt-n4">{{ user.greet }}</v-col>
-        </v-row>
-      </v-container>
-    </v-card>
-    <v-card v-if="!isLoadingReport && !isLoadingUser" class="mt-4" outlined>
-      <ContainerLoading :is-loading="isLoadingSameMatchReports" />
-      <ContainerReportTable :h2="'同じ試合の選手採点'" :reports="sameMatchReports" />
-    </v-card>
-    <v-card
-      v-if="!isLoadingReport && !isLoadingUser && !isLoadingSameMatchReports"
-      class="mt-4"
-      outlined
-    >
-      <ContainerLoading :is-loading="isLoadingComments" />
-      <v-container v-if="!isLoadingComments">
-        <v-row>
-          <v-col>
-            <h2>コメント</h2>
-          </v-col>
-        </v-row>
-        <v-row v-if="comments.length === 0">
-          <v-col>コメントはまだありません。 </v-col>
-        </v-row>
-        <v-row v-for="comment in comments" :key="comment.id">
-          <ColUserImageName
-            :image-size="20"
-            :image-url="comment.user.imageUrl"
-            :name="comment.user.name"
-            :user-id="comment.user.id"
-          />
-          <v-col class="o-comment mt-n4 pl-11">{{ comment.text }}</v-col>
-        </v-row>
-        <v-row>
-          <ColUserImageName
-            v-if="loginUser"
-            :image-url="loginUser.imageUrl"
-            :name="loginUser.name"
-          />
-          <ColUserImageName v-else :name="'Guest'" />
-        </v-row>
-        <v-row>
-          <v-col cols="12"> <Textarea v-model="newComment" :maxlength="140" /></v-col>
-          <v-col cols="6" class="mt-n8">
-            <ButtonSubmit
-              :disabled="newComment.length === 0"
-              :is-loading="isLoadingNewComment"
-              :text="'コメントを投稿'"
-              @click="confirmLogin"
-            />
-          </v-col>
-        </v-row>
       </v-container>
     </v-card>
     <client-only>
+      <v-card v-if="report" class="mt-4" outlined>
+        <v-container>
+          <v-row>
+            <v-col>
+              <v-btn icon color="#1da1f2" @click="share('twitter')">
+                <v-icon>{{ mdiTwitter }}</v-icon>
+              </v-btn>
+              <v-btn icon color="#3b5998" @click="share('facebook')">
+                <v-icon>{{ mdiFacebook }}</v-icon>
+              </v-btn>
+              <v-btn
+                icon
+                :color="like ? '#ff9800' : '#9e9e9e'"
+                :disabled="disabledLikeButton"
+                :loading="isLoadingUpdateLike"
+                @click="updateLike"
+              >
+                <v-icon>{{ mdiThumbUp }}</v-icon>
+              </v-btn>
+              {{ report.likeCount }}
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-card>
+      <v-card v-if="!isLoadingReport && report && report.user.id !== 'guest'" class="mt-4" outlined>
+        <ContainerLoading :is-loading="isLoadingUser" />
+        <v-container v-if="!isLoadingUser && user && report">
+          <v-row>
+            <v-col cols="12" class="mb-n6">
+              <h2>投稿者</h2>
+            </v-col>
+            <ColUserImageName
+              :cols="7"
+              :sm="9"
+              :md="9"
+              :image-url="user.imageUrl"
+              :name="user.name"
+              :user-id="user.id"
+            />
+            <v-col cols="5" sm="3">
+              <ButtonFollow
+                v-if="showFollowButton"
+                :follow="follow"
+                :is-loading="isLoadingUpdateFollow"
+                :user-id="user.id"
+                @click="updateFollow"
+              />
+            </v-col>
+            <v-col cols="12" class="mt-n4">マイチーム：{{ user.team.name }}</v-col>
+            <v-col cols="12" class="o-greet mt-n4">{{ user.greet }}</v-col>
+          </v-row>
+        </v-container>
+      </v-card>
+      <v-card v-if="!isLoadingReport && !isLoadingUser" class="mt-4" outlined>
+        <ContainerLoading :is-loading="isLoadingSameMatchReports" />
+        <ContainerReportTable :h2="'同じ試合の選手採点'" :reports="sameMatchReports" />
+      </v-card>
+      <v-card
+        v-if="!isLoadingReport && !isLoadingUser && !isLoadingSameMatchReports"
+        class="mt-4"
+        outlined
+      >
+        <ContainerLoading :is-loading="isLoadingComments" />
+        <v-container v-if="!isLoadingComments">
+          <v-row>
+            <v-col>
+              <h2>コメント</h2>
+            </v-col>
+          </v-row>
+          <v-row v-if="comments.length === 0">
+            <v-col>コメントはまだありません。 </v-col>
+          </v-row>
+          <v-row v-for="comment in comments" :key="comment.id">
+            <ColUserImageName
+              :image-size="20"
+              :image-url="comment.user.imageUrl"
+              :name="comment.user.name"
+              :user-id="comment.user.id"
+            />
+            <v-col class="o-comment mt-n4 pl-11">{{ comment.text }}</v-col>
+          </v-row>
+          <v-row>
+            <ColUserImageName :image-url="commentUser.imageUrl" :name="commentUser.name" />
+          </v-row>
+          <v-row>
+            <v-col cols="12"> <Textarea v-model="newComment" :maxlength="140" /></v-col>
+            <v-col cols="6" class="mt-n8">
+              <ButtonSubmit
+                :disabled="newComment.length === 0"
+                :is-loading="isLoadingNewComment"
+                :text="'コメントを投稿'"
+                @click="confirmLogin"
+              />
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-card>
       <DialogConfirmLogin
         :is-dialog="isDialog"
         :text="'ログインが完了していません。\nゲストとしてコメントを投稿しますか？'"
@@ -174,10 +173,9 @@
 
 <script lang="ts">
 /** check */
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, useFetch, onBeforeMount } from '@nuxtjs/composition-api'
 import { mdiFacebook, mdiThumbUp, mdiTwitter } from '@mdi/js'
 import useShow from '@/composables/reports/useShow'
-import useLoginUser from '@/utils/useLoginUser'
 import ButtonFollow from '@/components/molecules/ButtonFollow.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
 import ColUserImageName from '@/components/organisms/ColUserImageName.vue'
@@ -205,9 +203,13 @@ export default defineComponent({
     const {
       awayTeamReportItems,
       comments,
+      commentUser,
+      commonSetUp,
       confirmLogin,
       createComment,
+      csrSetUp,
       dialogShare,
+      disabledLikeButton,
       follow,
       hideDialogShare,
       homeTeamReportItems,
@@ -224,25 +226,33 @@ export default defineComponent({
       newComment,
       report,
       sameMatchReports,
-      setUp,
       share,
       showDialogShare,
+      showFollowButton,
+      ssrSetUp,
       updateFollow,
       updateLike,
       user
     } = useShow()
-    const { loginUser } = useLoginUser()
     const lazy = require('@/assets/lazy.png')
 
-    setUp()
-    showDialogShare()
+    useFetch(async () => {
+      process.server ? await ssrSetUp() : await csrSetUp()
+    })
+
+    onBeforeMount(() => {
+      commonSetUp()
+      showDialogShare()
+    })
 
     return {
       awayTeamReportItems,
       comments,
+      commentUser,
       confirmLogin,
       createComment,
       dialogShare,
+      disabledLikeButton,
       follow,
       hideDialogShare,
       homeTeamReportItems,
@@ -256,7 +266,6 @@ export default defineComponent({
       isLoadingUser,
       lazy,
       like,
-      loginUser,
       match,
       mdiFacebook,
       mdiThumbUp,
@@ -265,6 +274,7 @@ export default defineComponent({
       report,
       sameMatchReports,
       share,
+      showFollowButton,
       updateFollow,
       updateLike,
       user
