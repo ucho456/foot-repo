@@ -10,18 +10,21 @@ export const fetchReport = functions.region('asia-northeast1').https.onCall(asyn
   return rSnapshot.exists ? rSnapshot.data() : null
 })
 
-export const fetchReports = functions.region('asia-northeast1').https.onCall(async () => {
-  const rRef = admin
-    .firestore()
-    .collection(`reports`)
-    .where('publish', '==', true)
-    .orderBy('createdAt', 'desc')
-    .limit(10)
-    .withConverter(reportConverter)
-  const rSnapshot = await rRef.get()
-  const reports: Report[] = []
-  rSnapshot.forEach((doc) => {
-    if (doc.exists) reports.push(doc.data())
+export const fetchReports = functions
+  .runWith({ memory: '1GB' })
+  .region('asia-northeast1')
+  .https.onCall(async () => {
+    const rRef = admin
+      .firestore()
+      .collection(`reports`)
+      .where('publish', '==', true)
+      .orderBy('createdAt', 'desc')
+      .limit(10)
+      .withConverter(reportConverter)
+    const rSnapshot = await rRef.get()
+    const reports: Report[] = []
+    rSnapshot.forEach((doc) => {
+      if (doc.exists) reports.push(doc.data())
+    })
+    return reports
   })
-  return reports
-})
