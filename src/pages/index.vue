@@ -8,7 +8,7 @@
         :is-loading="isLoadingChangeReports"
         :reports="reports.data"
         :search-button-flg="true"
-        :tabs="tabs"
+        :tabs="['New', 'Popular']"
         @change-tab="changeTab"
         @search="showDialog"
       />
@@ -66,8 +66,7 @@ export default defineComponent({
       isLoadingReports,
       pushToReports,
       setUp,
-      showDialog,
-      tabs
+      showDialog
     } = useIndex()
     const { reports } = useStore()
 
@@ -87,8 +86,7 @@ export default defineComponent({
       isLoadingReports,
       pushToReports,
       reports,
-      showDialog,
-      tabs
+      showDialog
     }
   }
 })

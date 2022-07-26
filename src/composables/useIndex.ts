@@ -1,13 +1,11 @@
 /** check */
 import { ref, useRouter, watch } from '@nuxtjs/composition-api'
 import { toStoreReports, toStorePopularReports } from '@/db/reports'
-import useLoginUser from '@/utils/useLoginUser'
 import useSnackbar from '@/utils/useSnackbar'
 import useStore from '@/utils/useStore'
 
 const useIndex = () => {
   const router = useRouter()
-  const { loginUser } = useLoginUser()
   const { openSnackbar } = useSnackbar()
   const { reports, resetReports } = useStore()
 
@@ -56,9 +54,9 @@ const useIndex = () => {
 
   /** reports tab */
   const tab = ref('New')
-  const tabs = ref<string[]>(['New', 'Top 10'])
+  const tabs = ['New', 'Popular']
   const changeTab = (index: number): void => {
-    tab.value = tabs.value[index]
+    tab.value = tabs[index]
   }
   watch(tab, () => changeReports())
   const isLoadingChangeReports = ref(false)
@@ -68,14 +66,9 @@ const useIndex = () => {
       if (tab.value === 'New') {
         resetReports()
         await toStoreReports(reports)
-      } else if (tab.value === 'Top 10') {
+      } else if (tab.value === 'Popular') {
         resetReports()
         await toStorePopularReports(reports)
-      } else if (tab.value === 'My Team' && loginUser.value) {
-        resetReports()
-        reports.searchOption.teamId = loginUser.value.team.id
-        reports.searchOption.competitionId = loginUser.value.competitionId
-        await toStoreReports(reports)
       }
     } catch (error) {
       console.log(error)
@@ -97,8 +90,7 @@ const useIndex = () => {
     isLoadingReports,
     pushToReports,
     setUp,
-    showDialog,
-    tabs
+    showDialog
   }
 }
 
