@@ -1,5 +1,5 @@
 /** check */
-import { computed, ref, useRouter, watch } from '@nuxtjs/composition-api'
+import { ref, useRouter, watch } from '@nuxtjs/composition-api'
 import { toStoreReports, toStorePopularReports } from '@/db/reports'
 import useLoginUser from '@/utils/useLoginUser'
 import useSnackbar from '@/utils/useSnackbar'
@@ -56,11 +56,7 @@ const useIndex = () => {
 
   /** reports tab */
   const tab = ref('New')
-  const tabs = computed(() => {
-    return loginUser.value && loginUser.value.team.id
-      ? ['New', 'Top 10', 'My Team']
-      : ['New', 'Top 10']
-  })
+  const tabs = ref<string[]>(['New', 'Top 10'])
   const changeTab = (index: number): void => {
     tab.value = tabs.value[index]
   }

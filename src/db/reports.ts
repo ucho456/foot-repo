@@ -18,6 +18,7 @@ import {
   writeBatch
 } from 'firebase/firestore'
 import type { QueryDocumentSnapshot } from 'firebase/firestore'
+import { getFunctions, httpsCallable } from 'firebase/functions'
 import {
   commentConverter,
   likeConverter,
@@ -124,6 +125,13 @@ export const fetchReport = async (reportId: string): Promise<Report | null> => {
   return rShapshot.exists() ? rShapshot.data() : null
 }
 
+export const fetchReportFromFunctions = async (reportId: string) => {
+  const functions = getFunctions(undefined, 'asia-northeast1')
+  const fetchReport = httpsCallable(functions, 'fetchReport')
+  const res = await fetchReport({ reportId })
+  return res.data as Report
+}
+
 export const fetchReportItems = async (
   report: Report
 ): Promise<{
@@ -154,6 +162,14 @@ export const fetchReportItems = async (
     })
   }
   return { resHomeTeamReportItems, resAwayTeamReportItems }
+}
+
+export const toStoreReportsFromFunctions = async (reports: { data: Report[] }): Promise<void> => {
+  const functions = getFunctions(undefined, 'asia-northeast1')
+  const fetchReports = httpsCallable(functions, 'fetchReports')
+  const res = await fetchReports()
+  const resReports = res.data as Report[]
+  reports.data = resReports
 }
 
 export const toStoreReports = async (reports: {

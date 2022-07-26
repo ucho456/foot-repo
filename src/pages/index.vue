@@ -35,8 +35,9 @@
 
 <script lang="ts">
 /** check */
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, useFetch } from '@nuxtjs/composition-api'
 import useIndex from '@/composables/useIndex'
+import { toStoreReportsFromFunctions } from '@/db/reports'
 import useStore from '@/utils/useStore'
 import ButtonOutlined from '@/components/molecules/ButtonOutlined.vue'
 import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
@@ -70,7 +71,9 @@ export default defineComponent({
     } = useIndex()
     const { reports } = useStore()
 
-    setUp()
+    useFetch(async () => {
+      process.server ? await toStoreReportsFromFunctions(reports) : setUp()
+    })
 
     return {
       changeTab,
