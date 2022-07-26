@@ -1,10 +1,10 @@
 <template>
   <ValidationProvider v-slot="{ errors }" :rules="rules">
+    <label>{{ label }}</label>
     <v-textarea
       counter
       outlined
       :error-messages="errors[0]"
-      :label="label"
       :maxlength="maxlength"
       :value="value"
       @input="handleInput"
