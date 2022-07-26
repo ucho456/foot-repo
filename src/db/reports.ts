@@ -13,7 +13,6 @@ import {
   serverTimestamp,
   setDoc,
   startAfter,
-  startAt,
   where,
   writeBatch
 } from 'firebase/firestore/lite'
@@ -209,30 +208,6 @@ export const toStoreReports = async (reports: {
   })
   reports.lastVisible = rSnapshot.docs[rSnapshot.size - 1]
   if (rSnapshot.size < perPage) reports.hasNext = false
-}
-
-export const toStorePopularReports = async (reports: {
-  data: Report[]
-  lastVisible: QueryDocumentSnapshot<Report> | null
-  searchOption: SearchOption
-  hasNext: boolean
-}) => {
-  const db = getFirestore()
-  const rRef = collection(db, 'reports').withConverter(reportConverter)
-  const startDate = new Date()
-  startDate.setDate(startDate.getDate() - 7)
-  const q = query(
-    rRef,
-    where('publish', '==', true),
-    orderBy('likeCount', 'desc'),
-    orderBy('createdAt', 'desc'),
-    startAt(startDate),
-    limit(perPage)
-  )
-  const rSnapshot = await getDocs(q)
-  rSnapshot.forEach((doc) => {
-    if (doc.exists()) reports.data.push(doc.data())
-  })
 }
 
 export const fetchSameMatchReports = async (

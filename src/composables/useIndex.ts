@@ -1,6 +1,6 @@
 /** check */
-import { ref, useRouter, watch } from '@nuxtjs/composition-api'
-import { toStoreReports, toStorePopularReports } from '@/db/reports'
+import { ref, useRouter } from '@nuxtjs/composition-api'
+import { toStoreReports } from '@/db/reports'
 import useSnackbar from '@/utils/useSnackbar'
 import useStore from '@/utils/useStore'
 
@@ -52,41 +52,13 @@ const useIndex = () => {
     router.push('/reports')
   }
 
-  /** reports tab */
-  const tab = ref('New')
-  const tabs = ['New', 'Popular']
-  const changeTab = (index: number): void => {
-    tab.value = tabs[index]
-  }
-  watch(tab, () => changeReports())
-  const isLoadingChangeReports = ref(false)
-  const changeReports = async (): Promise<void> => {
-    try {
-      isLoadingChangeReports.value = true
-      if (tab.value === 'New') {
-        resetReports()
-        await toStoreReports(reports)
-      } else if (tab.value === 'Popular') {
-        resetReports()
-        await toStorePopularReports(reports)
-      }
-    } catch (error) {
-      console.log(error)
-      openSnackbar('failure', '通信エラーが発生しました。')
-    } finally {
-      isLoadingChangeReports.value = false
-    }
-  }
-
   return {
-    changeTab,
     clearYearMonth,
     hideDialog,
     inputCompetitionId,
     inputTeamId,
     inputYearMonth,
     isDialog,
-    isLoadingChangeReports,
     isLoadingReports,
     pushToReports,
     setUp,

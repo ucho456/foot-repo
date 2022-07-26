@@ -5,11 +5,8 @@
       <ContainerReportTable
         v-if="!isLoadingReports"
         :h2="'みんなの選手採点'"
-        :is-loading="isLoadingChangeReports"
         :reports="reports.data"
         :search-button-flg="true"
-        :tabs="['New', 'Popular']"
-        @change-tab="changeTab"
         @search="showDialog"
       />
       <v-container v-if="!isLoadingReports">
@@ -55,14 +52,12 @@ export default defineComponent({
 
   setup() {
     const {
-      changeTab,
       clearYearMonth,
       hideDialog,
       inputCompetitionId,
       inputTeamId,
       inputYearMonth,
       isDialog,
-      isLoadingChangeReports,
       isLoadingReports,
       pushToReports,
       setUp,
@@ -75,14 +70,12 @@ export default defineComponent({
     })
 
     return {
-      changeTab,
       clearYearMonth,
       hideDialog,
       inputCompetitionId,
       inputTeamId,
       inputYearMonth,
       isDialog,
-      isLoadingChangeReports,
       isLoadingReports,
       pushToReports,
       reports,
