@@ -1,5 +1,5 @@
 import { defineNuxtPlugin, onGlobalSetup, provide, reactive } from '@nuxtjs/composition-api'
-import type { QueryDocumentSnapshot } from 'firebase/firestore'
+import type { QueryDocumentSnapshot } from 'firebase/firestore/lite'
 import { StoreKey } from '@/utils/useStore'
 
 export default defineNuxtPlugin((_, inject) => {

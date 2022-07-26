@@ -1,5 +1,5 @@
 /** check */
-import { doc, getDoc, getFirestore } from 'firebase/firestore'
+import { doc, getDoc, getFirestore } from 'firebase/firestore/lite'
 import { scorersConverter, standingsConverter } from '@/utils/converters'
 
 /** Scorers Read */

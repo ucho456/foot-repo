@@ -16,8 +16,8 @@ import {
   updateDoc,
   where,
   writeBatch
-} from 'firebase/firestore'
-import type { QueryDocumentSnapshot } from 'firebase/firestore'
+} from 'firebase/firestore/lite'
+import type { QueryDocumentSnapshot } from 'firebase/firestore/lite'
 import { followerConverter, likeConverter, userConverter } from '@/utils/converters'
 const perPage = 10
 

@@ -1,5 +1,5 @@
 import { inject, InjectionKey } from '@nuxtjs/composition-api'
-import type { QueryDocumentSnapshot } from 'firebase/firestore'
+import type { QueryDocumentSnapshot } from 'firebase/firestore/lite'
 
 export const StoreKey: InjectionKey<{
   confirmation: {
