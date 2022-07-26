@@ -40,56 +40,6 @@ export const standingsConverter: FirestoreDataConverter<Standings> = {
   }
 }
 
-/** reports */
-export const reportConverter: FirestoreDataConverter<Report> = {
-  toFirestore(report: Report): DocumentData {
-    return {
-      title: report.title,
-      user: report.user,
-      homeTeam: report.homeTeam,
-      awayTeam: report.awayTeam,
-      competition: report.competition,
-      jstDate: report.jstDate,
-      yearMonth: report.yearMonth,
-      match: report.match,
-      matchday: report.matchday,
-      stage: report.stage,
-      selectTeam: report.selectTeam,
-      momId: report.momId,
-      summary: report.summary,
-      teamIds: report.teamIds,
-      publish: report.publish,
-      likeCount: report.likeCount,
-      frozen: report.frozen,
-      createdAt: report.createdAt
-    }
-  },
-  fromFirestore(snapshot: QueryDocumentSnapshot): Report {
-    const data = snapshot.data()
-    return {
-      id: snapshot.id,
-      title: data.title,
-      user: data.user,
-      homeTeam: data.homeTeam,
-      awayTeam: data.awayTeam,
-      competition: data.competition,
-      jstDate: data.jstDate,
-      yearMonth: data.yearMonth,
-      match: data.match,
-      matchday: data.matchday,
-      stage: data.stage,
-      selectTeam: data.selectTeam,
-      momId: data.momId,
-      summary: data.summary,
-      teamIds: data.teamIds,
-      publish: data.publish,
-      likeCount: data.likeCount,
-      frozen: data.frozen,
-      createdAt: data.createdAt
-    }
-  }
-}
-
 /** matches */
 export const matchConverter: FirestoreDataConverter<Match> = {
   toFirestore(match: Match): DocumentData {
@@ -174,6 +124,83 @@ export const forReportConverter: FirestoreDataConverter<ForReport> = {
       homeTeamReportItems: data.homeTeamReportItems,
       awayTeamReportItems: data.awayTeamReportItems,
       lastUpdated: data.lastUpdated
+    }
+  }
+}
+
+/** reports */
+export const reportConverter: FirestoreDataConverter<Report> = {
+  toFirestore(report: Report): DocumentData {
+    return {
+      title: report.title,
+      user: report.user,
+      homeTeam: report.homeTeam,
+      awayTeam: report.awayTeam,
+      competition: report.competition,
+      jstDate: report.jstDate,
+      yearMonth: report.yearMonth,
+      match: report.match,
+      matchday: report.matchday,
+      stage: report.stage,
+      selectTeam: report.selectTeam,
+      momId: report.momId,
+      summary: report.summary,
+      teamIds: report.teamIds,
+      publish: report.publish,
+      likeCount: report.likeCount,
+      frozen: report.frozen,
+      createdAt: report.createdAt
+    }
+  },
+  fromFirestore(snapshot: QueryDocumentSnapshot): Report {
+    const data = snapshot.data()
+    return {
+      id: snapshot.id,
+      title: data.title,
+      user: data.user,
+      homeTeam: data.homeTeam,
+      awayTeam: data.awayTeam,
+      competition: data.competition,
+      jstDate: data.jstDate,
+      yearMonth: data.yearMonth,
+      match: data.match,
+      matchday: data.matchday,
+      stage: data.stage,
+      selectTeam: data.selectTeam,
+      momId: data.momId,
+      summary: data.summary,
+      teamIds: data.teamIds,
+      publish: data.publish,
+      likeCount: data.likeCount,
+      frozen: data.frozen,
+      createdAt: data.createdAt
+    }
+  }
+}
+
+export const reportItemConverter: FirestoreDataConverter<ReportItem> = {
+  toFirestore(reportItem: ReportItem): DocumentData {
+    return {
+      user: reportItem.user,
+      player: reportItem.player,
+      position: reportItem.position,
+      shirtNumber: reportItem.shirtNumber,
+      point: reportItem.point,
+      text: reportItem.text,
+      order: reportItem.order
+    }
+  },
+  fromFirestore(snapshot: QueryDocumentSnapshot): ReportItem {
+    const data = snapshot.data()
+    return {
+      id: snapshot.id,
+      user: data.user,
+      player: data.player,
+      position: data.position,
+      shirtNumber: data.shirtNumber,
+      point: data.point,
+      text: data.text,
+      order: data.order
     }
   }
 }

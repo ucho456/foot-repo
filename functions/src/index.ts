@@ -15,7 +15,7 @@ import {
   createWorldCupMatches
 } from './calls/createMatches'
 import createUser from './calls/createUser'
-import { fetchReport, fetchReports } from './calls/fetchReports'
+import fetchSSR from './calls/fetchSSR'
 import { promptUpdateMatch } from './calls/promptUpdateMatch'
 import {
   setBundesligaTeams,
@@ -56,8 +56,7 @@ module.exports = {
   createSerieAMatches,
   createUser,
   createWorldCupMatches,
-  fetchReport,
-  fetchReports,
+  fetchSSR,
   promptUpdateMatch,
   // setBundesligaMatches,
   setBundesligaTeams,
