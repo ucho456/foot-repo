@@ -237,7 +237,7 @@ export default defineComponent({
     const lazy = require('@/assets/lazy.png')
 
     useFetch(async () => {
-      process.server && process.env.NODE_ENV === 'production' ? await ssrSetUp() : await csrSetUp()
+      process.server ? await ssrSetUp() : await csrSetUp()
     })
 
     onBeforeMount(() => {

@@ -27,7 +27,8 @@ const useShow = () => {
   const homeTeamReportItems = ref<ReportItem[]>([])
   const awayTeamReportItems = ref<ReportItem[]>([])
   const match = ref<Match | null>(null)
-  const ssrSetUp = async () => {
+  const ssrSetUp = async (): Promise<void> => {
+    if (process.env.NODE_ENV !== 'production') return
     const reportId = route.value.params.id as string
     const { result, resReport, resHomeTeamReportItems, resAwayTeamReportItems, resMatch } =
       await fetchReportFromFunctions(reportId)
@@ -43,7 +44,7 @@ const useShow = () => {
   }
 
   const isLoadingReport = ref(false)
-  const csrSetUp = async () => {
+  const csrSetUp = async (): Promise<void> => {
     try {
       isLoadingReport.value = true
       const reportId = route.value.params.id as string
@@ -55,6 +56,7 @@ const useShow = () => {
         awayTeamReportItems.value = resAwayTeamReportItems
         match.value = await fetchMatch(report.value.match.id)
       }
+      commonSetUp()
     } catch (error) {
       console.log(error)
       openSnackbar('failure', 'ページが見つかりませんでした。ホーム画面に遷移します。')
@@ -78,7 +80,7 @@ const useShow = () => {
   const isLoadingUser = ref(false)
   const isLoadingSameMatchReports = ref(false)
   const isLoadingComments = ref(false)
-  const commonSetUp = async () => {
+  const commonSetUp = async (): Promise<void> => {
     if (!report.value) return
     try {
       const uid = loginUser.value?.uid
