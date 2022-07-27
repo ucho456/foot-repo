@@ -2,7 +2,7 @@ import * as admin from 'firebase-admin'
 
 const useJapanMatchData = () => {
   /** common */
-  const lastUpdated = '2022-07-22'
+  const lastUpdated = '2022-07-27'
   const japanTeam = {
     id: 'Japan',
     ref: admin.firestore().doc('teams/Japan'),
@@ -55,41 +55,41 @@ const useJapanMatchData = () => {
     name: '香港'
   }
   const enemyLineup: Player[] = [
-    { player: { id: '18', name: 'パウロ セザール' }, position: 'GK', shirtNumber: 18 },
-    { player: { id: '5', name: 'ツェ シーンカケウン' }, position: 'DF', shirtNumber: 5 },
-    { player: { id: '7', name: 'ロー ツチュン' }, position: 'DF', shirtNumber: 7 },
-    { player: { id: '12', name: 'リャン クウォンチュン' }, position: 'DF', shirtNumber: 12 },
-    { player: { id: '21', name: 'ユエ ツェナム' }, position: 'DF', shirtNumber: 21 },
-    { player: { id: '22', name: 'ヴァス ヌニェス' }, position: 'DF', shirtNumber: 22 },
-    { player: { id: '8', name: 'ウー チュンミン' }, position: 'MF', shirtNumber: 8 },
-    { player: { id: '10', name: 'ウォン ワイ' }, position: 'MF', shirtNumber: 10 },
-    { player: { id: '24', name: 'ジュー インジー' }, position: 'MF', shirtNumber: 24 },
-    { player: { id: '9', name: 'マット オア' }, position: 'FW', shirtNumber: 9 },
-    { player: { id: '23', name: 'スン ミンヒム' }, position: 'FW', shirtNumber: 23 }
+    { player: { id: '18', name: 'パウロ・セザール' }, position: 'GK', shirtNumber: 18 },
+    { player: { id: '5', name: 'ツェ・シーンカケウン' }, position: 'DF', shirtNumber: 5 },
+    { player: { id: '7', name: 'ロー・ツチュン' }, position: 'DF', shirtNumber: 7 },
+    { player: { id: '12', name: 'リャン・クウォンチュン' }, position: 'DF', shirtNumber: 12 },
+    { player: { id: '21', name: 'ユエ・ツェナム' }, position: 'DF', shirtNumber: 21 },
+    { player: { id: '22', name: 'ヴァス・ヌニェス' }, position: 'DF', shirtNumber: 22 },
+    { player: { id: '8', name: 'ウー・チュンミン' }, position: 'MF', shirtNumber: 8 },
+    { player: { id: '10', name: 'ウォン・ワイ' }, position: 'MF', shirtNumber: 10 },
+    { player: { id: '24', name: 'ジュー・インジー' }, position: 'MF', shirtNumber: 24 },
+    { player: { id: '9', name: 'マット・オア' }, position: 'FW', shirtNumber: 9 },
+    { player: { id: '23', name: 'スン・ミンヒム' }, position: 'FW', shirtNumber: 23 }
   ]
   const enemySubstitutions: Player[] = [
-    { player: { id: '3', name: 'ツイ ワンキット' }, position: 'DF', shirtNumber: 3 },
-    { player: { id: '6', name: 'タン タンチュンロク' }, position: 'MF', shirtNumber: 6 },
-    { player: { id: '17', name: 'ジャハーンギール カーン' }, position: 'FW', shirtNumber: 17 },
-    { player: { id: '11', name: 'チェン チンルン' }, position: 'MF', shirtNumber: 11 },
+    { player: { id: '3', name: 'ツイ・ワンキット' }, position: 'DF', shirtNumber: 3 },
+    { player: { id: '6', name: 'タン・タンチュンロク' }, position: 'MF', shirtNumber: 6 },
+    { player: { id: '17', name: 'ジャハーンギール・カーン' }, position: 'FW', shirtNumber: 17 },
+    { player: { id: '11', name: 'チェン・チンルン' }, position: 'MF', shirtNumber: 11 },
     { player: { id: '25', name: '市川 聡悟' }, position: 'MF', shirtNumber: 25 }
   ]
   const enemyBench: Player[] = [
-    { player: { id: '1', name: 'ンー ワイヒム' }, position: 'GK', shirtNumber: 1 },
-    { player: { id: '19', name: 'チャン カホ' }, position: 'GK', shirtNumber: 19 },
-    { player: { id: '3', name: 'ツイ ワンキット' }, position: 'DF', shirtNumber: 3 },
-    { player: { id: '4', name: 'トーマス マロネージ' }, position: 'DF', shirtNumber: 4 },
-    { player: { id: '13', name: 'ラウ ホクミン' }, position: 'DF', shirtNumber: 13 },
-    { player: { id: '20', name: '	イウ ホーミン' }, position: 'DF', shirtNumber: 20 },
-    { player: { id: '26', name: 'ツァン イーハン エリソン' }, position: 'DF', shirtNumber: 26 },
-    { player: { id: '6', name: 'タン タンチュンロク' }, position: 'MF', shirtNumber: 6 },
-    { player: { id: '11', name: 'チェン チンルン' }, position: 'MF', shirtNumber: 11 },
+    { player: { id: '1', name: 'ンー・ワイヒム' }, position: 'GK', shirtNumber: 1 },
+    { player: { id: '19', name: 'チャン・カホ' }, position: 'GK', shirtNumber: 19 },
+    { player: { id: '3', name: 'ツイ・ワンキット' }, position: 'DF', shirtNumber: 3 },
+    { player: { id: '4', name: 'トーマス・マロネージ' }, position: 'DF', shirtNumber: 4 },
+    { player: { id: '13', name: 'ラウ・ホクミン' }, position: 'DF', shirtNumber: 13 },
+    { player: { id: '20', name: '	イウ・ホーミン' }, position: 'DF', shirtNumber: 20 },
+    { player: { id: '26', name: 'ツァン・イーハン・エリソン' }, position: 'DF', shirtNumber: 26 },
+    { player: { id: '6', name: 'タン・タンチュンロク' }, position: 'MF', shirtNumber: 6 },
+    { player: { id: '11', name: 'チェン・チンルン' }, position: 'MF', shirtNumber: 11 },
     { player: { id: '25', name: '市川 聡悟' }, position: 'MF', shirtNumber: 25 },
-    { player: { id: '16', name: 'チェン シウクワン' }, position: 'FW', shirtNumber: 16 },
-    { player: { id: '17', name: 'ジャハーンギール カーン' }, position: 'FW', shirtNumber: 17 }
+    { player: { id: '16', name: 'チェン・シウクワン' }, position: 'FW', shirtNumber: 16 },
+    { player: { id: '17', name: 'ジャハーンギール・カーン' }, position: 'FW', shirtNumber: 17 }
   ]
   const enemyCoach: Player[] = [
-    { player: { id: '0', name: 'ヨルン アンデルセン' }, position: 'HC', shirtNumber: null }
+    { player: { id: '0', name: 'ヨルン・アンデルセン' }, position: 'HC', shirtNumber: null }
   ]
 
   const matchId = '20220719japan'
@@ -123,7 +123,7 @@ const useJapanMatchData = () => {
       score: 0,
       penalty: null
     },
-    lastUpdated: '2022-07-22',
+    lastUpdated,
     promptUpdateTime: admin.firestore.Timestamp.now()
   }
   const matchDetail: MatchDetail = {
@@ -181,7 +181,7 @@ const useJapanMatchData = () => {
         keyId: '1',
         minute: 82,
         team: enemyTeam,
-        player: { id: '21', name: 'ユエ ツェナム' },
+        player: { id: '21', name: 'ユエ・ツェナム' },
         card: 'yellow'
       }
     ],
@@ -190,22 +190,22 @@ const useJapanMatchData = () => {
         keyId: '1',
         minute: 46,
         team: enemyTeam,
-        outPlayer: { id: '23', name: 'スン ミンヒム' },
-        inPlayer: { id: '17', name: 'ジャハーンギール カーン' }
+        outPlayer: { id: '23', name: 'スン・ミンヒム' },
+        inPlayer: { id: '17', name: 'ジャハーンギール・カーン' }
       },
       {
         keyId: '2',
         minute: 46,
         team: enemyTeam,
-        outPlayer: { id: '24', name: 'ジュー インジー' },
-        inPlayer: { id: '6', name: 'タン タンチュンロク' }
+        outPlayer: { id: '24', name: 'ジュー・インジー' },
+        inPlayer: { id: '6', name: 'タン・タンチュンロク' }
       },
       {
         keyId: '3',
         minute: 46,
         team: enemyTeam,
-        outPlayer: { id: '12', name: 'リャン クウォンチュン' },
-        inPlayer: { id: '3', name: 'ツイ ワンキット' }
+        outPlayer: { id: '12', name: 'リャン・クウォンチュン' },
+        inPlayer: { id: '3', name: 'ツイ・ワンキット' }
       },
       {
         keyId: '4',
@@ -246,15 +246,15 @@ const useJapanMatchData = () => {
         keyId: '9',
         minute: 77,
         team: enemyTeam,
-        outPlayer: { id: '7', name: 'ロー ツチュン' },
+        outPlayer: { id: '7', name: 'ロー・ツチュン' },
         inPlayer: { id: '25', name: '市川 聡悟' }
       },
       {
         keyId: '10',
         minute: 78,
         team: enemyTeam,
-        outPlayer: { id: '10', name: 'ウォン ワイ' },
-        inPlayer: { id: '11', name: 'チェン チンルン' }
+        outPlayer: { id: '10', name: 'ウォン・ワイ' },
+        inPlayer: { id: '11', name: 'チェン・チンルン' }
       }
     ],
     lastUpdated
