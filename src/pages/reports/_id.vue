@@ -173,7 +173,7 @@
 
 <script lang="ts">
 /** check */
-import { defineComponent, useFetch, onBeforeMount } from '@nuxtjs/composition-api'
+import { defineComponent, onBeforeMount, useFetch, useMeta } from '@nuxtjs/composition-api'
 import { mdiFacebook, mdiThumbUp, mdiTwitter } from '@mdi/js'
 import useShow from '@/composables/reports/useShow'
 import ButtonFollow from '@/components/molecules/ButtonFollow.vue'
@@ -245,6 +245,25 @@ export default defineComponent({
       showDialogShare()
     })
 
+    useMeta(() => {
+      const title = report.value?.title
+      const date = report.value?.jstDate
+      const d = `${date?.substring(0, 4)}年${date?.substring(5, 7)}月${date?.substring(8, 10)}日`
+      const c = report.value?.competition.name
+      const h = report.value?.homeTeam.name
+      const a = report.value?.awayTeam.name
+      const description = `${d}に開催された、${c} ${h} vs ${a} 戦の選手採点です。サッカーの選手採点共有サービス、フットレポがお届けします。`
+      return {
+        title: `${title} - フットレポ`,
+        meta: [
+          { hid: 'description', property: 'description', content: description },
+          { hid: 'keywords', property: 'keywords', content: `サッカー,選手採点,${h},${a}` },
+          { hid: 'og:title', property: 'og:title', content: `${title} - フットレポ` },
+          { hid: 'og:description', property: 'og:description', content: description }
+        ]
+      }
+    })
+
     return {
       awayTeamReportItems,
       comments,
@@ -279,7 +298,8 @@ export default defineComponent({
       updateLike,
       user
     }
-  }
+  },
+  head: {}
 })
 </script>
 
