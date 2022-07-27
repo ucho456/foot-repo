@@ -66,9 +66,7 @@ export default defineComponent({
     const { reports } = useStore()
 
     useFetch(async () => {
-      process.server && process.env.NODE_ENV === 'production'
-        ? await toStoreReportsFromFunctions(reports)
-        : setUp()
+      process.server ? await toStoreReportsFromFunctions(reports) : setUp()
     })
 
     return {

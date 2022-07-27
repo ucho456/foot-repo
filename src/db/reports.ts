@@ -170,11 +170,14 @@ export const fetchReportItems = async (
 }
 
 export const toStoreReportsFromFunctions = async (reports: { data: Report[] }): Promise<void> => {
-  const functions = getFunctions(undefined, 'asia-northeast1')
-  const fetchSSR = httpsCallable(functions, 'fetchSSR')
-  const res = await fetchSSR({ reportId: null })
-  const resReports = res.data as Report[]
-  reports.data = resReports
+  if (process.env.NODE_ENV === 'production') {
+    console.log('toStoreReportsFromFunctions')
+    const functions = getFunctions(undefined, 'asia-northeast1')
+    const fetchSSR = httpsCallable(functions, 'fetchSSR')
+    const res = await fetchSSR({ reportId: null })
+    const resReports = res.data as Report[]
+    reports.data = resReports
+  }
 }
 
 export const toStoreReports = async (reports: {
