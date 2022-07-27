@@ -5,7 +5,7 @@ import { forReportConverter, matchConverter, matchDetailConverter } from '../con
 import { makeMatch } from '../calls/createMatches'
 import { getFbMatch, makeForReport, makeMatchDetail } from '../crons/setMatches'
 
-export const promptUpdateMatch = functions.region('asia-northeast1').https.onCall(async (data) => {
+const promptUpdateMatch = functions.region('asia-northeast1').https.onCall(async (data) => {
   const matchId = data.matchId as string
   const fbMatch = await getFbMatch(matchId)
   const mRef = admin.firestore().doc(`matches/${fbMatch.id}`).withConverter(matchConverter)
@@ -45,3 +45,5 @@ export const promptUpdateMatch = functions.region('asia-northeast1').https.onCal
     return 'success'
   }
 })
+
+export default promptUpdateMatch

@@ -92,66 +92,11 @@ const setMatches = async (
   await batch.commit()
 }
 
-export const createBundesligaMatches = functions
-  .region('asia-northeast1')
-  .https.onRequest(async (req, res) => {
-    const competition = competitionMap.get('Bundesliga')!
-    await setMatches(competition, req)
-    res.sendStatus(200)
-  })
+const createMatches = functions.region('asia-northeast1').https.onRequest(async (req, res) => {
+  const queryCompetition = req.query.competition as string
+  const competition = competitionMap.get(queryCompetition)!
+  await setMatches(competition, req)
+  res.sendStatus(200)
+})
 
-export const createChampionsLeagueMatches = functions
-  .region('asia-northeast1')
-  .https.onRequest(async (req, res) => {
-    const competition = competitionMap.get('Champions-League')!
-    await setMatches(competition, req)
-    res.sendStatus(200)
-  })
-
-export const createJLeagueMatches = functions
-  .region('asia-northeast1')
-  .https.onRequest(async (req, res) => {
-    const competition = competitionMap.get('J-League')!
-    await setMatches(competition, req)
-    res.sendStatus(200)
-  })
-
-export const createLaLigaMatches = functions
-  .region('asia-northeast1')
-  .https.onRequest(async (req, res) => {
-    const competition = competitionMap.get('La-Liga')!
-    await setMatches(competition, req)
-    res.sendStatus(200)
-  })
-
-export const createLigue1Matches = functions
-  .region('asia-northeast1')
-  .https.onRequest(async (req, res) => {
-    const competition = competitionMap.get('Ligue-1')!
-    await setMatches(competition, req)
-    res.sendStatus(200)
-  })
-
-export const createPremierLeagueMatches = functions
-  .region('asia-northeast1')
-  .https.onRequest(async (req, res) => {
-    const competition = competitionMap.get('Premier-League')!
-    await setMatches(competition, req)
-    res.sendStatus(200)
-  })
-
-export const createSerieAMatches = functions
-  .region('asia-northeast1')
-  .https.onRequest(async (req, res) => {
-    const competition = competitionMap.get('Serie-A')!
-    await setMatches(competition, req)
-    res.sendStatus(200)
-  })
-
-export const createWorldCupMatches = functions
-  .region('asia-northeast1')
-  .https.onRequest(async (req, res) => {
-    const competition = competitionMap.get('World-Cup')!
-    await setMatches(competition, req)
-    res.sendStatus(200)
-  })
+export default createMatches

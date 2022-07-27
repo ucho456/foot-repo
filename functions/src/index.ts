@@ -3,30 +3,12 @@
 import * as admin from 'firebase-admin'
 import buildSitemap from './calls/buildSitemap'
 import createAuth from './calls/createAuth'
-import { createJapanMatch } from './calls/createJapanMatch'
-import {
-  createBundesligaMatches,
-  createChampionsLeagueMatches,
-  // createJLeagueMatches,
-  createLaLigaMatches,
-  createLigue1Matches,
-  createPremierLeagueMatches,
-  createSerieAMatches,
-  createWorldCupMatches
-} from './calls/createMatches'
+import createJapanMatch from './calls/createJapanMatch'
+import createMatches from './calls/createMatches'
 import createUser from './calls/createUser'
 import fetchSSR from './calls/fetchSSR'
-import { promptUpdateMatch } from './calls/promptUpdateMatch'
-import {
-  setBundesligaTeams,
-  setChampionsLeagueTeams,
-  setJLeagueTeams,
-  setLaLigaTeams,
-  setLigue1Teams,
-  setPremierLeagueTeams,
-  setSerieATeams,
-  setWorldCupTeams
-} from './calls/setTeams'
+import promptUpdateMatch from './calls/promptUpdateMatch'
+import setTeams from './calls/setTeams'
 import updateEmailVerified from './calls/updateEmailVerified'
 // import {
 //   setBundesligaMatches,
@@ -46,35 +28,21 @@ admin.initializeApp()
 module.exports = {
   buildSitemap,
   createAuth,
-  createBundesligaMatches,
-  createChampionsLeagueMatches,
-  // createJLeagueMatches,
   createJapanMatch,
-  createLaLigaMatches,
-  createLigue1Matches,
-  createPremierLeagueMatches,
-  createSerieAMatches,
+  createMatches,
   createUser,
-  createWorldCupMatches,
   fetchSSR,
   promptUpdateMatch,
   // setBundesligaMatches,
-  setBundesligaTeams,
   // setChampionsLeagueMatches,
-  setChampionsLeagueTeams,
   // setJLeagueMatches,
-  setJLeagueTeams,
   // setLaLigaMatches,
-  setLaLigaTeams,
   // setLigue1Matches,
-  setLigue1Teams,
   // setPremierLeagueMatches,
-  setPremierLeagueTeams,
   // setScorers,
   // setSerieAMatches,
-  setSerieATeams,
   // setStandings,
+  setTeams,
   // setWorldCupMatches,
-  setWorldCupTeams,
   updateEmailVerified
 }

@@ -42,13 +42,12 @@ const getTeam = (fbTeam: FbTeam): Team => {
   }
 }
 
-const setTeams = async (
-  competition: { id: number; collectionId: string },
-  req: functions.https.Request
-): Promise<void> => {
+const setTeams = functions.region('asia-northeast1').https.onRequest(async (req, res) => {
   if (process.env.NODE_ENV === 'production' && req.query.secret !== env.secret) {
     throw new Error('Unauthorized')
   }
+  const queryCompetition = req.query.competition as string
+  const competition = competitionMap.get(queryCompetition)!
   const fbTeams = await getFbTeams(competition.id)
   const batch = admin.firestore().batch()
   for (const fbTeam of fbTeams) {
@@ -63,68 +62,7 @@ const setTeams = async (
     }
   }
   await batch.commit()
-}
+  res.sendStatus(200)
+})
 
-export const setBundesligaTeams = functions
-  .region('asia-northeast1')
-  .https.onRequest(async (req, res) => {
-    const competition = competitionMap.get('Bundesliga')!
-    await setTeams(competition, req)
-    res.sendStatus(200)
-  })
-
-export const setChampionsLeagueTeams = functions
-  .region('asia-northeast1')
-  .https.onRequest(async (req, res) => {
-    const competition = competitionMap.get('Champions-League')!
-    await setTeams(competition, req)
-    res.sendStatus(200)
-  })
-
-export const setJLeagueTeams = functions
-  .region('asia-northeast1')
-  .https.onRequest(async (req, res) => {
-    const competition = competitionMap.get('J-League')!
-    await setTeams(competition, req)
-    res.sendStatus(200)
-  })
-
-export const setLaLigaTeams = functions
-  .region('asia-northeast1')
-  .https.onRequest(async (req, res) => {
-    const competition = competitionMap.get('La-Liga')!
-    await setTeams(competition, req)
-    res.sendStatus(200)
-  })
-
-export const setLigue1Teams = functions
-  .region('asia-northeast1')
-  .https.onRequest(async (req, res) => {
-    const competition = competitionMap.get('Ligue-1')!
-    await setTeams(competition, req)
-    res.sendStatus(200)
-  })
-
-export const setPremierLeagueTeams = functions
-  .region('asia-northeast1')
-  .https.onRequest(async (req, res) => {
-    const competition = competitionMap.get('Premier-League')!
-    await setTeams(competition, req)
-    res.sendStatus(200)
-  })
-
-export const setSerieATeams = functions
-  .region('asia-northeast1')
-  .https.onRequest(async (req, res) => {
-    const competition = competitionMap.get('Serie-A')!
-    await setTeams(competition, req)
-    res.sendStatus(200)
-  })
-
-export const setWorldCupTeams = functions
-  .region('asia-northeast1')
-  .https.onRequest(async (req, res) => {
-    const competition = competitionMap.get('World-Cup')!
-    await setTeams(competition, req)
-    res.sendStatus(200)
-  })
+export default setTeams
