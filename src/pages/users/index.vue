@@ -33,8 +33,9 @@
               <v-card-actions>
                 <ButtonFollow
                   v-if="loginUser && user.follow !== undefined"
+                  :disabled="isDisabledUpdateFollow(user.id)"
                   :follow="user.follow"
-                  :is-loading="isLoadingUpdateFollow"
+                  :is-loading="isLoadingUpdateFollowTarget(user.id)"
                   :user-id="user.id"
                   @click="updateFollow"
                 />
@@ -95,9 +96,10 @@ export default defineComponent({
       inputCompetitionId,
       inputTeamId,
       isDialog,
+      isDisabledUpdateFollow,
       isLoadingNextUsers,
       isLoadingSetUp,
-      isLoadingUpdateFollow,
+      isLoadingUpdateFollowTarget,
       readNextUsers,
       search,
       setUp,
@@ -116,9 +118,10 @@ export default defineComponent({
       inputCompetitionId,
       inputTeamId,
       isDialog,
+      isDisabledUpdateFollow,
       isLoadingNextUsers,
       isLoadingSetUp,
-      isLoadingUpdateFollow,
+      isLoadingUpdateFollowTarget,
       loginUser,
       mdiMagnify,
       noAvatarImage,

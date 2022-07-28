@@ -1,5 +1,5 @@
 /** check */
-import { ref } from '@nuxtjs/composition-api'
+import { computed, ref } from '@nuxtjs/composition-api'
 import { doFollow, toStoreUsers } from '@/db/users'
 import useLoginUser from '@/utils/useLoginUser'
 import useSnackbar from '@/utils/useSnackbar'
@@ -70,11 +70,18 @@ const useIndex = () => {
   }
 
   /** follow */
-  const isLoadingUpdateFollow = ref(false)
+  const isLoadingUpdateFollowUserId = ref('')
+  const isLoadingUpdateFollowTarget = computed(() => (userId: string) => {
+    return userId === isLoadingUpdateFollowUserId.value
+  })
+  const isDisabledUpdateFollow = computed(() => (userId: string) => {
+    if (isLoadingUpdateFollowUserId.value === '') return false
+    return userId !== isLoadingUpdateFollowUserId.value
+  })
   const updateFollow = async (userId: string): Promise<void> => {
     if (!loginUser.value) return
     try {
-      isLoadingUpdateFollow.value = true
+      isLoadingUpdateFollowUserId.value = userId
       await doFollow(loginUser.value.uid, userId)
       const index = users.data.findIndex((u) => u.id === userId)
       users.data[index].follow = !users.data[index].follow
@@ -82,7 +89,7 @@ const useIndex = () => {
       console.log(error)
       openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
-      isLoadingUpdateFollow.value = false
+      isLoadingUpdateFollowUserId.value = ''
     }
   }
 
@@ -91,9 +98,10 @@ const useIndex = () => {
     inputCompetitionId,
     inputTeamId,
     isDialog,
+    isDisabledUpdateFollow,
     isLoadingNextUsers,
     isLoadingSetUp,
-    isLoadingUpdateFollow,
+    isLoadingUpdateFollowTarget,
     readNextUsers,
     search,
     setUp,

@@ -2,6 +2,7 @@
   <BaseButton
     :block-flg="true"
     :color="'#1a237e'"
+    :disabled="disabled"
     :is-loading="isLoading"
     :outlined-flg="!follow"
     :text="text"
@@ -23,6 +24,7 @@ export default defineComponent({
   },
 
   props: {
+    disabled: { type: Boolean, default: false },
     follow: { type: Boolean, default: false },
     isLoading: { type: Boolean, default: false },
     userId: { type: String, default: '' }
