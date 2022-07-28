@@ -201,10 +201,12 @@ const useShow = () => {
 
   /** follow */
   const isLoadingUpdateFollow = ref(false)
+  const isLoadingUserId = ref('')
   const updateFollow = async (userId: string, type: 'profile' | 'dialog'): Promise<void> => {
     if (!loginUser.value) return
     try {
       isLoadingUpdateFollow.value = true
+      isLoadingUserId.value = userId
       await doFollow(loginUser.value.uid, userId)
       /** adjust count */
       if (type === 'dialog') {
@@ -235,6 +237,7 @@ const useShow = () => {
       openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
       isLoadingUpdateFollow.value = false
+      isLoadingUserId.value = ''
     }
   }
 
@@ -340,6 +343,7 @@ const useShow = () => {
     isLoadingReports,
     isLoadingUpdateFollow,
     isLoadingUser,
+    isLoadingUserId,
     likeReports,
     myReports,
     pushToUserEdit,

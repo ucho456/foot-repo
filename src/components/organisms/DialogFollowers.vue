@@ -17,8 +17,9 @@
                 />
                 <v-col v-if="item.follow !== undefined && item.user.id !== uid" cols="5">
                   <ButtonFollow
+                    :disabled="isDisabled(item.user.id)"
                     :follow="item.follow"
-                    :is-loading="isLoadingUpdateFollow"
+                    :is-loading="isLoadingUpdateFollow(item.user.id)"
                     :user-id="item.user.id"
                     @click="handleFollow"
                   />
@@ -48,7 +49,7 @@
 
 <script lang="ts">
 /** check */
-import { defineComponent } from '@nuxtjs/composition-api'
+import { computed, defineComponent } from '@nuxtjs/composition-api'
 import ButtonFollow from '@/components/molecules/ButtonFollow.vue'
 import ButtonSubmit from '@/components/molecules/ButtonSubmit.vue'
 import ColUserImageName from '@/components/organisms/ColUserImageName.vue'
@@ -70,16 +71,24 @@ export default defineComponent({
     isDialog: { type: Boolean, default: false },
     isLoading: { type: Boolean, default: false },
     isLoadingButton: { type: Boolean, default: false },
-    isLoadingUpdateFollow: { type: Boolean, default: false },
+    // isLoadingUpdateFollow: { type: Boolean, default: false },
+    isUpdatingUserId: { type: String, default: '' },
     uid: { type: String, required: false, default: null }
   },
 
-  setup(_, ctx) {
+  setup(props, ctx) {
     const handleHide = (): void => ctx.emit('hide')
     const handleFollow = (userId: string): void => ctx.emit('follow', userId)
     const handleNext = (): void => ctx.emit('next')
+    const isLoadingUpdateFollow = computed(() => (userId: string) => {
+      return props.isUpdatingUserId === userId
+    })
+    const isDisabled = computed(() => (userId: string) => {
+      if (props.isUpdatingUserId === '') return false
+      return props.isUpdatingUserId !== userId
+    })
 
-    return { handleFollow, handleHide, handleNext }
+    return { handleFollow, handleHide, handleNext, isDisabled, isLoadingUpdateFollow }
   }
 })
 </script>

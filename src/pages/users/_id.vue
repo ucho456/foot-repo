@@ -92,7 +92,7 @@
       :is-dialog="isDialogFollows"
       :is-loading="isLoadingFollows"
       :is-loading-button="isLoadingNextFollows"
-      :is-loading-update-follow="isLoadingUpdateFollow"
+      :is-updating-user-id="isLoadingUserId"
       :uid="loginUser ? loginUser.uid : null"
       @hide="hideFollowsDialog"
       @follow="(userId) => updateFollow(userId, 'dialog')"
@@ -104,7 +104,7 @@
       :is-dialog="isDialogFollowers"
       :is-loading="isLoadingFollowers"
       :is-loading-button="isLoadingNextFollowers"
-      :is-loading-update-follow="isLoadingUpdateFollow"
+      :is-updating-user-id="isLoadingUserId"
       :uid="loginUser ? loginUser.uid : null"
       @hide="hideFollowersDialog"
       @follow="(userId) => updateFollow(userId, 'dialog')"
@@ -168,6 +168,7 @@ export default defineComponent({
       isLoadingReports,
       isLoadingUpdateFollow,
       isLoadingUser,
+      isLoadingUserId,
       likeReports,
       myReports,
       pushToUserEdit,
@@ -214,6 +215,7 @@ export default defineComponent({
       isLoadingReports,
       isLoadingUpdateFollow,
       isLoadingUser,
+      isLoadingUserId,
       likeReports,
       loginUser,
       mdiAccountArrowLeft,
