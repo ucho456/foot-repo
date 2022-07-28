@@ -14,7 +14,7 @@
           <v-col v-if="loginUser && loginUser.uid === user.id" cols="5" sm="3">
             <ButtonOutlined :text="'編集'" @click="pushToUserEdit" />
           </v-col>
-          <v-col v-else cols="5" sm="3">
+          <v-col v-else-if="loginUser" cols="5" sm="3">
             <ButtonFollow
               :follow="follow"
               :is-loading="isLoadingUpdateFollow"
