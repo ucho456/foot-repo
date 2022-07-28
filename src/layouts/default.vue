@@ -102,6 +102,7 @@ import {
 } from '@mdi/js'
 import useLoginUser from '@/utils/useLoginUser'
 import useSnackbar from '@/utils/useSnackbar'
+import useStore from '@/utils/useStore'
 import SideContainer from '@/components/organisms/SideContainer.vue'
 
 export default defineComponent({
@@ -118,6 +119,16 @@ export default defineComponent({
     const router = useRouter()
     const { loginUser } = useLoginUser()
     const { snackbar, openSnackbar } = useSnackbar()
+    const {
+      resetConfirmation,
+      resetCup,
+      resetJapan,
+      resetLeague,
+      resetMatch,
+      resetMatches,
+      resetTeam,
+      resetUsers
+    } = useStore()
     const headerLogo = require('@/assets/header_logo.png')
     const noAvatarImage = require('@/assets/no_avatar.png')
     const lazy = require('@/assets/lazy.png')
@@ -173,6 +184,14 @@ export default defineComponent({
           hideDrawer()
           router.push('/')
           openSnackbar('success', 'ログアウトしました。')
+          resetConfirmation()
+          resetCup()
+          resetJapan()
+          resetLeague()
+          resetMatch()
+          resetMatches()
+          resetTeam()
+          resetUsers()
         })
         .catch(() => openSnackbar('failure', '通信エラーが発生しました。'))
     }

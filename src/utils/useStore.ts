@@ -63,6 +63,10 @@ const useStore = () => {
   const store = inject(StoreKey)
   if (store === undefined) throw new Error('store is no provided')
 
+  const resetConfirmation = (): void => {
+    store.confirmation.isLogin = false
+  }
+
   const resetMatches = (): void => {
     store.matches.data = []
     store.matches.lastVisible = null
@@ -106,6 +110,11 @@ const useStore = () => {
     store.cup.yearMonth = ''
   }
 
+  const resetJapan = (): void => {
+    store.japan.matchSchedule = []
+    store.japan.season = String(new Date().getFullYear())
+  }
+
   const resetTeam = (): void => {
     store.team.data = null
   }
@@ -116,6 +125,15 @@ const useStore = () => {
     store.match.reports = []
   }
 
+  const resetUsers = (): void => {
+    store.users.data = []
+    store.users.lastVisible = null
+    store.users.searchOption.competitionId = ''
+    store.users.searchOption.teamId = ''
+    store.users.searchOption.yearMonth = ''
+    store.users.hasNext = true
+  }
+
   return {
     confirmation: store.confirmation,
     cup: store.cup,
@@ -124,12 +142,15 @@ const useStore = () => {
     match: store.match,
     matches: store.matches,
     reports: store.reports,
+    resetConfirmation,
     resetCup,
+    resetJapan,
     resetLeague,
     resetMatch,
     resetMatches,
     resetReports,
     resetTeam,
+    resetUsers,
     team: store.team,
     users: store.users
   }
