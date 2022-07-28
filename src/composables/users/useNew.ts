@@ -67,9 +67,10 @@ const useNew = () => {
     try {
       isLoadingCreate.value = true
       if (newUser.team.id) newUser.team.name = teamMap.get(newUser.team.id)?.name!
-      const imageUrl = newUser.imageUrl
-        ? await uploadAndGetImageUrl(`users/${newUser.id}`, newUser.imageUrl)
-        : null
+      const imageUrl =
+        newUser.imageUrl && !newUser.imageUrl.match('^https?://.+$')
+          ? await uploadAndGetImageUrl(`users/${newUser.id}`, newUser.imageUrl)
+          : null
       if (imageUrl) newUser.imageUrl = imageUrl
       await postUser(newUser)
       setUpLoginUser(newUser)

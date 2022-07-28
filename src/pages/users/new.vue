@@ -8,7 +8,10 @@
             <h1>プロフィール登録</h1>
           </v-col>
         </v-row>
-        <span class="o-note"> ※プロフィール写真とニックネームは後から変更ができません。 </span>
+        <span class="o-note">
+          ※現在プロフィール写真とニックネームは後から変更できません。今後対応予定ですのでご了承下さい。<br />
+          ※googleアカウントのイニシャルの初期アイコンは正しく表示されませんので変更をお願いします。
+        </span>
         <ValidationObserver v-slot="{ invalid }">
           <v-row class="mb-10 mt-4" justify="center">
             <v-col cols="3" sm="2">
