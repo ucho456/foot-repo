@@ -9,8 +9,7 @@
           </v-col>
         </v-row>
         <span class="o-note">
-          ※現在プロフィール写真とニックネームは後から変更できません。今後対応予定ですのでご了承下さい。<br />
-          ※googleアカウントのイニシャルの初期アイコンは正しく表示されませんので変更をお願いします。
+          ※現在プロフィール写真とニックネームは後から変更できません。今後対応予定ですのでご了承下さい。
         </span>
         <ValidationObserver v-slot="{ invalid }">
           <v-row class="mb-10 mt-4" justify="center">

@@ -12,9 +12,15 @@ const readMyReports = async (
   userId: string,
   lastVisibleMyReport: Ref<QueryDocumentSnapshot<Report> | null>,
   hasNextMyReports: Ref<boolean>,
-  myReports: Ref<Report[]>
+  myReports: Ref<Report[]>,
+  loginUser: LoginUser | null
 ): Promise<void> => {
-  const { resReports, resLastVisible } = await fetchUserReports(userId, lastVisibleMyReport.value)
+  const uid = loginUser ? loginUser.uid : null
+  const { resReports, resLastVisible } = await fetchUserReports(
+    userId,
+    lastVisibleMyReport.value,
+    uid
+  )
   if (resReports.length < perPage) hasNextMyReports.value = false
   myReports.value = myReports.value.concat(resReports)
   lastVisibleMyReport.value = resLastVisible
@@ -87,7 +93,7 @@ const useShow = () => {
       }
       isLoadingUser.value = false
       isLoadingReports.value = true
-      await readMyReports(userId, lastVisibleMyReport, hasNextMyReports, myReports)
+      await readMyReports(userId, lastVisibleMyReport, hasNextMyReports, myReports, loginUser.value)
       isLoadingReports.value = false
     } catch (error) {
       console.log(error)
@@ -266,7 +272,13 @@ const useShow = () => {
     try {
       isLoadingNextReports.value = true
       if (tab.value === 'Mine') {
-        await readMyReports(user.value.id, lastVisibleMyReport, hasNextMyReports, myReports)
+        await readMyReports(
+          user.value.id,
+          lastVisibleMyReport,
+          hasNextMyReports,
+          myReports,
+          loginUser.value
+        )
       } else {
         await readLikeReports(user.value.id, lastVisibleLike, hasNextLikeReports, likeReports)
       }

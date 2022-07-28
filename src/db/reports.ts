@@ -234,22 +234,31 @@ export const fetchSameMatchReports = async (
 
 export const fetchUserReports = async (
   userId: string,
-  lastVisible: QueryDocumentSnapshot<Report> | null
+  lastVisible: QueryDocumentSnapshot<Report> | null,
+  uid: string | null
 ): Promise<{
   resReports: Report[]
   resLastVisible: QueryDocumentSnapshot<Report>
 }> => {
   const db = getFirestore()
   const rRef = collection(db, 'reports').withConverter(reportConverter)
+  const publishOption = uid && userId === uid ? [] : [where('publish', '==', true)]
   const q = lastVisible
     ? query(
         rRef,
         where('user.id', '==', userId),
+        ...publishOption,
         orderBy('createdAt', 'desc'),
         startAfter(lastVisible),
         limit(perPage)
       )
-    : query(rRef, where('user.id', '==', userId), orderBy('createdAt', 'desc'), limit(perPage))
+    : query(
+        rRef,
+        where('user.id', '==', userId),
+        ...publishOption,
+        orderBy('createdAt', 'desc'),
+        limit(perPage)
+      )
   const rShapshot = await getDocs(q)
   const resReports: Report[] = []
   rShapshot.forEach((doc) => {
