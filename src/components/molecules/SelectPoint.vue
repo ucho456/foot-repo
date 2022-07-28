@@ -20,7 +20,7 @@ export default defineComponent({
 
   setup(_, ctx) {
     const points: Point[] = [
-      '',
+      '採点なし',
       '0.0',
       '0.5',
       '1.0',
