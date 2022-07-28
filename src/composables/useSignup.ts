@@ -1,5 +1,5 @@
 /** check */
-import { reactive, ref, useRouter } from '@nuxtjs/composition-api'
+import { computed, reactive, ref, useRouter } from '@nuxtjs/composition-api'
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -18,10 +18,17 @@ const useSignup = () => {
   const user = reactive({ email: '', password: '' })
   const termsCheck = ref(false)
 
-  const isLoading = ref(false)
+  const targetProvider = ref('')
+  const isLoading = computed(() => (provider: string) => {
+    return targetProvider.value === provider
+  })
+  const isDisabled = computed(() => (provider: string) => {
+    if (targetProvider.value === '') return false
+    return targetProvider.value !== provider
+  })
   const signupEmail = async (): Promise<void> => {
     try {
-      isLoading.value = true
+      targetProvider.value = 'email'
       const auth = getAuth()
       const userCredential = await createUserWithEmailAndPassword(auth, user.email, user.password)
       await sendEmailVerification(userCredential.user)
@@ -32,13 +39,13 @@ const useSignup = () => {
         ? openSnackbar('failure', '既に使用されているメールアドレスです。')
         : openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
-      isLoading.value = false
+      targetProvider.value = ''
     }
   }
 
   const signupTwitter = async (): Promise<void> => {
     try {
-      isLoading.value = true
+      targetProvider.value = 'twitter'
       const auth = getAuth()
       const provider = new TwitterAuthProvider()
       const userCredential = await signInWithPopup(auth, provider)
@@ -55,13 +62,13 @@ const useSignup = () => {
       console.log(error)
       openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
-      isLoading.value = false
+      targetProvider.value = ''
     }
   }
 
   const signupGoogle = async (): Promise<void> => {
     try {
-      isLoading.value = true
+      targetProvider.value = 'google'
       const auth = getAuth()
       const provider = new GoogleAuthProvider()
       const userCredential = await signInWithPopup(auth, provider)
@@ -78,7 +85,7 @@ const useSignup = () => {
       console.log(error)
       openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
-      isLoading.value = false
+      targetProvider.value = ''
     }
   }
 
@@ -98,6 +105,7 @@ const useSignup = () => {
     back,
     hideDialog,
     isDialog,
+    isDisabled,
     isLoading,
     showDialog,
     signupEmail,

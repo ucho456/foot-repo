@@ -19,30 +19,30 @@
             </v-col>
             <v-col cols="10">
               <ButtonSubmit
-                :disabled="invalid || !termsCheck"
-                :is-loading="isLoading"
+                :disabled="invalid || !termsCheck || isDisabled('email')"
+                :is-loading="isLoading('email')"
                 :text="'登録する'"
                 @click="signupEmail"
               />
             </v-col>
             <v-col cols="10">
               <ButtonTwitter
-                :disabled="!termsCheck"
-                :is-loading="isLoading"
+                :disabled="!termsCheck || isDisabled('twitter')"
+                :is-loading="isLoading('twitter')"
                 :text="'Twitterアカウントで登録'"
                 @click="signupTwitter"
               />
             </v-col>
             <v-col cols="10">
               <ButtonGoogle
-                :disabled="!termsCheck"
-                :is-loading="isLoading"
+                :disabled="!termsCheck || isDisabled('google')"
+                :is-loading="isLoading('google')"
                 :text="'Googleアカウントで登録'"
                 @click="signupGoogle"
               />
             </v-col>
             <v-col cols="10">
-              <ButtonBack :disabled="isLoading" @click="back" />
+              <ButtonBack :disabled="isDisabled('back')" @click="back" />
             </v-col>
             <NuxtLink class="o-hover mb-4 text-caption" to="/login">
               アカウントをお持ちの場合はこちら
@@ -87,6 +87,7 @@ export default defineComponent({
       back,
       hideDialog,
       isDialog,
+      isDisabled,
       isLoading,
       showDialog,
       signupEmail,
@@ -101,6 +102,7 @@ export default defineComponent({
       back,
       hideDialog,
       isDialog,
+      isDisabled,
       isLoading,
       logo,
       showDialog,

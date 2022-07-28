@@ -13,28 +13,30 @@
             </v-col>
             <v-col cols="10">
               <ButtonSubmit
-                :disabled="invalid"
-                :is-loading="isLoading"
+                :disabled="invalid || isDisabled('email')"
+                :is-loading="isLoading('email')"
                 :text="'ログイン'"
                 @click="loginEmail"
               />
             </v-col>
             <v-col cols="10">
               <ButtonTwitter
-                :is-loading="isLoading"
+                :disabled="isDisabled('twitter')"
+                :is-loading="isLoading('twitter')"
                 :text="'Twitterアカウントでログイン'"
                 @click="loginTwitter"
               />
             </v-col>
             <v-col cols="10">
               <ButtonGoogle
-                :is-loading="isLoading"
+                :disabled="isDisabled('google')"
+                :is-loading="isLoading('google')"
                 :text="'Googleアカウントでログイン'"
                 @click="loginGoogle"
               />
             </v-col>
             <v-col cols="10">
-              <ButtonBack :disabled="isLoading" @click="back" />
+              <ButtonBack :disabled="isDisabled('back')" @click="back" />
             </v-col>
             <v-col cols="10" class="my-n6 text-center">
               <span class="o-hover o-reset-password" @click="showDialog">
@@ -82,6 +84,7 @@ export default defineComponent({
       back,
       dialog,
       hideDialog,
+      isDisabled,
       isLoading,
       loginEmail,
       loginGoogle,
@@ -95,6 +98,7 @@ export default defineComponent({
       back,
       dialog,
       hideDialog,
+      isDisabled,
       isLoading,
       loginEmail,
       loginGoogle,

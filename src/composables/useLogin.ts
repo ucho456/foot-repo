@@ -1,5 +1,5 @@
 /** check */
-import { reactive, ref, useRouter } from '@nuxtjs/composition-api'
+import { computed, reactive, ref, useRouter } from '@nuxtjs/composition-api'
 import {
   getAuth,
   GoogleAuthProvider,
@@ -16,11 +16,18 @@ const useLogin = () => {
   const { openSnackbar } = useSnackbar()
 
   const user = reactive({ email: '', password: '' })
-  const isLoading = ref(false)
 
+  const targetProvider = ref('')
+  const isLoading = computed(() => (provider: string) => {
+    return targetProvider.value === provider
+  })
+  const isDisabled = computed(() => (provider: string) => {
+    if (targetProvider.value === '') return false
+    return targetProvider.value !== provider
+  })
   const loginEmail = async (): Promise<void> => {
     try {
-      isLoading.value = true
+      targetProvider.value = 'email'
       const auth = getAuth()
       const userCredential = await signInWithEmailAndPassword(auth, user.email, user.password)
       if (!auth.currentUser?.emailVerified) {
@@ -43,13 +50,13 @@ const useLogin = () => {
         ? openSnackbar('failure', 'メールアドレス又はパスワードが間違っています。')
         : openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
-      isLoading.value = false
+      targetProvider.value = ''
     }
   }
 
   const loginTwitter = async (): Promise<void> => {
     try {
-      isLoading.value = true
+      targetProvider.value = 'twitter'
       const auth = getAuth()
       const provider = new TwitterAuthProvider()
       const userCredential = await signInWithPopup(auth, provider)
@@ -69,13 +76,13 @@ const useLogin = () => {
       console.log(error)
       openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
-      isLoading.value = false
+      targetProvider.value = ''
     }
   }
 
   const loginGoogle = async (): Promise<void> => {
     try {
-      isLoading.value = true
+      targetProvider.value = 'google'
       const auth = getAuth()
       const provider = new GoogleAuthProvider()
       const userCredential = await signInWithPopup(auth, provider)
@@ -95,14 +102,13 @@ const useLogin = () => {
       console.log(error)
       openSnackbar('failure', '通信エラーが発生しました。')
     } finally {
-      isLoading.value = false
+      targetProvider.value = ''
     }
   }
 
   /** password reset dialog */
   const dialog = ref(false)
   const showDialog = (): void => {
-    console.log('show')
     dialog.value = true
   }
   const hideDialog = (): void => {
@@ -117,6 +123,7 @@ const useLogin = () => {
     back,
     dialog,
     hideDialog,
+    isDisabled,
     isLoading,
     loginEmail,
     loginGoogle,
