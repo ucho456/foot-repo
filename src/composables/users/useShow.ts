@@ -115,21 +115,12 @@ const useShow = () => {
   const hasNextFollows = ref(true)
   const isDialogFollows = ref(false)
   const isLoadingFollows = ref(false)
-
   const showFollowsDialog = async (): Promise<void> => {
     if (!user.value || user.value.followCount === 0) return
     try {
       isDialogFollows.value = true
-      if (follows.value.length === 0) {
-        isLoadingFollows.value = true
-        await readFollows(
-          user.value.id,
-          lastVisibleFollow,
-          loginUser.value,
-          hasNextFollows,
-          follows
-        )
-      }
+      isLoadingFollows.value = true
+      await readFollows(user.value.id, lastVisibleFollow, loginUser.value, hasNextFollows, follows)
     } catch (error) {
       console.log(error)
       openSnackbar('failure', '通信エラーが発生しました。')
@@ -139,6 +130,9 @@ const useShow = () => {
   }
   const hideFollowsDialog = (): void => {
     isDialogFollows.value = false
+    follows.value = []
+    lastVisibleFollow.value = null
+    hasNextFollows.value = true
   }
   const isLoadingNextFollows = ref(false)
   const readNextFollows = async (): Promise<void> => {
@@ -164,16 +158,14 @@ const useShow = () => {
     if (!user.value || user.value.followerCount === 0) return
     try {
       isDialogFollowers.value = true
-      if (followers.value.length === 0) {
-        isLoadingFollowers.value = true
-        await readFollowers(
-          user.value.id,
-          lastVisibleFollower,
-          loginUser.value,
-          hasNextFollowers,
-          followers
-        )
-      }
+      isLoadingFollowers.value = true
+      await readFollowers(
+        user.value.id,
+        lastVisibleFollower,
+        loginUser.value,
+        hasNextFollowers,
+        followers
+      )
     } catch (error) {
       console.log(error)
       openSnackbar('failure', '通信エラーが発生しました。')
@@ -183,6 +175,9 @@ const useShow = () => {
   }
   const hideFollowersDialog = (): void => {
     isDialogFollowers.value = false
+    followers.value = []
+    lastVisibleFollower.value = null
+    hasNextFollowers.value = true
   }
   const isLoadingNextFollowers = ref(false)
   const readNextFollowers = async (): Promise<void> => {
