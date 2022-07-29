@@ -14,6 +14,7 @@ import {
   setDoc,
   startAfter,
   startAt,
+  Timestamp,
   where,
   writeBatch
 } from 'firebase/firestore'
@@ -175,12 +176,13 @@ export const fetchPopularReports = async (): Promise<Report[]> => {
   const rRef = collection(db, 'reports').withConverter(reportConverter)
   const startDate = new Date()
   startDate.setDate(startDate.getDate() - 7)
+  const timestamp = Timestamp.fromDate(startDate)
   const q = query(
     rRef,
     where('publish', '==', true),
     orderBy('likeCount', 'desc'),
     orderBy('createdAt', 'desc'),
-    startAt(startDate),
+    startAt(timestamp),
     limit(perPage)
   )
   const rSnapshot = await getDocs(q)
