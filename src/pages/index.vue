@@ -86,6 +86,9 @@ export default defineComponent({
       reports,
       showDialog
     }
+  },
+  head: {
+    titleTemplate: '%s - サッカー選手採点共有サービス'
   }
 })
 </script>
