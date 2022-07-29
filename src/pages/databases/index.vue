@@ -6,7 +6,7 @@
           <v-col v-for="competition in competitions" :key="competition.title" cols="6" sm="4">
             <v-card :to="competition.to">
               <v-img :height="183" :lazy-src="lazy" :src="competition.src" />
-              <v-card-text class="font-weight-bold text-center" style="height: 70px">
+              <v-card-text class="font-weight-bold text-center" style="height: 80px">
                 {{ competition.title }}
               </v-card-text>
             </v-card>
