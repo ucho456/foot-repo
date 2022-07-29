@@ -13,6 +13,7 @@ import {
   serverTimestamp,
   setDoc,
   startAfter,
+  startAt,
   where,
   writeBatch
 } from 'firebase/firestore'
@@ -167,6 +168,27 @@ export const fetchReportItems = async (
     })
   }
   return { resHomeTeamReportItems, resAwayTeamReportItems }
+}
+
+export const fetchPopularReports = async (): Promise<Report[]> => {
+  const db = getFirestore()
+  const rRef = collection(db, 'reports').withConverter(reportConverter)
+  const startDate = new Date()
+  startDate.setDate(startDate.getDate() - 7)
+  const q = query(
+    rRef,
+    where('publish', '==', true),
+    orderBy('likeCount', 'desc'),
+    orderBy('createdAt', 'desc'),
+    startAt(startDate),
+    limit(perPage)
+  )
+  const rSnapshot = await getDocs(q)
+  const reports: Report[] = []
+  rSnapshot.forEach((doc) => {
+    if (doc.exists()) reports.push(doc.data())
+  })
+  return reports
 }
 
 export const toStoreReportsFromFunctions = async (reports: { data: Report[] }): Promise<void> => {
