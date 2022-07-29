@@ -1,13 +1,5 @@
 import * as admin from 'firebase-admin'
 
-/**
-  
-*/
-
-/**
-  
-*/
-
 const useJapanMatchData = () => {
   /** common */
   const lastUpdated = '2022-07-27'
@@ -168,9 +160,16 @@ const useJapanMatchData = () => {
     bookings: [
       {
         keyId: '1',
-        minute: 0,
+        minute: 35,
+        team: japanTeam,
+        player: { id: '5', name: '畠中 槙之輔' },
+        card: 'yellow'
+      },
+      {
+        keyId: '2',
+        minute: 75,
         team: enemyTeam,
-        player: { id: '', name: '' },
+        player: { id: '15', name: 'キム・ムンファン' },
         card: 'yellow'
       }
     ],

@@ -36,6 +36,7 @@ const useNew = () => {
       if (loginUser.value && loginUser.value.team.id === match.value.awayTeam.id) {
         newReport.selectTeam = 'away'
       }
+      if (match.value.awayTeam.id === 'Japan') newReport.selectTeam = 'away'
     } catch (error) {
       error instanceof Error && error.message === 'Not Found'
         ? openSnackbar('failure', 'データが見つかりませんでした。')

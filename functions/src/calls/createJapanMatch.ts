@@ -5,7 +5,7 @@ import { forReportConverter, matchConverter, matchDetailConverter } from '../con
 import { env } from '../utils'
 
 /** change here */
-import useJapanMatchData from '../japan/20220719japan'
+import useJapanMatchData from '../japan/20220727japan'
 
 const createJapanMatch = functions.region('asia-northeast1').https.onRequest(async (req, res) => {
   if (process.env.NODE_ENV === 'production' && req.query.secret !== env.secret) {
