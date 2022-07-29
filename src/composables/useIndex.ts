@@ -52,6 +52,10 @@ const useIndex = () => {
     router.push('/reports')
   }
 
+  const pushToReportSearch = (): void => {
+    router.push('/reports/search')
+  }
+
   return {
     clearYearMonth,
     hideDialog,
@@ -61,6 +65,7 @@ const useIndex = () => {
     isDialog,
     isLoadingReports,
     pushToReports,
+    pushToReportSearch,
     setUp,
     showDialog
   }

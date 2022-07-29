@@ -11,8 +11,11 @@
       />
       <v-container v-if="!isLoadingReports">
         <v-row justify="center">
-          <v-col cols="10">
-            <ButtonOutlined :text="'選手採点を検索する'" @click="showDialog" />
+          <v-col cols="5">
+            <ButtonOutlined :text="'投稿する'" @click="pushToReportSearch" />
+          </v-col>
+          <v-col cols="5">
+            <ButtonOutlined :text="'検索する'" @click="showDialog" />
           </v-col>
         </v-row>
       </v-container>
@@ -60,6 +63,7 @@ export default defineComponent({
       isDialog,
       isLoadingReports,
       pushToReports,
+      pushToReportSearch,
       setUp,
       showDialog
     } = useIndex()
@@ -78,6 +82,7 @@ export default defineComponent({
       isDialog,
       isLoadingReports,
       pushToReports,
+      pushToReportSearch,
       reports,
       showDialog
     }
