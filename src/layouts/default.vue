@@ -30,7 +30,7 @@
       <v-container>
         <v-row>
           <v-col cols="6">
-            <span>&copy; {{ new Date().getFullYear() }}</span>
+            <span>&copy; 2022-08 ~</span>
           </v-col>
           <v-col class="text-right" cols="6">
             <div class="o-hover o-font-10" @click="show('terms')">利用規約</div>

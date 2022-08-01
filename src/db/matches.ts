@@ -111,7 +111,7 @@ export const toStoreJapanMatchSchedule = async (japan: {
     mRef,
     where('competition.id', '==', 'Japan'),
     where('season', '==', japan.season),
-    orderBy('jstDate', 'desc')
+    orderBy('jstDate', 'asc')
   )
   const mSnapshot = await getDocs(q)
   mSnapshot.forEach((doc) => {
