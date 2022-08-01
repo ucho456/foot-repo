@@ -107,8 +107,8 @@ export default defineComponent({
   }
 }
 .o-emblem {
-  width: 53px;
-  height: 53px;
+  width: 40px;
+  height: 40px;
   margin: 0 auto;
 }
 .o-td-w {
