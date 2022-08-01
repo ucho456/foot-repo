@@ -12,7 +12,7 @@ import updateEmailVerified from './calls/updateEmailVerified'
 import {
   setBundesligaMatches,
   setChampionsLeagueMatches,
-  setJLeagueMatches,
+  // setJLeagueMatches,
   setLaLigaMatches,
   setLigue1Matches,
   setPremierLeagueMatches,
@@ -34,7 +34,7 @@ module.exports = {
   promptUpdateMatch,
   setBundesligaMatches,
   setChampionsLeagueMatches,
-  setJLeagueMatches,
+  // setJLeagueMatches,
   setLaLigaMatches,
   setLigue1Matches,
   setPremierLeagueMatches,

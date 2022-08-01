@@ -82,7 +82,7 @@ export const toStoreMatchSchedule = async (league: {
         mRef,
         where('competition.id', '==', league.competitionId),
         where('yearMonth', '==', league.yearMonth),
-        orderBy('jstDate', 'desc'),
+        orderBy('jstDate', 'asc'),
         startAfter(league.lastVisible),
         limit(perPage)
       )
@@ -90,7 +90,7 @@ export const toStoreMatchSchedule = async (league: {
         mRef,
         where('competition.id', '==', league.competitionId),
         where('yearMonth', '==', league.yearMonth),
-        orderBy('jstDate', 'desc'),
+        orderBy('jstDate', 'asc'),
         limit(perPage)
       )
   const mSnapshot = await getDocs(q)
