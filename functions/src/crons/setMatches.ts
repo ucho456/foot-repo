@@ -10,14 +10,9 @@ import { competitionMap, config, convertPosition, footballUrl } from '../utils'
 const getMatchInfos = async (
   competitionId: number
 ): Promise<{ id: string; status: string; lastUpdated: string }[]> => {
-  // const utcDate =
-  //   process.env.NODE_ENV === 'production' ? new Date().toISOString().substring(0, 10) : '2022-05-22'
-  // const res: AxiosResponse<any, any> = await axios.get(
-  //   footballUrl + `competitions/${competitionId}/matches?dateFrom=${utcDate}&dateTo=${utcDate}`,
-  //   config
-  // )
+  const utcDate = new Date().toISOString().substring(0, 10)
   const res: AxiosResponse<any, any> = await axios.get(
-    footballUrl + `competitions/${competitionId}/matches?season=2021&matchday=38`,
+    footballUrl + `competitions/${competitionId}/matches?dateFrom=${utcDate}&dateTo=${utcDate}`,
     config
   )
   const matches = res.data.matches as FbMatch[]

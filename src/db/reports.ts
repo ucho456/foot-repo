@@ -183,7 +183,7 @@ export const fetchPopularReports = async (): Promise<Report[]> => {
     orderBy('likeCount', 'desc'),
     orderBy('createdAt', 'desc'),
     startAt(timestamp),
-    limit(perPage)
+    limit(5)
   )
   const rSnapshot = await getDocs(q)
   const reports: Report[] = []

@@ -1,5 +1,4 @@
 /** check */
-// season=2021にしている。
 import * as admin from 'firebase-admin'
 import * as functions from 'firebase-functions'
 import axios, { AxiosResponse } from 'axios'
@@ -8,7 +7,7 @@ import { competitionMap, config, convertPosition, env, footballUrl } from '../ut
 
 const getFbTeams = async (competitionId: number): Promise<FbTeam[]> => {
   const res: AxiosResponse<any, any> = await axios.get(
-    footballUrl + `competitions/${competitionId}/teams?season=2021`,
+    footballUrl + `competitions/${competitionId}/teams`,
     config
   )
   const fbTeams = res.data.teams as FbTeam[]

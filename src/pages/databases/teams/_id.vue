@@ -18,7 +18,7 @@
           </v-col>
         </v-row>
       </v-container>
-      <v-container v-if="team.data">
+      <!-- <v-container v-if="team.data">
         <h2>コンペティション</h2>
         <v-simple-table dence>
           <template #default>
@@ -42,7 +42,7 @@
             </tbody>
           </template>
         </v-simple-table>
-      </v-container>
+      </v-container> -->
       <v-container v-if="team.data">
         <h2>選手一覧</h2>
         <v-row v-if="team.data.squad.length === 0">

@@ -1,5 +1,4 @@
 /** check */
-/** 8/1に20行目の?season=2021&matchday=38を削除予定 */
 import * as admin from 'firebase-admin'
 import * as functions from 'firebase-functions'
 import axios, { AxiosResponse } from 'axios'
@@ -10,7 +9,7 @@ type Competition = { id: number; collectionId: string; name: string }
 
 const getFbMatches = async (competitionId: number): Promise<FbMatch[]> => {
   const res: AxiosResponse<any, any> = await axios.get(
-    footballUrl + `competitions/${competitionId}/matches?season=2021&matchday=38`,
+    footballUrl + `competitions/${competitionId}/matches`,
     config
   )
   const fbMatches = res.data.matches as FbMatch[]
