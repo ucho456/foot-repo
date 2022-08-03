@@ -285,13 +285,14 @@ service cloud.firestore {
 
     // users
     function isValidUser(user) {
-      return user.size() == 8
+      return user.size() == 9
       && 'name' in user && user.name is string
       && 'imageUrl' in user && (user.imageUrl == null || user.imageUrl is string)
       && 'greet' in user && user.greet is string
       && 'competitionId' in user && user.competitionId is string
       && 'team' in user && user.team is map
       && 'reportCount' in user && user.reportCount is int
+      && 'best11Count' in user && user.best11Count is int
       && 'followCount' in user && user.followCount is int
       && 'followerCount' in user && user.followerCount is int;
     }
@@ -319,6 +320,7 @@ service cloud.firestore {
       && isValidString(newData().team.id, 0, 20)
       && isValidString(newData().team.name, 0, 100)
       && newData().reportCount == 0
+      && newData().best11Count == 0
       && newData().followCount == 0
       && newData().followerCount == 0;
 
@@ -333,6 +335,7 @@ service cloud.firestore {
       && isValidString(newData().team.id, 0, 20)
       && isValidString(newData().team.name, 0, 100)
       && newData().reportCount >= 0
+      && newData().best11Count >= 0
       && newData().followCount >= 0
       && newData().followerCount >= 0)
       ||
@@ -346,6 +349,7 @@ service cloud.firestore {
       && newData().team.id == oldData().team.id
       && newData().team.name == oldData().team.name
       && newData().reportCount == oldData().reportCount
+      && newData().best11Count == oldData().best11Count
       && newData().followCount >= 0
       && newData().followerCount >= 0);
 
