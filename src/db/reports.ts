@@ -194,7 +194,6 @@ export const fetchPopularReports = async (): Promise<Report[]> => {
 }
 
 export const toStoreReportsFromFunctions = async (reports: { data: Report[] }): Promise<void> => {
-  if (process.env.NODE_ENV !== 'production') return
   const functions = getFunctions(undefined, 'asia-northeast1')
   const fetchSSR = httpsCallable(functions, 'fetchSSR')
   const res = await fetchSSR({ reportId: null })

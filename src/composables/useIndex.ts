@@ -1,6 +1,6 @@
 /** check */
 import { ref, useRouter } from '@nuxtjs/composition-api'
-import { toStoreReports } from '@/db/reports'
+import { toStoreReports, toStoreReportsFromFunctions } from '@/db/reports'
 import useSnackbar from '@/utils/useSnackbar'
 import useStore from '@/utils/useStore'
 
@@ -10,8 +10,18 @@ const useIndex = () => {
   const { reports, resetReports } = useStore()
 
   /** setUp */
+  const ssrSetUp = async (): Promise<void> => {
+    if (process.env.NODE_ENV !== 'production') return
+    try {
+      await toStoreReportsFromFunctions(reports)
+    } catch (error) {
+      console.log(error)
+      openSnackbar('failure', '通信エラーが発生しました。')
+    }
+  }
+
   const isLoadingReports = ref(false)
-  const setUp = async (): Promise<void> => {
+  const csrSetUp = async (): Promise<void> => {
     try {
       isLoadingReports.value = true
       resetReports()
@@ -58,6 +68,7 @@ const useIndex = () => {
 
   return {
     clearYearMonth,
+    csrSetUp,
     hideDialog,
     inputCompetitionId,
     inputTeamId,
@@ -66,8 +77,8 @@ const useIndex = () => {
     isLoadingReports,
     pushToReports,
     pushToReportSearch,
-    setUp,
-    showDialog
+    showDialog,
+    ssrSetUp
   }
 }
 

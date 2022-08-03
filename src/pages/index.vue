@@ -37,7 +37,6 @@
 /** check */
 import { defineComponent, useFetch } from '@nuxtjs/composition-api'
 import useIndex from '@/composables/useIndex'
-import { toStoreReportsFromFunctions } from '@/db/reports'
 import useStore from '@/utils/useStore'
 import ButtonOutlined from '@/components/molecules/ButtonOutlined.vue'
 import ContainerLoading from '@/components/organisms/ContainerLoading.vue'
@@ -56,6 +55,7 @@ export default defineComponent({
   setup() {
     const {
       clearYearMonth,
+      csrSetUp,
       hideDialog,
       inputCompetitionId,
       inputTeamId,
@@ -64,13 +64,13 @@ export default defineComponent({
       isLoadingReports,
       pushToReports,
       pushToReportSearch,
-      setUp,
-      showDialog
+      showDialog,
+      ssrSetUp
     } = useIndex()
     const { reports } = useStore()
 
     useFetch(async () => {
-      process.server ? await toStoreReportsFromFunctions(reports) : setUp()
+      process.server ? await ssrSetUp() : await csrSetUp()
     })
 
     return {
