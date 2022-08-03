@@ -10,6 +10,7 @@ type User = {
     name: string
   }
   reportCount: number
+  best11Count: number
   followCount: number
   followerCount: number
   follow?: boolean

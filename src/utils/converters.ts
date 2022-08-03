@@ -260,6 +260,7 @@ export const userConverter: FirestoreDataConverter<User> = {
       competitionId: user.competitionId,
       team: user.team,
       reportCount: user.reportCount,
+      best11Count: user.best11Count,
       followCount: user.followCount,
       followerCount: user.followerCount
     }
@@ -274,6 +275,7 @@ export const userConverter: FirestoreDataConverter<User> = {
       competitionId: data.competitionId,
       team: data.team,
       reportCount: data.reportCount,
+      best11Count: data.best11Count,
       followCount: data.followCount,
       followerCount: data.followerCount
     }

@@ -32,6 +32,7 @@ export const postUser = async (newUser: InputUser): Promise<void> => {
     greet: newUser.greet,
     competitionId: newUser.competitionId,
     team: newUser.team,
+    best11Count: 0,
     reportCount: 0,
     followCount: 0,
     followerCount: 0
