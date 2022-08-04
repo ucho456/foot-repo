@@ -2,6 +2,7 @@
   <ValidationProvider v-slot="{ errors }" :rules="rules">
     <label>{{ label }}</label>
     <v-textarea
+      class="o-textarea"
       counter
       outlined
       :error-messages="errors[0]"
@@ -33,3 +34,11 @@ export default defineComponent({
   }
 })
 </script>
+
+<style lang="scss" scoped>
+.o-textarea {
+  ::v-deep textarea {
+    margin: 5px 0 !important;
+  }
+}
+</style>
