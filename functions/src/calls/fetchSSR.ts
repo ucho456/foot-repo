@@ -4,7 +4,10 @@ import * as functions from 'firebase-functions'
 import { matchConverter, reportConverter, reportItemConverter } from '../converters'
 
 export default functions
-  .runWith({ memory: '1GB' })
+  .runWith({
+    // memory: '1GB',
+    minInstances: 1
+  })
   .region('asia-northeast1')
   .https.onCall(async (data) => {
     const reportId = data.reportId as string | null
