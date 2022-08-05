@@ -94,6 +94,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .line-1 {
+  padding-top: 2px;
   font-size: 13px !important;
   line-height: 13px;
   overflow: hidden;
