@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <!-- <v-card outlined>
+    <v-card outlined>
       <v-container>
         <v-row>
           <v-col>
@@ -8,8 +8,8 @@
           </v-col>
         </v-row>
       </v-container>
-    </v-card> -->
-    <v-card outlined>
+    </v-card>
+    <v-card class="mt-4" outlined>
       <v-container>
         <v-row>
           <v-col cols="12">
@@ -69,16 +69,15 @@ export default defineComponent({
   setup() {
     const router = useRouter()
     const lazy = require('@/assets/lazy.png')
-    /** サンプル。詳しい設定はまたやる。 */
-    // const createGoogleSearchScript = (): void => {
-    //   const script = document.createElement('script')
-    //   script.setAttribute('src', 'https://cse.google.com/cse.js?cx=396e2ac1911b23488')
-    //   script.setAttribute('async', 'true')
-    //   document.head.appendChild(script)
-    // }
-    // if (process.client) {
-    // createGoogleSearchScript()
-    // }
+    const createGoogleSearchScript = (): void => {
+      const script = document.createElement('script')
+      script.setAttribute('src', 'https://cse.google.com/cse.js?cx=14afdfe6da87b4f4d')
+      script.setAttribute('async', 'true')
+      document.head.appendChild(script)
+    }
+    if (process.client) {
+      createGoogleSearchScript()
+    }
     const reports = ref<Report[]>([])
     const setUpReports = async () => {
       reports.value = await fetchPopularReports()
