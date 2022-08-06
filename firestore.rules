@@ -249,7 +249,7 @@ service cloud.firestore {
         && isValidPosition(newData().position)
         && (isValidInt(newData().shirtNumber, 1, 99) || newData().shirtNumber == null)
         && isValidPoint(newData().point)
-        && isValidString(newData().text, 0, 140)
+        && isValidString(newData().text, 0, 300)
         && isValidInt(newData().order, 1, 100);
 
         allow update: if request.auth != null
@@ -262,7 +262,7 @@ service cloud.firestore {
         && newData().position == oldData().position
         && newData().shirtNumber == oldData().shirtNumber
         && isValidPoint(newData().point)
-        && isValidString(newData().text, 0, 140)
+        && isValidString(newData().text, 0, 300)
         && newData().order == oldData().order;
       }
       match /comments/{commentId} {
