@@ -5,8 +5,8 @@ import { matchConverter, reportConverter, reportItemConverter } from '../convert
 
 export default functions
   .runWith({
-    memory: '1GB',
-    minInstances: 1
+    // memory: '1GB',
+    // minInstances: 1
   })
   .region('asia-northeast1')
   .https.onCall(async (data) => {
