@@ -1,24 +1,41 @@
 # フットレポ
+サッカーの選手採点を投稿しTwitterで記事をシェアできるサービスです。
 
-誰でも気軽に日本代表戦や W 杯、欧州 5 大リーグ、CL などの選手採点を投稿したり閲覧する事ができます。
-試合を通じて感じた事を選手採点という形に変えて世界にシェアしましょう！
+<br />
 
-リンク [フットレポ](https://foot-repo.com/)
+## リンク
 
-## 使用技術
+<s>https://foot-repo.com/</s>
 
-Nuxt.js 2.15.8 (SSR, Composition-api)
-TypeScript
-Vuetify 2.5.5
-Firebase 9.6.7
-Authentication
-Firestore
-Cloud Storage
-Cloud Functions
-Cloud Run
-Docker
-Github Actions
+サーバー代やAPI代で赤字なので現在サービスを停止しました。
 
-## アーキテクチャ設計
+<br />
+
+## 使用技術一覧
+
+- Nuxt.js v2.15.8
+- TypeScript es2018
+- Vuetify v2.5.5
+- Firebase v9.6.7
+  - Authentication
+  - Firestore
+  - Cloud Storage
+  - Cloud Functions
+  - Cloud Run
+- Docker v20.5.2
+- Github Actions
+
+<br />
+
+## アーキテクチャ
 
 ![foot-repo.png](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/2568126/800b1c5a-1eb9-e931-54c2-1060cb1495ea.png)
+
+<br />
+
+## 主な機能
+- サインイン・サインアウト
+- 記事作成・編集・削除
+- 記事いいね
+- 記事コメント
+- ユーザーフォロー
