@@ -12,24 +12,48 @@
 <br />
 
 ## 使用技術一覧
-
-- Nuxt.js v2.15.8
-- TypeScript es2018
-- Vuetify v2.5.5
-- Firebase v9.6.7
-  - Authentication
-  - Firestore
-  - Cloud Storage
-  - Cloud Functions
-  - Cloud Run
-- Docker v20.5.2
-- Github Actions
+Nuxt.js, Typescript, Vuetify, Firebase, Cloud Run, Docker, Github actions
 
 <br />
 
 ## アーキテクチャ
-
-![foot-repo.png](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/2568126/800b1c5a-1eb9-e931-54c2-1060cb1495ea.png)
+```mermaid
+graph TD;
+  subgraph "開発環境"
+    A[PC]
+    B[WSL2]
+    C[Docker]
+    D[(Firebase emulator)]
+  end
+  E(GitHub)
+  subgraph "Firebase"
+    F{{Firebase Hosting}}
+    G{{Firebase Authentication}}
+    H[(Firebase Firestore)]
+    I[(Firebase Storage)]
+  end
+  subgraph "GCP"
+    J{{Cloud Build}}
+    K{{Container Registry}}
+    L{{Cloud Run}}
+    M{{Cloud Functions}}
+    J-->K;
+    K-->L;
+    J-->L;
+  end
+  N[Football.data.org]
+  O[ユーザー]
+  A--Git push-->E;
+  E--Deploy-->F;
+  E--Deploy-->J;
+  F--Nuxtアプリ配信-->O;
+  F<--リダイレクト-->L;
+  G<--認証-->O;
+  H<--DB読み書き-->O;
+  I<--画像読み書き-->O;
+  N--サッカー情報取得-->M;
+  M--サッカー情報保存-->H;
+```
 
 <br />
 
